@@ -1,3 +1,3 @@
 module.exports = {
-    mongoURI:  process.env.PROD ? ``:``,
+    mongoURI:  'mongodb+srv://admin:admin@indeed.hiqmz.mongodb.net/indeed?retryWrites=true&w=majority',
 }
