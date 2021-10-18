@@ -7,23 +7,23 @@ const comSchema = new Schema({
         required: true
     },
     workHappinessScore: {
-        type:Decimal128,
+        type:mongoose.Decimal128,
     },
     learningScore: {
-        type:Decimal128,
+        type:mongoose.Decimal128,
     },
     appreciationScore: {
-        type:Decimal128,
+        type:mongoose.Decimal128,
         required:true
     },
     noOfReviews: {
         type:Number
     },
     companyAvgRating: {
-        type:Decimal128,
+        type: mongoose.Decimal128,
     },
     ceoAvgRating: {
-        type: Decimal128
+        type: mongoose.Decimal128
     },
     viewMap: {
         type:String
