@@ -23,11 +23,11 @@ app.use(session({
 //Define all the models
 
 require('./models/JobSeeker');
-
+const postNewJob = require("./routes/postNewJob");
 
 //Define all the routes
 app.use(require("./routes/loginRoute"));
-
+app.use("/postNewJob", postNewJob);
 
 const PORT = process.env.PORT || 5000;
 //Server code will be running on port 5000
