@@ -32,7 +32,7 @@ function Login(props) {
                 //redirectToHome();
             }
         },error=>{
-            alert('Failed to signup. Please refer console for more details.');
+            alert('Failed to Login. Please refer console for more details.');
             console.log(error);
         })
     }
