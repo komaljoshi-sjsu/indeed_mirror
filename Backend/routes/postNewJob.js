@@ -3,29 +3,25 @@ const express = require("express");
 const router = express.Router();
 const connection = require("../config/mysql_connection");
 router.post("/", (req, res) => {
-	let jobDetails = {
-		companyId = req.body.companyId,
-		jobTitle = req.body.jobTitle,
-	    streetAddress = req.body.streetAddress,
-		city  = req.body.city,
-		state = req.body.state,
-		country = req.body.country,
-		zipcode=req.body.zipcode,
-		salaryDetails = req.body.salaryDetails,
-		shortJobDescription=req.body.shortJobDescription,
-		jobType=req.body.jobType,
-		jobMode=req.body.jobMode,
-		jobPostedDate=req.body.jobPostedDate
-	}
-	let postJob_sql = "INSERT INTO jobDetails SET ?";
-			connection.query(postJob_sql, jobDetails, (error, result) => {
+	
+
+
+	let postJob_sql = 'INSERT INTO Job(companyId, jobTitle, streetAddress, city, state, country, zip, salaryDetails, shortJobDescription, jobType, jobMode, companyName,industry, jobPostedDate) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,CURDATE())';
+    let jobDetails = [req.body.companyId, req.body.jobTitle, req.body.streetAddress, req.body.city, req.body.state, req.body.country, req.body.zipcode, req.body.salaryDetails, req.body.shortJobDescription, req.body.jobType, req.body.jobMode, req.body.companyName,req.body.industry];
+
+	connection.query(postJob_sql, jobDetails, (error, result) => {
 				if (error) {
-					console.log("Error");
+					res.writeHead(500,{
+						'Content-Type' : 'application/json'
+					});
+					res.end("Server Error. Please Try Again! ");
 				} else {
-					//console.log("New Job Added Successfully");
-					res.send("New Job Added Successfully");
+					res.writeHead(200,{
+						'Content-Type' : 'application/json'
+					});
+					res.end("Job posted successfully!");
 				}
-			});
+	});
 	
 	
 	
