@@ -4,10 +4,22 @@ import {useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import {Redirect} from 'react-router';
 import axios from 'axios';
+import {useDispatch} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import jwt_decode from "jwt-decode";
+
+import {userActionCreator} from '../../reduxutils/actions.js';
 
 function Login(props) {
 
     const[redirectVal,redirectValFn] = useState(null);
+    const dispatch = useDispatch();
+
+    const setEmail = bindActionCreators(userActionCreator.setEmail,dispatch);
+    const setId = bindActionCreators(userActionCreator.setId,dispatch);
+    const setAccountType = bindActionCreators(userActionCreator.setAccountType,dispatch);
+    const setName = bindActionCreators(userActionCreator.setName,dispatch);
+    const setToken = bindActionCreators(userActionCreator.setToken,dispatch);
     let redirectToSignUp = (e) => {
         redirectValFn(<Redirect to="/signup"/>);
     }
@@ -25,10 +37,19 @@ function Login(props) {
             accountType: accountType
         }).then(res=> {
             console.log(res);
+            
             if(res.status!=200) {
                 alert(res.data);
             } else {
                 alert('Successfully logged in');
+                //const jwt_decode = require('jwt-decode');
+                setToken(res.data);
+                var decoded = jwt_decode(res.data.split(' ')[1]);
+                const user = decoded.user;
+                // setEmail(user.email);
+                // setName(user.name);
+                // setAccountType(accountType);
+                // setId(user.id);
                 //redirectToHome();
             }
         },error=>{
