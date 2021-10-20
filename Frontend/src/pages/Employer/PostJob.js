@@ -24,6 +24,8 @@ class PostJob extends Component {
           salaryDetails: '',
           shortJobDescription: '',
           errors: {},
+          successMsg: '',
+          errorMsg: ''
       };
     }
     handleChangeCountry = (val) => {
@@ -93,13 +95,17 @@ class PostJob extends Component {
                 streetAddress,
                 state,
                 zipcode,
-                country
+                country,
+                jobPostedDate : Date().toLocaleString(),
+
             };
             console.log(inputData);
             axios
-            .post(`${backendServer}/employer/postNewJob`, inputData)
+            .post(`${backendServer}/postNewJob`, inputData)
             .then((response) => {
+
               if (response.status === 200) {
+                
                 this.setState({
                   successMsg: response.data,
                   companyName: '',
@@ -111,13 +117,14 @@ class PostJob extends Component {
                   streetAddress: '',
                   state: '',
                   zipcode: '',
+                  country: '',
                 });
               } else {
                 this.setState({ errorMsg: response.data });
               }
             })
             .catch((err) => {
-              this.setState({ errorMsg: err });
+              this.setState({ errorMsg: "Internal Server Error!" });
             });
 
         }
@@ -125,16 +132,25 @@ class PostJob extends Component {
   
     render() {
         const { companyName, jobTitle, industry, city, shortJobDescription, salaryDetails,
-            streetAddress, state, zipcode,country, errors } = this.state;
+            streetAddress, state, zipcode,country, errors,successMsg, errorMsg } = this.state;
+            console.log(successMsg)
       return (
         <div>
+            
             <br></br>
             <Container style={{ display: 'flex', justifyContent: 'center' }}>
+            
             <Card style={{ width: '50rem', margin: '0.8em' }}>
             <Card.Title>
                <Row><Col> Enter the job opening details</Col></Row>
             </Card.Title>
             <Card.Body>   
+            <div data-testid="msgDiv">
+              {(successMsg !== undefined && successMsg != null)
+                ? <h4 style={{ color: 'green' }}>{successMsg}</h4> : null}
+              {(errorMsg !== undefined && errorMsg != null)
+                ? <h4 style={{ color: 'brown' }}>{errorMsg}</h4> : null}
+            </div>
              <Row>
               <Col><b>Company Name</b></Col>
               </Row>
@@ -188,7 +204,7 @@ class PostJob extends Component {
               <Row>
               <Col>
                 <Form.Group className="mb-3">
-                  <Form.Check inline value="Remote" label="Remote" name="jobMode" type="radio" id="Remote" onChange={this.handleChange} isInvalid={!!errors.jobMode}/>
+                  <Form.Check inline value="Remote" label="Remote" name="jobMode" type="radio" id="Remote" onChange={this.handleChange} isInvalid={!!errors.jobMode} defaultChecked/>
                   <Form.Check inline value="In-person" label="In-person" name="jobMode" type="radio" id="In-person" onChange={this.handleChange} isInvalid={!!errors.jobMode} />
                   <Form.Control.Feedback type="invalid">
                     { errors.jobMode }
@@ -202,7 +218,7 @@ class PostJob extends Component {
               <Row>
               <Col>
                 <Form.Group className="mb-3">
-                  <Form.Check required inline value="Part-time" label="Part-time" name="jobType" type="radio" id="Part-time" onChange={this.handleChange} isInvalid={!!errors.jobType}/>
+                  <Form.Check required inline value="Part-time" label="Part-time" name="jobType" type="radio" id="Part-time" onChange={this.handleChange} isInvalid={!!errors.jobType} defaultChecked/>
                   <Form.Check required inline value="Full-time" label="Full-time" name="jobType" type="radio" id="Full-time" onChange={this.handleChange} isInvalid={!!errors.jobType}/>
                   <Form.Control.Feedback type="invalid">
                     { errors.jobType }
