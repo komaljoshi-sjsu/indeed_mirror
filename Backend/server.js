@@ -24,27 +24,18 @@ app.use(
 
 //Define all the models
 
-<<<<<<< HEAD
 require('./models/JobSeeker')
+require('./models/Company')
 
 //Define all the routes
 app.use(require('./routes/loginRoute'))
+app.use(require('./routes/signupRoute'))
+app.use(require('./routes/jobSeekerHome'))
 
-// Demo comment
-=======
-require('./models/JobSeeker');
-require('./models/Company');
-
+const postNewJob = require('./routes/postNewJob')
 
 //Define all the routes
-app.use(require("./routes/loginRoute"));
-app.use(require("./routes/signupRoute"));
-
-const postNewJob = require("./routes/postNewJob");
-
-//Define all the routes
-app.use("/postNewJob", postNewJob);
->>>>>>> 7d87a50483170026962afe494a02b8fe1c940f5c
+app.use('/postNewJob', postNewJob)
 
 const PORT = process.env.PORT || 5000
 //Server code will be running on port 5000
