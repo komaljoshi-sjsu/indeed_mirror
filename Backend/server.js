@@ -31,6 +31,8 @@ require('./models/Company');
 app.use(require("./routes/loginRoute"));
 app.use(require("./routes/postNewJob"));
 app.use(require("./routes/signupRoute"));
+app.use(require('./routes/jobSeekerHome'))
+
 
 const PORT = process.env.PORT || 5000
 //Server code will be running on port 5000
