@@ -9,4 +9,11 @@ const mysqlCon = mysql.createConnection({
   port: 3306
 });
 
-exports.mysqlCon = mysqlCon;
+mysqlCon.connect(function(err){
+	if(err) {
+    console.log(err.message)
+  };
+	console.log("My SQL DB connected")
+})
+
+module.exports = mysqlCon;
