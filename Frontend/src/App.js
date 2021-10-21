@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import './App.css';
-import Main from './Main';
-import {BrowserRouter} from 'react-router-dom';
+import React, { Component } from 'react'
+import './App.css'
+import Main from './Main'
+import { BrowserRouter } from 'react-router-dom'
 
 //App Component
 class App extends Component {
@@ -11,11 +11,11 @@ class App extends Component {
       <BrowserRouter>
         <div>
           {/* App Component Has a Child Component called Main*/}
-          <Main/>
+          <Main />
         </div>
       </BrowserRouter>
-    );
+    )
   }
 }
 //Export the App component so that it can be used in index.js
-export default App;
+export default App
