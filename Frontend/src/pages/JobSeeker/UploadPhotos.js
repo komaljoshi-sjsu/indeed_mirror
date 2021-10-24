@@ -1,0 +1,101 @@
+import { Button, Modal, Form } from "react-bootstrap";
+import { useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+
+const UploadPhotos = (props) => {
+  const [show, setShow] = useState(false);
+  const [photo, setPhoto] = useState([]);
+  const [photoName, setPhotoName] = useState([]);
+  const [inputFields, setInputFields] = useState([{photo: ''}]);
+  const [fieldCount, setFieldCount] = useState(1);
+
+  const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
+
+  const handleAddFields = () => {
+    const values = [...inputFields];
+    values.push({ photo: '',});
+    console.log(values);
+    setInputFields(values);
+  };
+
+  const photoUploadHandler = (e) => {
+    e.preventDefault();
+    setPhoto([...photo,(e.target.files[0])]);
+    setPhotoName([...photoName,URL.createObjectURL(e.target.files[0])]);
+    console.log(photoName)
+    if (fieldCount!==5){
+        handleAddFields();
+        setFieldCount(fieldCount+1);
+    }
+  };
+
+  const uploadPhoto = (e) => {
+    for (let i = 0; i < photo.length; i++) {
+        var data = new FormData();
+        data.append("file", photo[i]);
+        axios
+        .post("/api/upload", data)
+        .then((response) => {
+          if (response.status === 200) {
+            //make another call to append to db
+            console.log(response.data.imageLocation)
+          }
+        })
+        .catch((err) => {
+          toast.error("Unable to upload picture", {
+            position: toast.POSITION.TOP_CENTER,
+          });
+          console.log(err);
+        });
+        
+    }
+  };
+
+  return (
+    <div class="modal-header border-0">
+      <Button variant="primary" size="lg" onClick={handleShow} style={{borderRadius: '6.25rem', marginLeft: "75.5%"}}>
+        Upload a photo
+      </Button>
+
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Upload your company photos</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p> Select 5 or less photos of your workplace or company events. </p>
+          <p> Workplace or company events </p>
+          <p> No selfies </p>
+        <Form onSubmit={uploadPhoto}>
+        {inputFields.map((inputField, index) => (
+              <Form.Group controlId="formFile" className="mb-3">
+            <Form.Control onChange={photoUploadHandler} type="file"/>
+            {photoName[index] && <img src={photoName[index]} alt="" height="136" width="136" />}
+            </Form.Group>
+          ))}
+          <Button variant="primary" size="sm" type="submit">Upload</Button>
+          <a href="#root" onClick={handleClose}>Cancel</a>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <p>
+            {" "}
+            By uploading this photograph, you represent that you are the owner
+            of this photograph and verify that you have the right and required
+            permissions to post it to Indeed.{" "}
+          </p>
+        </Modal.Footer>
+      </Modal>
+    </div>
+  );
+};
+
+export default UploadPhotos;
