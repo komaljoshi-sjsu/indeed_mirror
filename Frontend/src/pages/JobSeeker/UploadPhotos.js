@@ -7,7 +7,7 @@ const UploadPhotos = (props) => {
   const [show, setShow] = useState(false);
   const [photo, setPhoto] = useState([]);
   const [photoName, setPhotoName] = useState([]);
-  const [inputFields, setInputFields] = useState([{photo: ''}]);
+  const [inputFields, setInputFields] = useState([{ photo: "" }]);
   const [fieldCount, setFieldCount] = useState(1);
 
   const handleShow = () => setShow(true);
@@ -15,32 +15,53 @@ const UploadPhotos = (props) => {
 
   const handleAddFields = () => {
     const values = [...inputFields];
-    values.push({ photo: '',});
+    values.push({ photo: "" });
     console.log(values);
     setInputFields(values);
   };
 
   const photoUploadHandler = (e) => {
     e.preventDefault();
-    setPhoto([...photo,(e.target.files[0])]);
-    setPhotoName([...photoName,URL.createObjectURL(e.target.files[0])]);
-    console.log(photoName)
-    if (fieldCount!==5){
-        handleAddFields();
-        setFieldCount(fieldCount+1);
+    setPhoto([...photo, e.target.files[0]]);
+    setPhotoName([...photoName, URL.createObjectURL(e.target.files[0])]);
+    console.log(photoName);
+    if (fieldCount !== 5) {
+      handleAddFields();
+      setFieldCount(fieldCount + 1);
     }
   };
 
   const uploadPhoto = (e) => {
     for (let i = 0; i < photo.length; i++) {
-        var data = new FormData();
-        data.append("file", photo[i]);
-        axios
+      var data = new FormData();
+      data.append("file", photo[i]);
+      axios
         .post("/api/upload", data)
         .then((response) => {
+          console.log(response);
           if (response.status === 200) {
             //make another call to append to db
-            console.log(response.data.imageLocation)
+            console.log("returned");
+            console.log(response.data.imageLocation);
+            axios.post("http://localhost:5000/api/uploadCompanyPhotos", {
+                jobSeekerId: 1,
+                companyId: 1,
+                imageLocation: response.data.imageLocation,
+                isPhotoAdminReviewed: "PENDING_APPROVAL",
+              })
+              .then((response) => {
+                if (response.status === 200) {
+                  toast.success("Successfully changed profile picture", {
+                    position: toast.POSITION.TOP_CENTER,
+                  });
+                }
+              })
+              .catch((err) => {
+                toast.error("Unable to upload picture", {
+                  position: toast.POSITION.TOP_CENTER,
+                });
+                console.log(err);
+              });
           }
         })
         .catch((err) => {
@@ -49,13 +70,17 @@ const UploadPhotos = (props) => {
           });
           console.log(err);
         });
-        
     }
   };
 
   return (
     <div class="modal-header border-0">
-      <Button variant="primary" size="lg" onClick={handleShow} style={{borderRadius: '6.25rem', marginLeft: "75.5%"}}>
+      <Button
+        variant="primary"
+        size="lg"
+        onClick={handleShow}
+        style={{ borderRadius: "6.25rem", marginLeft: "75.5%" }}
+      >
         Upload a photo
       </Button>
 
@@ -74,15 +99,21 @@ const UploadPhotos = (props) => {
           <p> Select 5 or less photos of your workplace or company events. </p>
           <p> Workplace or company events </p>
           <p> No selfies </p>
-        <Form onSubmit={uploadPhoto}>
-        {inputFields.map((inputField, index) => (
+          <Form onSubmit={uploadPhoto}>
+            {inputFields.map((inputField, index) => (
               <Form.Group controlId="formFile" className="mb-3">
-            <Form.Control onChange={photoUploadHandler} type="file"/>
-            {photoName[index] && <img src={photoName[index]} alt="" height="136" width="136" />}
-            </Form.Group>
-          ))}
-          <Button variant="primary" size="sm" type="submit">Upload</Button>
-          <a href="#root" onClick={handleClose}>Cancel</a>
+                <Form.Control onChange={photoUploadHandler} type="file" />
+                {photoName[index] && (
+                  <img src={photoName[index]} alt="" height="136" width="136" />
+                )}
+              </Form.Group>
+            ))}
+            <Button variant="primary" size="sm" type="submit">
+              Upload
+            </Button>
+            <a href="#root" onClick={handleClose}>
+              Cancel
+            </a>
           </Form>
         </Modal.Body>
         <Modal.Footer>

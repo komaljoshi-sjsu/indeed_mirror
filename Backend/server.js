@@ -26,12 +26,15 @@ app.use(
 
 require('./models/JobSeeker')
 require('./models/Company')
+require('./models/Photo')
 
 //Define all the routes
 app.use(require('./routes/loginRoute'))
 app.use(require('./routes/signupRoute'))
 app.use(require('./routes/jobSeekerHome'))
 app.use(require('./routes/uploadPhotos'))
+app.use(require('./routes/getAllPhotos'))
+app.use(require('./routes/getJobSeekerPhotos'))
 
 const postNewJob = require('./routes/postNewJob')
 
