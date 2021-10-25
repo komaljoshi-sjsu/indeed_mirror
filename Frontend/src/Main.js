@@ -8,6 +8,7 @@ import PostJob from './pages/Employer/PostJob'
 import JobSeekerLandingPage from './pages/JobSeeker/JobSeeker.js'
 import UploadPhotos from './pages/JobSeeker/UploadPhotos.js'
 import CompanyPhotos from './pages/JobSeeker/CompanyPhotos'
+import AdminPhoto from './pages/Admin/AdminPhoto.js'
 
 //Create a Main Component
 class Main extends Component {
@@ -24,6 +25,7 @@ class Main extends Component {
         <Route path="/landingPage" component={JobSeekerLandingPage} />
         <Route path="/photos" component={UploadPhotos} />
         <Route path="/companyPhotos" component={CompanyPhotos} />
+        <Route path="/adminPhotos" component={AdminPhoto}/>
       </div>
     )
   }

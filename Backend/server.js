@@ -35,6 +35,7 @@ app.use(require('./routes/jobSeekerHome'))
 app.use(require('./routes/uploadPhotos'))
 app.use(require('./routes/getAllPhotos'))
 app.use(require('./routes/getJobSeekerPhotos'))
+app.use(require('./routes/adminPhotos'))
 
 const postNewJob = require('./routes/postNewJob')
 

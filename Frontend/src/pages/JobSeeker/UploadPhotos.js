@@ -16,7 +16,6 @@ const UploadPhotos = (props) => {
   const handleAddFields = () => {
     const values = [...inputFields];
     values.push({ photo: "" });
-    console.log(values);
     setInputFields(values);
   };
 
@@ -24,7 +23,7 @@ const UploadPhotos = (props) => {
     e.preventDefault();
     setPhoto([...photo, e.target.files[0]]);
     setPhotoName([...photoName, URL.createObjectURL(e.target.files[0])]);
-    console.log(photoName);
+    //console.log(photoName);
     if (fieldCount !== 5) {
       handleAddFields();
       setFieldCount(fieldCount + 1);
@@ -48,18 +47,14 @@ const UploadPhotos = (props) => {
               companyId: 1,
               imageLocation: response.data.imageLocation,
               photoAdminReviewedStatus: "PENDING_APPROVAL",
-            }
+            };
             axios.post("/api/uploadCompanyPhotos", data1)
               .then((response1) => {
                 if (response1.status === 200) {
                   toast.success("Successfully uploaded picture", {
                     position: toast.POSITION.TOP_CENTER,
                   });
-                  setPhoto([]);
-                  setPhotoName([]);
-                  setFieldCount(1);
-                  setInputFields([{ photo: "" }])
-                  handleClose()
+
                 }
               })
               .catch((err) => {
@@ -77,6 +72,11 @@ const UploadPhotos = (props) => {
           console.log(err);
         });
     }
+    setPhoto([]);
+    setPhotoName([]);
+    setFieldCount(1);
+    setInputFields([{ photo: "" }])
+    handleClose()
   };
 
   return (
@@ -105,7 +105,8 @@ const UploadPhotos = (props) => {
           <p> Select 5 or less photos of your workplace or company events. </p>
           <p> Workplace or company events </p>
           <p> No selfies </p>
-          <Form onSubmit={uploadPhoto}>
+          <Form>
+          {/* <Form onSubmit={uploadPhoto}> */}
             {inputFields.map((inputField, index) => (
               <Form.Group controlId="formFile" className="mb-3">
                 <Form.Control onChange={photoUploadHandler} type="file" />
@@ -114,7 +115,8 @@ const UploadPhotos = (props) => {
                 )}
               </Form.Group>
             ))}
-            <Button variant="primary" size="sm" type="submit">
+               <Button variant="primary" size="sm" onClick={uploadPhoto}>
+            {/* <Button variant="primary" size="sm" type="submit"> */}
               Upload
             </Button>
             <a href="#root" onClick={handleClose}>
