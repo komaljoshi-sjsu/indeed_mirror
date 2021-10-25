@@ -199,8 +199,8 @@ function Snapshot(props) {
                         <div>
                             <div>
                                 <p><img src="/images/user.png" height='24px' width='24px'/><small style={{color:"gray"}}> {review.reviewerRole} in {review.city},{review.state}</small></p>
-                                <b>{review.rating} </b><img src="/images/star.png" height='19px' width='19px'/><span style={{color:"gray"}}> on {review.date}</span>
-                                <p><b>{review.title}</b><br></br></p>
+                                <b>{review.rating} </b><img src="/images/star.png" height='19px' width='19px'/><span style={{color:"gray"}}> on {review.postedDate}</span>
+                                <p><b>{review.reviewTitle}</b><br></br></p>
                                 <p>{review.reviewComments}</p><br></br>
                                 <p><b>Pros:</b></p>
                                 <p>{review.pros}</p><br></br>
