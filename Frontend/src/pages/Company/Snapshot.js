@@ -70,7 +70,7 @@ function Snapshot(props) {
         setReviews(rvw);
     },[]);
     return (
-        <div className="container-fullwidth">
+        <div className="container-fullwidth" style={{marginLeft:'20%',marginRight:'20%'}}>
             <div className="row">
                 <h2><b>Work Happiness</b></h2>
                 <p><small style={{color:'gray'}}>Scores based on about {survey} responses to Indeed's survey on work happiness.</small></p>
@@ -159,19 +159,21 @@ function Snapshot(props) {
                 <p>Mission:</p>{mission}
             </div><br></br><br></br>
             <div className="row">
-                <h2><b>Featured Reviews</b></h2><br></br>
+                <h2><b>Featured Reviews</b></h2>
                 {reviews.map(review=> {
                     return (
                         <div>
-                            <p><small style={{color:"gray"}}>{review.reviewerRole} in {review.city},{review.state}</small></p>
-                            <b>{review.rating} </b><img src="/images/star.png" height='19px' width='19px'/><span style={{color:"gray"}}> on {review.date}</span>
-                            <p><b>{review.title}</b><br></br></p>
-                            <p>{review.reviewComments}</p><br></br>
-                            <p><b>Pros:</b></p>
-                            <p>{review.pros}</p><br></br>
-                            <p><b>Cons:</b></p>
-                            <p>{review.cons}</p>
+                            <div>
+                                <p><img src="/images/user.png" height='24px' width='24px'/><small style={{color:"gray"}}> {review.reviewerRole} in {review.city},{review.state}</small></p>
+                                <b>{review.rating} </b><img src="/images/star.png" height='19px' width='19px'/><span style={{color:"gray"}}> on {review.date}</span>
+                                <p><b>{review.title}</b><br></br></p>
+                                <p>{review.reviewComments}</p><br></br>
+                                <p><b>Pros:</b></p>
+                                <p>{review.pros}</p><br></br>
+                                <p><b>Cons:</b></p>
+                                <p>{review.cons}</p>
 
+                            </div><br></br>
                         </div>
                     );
                 })}
