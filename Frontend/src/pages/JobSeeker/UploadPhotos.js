@@ -43,17 +43,23 @@ const UploadPhotos = (props) => {
             //make another call to append to db
             console.log("returned");
             console.log(response.data.imageLocation);
-            axios.post("http://localhost:5000/api/uploadCompanyPhotos", {
-                jobSeekerId: 1,
-                companyId: 1,
-                imageLocation: response.data.imageLocation,
-                isPhotoAdminReviewed: "PENDING_APPROVAL",
-              })
-              .then((response) => {
-                if (response.status === 200) {
-                  toast.success("Successfully changed profile picture", {
+            var data1 = {
+              jobSeekerId: 1,
+              companyId: 1,
+              imageLocation: response.data.imageLocation,
+              photoAdminReviewedStatus: "PENDING_APPROVAL",
+            }
+            axios.post("/api/uploadCompanyPhotos", data1)
+              .then((response1) => {
+                if (response1.status === 200) {
+                  toast.success("Successfully uploaded picture", {
                     position: toast.POSITION.TOP_CENTER,
                   });
+                  setPhoto([]);
+                  setPhotoName([]);
+                  setFieldCount(1);
+                  setInputFields([{ photo: "" }])
+                  handleClose()
                 }
               })
               .catch((err) => {
@@ -79,7 +85,7 @@ const UploadPhotos = (props) => {
         variant="primary"
         size="lg"
         onClick={handleShow}
-        style={{ borderRadius: "6.25rem", marginLeft: "75.5%" }}
+        style={{ borderRadius: "6.25rem", marginLeft: "71%" }}
       >
         Upload a photo
       </Button>
