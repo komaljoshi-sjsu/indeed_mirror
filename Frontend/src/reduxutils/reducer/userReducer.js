@@ -29,7 +29,7 @@ export const userReducer = (state=initState,action) => {
             return newstate;
         case "setId":
             let idState = {
-                ...idState,'id':action.payload
+                ...state,'id':action.payload
             }
             return idState;     
         case "setAccountType":

@@ -3,49 +3,83 @@ import {useState, useEffect} from 'react';
 import {Redirect} from 'react-router';
 import Header from './Header';
 import axios from 'axios';
-import {useDispatch} from 'react-redux';
 import Card from "react-bootstrap/Card";
 import './css/snapshot.css';
+import {useSelector, useDispatch} from 'react-redux';
+import {bindActionCreators} from 'redux';
 
-import {userActionCreator} from '../../reduxutils/actions.js';
+import {companyActionCreator} from '../../reduxutils/actions.js';
 
 function Snapshot(props) {
     let companyid = 'sdfsf';
-    const[whScore, setWHScore] = useState(0);
-    const[apScore, setApScore] = useState(0);
-    const[lScore, setLScore] = useState(0);
-    const[size, setSize] = useState(0);
-    const[ceo, setCeo] = useState('');
-    const[founded, setFounded] = useState('');
-    const[revenue, setRevenue] = useState('');
-    const[industry, setIndustry] = useState('');
-    const[survey, setSurvey] = useState(0);
+    const dispatch = useDispatch();
+    const ceo = useSelector((state)=>state.company.ceo);
+    const founded = useSelector((state)=>state.company.founded);
+    const industry = useSelector((state)=>state.company.industry);
+    const size = useSelector((state)=>state.company.size);
+    const revenue = useSelector((state)=>state.company.revenue);
+    const about = useSelector((state)=>state.company.about);
+    const description = useSelector((state)=>state.company.description);
+    const mission = useSelector((state)=>state.company.mission);
+    const whScore = useSelector((state)=>state.company.whScore);
+    const lScore = useSelector((state)=>state.company.lScore);
+    const apScore = useSelector((state)=>state.company.apScore);
+    const noOfReviews = useSelector((state)=>state.company.noOfReviews);
+    const reviews = useSelector((state)=>state.company.featuredReviews);
 
-    const[description, setDescription] = useState(0);
-    const[mission, setMission] = useState('');
-    const[reviews, setReviews] = useState([]);
-    const[about, setAbout] = useState('');
-
-
+    const setCeo = bindActionCreators(companyActionCreator.setCeo,dispatch);
+    const setFounded = bindActionCreators(companyActionCreator.setFounded,dispatch);
+    const setSize = bindActionCreators(companyActionCreator.setSize,dispatch);
+    const setRevenue = bindActionCreators(companyActionCreator.setRevenue,dispatch);
+    const setAbout = bindActionCreators(companyActionCreator.setAbout,dispatch);
+    const setDescription = bindActionCreators(companyActionCreator.setDescription,dispatch);
+    const setMission = bindActionCreators(companyActionCreator.setMission,dispatch);
+    const setWHScore = bindActionCreators(companyActionCreator.setWHScore,dispatch);
+    const setLScore = bindActionCreators(companyActionCreator.setLScore,dispatch);
+    const setApScore = bindActionCreators(companyActionCreator.setApScore,dispatch);
+    const setNoOfReviews = bindActionCreators(companyActionCreator.setNoOfReviews,dispatch);
+    const setCulture = bindActionCreators(companyActionCreator.setCulture,dispatch);
+    const setValues = bindActionCreators(companyActionCreator.setValues,dispatch);
+    const setFeaturedReviews = bindActionCreators(companyActionCreator.setFeaturedReviews,dispatch);
+    const setIndustry = bindActionCreators(companyActionCreator.setIndustry,dispatch);
     useEffect(()=> {
-        // axios.get('http://localhost:5000/api/snapshot/'+companyid)
-        // .then(res => {
-        //     if(res.status == 200) {
-        //         setWHScore(res.whScore);
-        //         setApScore(res.apScore);
-        //         setLScore(res.lScore);
-        //     }
-        // });
-        setWHScore(60);
-        setApScore(62);
-        setLScore(65);
-        setCeo('Jensen');
-        setFounded('1969');
-        setRevenue('100M');
-        setSize(10000);
-        setAbout("This is the ABOUT details of the company");
-        setDescription('This is the description');
-        setMission('This is tthe Mission if thee compmany.');
+        axios.get('http://localhost:5000/api/snapshot/'+companyid)
+        .then(res => {
+            if(res.status == 200) {
+                setWHScore(res.data.whScore);
+                setApScore(res.data.apScore);
+                setLScore(res.data.lScore);
+                setCeo(res.data.ceo);
+                setFounded(res.data.founded);
+                setRevenue(res.data.revenue);
+                setSize(res.data.size);
+                setAbout(res.data.about);
+                setDescription(res.data.description);
+                setMission(res.data.mission);
+                setNoOfReviews(res.data.noOfReviews);
+                setCulture(res.data.workCulture);
+                setValues(res.data.companyValues);
+                setIndustry(res.data.industry);
+            } else {
+                alert(res.data);
+            }
+        }).catch(err => {
+            alert('Failed to get company details. Please check console');
+            console.log(err);
+        });
+
+        axios.get('http://localhost:5000/api/featuredReviews/'+companyid)
+        .then(res => {
+            if(res.status == 200) {
+                setFeaturedReviews(rvw);
+            } else {
+                alert(res.data);
+            }
+        }).catch(err => {
+            alert('Failed to get company featured reviews. Please check console.');
+            console.log(err);
+        });
+        
         const rvw = [{
             city:'San Jose',
             state: 'California',
@@ -67,13 +101,13 @@ function Snapshot(props) {
             cons: 'Bad needs to improve',
             rating: 2.5
         }];
-        setReviews(rvw);
+        
     },[]);
     return (
         <div className="container-fullwidth" style={{marginLeft:'20%',marginRight:'20%'}}>
             <div className="row">
                 <h2><b>Work Happiness</b></h2>
-                <p><small style={{color:'gray'}}>Scores based on about {survey} responses to Indeed's survey on work happiness.</small></p>
+                <p><small style={{color:'gray'}}>Scores based on about {noOfReviews} responses to Indeed's survey on work happiness.</small></p>
                 <div className="col">
                     <div>
                     {whScore} Work Happiness Score
