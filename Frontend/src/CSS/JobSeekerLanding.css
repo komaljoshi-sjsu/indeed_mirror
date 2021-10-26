@@ -31,8 +31,16 @@
 
 .whatSearch
 {
-    width: 500px;
+    width: 400px;
+    height: 51px;
     
+}
+
+.whatSearch2
+{
+    width: 350px;
+    /* height: 50px; */
+    border-width: 1px 0 1px 0;
 }
 
 .findbtn
@@ -85,6 +93,13 @@ hr {
 
 ::placeholder{
     font-size: small;
+}
+
+.cardStyle2
+{
+    margin-top: 10px;
+    border-radius: 10px;
+    cursor: pointer;
 }
 
 .cardStyle
