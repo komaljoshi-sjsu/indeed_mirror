@@ -2,7 +2,10 @@ import {combineReducers} from 'redux';
 import {persistStore, persistReducer} from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import {userReducer} from './userReducer.js';
+<<<<<<< HEAD
 import {companyReducer} from './companyReducer.js';
+=======
+>>>>>>> anagha_indeed
   
 const persistConfig = {
     key: "root",

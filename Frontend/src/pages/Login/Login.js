@@ -10,6 +10,7 @@ import jwt_decode from "jwt-decode";
 
 import {userActionCreator} from '../../reduxutils/actions.js';
 
+
 function Login(props) {
 
     const[redirectVal,redirectValFn] = useState(null);
@@ -20,6 +21,7 @@ function Login(props) {
     const setAccountType = bindActionCreators(userActionCreator.setAccountType,dispatch);
     const setName = bindActionCreators(userActionCreator.setName,dispatch);
     const setToken = bindActionCreators(userActionCreator.setToken,dispatch);
+
     let redirectToSignUp = (e) => {
         redirectValFn(<Redirect to="/signup"/>);
     }
