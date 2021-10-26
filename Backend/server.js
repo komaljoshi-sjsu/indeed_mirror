@@ -31,6 +31,7 @@ require('./models/Company')
 app.use(require('./routes/loginRoute'))
 app.use(require('./routes/signupRoute'))
 app.use(require('./routes/jobSeekerHome'))
+app.use(require("./routes/companyRoute"));
 
 const postNewJob = require('./routes/postNewJob')
 
