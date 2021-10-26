@@ -3,16 +3,20 @@ import Form from 'react-bootstrap/Form';
 import {useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import {Redirect} from 'react-router';
+<<<<<<< HEAD
 import axios from 'axios';
 import {useDispatch} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import jwt_decode from "jwt-decode";
 
 import {userActionCreator} from '../../reduxutils/actions.js';
+=======
+>>>>>>> Added sign in page'
 
 function Login(props) {
 
     const[redirectVal,redirectValFn] = useState(null);
+<<<<<<< HEAD
     const dispatch = useDispatch();
 
     const setEmail = bindActionCreators(userActionCreator.setEmail,dispatch);
@@ -20,6 +24,8 @@ function Login(props) {
     const setAccountType = bindActionCreators(userActionCreator.setAccountType,dispatch);
     const setName = bindActionCreators(userActionCreator.setName,dispatch);
     const setToken = bindActionCreators(userActionCreator.setToken,dispatch);
+=======
+>>>>>>> Added sign in page'
     let redirectToSignUp = (e) => {
         redirectValFn(<Redirect to="/signup"/>);
     }
