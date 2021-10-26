@@ -11,7 +11,7 @@ import {MdModeEdit} from 'react-icons/md';
 import { Redirect } from 'react-router';
 // import { response } from 'express';
 
-class PostJob extends Component {
+class EmployerProfile extends Component {
     constructor(props) {
       super(props);
       this.state = {
@@ -364,7 +364,6 @@ class PostJob extends Component {
                 <label>Name<span style={{color:'red'}}>*</span></label>
                  </Row>
                  <span style={{color:'red'}}>{errors.employerName}</span>
-                 
                  <Row> 
                  &nbsp;&nbsp;&nbsp;<input className="detinput" name="employerName" 
                  value={this.state.employerDetails.employerName}
@@ -662,4 +661,4 @@ class PostJob extends Component {
       );
     }
   }
-  export default PostJob;
+  export default EmployerProfile;

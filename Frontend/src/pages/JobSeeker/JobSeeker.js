@@ -1,21 +1,12 @@
-<<<<<<< HEAD
 // Job Seeker Landing Page
-=======
-/* eslint-disable jsx-a11y/anchor-is-valid */
-// Job Seeker Landing Page
-
->>>>>>> anagha_indeed
 import React, { Component } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import '../../CSS/JobSeekerLanding.css'
-<<<<<<< HEAD
 import TextField from '@mui/material/TextField'
 import { styled } from '@mui/material/styles'
 import Autocomplete from '@mui/material/Autocomplete'
 import axios from 'axios'
-=======
->>>>>>> anagha_indeed
 import JobSeekerNavbar from './JobSeekerNavbar'
 
 class JobSeekerLandingPage extends Component {
@@ -25,7 +16,6 @@ class JobSeekerLandingPage extends Component {
       month: '',
       day: '',
       year: '',
-<<<<<<< HEAD
       whatVal: '',
       whereVal: '',
       allJobs: [],
@@ -40,8 +30,6 @@ class JobSeekerLandingPage extends Component {
       jobType: '',
       salary: '',
       location: '',
-=======
->>>>>>> anagha_indeed
     }
     this.getCurrentDate()
   }
@@ -68,7 +56,6 @@ class JobSeekerLandingPage extends Component {
     var year = dateObj.getUTCFullYear()
     console.log(month + ' ' + day + ' ' + year)
 
-<<<<<<< HEAD
     this.state.month = month
     this.state.day = day
     this.state.year = year
@@ -236,13 +223,6 @@ class JobSeekerLandingPage extends Component {
       salary: job.salaryDetails,
       location: job.city,
     })
-=======
-    this.state = {
-      month,
-      day,
-      year,
-    }
->>>>>>> anagha_indeed
   }
 
   render() {
@@ -264,7 +244,6 @@ class JobSeekerLandingPage extends Component {
                     >
                       <h6 style={{ marginTop: '10px' }}>What</h6>
                     </button>
-<<<<<<< HEAD
                     <Autocomplete
                       id="free-solo-demo"
                       freeSolo
@@ -280,14 +259,6 @@ class JobSeekerLandingPage extends Component {
                           value={this.state.whatVal}
                         />
                       )}
-=======
-                    <input
-                      type="text"
-                      class="form-control noborder whatSearch"
-                      placeholder="Job title, keywords, or company"
-                      aria-label="Example text with button addon"
-                      aria-describedby="button-addon1"
->>>>>>> anagha_indeed
                     />
                     <button
                       class="btn noRightborder"
@@ -312,7 +283,6 @@ class JobSeekerLandingPage extends Component {
                     >
                       <h6 style={{ marginTop: '10px' }}>Where</h6>
                     </button>
-<<<<<<< HEAD
                     <Autocomplete
                       id="free-solo-demo"
                       freeSolo
@@ -328,14 +298,6 @@ class JobSeekerLandingPage extends Component {
                           onChange={this.handleWhereVal}
                         />
                       )}
-=======
-                    <input
-                      type="text"
-                      class="form-control noborder whatSearch"
-                      placeholder="City, state, zip code or 'remote'"
-                      aria-label="Example text with button addon"
-                      aria-describedby="button-addon1"
->>>>>>> anagha_indeed
                     />
                     <button
                       class="btn noRightborder"
@@ -351,15 +313,11 @@ class JobSeekerLandingPage extends Component {
                   </div>
                 </div>
                 <div class="col-1">
-<<<<<<< HEAD
                   <button
                     type="button"
                     class="btn findbtn"
                     onClick={this.handleFindJobs.bind(this)}
                   >
-=======
-                  <button type="button" class="btn findbtn">
->>>>>>> anagha_indeed
                     <h5 style={{ marginTop: '4px', color: 'white' }}>
                       Find Jobs
                     </h5>
@@ -432,7 +390,6 @@ class JobSeekerLandingPage extends Component {
                 {this.state.month} {this.state.day}, {this.state.year}
               </h4>
               Job based on your searches
-<<<<<<< HEAD
               {this.state.jobs.map((job) => (
                 <div
                   class="card cardStyle2"
@@ -463,39 +420,6 @@ class JobSeekerLandingPage extends Component {
                     {this.state.city}, {this.state.state}
                   </h6>
                   <h6 class="card-title">{this.state.zip}</h6>
-=======
-              <div class="card cardStyle">
-                <div class="card-body">
-                  <h4 class="card-title">Role Name</h4>
-                  <h6 class="card-title">Company Name and Rating</h6>
-                  <h6 class="card-title">Company Location</h6>
-                  <h6 class="card-title">Salary details</h6>
-                  <br />
-                  <br />
-                  <p class="card-text">Short Job Description</p>
-                </div>
-              </div>
-              <div class="card cardStyle">
-                <div class="card-body">
-                  <h4 class="card-title">Role Name</h4>
-                  <h6 class="card-title">Company Name and Rating</h6>
-                  <h6 class="card-title">Company Location</h6>
-                  <h6 class="card-title">Salary details</h6>
-                  <br />
-                  <br />
-                  <p class="card-text">Short Job Description</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-6">
-              <div class="card cardStyle">
-                <div class="card-body">
-                  <h4 class="card-title">Role Name</h4>
-                  <h6 class="card-title">Company Name and Rating</h6>
-                  <h6 class="card-title">Number of reviews</h6>
-                  <h6 class="card-title">City, state, zip code</h6>
->>>>>>> anagha_indeed
                   You must create an Indeed account before continuing to the
                   company website to apply
                   <br />
@@ -518,19 +442,14 @@ class JobSeekerLandingPage extends Component {
                   <br />
                   <h5 class="card-title">Job details</h5>
                   <br />
-<<<<<<< HEAD
                   <h6>Job Type:</h6>
                   <h6>{this.state.jobType}</h6> <br />
                   <h6>Salary:</h6>
                   <h6>${this.state.salary}</h6>
-=======
-                  <h6>Job Type</h6>
->>>>>>> anagha_indeed
                   <br />
                   <hr />
                   <h5 class="card-title">Full Job Description</h5>
                   <br />
-<<<<<<< HEAD
                   <h6>Location:</h6>
                   <h6>{this.state.location}</h6>
                   <br />
@@ -543,13 +462,6 @@ class JobSeekerLandingPage extends Component {
               </div>
             </div>
             <div class="col-1"></div>
-=======
-                  <h6>Location</h6>
-                  <h6>Job Description</h6>
-                </div>
-              </div>
-            </div>
->>>>>>> anagha_indeed
           </div>
         </div>
       </div>
