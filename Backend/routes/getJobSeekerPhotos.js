@@ -5,13 +5,20 @@ const Photo = mongoose.model('Photo')
 //const { checkAuth } = require("../config/passport");
 
 router.get("/api/getJobSeekerPhotos/", async (req, res) => {
-    const jobSeekerId = req.query.jobSeekerId;
-    const photoAdminReviewedStatus = req.query.photoAdminReviewedStatus;
+  const query = JSON.parse(req.query.data)
+    const jobSeekerId = query.jobSeekerId;
+    const photoAdminReviewedStatus = query.photoAdminReviewedStatus;
+    const companyId = query.companyId
+    console.log(query)
     try {
-      Photo.find({jobSeekerId:jobSeekerId, photoAdminReviewedStatus:photoAdminReviewedStatus})
+      Photo.find({jobSeekerId:jobSeekerId, companyId:companyId,photoAdminReviewedStatus:photoAdminReviewedStatus })
       .then(result =>{
-        console.log(result)
-        return res.status(200).json({ photos: result });;
+        Photo.find({jobSeekerId:jobSeekerId, companyId:companyId,photoAdminReviewedStatus:photoAdminReviewedStatus }).count()
+        .then(r1=>{
+          console.log(result)
+          return res.status(200).json({ photos: result, count:r1 });;
+        })
+
       })
       .catch(err =>{
         console.log("Error occured while querying");
