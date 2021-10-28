@@ -2,6 +2,7 @@ import {combineReducers} from 'redux';
 import {persistStore, persistReducer} from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import {userReducer} from './userReducer.js';
+import {companyReducer} from './companyReducer.js';
   
 const persistConfig = {
     key: "root",
@@ -10,7 +11,8 @@ const persistConfig = {
 
 const appReducers = combineReducers({
     //Write you individual reducer here like below
-    userInfo: userReducer
+    userInfo: userReducer,
+    company: companyReducer
 });
 
 const reducer = (state,action) => {

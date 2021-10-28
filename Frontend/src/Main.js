@@ -9,7 +9,8 @@ import JobSeekerLandingPage from './pages/JobSeeker/JobSeeker.js'
 import UploadPhotos from './pages/JobSeeker/UploadPhotos.js'
 import CompanyPhotos from './pages/JobSeeker/CompanyPhotos'
 import AdminPhoto from './pages/Admin/AdminPhoto.js'
-
+import Header from './pages/Company/Header.js';
+import EmployerProfile from './pages/Employer/EmployerProfile'
 //Create a Main Component
 class Main extends Component {
   render() {
@@ -18,10 +19,11 @@ class Main extends Component {
         {/*Render Different Component based on Route*/}
         <Route path="/login" component={Login} />
         <Route path="/home" component={Home} />
-
+        <Route path="/header" component={Header}/>
         <Route path="/signup" component={Signup} />
         <Route path="/postJob" component={PostJob} />
         <Route path="/employer" component={Employer} />
+        <Route path="/employerprofile" component={EmployerProfile} />
         <Route path="/landingPage" component={JobSeekerLandingPage} />
         <Route path="/photos" component={UploadPhotos} />
         <Route path="/companyPhotos" component={CompanyPhotos} />

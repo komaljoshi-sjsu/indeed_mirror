@@ -103,7 +103,7 @@ class PostJob extends Component {
             axios
             .post(`${backendServer}/postNewJob`, inputData)
             .then((response) => {
-
+                
               if (response.status === 200) {
                 
                 this.setState({

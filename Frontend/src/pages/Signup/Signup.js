@@ -4,6 +4,7 @@ import {useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import {Redirect} from 'react-router';
 import axios from 'axios';
+import backendServer from '../../webConfig';
 
 function Signup(props) {
 
@@ -20,7 +21,7 @@ function Signup(props) {
         const password = formData.get('password');
         const accountType = formData.get('accountType')=='Employer'?'Employer':'JobSeeker';
 
-        axios.post('http://localhost:5000/api/signup',{
+        axios.post(`${backendServer}/api/signup`,{
             name: fullname,
             email:email,
             password:password,

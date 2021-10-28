@@ -14,7 +14,7 @@ router.post("/api/login", (req, res) => {
         const password = req.body.password;
         const accountType = req.body.accountType;
         if ("JobSeeker" === accountType) {
-            conn.mysqlCon.query(
+            conn.query(
                 "select * from JobSeeker where jobSeekerEmail = ?",
                 [email],
                 async function (err, results) {
@@ -42,7 +42,7 @@ router.post("/api/login", (req, res) => {
                 }
             );
         } else if ("Employer" === accountType) {
-            conn.mysqlCon.query(
+            conn.query(
                 "select * from Employer where employerEmail = ?",
                 [email],
                 async function (err, results) {

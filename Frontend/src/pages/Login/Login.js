@@ -7,8 +7,9 @@ import axios from 'axios';
 import {useDispatch} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import jwt_decode from "jwt-decode";
-
+import backendServer from '../../webConfig';
 import {userActionCreator} from '../../reduxutils/actions.js';
+
 
 function Login(props) {
 
@@ -20,6 +21,7 @@ function Login(props) {
     const setAccountType = bindActionCreators(userActionCreator.setAccountType,dispatch);
     const setName = bindActionCreators(userActionCreator.setName,dispatch);
     const setToken = bindActionCreators(userActionCreator.setToken,dispatch);
+
     let redirectToSignUp = (e) => {
         redirectValFn(<Redirect to="/signup"/>);
     }
@@ -31,7 +33,7 @@ function Login(props) {
         const password = formData.get('password');
         const accountType = formData.get('accountType')=='Employer'?'Employer':'JobSeeker';
 
-        axios.post('http://localhost:5000/api/login',{
+        axios.post(`${backendServer}/api/login`,{
             email:email,
             password:password,
             accountType: accountType

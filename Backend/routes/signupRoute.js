@@ -11,7 +11,7 @@ router.post("/api/signup", (req, res) => {
     const pwd = req.body.password;
     const accountType = req.body.accountType;
     if ("JobSeeker" === accountType) {
-      conn.mysqlCon.query(
+      conn.query(
         "Select * from JobSeeker where jobSeekerEmail = ?",
         [emailId],
         async function (err, rows) {
@@ -29,7 +29,7 @@ router.post("/api/signup", (req, res) => {
 
             const insertQuery =
               "insert into JobSeeker (jobSeekerName, jobSeekerEmail, jobSeekerPassword, accountType) values (?, ?, ?, ?)";
-            conn.mysqlCon.query(
+            conn.query(
               insertQuery,
               [name, emailId, hashPwd, accountType],
               function (err, rows) {
@@ -42,7 +42,7 @@ router.post("/api/signup", (req, res) => {
         }
       );
     } else if ("Employer" === accountType) {
-      conn.mysqlCon.query(
+      conn.query(
         "Select * from Employer where employerEmail = ?",
         [emailId],
         async function (err, rows) {
@@ -59,7 +59,7 @@ router.post("/api/signup", (req, res) => {
             const hashPwd = await bcrypt.hash(pwd, salt);
             const insertQuery =
               "insert into Employer (employerName, employerEmail, employerPassword, accountType) values (?, ?, ?, ?)";
-            conn.mysqlCon.query(
+            conn.query(
               insertQuery,
               [name, emailId, hashPwd, accountType],
               function (err, rows) {
