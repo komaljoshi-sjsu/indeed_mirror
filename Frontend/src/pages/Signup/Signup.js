@@ -1,8 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Form from 'react-bootstrap/Form';
-import {useState} from 'react';
+import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
-import {Redirect} from 'react-router';
+import { Redirect } from 'react-router';
 import axios from 'axios';
 import backendServer from '../../webConfig';
 import JobSeekerNavbar from '../JobSeeker/JobSeekerNavbar';
@@ -10,9 +10,9 @@ import logo from '../../images/Indeed_logo.png';
 
 function Signup(props) {
 
-    const[redirectVal,redirectValFn] = useState(null);
+    const [redirectVal, redirectValFn] = useState(null);
     let redirectToLogin = () => {
-        redirectValFn(<Redirect to="/login"/>);
+        redirectValFn(<Redirect to="/login" />);
     }
 
     let signUp = (e) => {
@@ -21,22 +21,38 @@ function Signup(props) {
         const fullname = formData.get('name');
         const email = formData.get('email');
         const password = formData.get('password');
-        const accountType = formData.get('accountType')=='Employer'?'Employer':'JobSeeker';
+        const accountType = formData.get('accountType') == 'Employer' ? 'Employer' : 'JobSeeker';
 
-        axios.post(`${backendServer}/api/signup`,{
+        axios.post(`${backendServer}/api/signup`, {
             name: fullname,
-            email:email,
-            password:password,
+            email: email,
+            password: password,
             accountType: accountType
-        }).then(res=> {
-            console.log(res);
-            if(res.status!=200) {
+        }).then(res => {
+            //console.log(res);
+            if (res.status != 200) {
                 alert(res.data);
             } else {
-                alert('Successfully signed up');
-                redirectToLogin();
+                //alert('Successfully signed up');
+                //adding job seeker model in mongoDB after successful signup
+                console.log("signup data" + res.data);
+                axios.post("/api/signupJobSeekerMongo", {
+                    jobSeekerId: res.data.id,
+                    resumeUrl: " ",
+                    jobPreference: [],
+                    savedJobs: []
+                }).then((response1) => {
+                    if (response1.status === 200) {
+                        alert('Successfully signed up');
+                        redirectToLogin();
+                    }
+                })
+                    .catch((err) => {
+                        alert("Failed to signup");
+                        console.log(err);
+                    });
             }
-        },error=>{
+        }, error => {
             alert('Failed to signup. Please refer console for more details.');
             console.log(error);
         })

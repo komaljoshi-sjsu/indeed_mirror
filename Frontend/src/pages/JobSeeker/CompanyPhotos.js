@@ -1,98 +1,94 @@
 import React, { useEffect } from "react";
-import Gallery from "react-grid-gallery";
 import { useState } from "react";
 import { Row, Col, Container } from "react-bootstrap";
 import UploadPhotos from "./UploadPhotos";
+import Pagination from "./Pagination";
 import axios from "axios";
+import { SRLWrapper } from 'simple-react-lightbox';
+import SimpleReactLightbox from 'simple-react-lightbox';
+import './../../CSS/CompanyPhoto.css'
 
 const CompanyPhotos = (props) => {
-  const [imagesForGrid, setImagesForGrid] = useState([]);
+  //const [imagesForGrid, setImagesForGrid] = useState([]);
   const [images, setImages] = useState([]);
+  const [jobSeekerId,setJobSeekerId] = useState(Number)
+  const [companyId,setCompanyId] = useState(1)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPosts, setTotalPosts] = useState(0)
+  const [jsPhotoCount,setJsPhotoCount] = useState(0)
+
+  const options = {
+    buttons: {
+    	showAutoplayButton: false,
+      showDownloadButton: false,
+      showFullscreenButton: false,
+      showThumbnailsButton: false
+    },
+  };
+
+  const getCompanyPhotos = async () => {
+    if (jobSeekerId){
+      const data1 = {jobSeekerId:jobSeekerId, companyId: companyId, photoAdminReviewedStatus:"PENDING_APPROVAL",currentPage:currentPage}
+      const jobSeekerPhotos = await axios("api/getJobSeekerPhotos",{params:{data:data1}});
+      setImages(jobSeekerPhotos.data.photos)
+      setJsPhotoCount(jobSeekerPhotos.data.count)
+      const data2 = {companyId: companyId, photoAdminReviewedStatus:"APPROVED",currentPage:currentPage}
+      const allPhotos = await axios("/api/getAllPhotos",{params:{data:data2}});
+      //setImages([...images,allPhotos.data.photos])
+      // console.log(typeof(images))
+      // console.log(images)
+      //console.log(allPhotos.data.photos);
+    }
+    else{
+      const data1 = {companyId: companyId, photoAdminReviewedStatus:"APPROVED",currentPage:currentPage}
+      const allPhotos = await axios("/api/getAllPhotos",{params:{data:data1}});
+      setImages(allPhotos.data.photos);
+      setTotalPosts(allPhotos.data.count)
+      console.log(allPhotos.data.photos)
+    }
+  };
 
   useEffect(() => {
-    const getCompanyPhotos = async () => {
-      const jobSeekerPhotos = await axios("http://localhost:5000/api/getJobSeekerPhotos");
-      console.log(jobSeekerPhotos.data);
-      const allPhotos = await axios("http://localhost:5000/api/getAllPhotos");
-      console.log(allPhotos.data);
-      //setImages([...images, jobSeekerPhotos.data.imageLocation])
-    };
     getCompanyPhotos();
-  }, []);
+  },[currentPage]);
 
-  const IMAGES = [
-    {
-      src: "https://c2.staticflickr.com/9/8817/28973449265_07e3aa5d2e_b.jpg",
-      thumbnail:
-        "https://c2.staticflickr.com/9/8817/28973449265_07e3aa5d2e_n.jpg",
-      thumbnailWidth: 136,
-      thumbnailHeight: 136,
-      caption: "After Rain (Jeshu John - designerspics.com)",
-    },
-    {
-      src: "https://c2.staticflickr.com/9/8356/28897120681_3b2c0f43e0_b.jpg",
-      thumbnail:
-        "https://c2.staticflickr.com/9/8356/28897120681_3b2c0f43e0_n.jpg",
-      thumbnailWidth: 136,
-      thumbnailHeight: 136,
-      tags: [
-        { value: "Ocean", title: "Ocean" },
-        { value: "People", title: "People" },
-      ],
-      caption: "Boats (Jeshu John - designerspics.com)",
-    },
+  const paginate = (pageNumber) =>{
+    setCurrentPage(pageNumber)
+    getCompanyPhotos();
+  };
 
-    {
-      src: "https://c4.staticflickr.com/9/8887/28897124891_98c4fdd82b_b.jpg",
-      thumbnail:
-        "https://c4.staticflickr.com/9/8887/28897124891_98c4fdd82b_n.jpg",
-      thumbnailWidth: 136,
-      thumbnailHeight: 136,
-    },
-    {
-      src: "https://c4.staticflickr.com/9/8887/28897124891_98c4fdd82b_b.jpg",
-      thumbnail:
-        "https://c4.staticflickr.com/9/8887/28897124891_98c4fdd82b_n.jpg",
-      thumbnailWidth: 136,
-      thumbnailHeight: 136,
-    },
-    {
-      src: "https://c4.staticflickr.com/9/8887/28897124891_98c4fdd82b_b.jpg",
-      thumbnail:
-        "https://c4.staticflickr.com/9/8887/28897124891_98c4fdd82b_n.jpg",
-      thumbnailWidth: 136,
-      thumbnailHeight: 136,
-    },
-    {
-      src: "https://c4.staticflickr.com/9/8887/28897124891_98c4fdd82b_b.jpg",
-      thumbnail:
-        "https://c4.staticflickr.com/9/8887/28897124891_98c4fdd82b_n.jpg",
-      thumbnailWidth: 136,
-      thumbnailHeight: 136,
-    },
-    {
-      src: "https://c4.staticflickr.com/9/8887/28897124891_98c4fdd82b_b.jpg",
-      thumbnail:
-        "https://c4.staticflickr.com/9/8887/28897124891_98c4fdd82b_n.jpg",
-      thumbnailWidth: 136,
-      thumbnailHeight: 136,
-    },
-  ];
+
 
   return (
     <div>
       <Container>
-        <Row>
-          <Col xs="8">
-            <UploadPhotos />
-          </Col>
-        </Row>
-        <Row>
-          <Col xs="8">
-            <Gallery images={IMAGES} enableImageSelection={false} maxRows={4} />
-          </Col>
-        </Row>
-      </Container>
+      <Row>
+        <Col xs="6">
+        <UploadPhotos />
+       </Col>
+      </Row>
+      <Row>
+        <Col xs="6">
+          <SimpleReactLightbox>
+            <SRLWrapper options={options}>
+            <div className="container1">
+                {images.map(image => (
+                  <div key={image.id} className="image-card">
+                    <a href={image.imageLocation}>
+                      <img className="image" src={image.imageLocation} alt="" />
+                    </a>
+                  </div>
+                ))}
+            </div>
+            </SRLWrapper>
+          </SimpleReactLightbox>
+        </Col>
+       <Pagination postsPerPage={16} totalPosts={totalPosts} paginate={paginate}/>
+      </Row>
+    </Container>
+
+
+      
     </div>
   );
 };
