@@ -5,6 +5,7 @@ import Home from './common/Home';
 import Signup from './pages/Signup/Signup.js';
 import Employer from './pages/Employer/Employer';
 import PostJob from './pages/Employer/PostJob';
+import Reviews from './pages/JobSeeker/Reviews';
 //Create a Main Component
 class Main extends Component {
     render(){
@@ -17,6 +18,7 @@ class Main extends Component {
                 <Route path="/signup" component={Signup}/>
                 <Route path="/postJob" component={PostJob}/>
                 <Route path="/employer" component={Employer}/>
+                <Route path="/reviews" component={Reviews}/>
             </div>
         )
     }
