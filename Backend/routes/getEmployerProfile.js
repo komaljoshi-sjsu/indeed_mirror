@@ -13,11 +13,11 @@ router.post('/getEmployerProfile', function(req,res){
         
         res.send("Server Error. Please Try Again! ");
         }
-     if(result.length == 0){
+    //  if(result.length == 0){
         
-        res.send({ message: "No Profile Exists" })
-         }   
-         else{
+    //     res.send({ message: "No Profile Exists" })
+    //      }   
+        else{
         
         res.send(JSON.stringify(result));	
         }
