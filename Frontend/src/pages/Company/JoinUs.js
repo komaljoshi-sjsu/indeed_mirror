@@ -19,11 +19,7 @@ function JoinUs(props) {
             </div><br></br>
             <div className="row">
                 <h2><b>Company Values</b></h2>
-                {values.map(value=> {
-                    return (
-                        <p>{value}</p>
-                    )
-                })}
+                {values}
                 
             </div><br></br>
         </div>

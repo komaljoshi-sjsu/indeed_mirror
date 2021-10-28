@@ -29,6 +29,7 @@ require('./models/Company');
 
 //Define all the routes
 app.use(require("./routes/loginRoute"));
+app.use(require("./routes/companyRoute"));
 app.use(require("./routes/postNewJob"));
 app.use(require("./routes/signupRoute"));
 app.use(require('./routes/jobSeekerHome'))
