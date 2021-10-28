@@ -3,8 +3,9 @@ const express = require("express");
 const router = express.Router();
 const connection = require("../config/mysql_connection");
 router.post("/postNewJob", (req, res) => {
-	let postJob_sql = 'INSERT INTO Job(companyId, jobTitle, streetAddress, city, state, country, zip, salaryDetails, shortJobDescription, jobType, jobMode, companyName,industry, jobPostedDate) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,CURDATE())';
-    let jobDetails = [req.body.companyId, req.body.jobTitle, req.body.streetAddress, req.body.city, req.body.state, req.body.country, req.body.zipcode, req.body.salaryDetails, req.body.shortJobDescription, req.body.jobType, req.body.jobMode, req.body.companyName,req.body.industry];
+	let postJob_sql = 'INSERT INTO Job(companyId, jobTitle, streetAddress, city, state, country, zip, salaryDetails, shortJobDescription, jobType, jobMode, companyName,industry, jobPostedDate) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,CURDATE())';
+    let jobDetails = [req.body.companyId, req.body.jobTitle, req.body.streetAddress, req.body.city, req.body.state, req.body.country, req.body.zipcode, req.body.salaryDetails, req.body.shortJobDescription, req.body.jobType, req.body.jobMode, req.body.companyName,req.body.industry,
+		req.body.responsibilities, req.body.qualifications,req.body.loveJobRole];
 
 	connection.query(postJob_sql, jobDetails, (error, result) => {
 				if (error) {

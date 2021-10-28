@@ -5,6 +5,8 @@ import Button from 'react-bootstrap/Button';
 import { Redirect } from 'react-router';
 import axios from 'axios';
 import backendServer from '../../webConfig';
+import JobSeekerNavbar from '../JobSeeker/JobSeekerNavbar';
+import logo from '../../images/Indeed_logo.png';
 
 function Signup(props) {
 
@@ -56,33 +58,44 @@ function Signup(props) {
         })
     }
     return (
-        <div className="container-fullwidth" style={{ background: 'whitesmoke', margin: 'auto', marginTop: '10%', width: '30%' }}>
+        <div className="container-fullwidth" style={{margin:'auto', marginTop:'5%', width:'30%'}}>
             {redirectVal}
-            <div className="row" style={{ padding: '5% 5% 5% 5%' }}>
+            <div className="row">
+                <a class="navbar-brand" href="/landingPage">
+                    <img
+                        src={logo}
+                        alt=""
+                        width="120"
+                        height="30"
+                        class="d-inline-block align-text-top"
+                    />
+                </a>
+            </div><br></br><br></br>
+            <div className="row" style={{background:'whitesmoke',padding:'10% 5% 5% 5%'}}>
                 <div className="row">
                     <h5><b>Create an account(it's free)</b></h5>
                 </div><br></br>
                 <div className="row">
-                    <Form onSubmit={signUp}>
+                    <Form onSubmit = {signUp}>
                         <Form.Group className="mb-3" >
                             <Form.Label><b>Name</b></Form.Label>
-                            <Form.Control type="text" placeholder="Full Name" name="name" maxLength="45" required></Form.Control>
+                            <Form.Control type="text" placeholder="Full Name" name = "name" maxLength="45" required></Form.Control>
                         </Form.Group>
                         <Form.Group className="mb-3" >
                             <Form.Label><b>Email Address</b></Form.Label>
-                            <Form.Control type="email" placeholder="Enter Email" name="email" maxLength="45" required></Form.Control>
+                            <Form.Control type="email" placeholder="Enter Email" name = "email" maxLength="45" required></Form.Control>
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label><b>Password</b></Form.Label>
-                            <Form.Control type="password" placeholder="Password" name="password" maxLength="8" required></Form.Control>
+                            <Form.Control type="password" placeholder="Password" name = "password" maxLength="8" required></Form.Control>
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <p><small><b>Your Role</b></small><br></br>
-                                <small style={{ color: 'gray' }}>Let us know how you'll be using our products</small></p>
-                            <Form.Check type="radio" label='Job Seeker' name="accountType" value="Job Seeker" style={{ outline: '1px solid darkGray' }} required /><br></br>
-                            <Form.Check type="radio" label='Employer' name="accountType" value="Employer" style={{ outline: '1px solid darkGray' }} />
+                            <small style={{color:'gray'}}>Let us know how you'll be using our products</small></p>
+                            <Form.Check type="radio" label='Job Seeker' name="accountType" value="Job Seeker" required/><br></br>
+                            <Form.Check type="radio" label='Employer' name="accountType" value="Employer"/>
                         </Form.Group>
-                        <Button bsStyle="primary" bsSize="large" block style={{ width: '100%' }} type='submit'>
+                        <Button bsStyle="primary" bsSize="large" block style={{width:'100%'}} type='submit'>
                             Create Account
                         </Button>
                     </Form>
