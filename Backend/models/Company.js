@@ -3,30 +3,27 @@ const Schema = mongoose.Schema;
 
 const comSchema = new Schema({
     companyId: {
-        type: String,
+        type: Number,
         required: true
     },
-    workHappinessScore: {
-        type:mongoose.Decimal128,
+    avgWorkHappinessScore: {
+        type: Number,
     },
-    learningScore: {
-        type:mongoose.Decimal128,
+    avgLearningScore: {
+        type: Number,
     },
-    appreciationScore: {
-        type:mongoose.Decimal128,
+    avgAppreciationScore: {
+        type: Number,
         required:true
     },
     noOfReviews: {
-        type:Number
+        type: Number
     },
     companyAvgRating: {
-        type: mongoose.Decimal128,
+        type: Number,
     },
     ceoAvgRating: {
-        type: mongoose.Decimal128
-    },
-    viewMap: {
-        type:String
+        type: Number
     }
 });
 

@@ -51,11 +51,11 @@ function auth() {
 }
 
 function findJobSeekerById(id, callback) {
-    return conn.mysqlCon.query("SELECT * from JobSeeker WHERE jobSeekerId = ?", [id], callback)
+    return conn.query("SELECT * from JobSeeker WHERE id = ?", [id], callback)
 }
 
 function findEmployerById(id, callback) {
-    return conn.mysqlCon.query("SELECT * from Employer WHERE employerId = ?", [id], callback)
+    return conn.query("SELECT * from Employer WHERE id = ?", [id], callback)
 }
 
 exports.auth = auth;
