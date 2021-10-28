@@ -9,6 +9,7 @@ import {bindActionCreators} from 'redux';
 import jwt_decode from "jwt-decode";
 import backendServer from '../../webConfig';
 import {userActionCreator} from '../../reduxutils/actions.js';
+import logo from '../../images/Indeed_logo.png'
 
 
 function Login(props) {
@@ -60,9 +61,20 @@ function Login(props) {
         })
     }
     return (
-        <div className="container-fullwidth" style={{background:'whitesmoke',margin:'auto', marginTop:'10%', width:'30%'}}>
+        <div className="container-fullwidth" style={{margin:'auto', marginTop:'5%', width:'30%'}}>
             {redirectVal}
-            <div className="row" style={{padding:'5% 5% 5% 5%'}}>
+            <div className="row">
+                <a class="navbar-brand" href="/landingPage">
+                    <img
+                        src={logo}
+                        alt=""
+                        width="120"
+                        height="30"
+                        class="d-inline-block align-text-top"
+                    />
+                </a>
+            </div><br></br><br></br>
+            <div className="row" style={{background:'whitesmoke',padding:'10% 5% 5% 5%'}}>
                 <div className="row">
                     <p><b>Sign In</b></p>
                 </div><br></br>

@@ -11,12 +11,14 @@ class JobSeekerNavbar extends Component {
     this.state = {}
   }
 
+
+
   render() {
     return (
       <div>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <div class="container-fluid">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/landingPage">
               <img
                 src={logo}
                 alt=""
@@ -58,7 +60,7 @@ class JobSeekerNavbar extends Component {
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="/login">
                       <h5 style={{ color: 'blue' }}>Sign in</h5>
                     </a>
                   </li>
