@@ -14,8 +14,8 @@ router.post("/api/login", (req, res) => {
         const password = req.body.password;
         const accountType = req.body.accountType;
         if ("JobSeeker" === accountType) {
-            conn.mysqlCon.query(
-                "select * from JobSeeker where jobSeekerEmail = ?",
+            conn.query(
+                "select * from JobSeeker where email = ?",
                 [email],
                 async function (err, results) {
                     if (err) {
@@ -27,8 +27,8 @@ router.post("/api/login", (req, res) => {
                         res.status(400).send("JobSeeker not registered");
                     }
                     console.log(results[0])
-                    const compRes = await bcrypt.compare(password, results[0].jobSeekerPassword);
-                    const payload = { id: results[0].jobSeekerId, accountType: results[0].accountType, user: results[0] };
+                    const compRes = await bcrypt.compare(password, results[0].password);
+                    const payload = { id: results[0].id, accountType: results[0].accountType, user: results[0] };
                     if (compRes) {
                         const token = jwt.sign(payload, secret, {
                             expiresIn: 1008000,
@@ -42,8 +42,8 @@ router.post("/api/login", (req, res) => {
                 }
             );
         } else if ("Employer" === accountType) {
-            conn.mysqlCon.query(
-                "select * from Employer where employerEmail = ?",
+            conn.query(
+                "select * from Employer where email = ?",
                 [email],
                 async function (err, results) {
                     if (err) {
@@ -52,8 +52,8 @@ router.post("/api/login", (req, res) => {
                     if (results.length <= 0) {
                         res.status(400).send("Employer not registered");
                     }
-                    const compRes = await bcrypt.compare(password, results[0].employerPassword);
-                    const payload = { id: results[0].employerId, accountType: results[0].accountType, user: results[0] };
+                    const compRes = await bcrypt.compare(password, results[0].password);
+                    const payload = { id: results[0].id, accountType: results[0].accountType, user: results[0] };
                     if (compRes) {
                         const token = jwt.sign(payload, secret, {
                             expiresIn: 1008000,

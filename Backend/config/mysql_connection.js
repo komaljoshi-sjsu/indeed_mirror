@@ -13,7 +13,7 @@ mysqlCon.connect(function(err){
 	if(err) {
     console.log(err.message)
   };
-	console.log("My SQL DB connected")
+	console.log("MySQL DB connected")
 })
 
 module.exports = mysqlCon;

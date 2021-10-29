@@ -8,6 +8,11 @@ import PostJob from './pages/Employer/PostJob'
 import JobSeekerLandingPage from './pages/JobSeeker/JobSeeker.js'
 import CompanyTabs from './pages/Company/CompanyTabs.js'
 import Header from './pages/Company/Header.js'
+import UploadPhotos from './pages/JobSeeker/UploadPhotos.js'
+import CompanyPhotos from './pages/JobSeeker/CompanyPhotos'
+import AdminPhoto from './pages/Admin/AdminPhoto.js'
+import Header from './pages/Company/Header.js';
+import EmployerProfile from './pages/Employer/EmployerProfile'
 //Create a Main Component
 class Main extends Component {
   render() {
@@ -17,15 +22,19 @@ class Main extends Component {
         <Route path="/login" component={Login} />
         <Route path="/home" component={Home} />
         <Route path="/header" component={Header} />
+        <Route path="/header" component={Header}/>
         <Route path="/signup" component={Signup} />
         <Route path="/postJob" component={PostJob} />
         <Route path="/employer" component={Employer} />
+        <Route path="/employerprofile" component={EmployerProfile} />
         <Route path="/landingPage" component={JobSeekerLandingPage} />
         <Route path="/company" component={CompanyTabs} />
+        <Route path="/photos" component={UploadPhotos} />
+        <Route path="/companyPhotos" component={CompanyPhotos} />
+        <Route path="/adminPhotos" component={AdminPhoto}/>
       </div>
     )
   }
 }
-
 //Export The Main Component
 export default Main

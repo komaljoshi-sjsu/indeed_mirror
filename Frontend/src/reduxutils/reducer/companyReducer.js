@@ -8,7 +8,7 @@ const initState = {
     mission:"",
     culture:"",
     featuredReviews:[],
-    values:[],
+    values:"",
     noOfReviews:0,
     size: 0,
     whScore:0,
