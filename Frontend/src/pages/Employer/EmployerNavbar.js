@@ -1,24 +1,23 @@
-// Job Seeker Navigation bar
+// Employeer Navigation bar
 
 import React, { Component } from 'react'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import logo from '../../images/Indeed_logo.png'
-import '../../CSS/JobSeekerNavbar.css'
+import logo from '../../images/indeedemployers_logo.png'
+import {IoMdHelpCircle, IoMdChatboxes} from 'react-icons/io';
+import {BsFillBellFill, BsPersonFill} from 'react-icons/bs';
 
-class JobSeekerNavbar extends Component {
+
+class EmployerNavbar extends Component {
   constructor(props) {
     super(props)
     this.state = {}
   }
-
-
 
   render() {
     return (
       <div>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <div class="container-fluid">
-            <a class="navbar-brand" href="/landingPage">
+            <a class="navbar-brand" href="#">
               <img
                 src={logo}
                 alt=""
@@ -35,17 +34,17 @@ class JobSeekerNavbar extends Component {
               >
                 <li class="nav-item">
                   <a class="nav-link active" aria-current="page" href="#">
-                    <h5>Find Jobs</h5>
+                    <h5>Dashboard</h5>
                   </a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#">
-                    <h5>Company Reviews</h5>
+                    <h5>Find Candidates</h5>
                   </a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#">
-                    <h5>Find Salaries</h5>
+                    <h5>Analytics</h5>
                   </a>
                 </li>
               </ul>
@@ -56,12 +55,7 @@ class JobSeekerNavbar extends Component {
                 >
                   <li class="nav-item">
                     <a class="nav-link" href="#">
-                      <h5>Upload your Resume</h5>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/login">
-                      <h5 style={{ color: 'blue' }}>Sign in</h5>
+                      <h5 style={{ color: 'black' }}>Help Center <IoMdHelpCircle/></h5>
                     </a>
                   </li>
                   <li class="nav-item">
@@ -69,7 +63,25 @@ class JobSeekerNavbar extends Component {
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="#">
-                      <h5>Employers/Post Job</h5>
+                      <h5 style={{ color: 'black' }}>test</h5>
+                    </a>
+                  </li> 
+                  <li class="nav-item">
+                    <h3 style={{ color: 'black' }}>|</h3>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">
+                      <h5 style={{ color: 'black' }}><BsFillBellFill/></h5>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">
+                      <h5 style={{ color: 'black' }}><IoMdChatboxes/></h5>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">
+                      <h5 style={{ color: 'black' }}><BsPersonFill/></h5>
                     </a>
                   </li>
                 </ul>
@@ -82,4 +94,4 @@ class JobSeekerNavbar extends Component {
   }
 }
 
-export default JobSeekerNavbar
+export default EmployerNavbar

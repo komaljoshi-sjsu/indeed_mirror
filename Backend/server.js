@@ -26,17 +26,25 @@ app.use(
 
 require('./models/JobSeeker')
 require('./models/Company')
+require('./models/Photo')
 
 //Define all the routes
-app.use(require('./routes/loginRoute'))
-app.use(require('./routes/signupRoute'))
-app.use(require('./routes/jobSeekerHome'))
+app.use(require("./routes/loginRoute"));
 app.use(require("./routes/companyRoute"));
-
-const postNewJob = require('./routes/postNewJob')
+app.use(require("./routes/postNewJob"));
+app.use(require("./routes/signupRoute"));
+app.use(require('./routes/jobSeekerHome'))
+app.use(require('./routes/uploadPhotos'))
+app.use(require('./routes/getAllPhotos'))
+app.use(require('./routes/getJobSeekerPhotos'))
+app.use(require('./routes/adminPhotos'))
+app.use(require('./routes/postNewJob'))
+app.use(require('./routes/getEmployerProfile'))
+app.use(require('./routes/editEmployerDetails'))
+app.use(require('./routes/editCompanyDetails'))
 
 //Define all the routes
-app.use('/postNewJob', postNewJob)
+//app.use('/postNewJob', postNewJob)
 
 const PORT = process.env.PORT || 5000
 //Server code will be running on port 5000

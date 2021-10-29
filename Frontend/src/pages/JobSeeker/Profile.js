@@ -1,8 +1,9 @@
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {useSelector} from 'react-redux';
+import JobSeekerNavbar from './JobSeekerNavbar';
 
-function JoinUs(props) {
+function Profile(props) {
 
     const about = useSelector((state)=>state.company.about);
     const values = useSelector((state)=>state.company.values);
@@ -10,12 +11,10 @@ function JoinUs(props) {
     return (
         <div className="container-fullwidth" style={{marginLeft:'20%',marginRight:'20%'}}>
             <div className="row">
-                <h2><b>About Us</b></h2>
-                <p>{about}</p>
+                <JobSeekerNavbar></JobSeekerNavbar>
             </div><br></br>
             <div className="row">
-                <h2><b>Work Culture</b></h2>
-                <p>{culture}</p>
+                
             </div><br></br>
             <div className="row">
                 <h2><b>Company Values</b></h2>
@@ -26,4 +25,4 @@ function JoinUs(props) {
     )
 }
 
-export default JoinUs;
+export default Profile;

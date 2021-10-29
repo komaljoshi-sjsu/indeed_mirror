@@ -13,7 +13,22 @@ router.get("/api/snapshot/:companyId", (req, res) => {
     try {
         const cid = req.params.companyId;
         Company.find({companyId:cid}).then(result=> {
-            return res.status(200).send(result);
+            console.log(result);
+            let cmpny = result[0];
+            const companyQuery = 'SELECT * FROM Company WHERE companyId=?';
+            conn.query(companyQuery,[cid], (error,details)=> {
+                if(error) {
+                    return res.status(400).send('Failed to get company details');
+                }
+                else {
+                    details = details[0];
+                    details.whScore = cmpny.avgWorkHappinessScore;
+                    details.lScore = cmpny.avgLearningScore;
+                    details.apScore = cmpny.avgAppreciationSCore;
+                    details.noOfReviews = cmpny.noOfReviews;
+                    return res.status(200).send(details);
+                }
+            })
         }).catch(err=> {
             return res.status(503).send('Failed to get company details');
         })
@@ -28,7 +43,7 @@ router.get("/api/snapshot/:companyId", (req, res) => {
 router.get("/api/featuredReviews/:companyId", (req, res) => {
     try {
         const cid = req.params.companyId;
-        conn.mysqlCon.query('SELECT reviewTitle, reviewerRole, city, state, postedDate, rating, reviewComments, pros, cons FROM Review WHERE companyId=? AND isFeatured=?',[cid,true],(err,reviews)=> {
+        conn.query('SELECT reviewTitle, reviewerRole, city, state, postedDate, rating, reviewComments, pros, cons FROM Review WHERE companyId=? AND isFeatured=?',[cid,true],(err,reviews)=> {
             if(err) {
                 console.log(err);
                 return res.status(400).send('Failed to fetch featured reviews');

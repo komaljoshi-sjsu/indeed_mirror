@@ -3,14 +3,18 @@ const Schema = mongoose.Schema;
 
 const jsSchema = new Schema({
     jobSeekerId: {
+        type: Number,
+        required: true
+    },
+    resumeUrl: {
         type: String,
         required: true
     },
     jobPreference: [{
-        type:String,
+        type: Array,
     }],
     savedJobs: [{
-        type:String,
+        type: Array,
     }]
 });
 

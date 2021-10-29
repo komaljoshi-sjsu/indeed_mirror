@@ -11,7 +11,7 @@ import {bindActionCreators} from 'redux';
 import {companyActionCreator} from '../../reduxutils/actions.js';
 
 function Snapshot(props) {
-    let companyid = 'sdfsf';
+    let companyid = '1';
     const dispatch = useDispatch();
     const ceo = useSelector((state)=>state.company.ceo);
     const founded = useSelector((state)=>state.company.founded);
@@ -45,6 +45,7 @@ function Snapshot(props) {
     useEffect(()=> {
         axios.get('http://localhost:5000/api/snapshot/'+companyid)
         .then(res => {
+            console.log('snapshot',res);
             if(res.status == 200) {
                 setWHScore(res.data.whScore);
                 setApScore(res.data.apScore);
@@ -54,7 +55,7 @@ function Snapshot(props) {
                 setRevenue(res.data.revenue);
                 setSize(res.data.size);
                 setAbout(res.data.about);
-                setDescription(res.data.description);
+                setDescription(res.data.companyDescription);
                 setMission(res.data.mission);
                 setNoOfReviews(res.data.noOfReviews);
                 setCulture(res.data.workCulture);
@@ -189,8 +190,8 @@ function Snapshot(props) {
             </div><br></br>
             <div className="row">
                 <p style={{color:"darkgray"}}>About Us</p>{about}<br></br>
-                <p>Description:</p>{description}
-                <p>Mission:</p>{mission}
+                <p><b>Description:</b><br></br>{description}</p><br></br>
+                <p><b>Mission:</b><br></br>{mission}</p>
             </div><br></br><br></br>
             <div className="row">
                 <h2><b>Featured Reviews</b></h2>
