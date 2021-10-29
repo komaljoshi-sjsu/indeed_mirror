@@ -1,15 +1,18 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Form from 'react-bootstrap/Form';
-import {useState} from 'react';
+import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
-import {Redirect} from 'react-router';
+import { Redirect } from 'react-router';
 import axios from 'axios';
+import backendServer from '../../webConfig';
+import JobSeekerNavbar from '../JobSeeker/JobSeekerNavbar';
+import logo from '../../images/Indeed_logo.png';
 
 function Signup(props) {
 
-    const[redirectVal,redirectValFn] = useState(null);
+    const [redirectVal, redirectValFn] = useState(null);
     let redirectToLogin = () => {
-        redirectValFn(<Redirect to="/login"/>);
+        redirectValFn(<Redirect to="/login" />);
     }
 
     let signUp = (e) => {
@@ -18,30 +21,57 @@ function Signup(props) {
         const fullname = formData.get('name');
         const email = formData.get('email');
         const password = formData.get('password');
-        const accountType = formData.get('accountType')=='Employer'?'Employer':'JobSeeker';
+        const accountType = formData.get('accountType') == 'Employer' ? 'Employer' : 'JobSeeker';
 
-        axios.post('http://localhost:5000/api/signup',{
+        axios.post(`${backendServer}/api/signup`, {
             name: fullname,
-            email:email,
-            password:password,
+            email: email,
+            password: password,
             accountType: accountType
-        }).then(res=> {
-            console.log(res);
-            if(res.status!=200) {
+        }).then(res => {
+            //console.log(res);
+            if (res.status != 200) {
                 alert(res.data);
             } else {
-                alert('Successfully signed up');
-                redirectToLogin();
+                //alert('Successfully signed up');
+                //adding job seeker model in mongoDB after successful signup
+                console.log("signup data" + res.data);
+                axios.post("/api/signupJobSeekerMongo", {
+                    jobSeekerId: res.data.id,
+                    resumeUrl: " ",
+                    jobPreference: [],
+                    savedJobs: []
+                }).then((response1) => {
+                    if (response1.status === 200) {
+                        alert('Successfully signed up');
+                        redirectToLogin();
+                    }
+                })
+                    .catch((err) => {
+                        alert("Failed to signup");
+                        console.log(err);
+                    });
             }
-        },error=>{
+        }, error => {
             alert('Failed to signup. Please refer console for more details.');
             console.log(error);
         })
     }
     return (
-        <div className="container-fullwidth" style={{background:'whitesmoke',margin:'auto', marginTop:'10%', width:'30%'}}>
+        <div className="container-fullwidth" style={{margin:'auto', marginTop:'5%', width:'30%'}}>
             {redirectVal}
-            <div className="row" style={{padding:'5% 5% 5% 5%'}}>
+            <div className="row">
+                <a class="navbar-brand" href="/landingPage">
+                    <img
+                        src={logo}
+                        alt=""
+                        width="120"
+                        height="30"
+                        class="d-inline-block align-text-top"
+                    />
+                </a>
+            </div><br></br><br></br>
+            <div className="row" style={{background:'whitesmoke',padding:'10% 5% 5% 5%'}}>
                 <div className="row">
                     <h5><b>Create an account(it's free)</b></h5>
                 </div><br></br>
@@ -62,8 +92,8 @@ function Signup(props) {
                         <Form.Group className="mb-3">
                             <p><small><b>Your Role</b></small><br></br>
                             <small style={{color:'gray'}}>Let us know how you'll be using our products</small></p>
-                            <Form.Check type="radio" label='Job Seeker' name="accountType" value="Job Seeker" style={{outline:'1px solid darkGray'}} required/><br></br>
-                            <Form.Check type="radio" label='Employer' name="accountType" value="Employer" style={{outline:'1px solid darkGray'}}/>
+                            <Form.Check type="radio" label='Job Seeker' name="accountType" value="Job Seeker" required/><br></br>
+                            <Form.Check type="radio" label='Employer' name="accountType" value="Employer"/>
                         </Form.Group>
                         <Button bsStyle="primary" bsSize="large" block style={{width:'100%'}} type='submit'>
                             Create Account
