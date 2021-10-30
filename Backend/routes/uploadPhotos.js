@@ -12,7 +12,7 @@ dotenv.config();
 const s3 = new aws.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  Bucket: "",
+  Bucket: "indeedteamsevenbucket",
 });
 
 router.post("/api/upload", (req, res) => {
@@ -42,7 +42,7 @@ router.post("/api/upload", (req, res) => {
 const uploadImg = multer({
   storage: multerS3({
     s3: s3,
-    bucket: "",
+    bucket: "indeedteamsevenbucket",
     acl: "public-read",
     key: function (req, file, cb) {
       cb(
