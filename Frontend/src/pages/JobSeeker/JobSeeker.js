@@ -4,10 +4,39 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import '../../CSS/JobSeekerLanding.css'
 import TextField from '@mui/material/TextField'
-import { styled } from '@mui/material/styles'
+import { makeStyles } from '@material-ui/styles'
 import Autocomplete from '@mui/material/Autocomplete'
 import axios from 'axios'
 import JobSeekerNavbar from './JobSeekerNavbar'
+
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     '& .MuiInputLabel-outlined:not(.MuiInputLabel-shrink)': {
+//       // Default transform is "translate(14px, 20px) scale(1)""
+//       // This lines up the label with the initial cursor position in the input
+//       // after changing its padding-left.
+//       transform: 'translate(34px, 20px) scale(1);',
+//       width: '',
+//     },
+//   },
+//   inputRoot: {
+//     color: 'purple',
+//     // This matches the specificity of the default styles at https://github.com/mui-org/material-ui/blob/v4.11.3/packages/material-ui-lab/src/Autocomplete/Autocomplete.js#L90
+//     '&[class*="MuiOutlinedInput-root"] .MuiAutocomplete-input:first-child': {
+//       // Default left padding is 6px
+//       paddingLeft: 26,
+//     },
+//     '& .MuiOutlinedInput-notchedOutline': {
+//       borderColor: 'green',
+//     },
+//     '&:hover .MuiOutlinedInput-notchedOutline': {
+//       borderColor: 'red',
+//     },
+//     '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+//       borderColor: 'purple',
+//     },
+//   },
+// }))
 
 class JobSeekerLandingPage extends Component {
   constructor(props) {
@@ -67,11 +96,11 @@ class JobSeekerLandingPage extends Component {
         console.log(response.data, response.status)
         //this.state.jobs = response.data
 
-        console.log(response.data[0].fullJobDesc)
+        //console.log(response.data[0].fullJobDesc)
 
-        let jobDesc = JSON.parse(response.data[0].fullJobDesc)
+        // let jobDesc = JSON.parse(response.data[0].fullJobDesc)
 
-        console.log(jobDesc)
+        // console.log(jobDesc)
 
         let jobTitles = response.data.map((job) => {
           return job.jobTitle
@@ -247,6 +276,7 @@ class JobSeekerLandingPage extends Component {
                     <Autocomplete
                       id="free-solo-demo"
                       freeSolo
+                      sx={{ width: 180, borderBottom: 'none' }}
                       value={this.state.whatVal}
                       onChange={this.handleWhatVal.bind(this)}
                       options={this.state.whatSearch.map((option) => option)}
@@ -254,7 +284,8 @@ class JobSeekerLandingPage extends Component {
                       renderInput={(params) => (
                         <TextField
                           {...params}
-                          class="whatSearch2"
+                          sx={{ width: 180, borderBottom: 'none' }}
+                          //class="whatSearch2"
                           onChange={this.handleWhatVal.bind(this)}
                           value={this.state.whatVal}
                         />
@@ -286,6 +317,7 @@ class JobSeekerLandingPage extends Component {
                     <Autocomplete
                       id="free-solo-demo"
                       freeSolo
+                      sx={{ width: 180, borderBottom: 'none' }}
                       value={this.state.whereVal}
                       onChange={this.handleWhereVal}
                       options={this.state.whereSearch.map((option) => option)}
@@ -293,7 +325,8 @@ class JobSeekerLandingPage extends Component {
                       renderInput={(params) => (
                         <TextField
                           {...params}
-                          class="whatSearch2"
+                          sx={{ width: 180, borderBottom: 'none' }}
+                          //class="whatSearch2"
                           value={this.state.whereVal}
                           onChange={this.handleWhereVal}
                         />

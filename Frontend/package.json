@@ -45,7 +45,10 @@
     "redux-thunk": "^2.3.0",
     "simple-react-lightbox": "^3.6.9-0",
     "styled-components": "^5.2.3",
-    "web-vitals": "^1.0.1"
+    "web-vitals": "^1.0.1",
+    "react-bootstrap-range-slider": "^3.0.2",
+    "react-rating-stars-component": "^2.2.0",
+    "react-star-rating": "^1.4.2"
   },
   "scripts": {
     "start": "react-scripts start",

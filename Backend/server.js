@@ -43,6 +43,7 @@ app.use(require('./routes/getEmployerProfile'))
 app.use(require('./routes/editEmployerDetails'))
 app.use(require('./routes/editCompanyDetails'))
 app.use(require('./routes/adminReviews'))
+app.use(require("./routes/companyReviews"))
 
 //Define all the routes
 //app.use('/postNewJob', postNewJob)
