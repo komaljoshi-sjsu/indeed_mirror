@@ -106,11 +106,12 @@ class PostJob extends Component {
                 jobPostedDate : Date().toLocaleString(),
 
             };
-            console.log(inputData);
+           // console.log(inputData);
             axios
             .post(`${backendServer}/postNewJob`, inputData)
             .then((response) => {
-                
+              console.log("Response")
+                console.log(response)
               if (response.status === 200) {
                 
                 this.setState({
@@ -125,6 +126,9 @@ class PostJob extends Component {
                   state: '',
                   zipcode: '',
                   country: '',
+                  responsibilities:'',
+                  qualifications:'',
+                  loveJobRole:''
                 });
               } else {
                 this.setState({ errorMsg: response.data });
