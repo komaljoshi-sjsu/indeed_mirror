@@ -11,9 +11,9 @@ import Header from './pages/Company/Header.js'
 import UploadPhotos from './pages/JobSeeker/UploadPhotos.js'
 import CompanyPhotos from './pages/JobSeeker/CompanyPhotos'
 import AdminPhoto from './pages/Admin/AdminPhoto.js'
-import Header from './pages/Company/Header.js';
 import EmployerProfile from './pages/Employer/EmployerProfile'
 import Reviews from './pages/JobSeeker/Reviews';
+import AdminReview from './pages/Admin/AdminReview.js'
 //Create a Main Component
 class Main extends Component {
   render() {
@@ -34,6 +34,7 @@ class Main extends Component {
         <Route path="/companyPhotos" component={CompanyPhotos} />
         <Route path="/adminPhotos" component={AdminPhoto}/>
         <Route path="/reviews" component={Reviews}/>
+        <Route path="/adminReviews" component={AdminReview}/>
       </div>
     )
   }

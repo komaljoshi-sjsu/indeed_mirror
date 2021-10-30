@@ -35,7 +35,7 @@ router.get("/api/getAdminPhotos/", async (req, res) => {
     .then(result =>{
       Photo.find({photoAdminReviewedStatus:photoAdminReviewedStatus}).count()
       .then(r1=>{
-        console.log(result)
+        //console.log(result)
         return res.status(200).json({ photos: result, count:r1 });;
       })
 
