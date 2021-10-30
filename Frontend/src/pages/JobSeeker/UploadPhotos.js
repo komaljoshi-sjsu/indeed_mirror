@@ -7,6 +7,9 @@ const UploadPhotos = (props) => {
   const [show, setShow] = useState(false);
   const [photo, setPhoto] = useState([]);
   const [photoName, setPhotoName] = useState([]);
+  const [jobSeekerId, setJobSeekerId] = useState(Number);
+  const [companyId, setCompanyId] = useState(Number);
+  const [companyName, setCompanyName] = useState("");
   const [inputFields, setInputFields] = useState([{ photo: "" }]);
   const [fieldCount, setFieldCount] = useState(1);
 
@@ -43,24 +46,20 @@ const UploadPhotos = (props) => {
             console.log("returned");
             console.log(response.data.imageLocation);
             var data1 = {
-              jobSeekerId: 1,
-              companyId: 1,
+              jobSeekerId: 1, //jobSeekerId,
+              companyId: 1, //companyId,
+              //companyName: companyName,
               imageLocation: response.data.imageLocation,
               photoAdminReviewedStatus: "PENDING_APPROVAL",
             };
             axios.post("/api/uploadCompanyPhotos", data1)
               .then((response1) => {
                 if (response1.status === 200) {
-                  toast.success("Successfully uploaded picture", {
-                    position: toast.POSITION.TOP_CENTER,
-                  });
-
+                  toast.success("Successfully uploaded picture", {position: toast.POSITION.TOP_CENTER});
                 }
               })
               .catch((err) => {
-                toast.error("Unable to upload picture", {
-                  position: toast.POSITION.TOP_CENTER,
-                });
+                toast.error("Unable to upload picture", {position: toast.POSITION.TOP_CENTER});
                 console.log(err);
               });
           }
