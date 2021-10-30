@@ -7,20 +7,19 @@ const comSchema = new Schema({
         required: true
     },
     avgWorkHappinessScore: {
-        type: Number,
+        type: Number
     },
     avgLearningScore: {
-        type: Number,
+        type: Number
     },
     avgAppreciationScore: {
-        type: Number,
-        required:true
+        type: Number
     },
     noOfReviews: {
         type: Number
     },
     companyAvgRating: {
-        type: Number,
+        type: Number
     },
     ceoAvgRating: {
         type: Number
