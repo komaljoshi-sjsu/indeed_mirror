@@ -2,6 +2,8 @@
 const express = require("express");
 const router = express.Router();
 const connection = require("../config/mysql_connection");
+const mongoose = require("mongoose");
+const Company = mongoose.model("Company");
 
 const mysql = require('mysql');
 const http = require('http');
@@ -10,8 +12,10 @@ const url = require('url');
 router.get("/companyReviews", (req, res) => {
 
     const queryObject = url.parse(req.url,true).query;
-	let sql = 'SELECT r.*, c.companyName FROM Review r, Company c where r.companyId='+mysql.escape(queryObject.companyId)+ ' and r.companyId = c.companyId and r.isFeatured=1 and r.adminReviewStatus=1 order by r.postedDate' ;
-    connection.query(sql, (err, results) => {
+    const adminReviewStatus = 'APPROVED';
+	let sql = 'SELECT r.*, c.companyName FROM Review r, Company c where r.companyId='+mysql.escape(queryObject.companyId)+ ' and r.companyId = c.companyId and r.isFeatured=1 and r.adminReviewStatus=? order by r.postedDate' ;
+    console.log(sql);
+    connection.query(sql, [adminReviewStatus], (err, results) => {
         if (err) {
             res.writeHead(401,{
                 'Content-Type' : 'application/json'
@@ -85,7 +89,7 @@ router.post("/saveReview", (req, res) => {
 
     console.log(req.body);
     let sql = 'INSERT INTO Review(reviewTitle, reviewerRole, city, state, postedDate, rating, workHappinessScore, learningScore, appraisalScore, reviewComments, pros, cons, ceoApprovalRating, howToPrepare, noHelpfulCount, yesReviewHelpfulCount, isFeatured, adminReviewStatus, jobSeekerId, companyId ) VALUES (?,?,?,?,now(),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ';
-    let data = [req.body.reviewTitle, req.body.reviewerRole, req.body.city, req.body.state, req.body.rating, req.body.workHappinessScore, req.body.learningScore, req.body.appreciationScore, req.body.reviewComments, req.body.pros, req.body.cons, req.body.ceoApprovalRating, req.body.howToPrepare, 0, 0, 0, 0, req.body.jobSeekerId, req.body.companyId];
+    let data = [req.body.reviewTitle, req.body.reviewerRole, req.body.city, req.body.state, req.body.rating, req.body.workHappinessScore, req.body.learningScore, req.body.appreciationScore, req.body.reviewComments, req.body.pros, req.body.cons, req.body.ceoApprovalRating, req.body.howToPrepare, 0, 0, 0,'PENDING_APPROVAL', req.body.jobSeekerId, req.body.companyId];
     
     connection.query(sql, data, (err, results) => {
         if (err) {
@@ -96,11 +100,43 @@ router.post("/saveReview", (req, res) => {
             res.end("Server error. Please try again later!");
         }
         else{
-            res.writeHead(200,{
-                'Content-Type' : 'application/json'
-            });
-            res.end("Review saved successfully");
-        }
+            let sql = 'select round(avg(Rating),1) as avgRating, round(avg(workHappinessScore),1) as avgWHScore, round(avg(learningScore),1) as avgLScore, round(avg(appraisalScore),1) as avgAppScore, round(avg(ceoApprovalRating),1) as avgCeoScore, count(Rating) as totalReviews from Review where companyId=?';
+            connection.query(sql, [req.body.companyId], (err, results) => {
+                if (err) {
+                    console.log(err);
+                }
+                else if(results.length > 0){
+                    console.log('update');
+                    console.log(results[0].avgWHScore);
+                    Company.updateOne({
+                        companyId: req.body.companyId
+                    }, {
+                        $set: {
+                            avgWorkHappinessScore: results[0].avgWHScore,
+                            avgLearningScore: results[0].avgLScore,
+                            avgAppreciationScore: results[0].avgAppScore,
+                            noOfReviews: results[0].totalReviews,
+                            companyAvgRating: results[0].avgRating,
+                            ceoAvgRating: results[0].avgCeoScore
+                        },
+                    },{ upsert: true }, (error, data) => {
+                
+                        if (error) {
+                            console.log(error);
+                        }else{
+                            console.log('true');
+                        }
+                    });
+                }else{
+                    console.log("no data");
+                }
+                console.log('Mongo DB success');
+                res.writeHead(200,{
+                      'Content-Type' : 'application/json'
+                });
+                res.end("Review saved successfully");
+                });       
+            }         
     });
 });
 
