@@ -8,6 +8,8 @@ import PostJob from './pages/Employer/PostJob'
 import JobSeekerLandingPage from './pages/JobSeeker/JobSeeker.js';
 import Header from './pages/Company/Header.js';
 import EmployerProfile from './pages/Employer/EmployerProfile'
+import AddSalaryReview from './pages/JobSeeker/AddSalaryReview';
+
 //Create a Main Component
 class Main extends Component {
   render() {
@@ -22,6 +24,7 @@ class Main extends Component {
         <Route path="/employer" component={Employer} />
         <Route path="/employerprofile" component={EmployerProfile} />
         <Route path="/landingPage" component={JobSeekerLandingPage} />
+        <Route path="/jobSeeker/addSalaryReview" component={AddSalaryReview} />
       </div>
     )
   }
