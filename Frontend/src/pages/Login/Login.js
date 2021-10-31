@@ -49,10 +49,10 @@ function Login(props) {
                 setToken(res.data);
                 var decoded = jwt_decode(res.data.split(' ')[1]);
                 const user = decoded.user;
-                // setEmail(user.email);
-                // setName(user.name);
-                // setAccountType(accountType);
-                // setId(user.id);
+                setEmail(user.email);
+                setName(user.name);
+                setAccountType(accountType);
+                setId(user.id);
                 //redirectToHome();
             }
         },error=>{
