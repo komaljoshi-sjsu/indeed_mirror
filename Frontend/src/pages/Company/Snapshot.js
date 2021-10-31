@@ -71,8 +71,9 @@ function Snapshot(props) {
 
         axios.get('http://localhost:5000/api/featuredReviews/'+companyid)
         .then(res => {
+            console.log('Featured reviews',res);
             if(res.status == 200) {
-                setFeaturedReviews(rvw);
+                setFeaturedReviews(res.data);
             } else {
                 alert(res.data);
             }
@@ -80,28 +81,6 @@ function Snapshot(props) {
             alert('Failed to get company featured reviews. Please check console.');
             console.log(err);
         });
-        
-        const rvw = [{
-            city:'San Jose',
-            state: 'California',
-            date: '23 July 2020',
-            reviewerRole: 'Software Developer',
-            title: 'Good place to work',
-            reviewComments: "Overall Wendy's is an excellent, exciting an extremely rewarding place to be employed by, The Customer Service, Guest and Team is first rate in delivering impeccable and amazing Customer Service, Customer Satisfaction and all items Hot, Fresh and with passion as well as all frosties and Drinks with are cold and refreshing to the taste.",
-            pros: 'Amazing',
-            cons: 'Manageement needs to improve',
-            rating: 5.0
-        },{
-            city:'San Mateo',
-            state: 'California',
-            date: '23 March 2020',
-            reviewerRole: 'Software Tester',
-            title: 'Bad place to work',
-            reviewComments: "Overall Wendy's is an excellent, exciting an extremely rewarding place to be employed by, The Customer Service, Guest and Team is first rate in delivering impeccable and amazing Customer Service, Customer Satisfaction and all items Hot, Fresh and with passion as well as all frosties and Drinks with are cold and refreshing to the taste.",
-            pros: 'Nothing',
-            cons: 'Bad needs to improve',
-            rating: 2.5
-        }];
         
     },[]);
     return (
