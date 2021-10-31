@@ -17,6 +17,7 @@ router.get("/api/snapshot/:companyId", (req, res) => {
             let cmpny = result[0];
             const companyQuery = 'SELECT * FROM Company WHERE companyId=?';
             conn.query(companyQuery,[cid], (error,details)=> {
+                console.log(details);
                 if(error) {
                     return res.status(400).send('Failed to get company details');
                 }

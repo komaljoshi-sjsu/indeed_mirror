@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import {useState, useEffect} from 'react';
 import {Redirect} from 'react-router';
-import Header from './Header';
+import CompanyTabs from './CompanyTabs';
 import axios from 'axios';
 import Card from "react-bootstrap/Card";
 import './css/snapshot.css';
@@ -105,113 +105,116 @@ function Snapshot(props) {
         
     },[]);
     return (
-        <div className="container-fullwidth" style={{marginLeft:'20%',marginRight:'20%'}}>
-            <div className="row">
-                <h2><b>Work Happiness</b></h2>
-                <p><small style={{color:'gray'}}>Scores based on about {noOfReviews} responses to Indeed's survey on work happiness.</small></p>
-                <div className="col">
-                    <div>
-                    {whScore} Work Happiness Score
-                    </div><br></br>
-                    <div className="infobox infobox1">
-                        Do people feel happy at work most of the time?
-                    </div>
-                    
-                </div>
-                <div className="col">
-                    <div>
-                    {lScore} Learning
-                    </div><br></br>
-                    <div className="infobox infobox1">
-                    Do people feel they often learn something at work?
-                    </div>
-                </div>
-                <div className="col">
-                    <div>
-                    {apScore} Appreciation
-                    </div><br></br>
-                    <div className="infobox infobox1">
-                    Do people feel they are appreciated as a person at work?
-                    </div>
-                </div>
-            </div><br></br><br></br>
-            <div className="row">
-                <h2><b>About the Company</b></h2>
-                <div className="col">
-                    <Card>
-                        <Card.Body>
-                            <Card.Title>CEO</Card.Title>
-                            <Card.Text>
-                            {ceo}
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
-                </div>
-                <div className="col">
-                    <Card>
-                        <Card.Body>
-                            <Card.Title>Founded</Card.Title>
-                            <Card.Text>
-                            {founded}
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
-                </div>
-                <div className="col">
-                    <Card>
-                        <Card.Body>
-                            <Card.Title>Company Size</Card.Title>
-                            <Card.Text>
-                            More than {size}
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
-                </div>
-                <div className="col">
-                    <Card>
-                        <Card.Body>
-                            <Card.Title>Revenue</Card.Title>
-                            <Card.Text>
-                            {revenue}(USD)
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
-                </div>
-                <div className="col">
-                    <Card>
-                        <Card.Body>
-                            <Card.Title>Industry</Card.Title>
-                            <Card.Text>
-                            {industry}
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
-                </div>
-            </div><br></br>
-            <div className="row">
-                <p style={{color:"darkgray"}}>About Us</p>{about}<br></br>
-                <p><b>Description:</b><br></br>{description}</p><br></br>
-                <p><b>Mission:</b><br></br>{mission}</p>
-            </div><br></br><br></br>
-            <div className="row">
-                <h2><b>Featured Reviews</b></h2>
-                {reviews.map(review=> {
-                    return (
+        <div>
+            <CompanyTabs></CompanyTabs>
+            <div className="container-fullwidth" style={{marginLeft:'20%',marginRight:'20%'}}>
+                <div className="row">
+                    <h2><b>Work Happiness</b></h2>
+                    <p><small style={{color:'gray'}}>Scores based on about {noOfReviews} responses to Indeed's survey on work happiness.</small></p>
+                    <div className="col">
                         <div>
-                            <div>
-                                <p><img src="/images/user.png" height='24px' width='24px'/><small style={{color:"gray"}}> {review.reviewerRole} in {review.city},{review.state}</small></p>
-                                <b>{review.rating} </b><img src="/images/star.png" height='19px' width='19px'/><span style={{color:"gray"}}> on {review.postedDate}</span>
-                                <p><b>{review.reviewTitle}</b><br></br></p>
-                                <p>{review.reviewComments}</p><br></br>
-                                <p><b>Pros:</b></p>
-                                <p>{review.pros}</p><br></br>
-                                <p><b>Cons:</b></p>
-                                <p>{review.cons}</p>
-
-                            </div><br></br>
+                        {whScore} Work Happiness Score
+                        </div><br></br>
+                        <div className="infobox infobox1">
+                            Do people feel happy at work most of the time?
                         </div>
-                    );
-                })}
+                        
+                    </div>
+                    <div className="col">
+                        <div>
+                        {lScore} Learning
+                        </div><br></br>
+                        <div className="infobox infobox1">
+                        Do people feel they often learn something at work?
+                        </div>
+                    </div>
+                    <div className="col">
+                        <div>
+                        {apScore} Appreciation
+                        </div><br></br>
+                        <div className="infobox infobox1">
+                        Do people feel they are appreciated as a person at work?
+                        </div>
+                    </div>
+                </div><br></br><br></br>
+                <div className="row">
+                    <h2><b>About the Company</b></h2>
+                    <div className="col">
+                        <Card>
+                            <Card.Body>
+                                <Card.Title>CEO</Card.Title>
+                                <Card.Text>
+                                {ceo}
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+                    </div>
+                    <div className="col">
+                        <Card>
+                            <Card.Body>
+                                <Card.Title>Founded</Card.Title>
+                                <Card.Text>
+                                {founded}
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+                    </div>
+                    <div className="col">
+                        <Card>
+                            <Card.Body>
+                                <Card.Title>Company Size</Card.Title>
+                                <Card.Text>
+                                More than {size}
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+                    </div>
+                    <div className="col">
+                        <Card>
+                            <Card.Body>
+                                <Card.Title>Revenue</Card.Title>
+                                <Card.Text>
+                                {revenue}(USD)
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+                    </div>
+                    <div className="col">
+                        <Card>
+                            <Card.Body>
+                                <Card.Title>Industry</Card.Title>
+                                <Card.Text>
+                                {industry}
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+                    </div>
+                </div><br></br>
+                <div className="row">
+                    <p style={{color:"darkgray"}}>About Us</p>{about}<br></br>
+                    <p><b>Description:</b><br></br>{description}</p><br></br>
+                    <p><b>Mission:</b><br></br>{mission}</p>
+                </div><br></br><br></br>
+                <div className="row">
+                    <h2><b>Featured Reviews</b></h2>
+                    {reviews.map(review=> {
+                        return (
+                            <div>
+                                <div>
+                                    <p><img src="/images/user.png" height='24px' width='24px'/><small style={{color:"gray"}}> {review.reviewerRole} in {review.city},{review.state}</small></p>
+                                    <b>{review.rating} </b><img src="/images/star.png" height='19px' width='19px'/><span style={{color:"gray"}}> on {review.postedDate}</span>
+                                    <p><b>{review.reviewTitle}</b><br></br></p>
+                                    <p>{review.reviewComments}</p><br></br>
+                                    <p><b>Pros:</b></p>
+                                    <p>{review.pros}</p><br></br>
+                                    <p><b>Cons:</b></p>
+                                    <p>{review.cons}</p>
+
+                                </div><br></br>
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
         </div>
     )
