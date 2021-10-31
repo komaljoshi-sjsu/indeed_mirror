@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Form from 'react-bootstrap/Form';
 import backendServer from '../../webConfig';
-import CompanyTabs from '../Company/CompanyTabs';
+import CompanyTabs from './CompanyTabs';
 import Card from "react-bootstrap/Card";
 
 const AddSalaryReview = (props) => {

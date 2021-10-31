@@ -327,28 +327,27 @@ class JobSeekerLandingPage extends Component {
 
     {/* render details */}
 
-<div class="row">
-            <div class="col-1"></div>
-            <div class="col-10">
-              <div class="row">
-                <div class="col-4">  
-                <div>
-                {this.state.jobs.map((job) => (  
-                <Card id={job.jobTitle}
-                  // onClick={this.handleCardClick}
-                  style={{marginTop:'20px'}}>
-                    <Card.Body>
-                      <Card.Title><a href="#">{job.jobTitle}</a>
-                      </Card.Title>
-                      <h6>Average Salary ${job.salaryDetails} per year</h6> 
-                      </Card.Body>
-                    </Card>
-                    ))}
-                  </div>
+    <div class="container mt-4">
+    <div class="row">
+        <div class="col-auto mb-3">
+        {this.state.jobs.map((job) => (  
+            <div class="card" id={job.jobTitle} 
+            // onClick={this.handleCardClick}
+            style={{marginTop:'10px'}}>
+                <div class="card-body">
+                    <h5 class="card-title"><a href='#'> {job.jobTitle} </a></h5>
+                    {/* <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6> */}
+                    <p class="card-text">Average Salary ${job.salaryDetails} per year</p>
+                    <hr/>
+                    {/* <p>Skills</p> */}
+                    <a href="#" class="card-link">Skills</a>
+                    <a href="#" class="card-link" >Job Openings</a>
                 </div>
-             </div>
- </div>     
-  </div>          
+            </div>
+          ))}
+        </div>
+      </div>
+     </div>       
 </div> 
 
 
