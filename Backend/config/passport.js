@@ -7,12 +7,12 @@ const conn = require("../config/mysql_connection");
 
 // Setup work and export for the JWT passport strategy
 function auth() {
-    console.log("auth");
+    //console.log("auth");
     var opts = {    
         jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme("JWT"),
         secretOrKey: secret
     };
-    console.log(JSON.stringify(opts.jwtFromRequest));
+    //console.log(JSON.stringify(opts.jwtFromRequest));
     passport.use(
         new JwtStrategy(opts, (jwt_payload, callback) => {
            
@@ -51,11 +51,11 @@ function auth() {
 }
 
 function findJobSeekerById(id, callback) {
-    return conn.mysqlCon.query("SELECT * from JobSeeker WHERE jobSeekerId = ?", [id], callback)
+    return conn.query("SELECT * from JobSeeker WHERE id = ?", [id], callback)
 }
 
 function findEmployerById(id, callback) {
-    return conn.mysqlCon.query("SELECT * from Employer WHERE employerId = ?", [id], callback)
+    return conn.query("SELECT * from Employer WHERE id = ?", [id], callback)
 }
 
 exports.auth = auth;
