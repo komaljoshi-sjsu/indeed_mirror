@@ -97,6 +97,7 @@ class JobSeekerLandingPage extends Component {
     )
   }
 
+
   handleWhatVal = (evt, value) => {
     // console.log(evt.target.value)
     // console.log(value)
@@ -173,10 +174,10 @@ class JobSeekerLandingPage extends Component {
 
   handleCardClick = (evt) => {
     console.log(evt.currentTarget.id)
-    let jobId = parseInt(evt.currentTarget.id)
-    let job = this.state.allJobs.filter((job) => job.jobId === jobId)[0]
+    let jobTitle = parseInt(evt.currentTarget.id)
+    let job = this.state.allJobs.filter((job) => job.jobTitle === jobTitle)[0]
 
-    console.log(job.jobTitle)
+    // console.log(job.jobTitle)
 
     this.setState({
       roleName: job.jobTitle,
@@ -333,8 +334,8 @@ class JobSeekerLandingPage extends Component {
                 <div class="col-4">  
                 <div>
                 {this.state.jobs.map((job) => (  
-                <Card id={job.jobId}
-                  onClick={this.handleCardClick}
+                <Card id={job.jobTitle}
+                  // onClick={this.handleCardClick}
                   style={{marginTop:'20px'}}>
                     <Card.Body>
                       <Card.Title><a href="#">{job.jobTitle}</a>

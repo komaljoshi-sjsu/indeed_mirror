@@ -81,7 +81,7 @@ const AddSalaryReview = (props) => {
           if (response.status === 200) {
             console.log("returned");
             console.log(response.data);
-            window.location = '/jobSeeker/addSalaryReview';
+            window.location = '/addSalaryReview';
         }else {
           setErrorMessage(response.data.message);
         }
