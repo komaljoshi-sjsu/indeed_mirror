@@ -16,7 +16,10 @@ import EmployerProfile from './pages/Employer/EmployerProfile'
 import EmployerUpdateProfile from './pages/Employer/EmployerUpdateProfile'
 import Reviews from './pages/JobSeeker/Reviews';
 import AdminReview from './pages/Admin/AdminReview.js'
+import AddSalaryReview from './pages/JobSeeker/AddSalaryReview'
 import Resume from './pages/JobSeeker/Resume.js'
+import FindSalaries from './pages/JobSeeker/FindSalaries'
+
 //Create a Main Component
 class Main extends Component {
   render() {
@@ -39,7 +42,9 @@ class Main extends Component {
         <Route path="/adminPhotos" component={AdminPhoto}/>
         <Route path="/reviews" component={Reviews}/>
         <Route path="/adminReviews" component={AdminReview}/>
+        <Route path="/addSalaryReview" component={AddSalaryReview} />
         <Route path="/resume" component={Resume}/>
+        <Route path="/findSalaries" component={FindSalaries}/>
       </div>
     )
   }
