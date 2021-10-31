@@ -45,6 +45,7 @@ app.use(require('./routes/editCompanyDetails'))
 app.use(require('./routes/salaryReviewRoute'));
 app.use(require('./routes/adminReviews'))
 app.use(require("./routes/companyReviews"))
+app.use(require("./routes/findSalary"))
 
 //Define all the routes
 //app.use('/postNewJob', postNewJob)

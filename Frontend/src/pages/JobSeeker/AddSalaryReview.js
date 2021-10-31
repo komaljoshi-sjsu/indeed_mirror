@@ -2,17 +2,21 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { ToggleButtonGroup, ToggleButton, Button, Modal } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import JobSeekerNavbar from "./JobSeekerNavbar";
 import Form from 'react-bootstrap/Form';
 import backendServer from '../../webConfig';
+import CompanyTabs from '../Company/CompanyTabs';
+import Card from "react-bootstrap/Card";
 
 const AddSalaryReview = (props) => {
   const [show, setShow] = useState(false);
   const [salary, setSalary] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
-
+  const [visible, setVisible] = useState(false);
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
+  const handleVisible = () => setVisible(true);
+  const handleCloseVisible = () => setVisible(false);
+  console.log('visible' ,visible);
 
   useEffect(() => {
     axios.get(`${backendServer}/jobSeeker/getSalaryReview`)
@@ -60,7 +64,7 @@ const AddSalaryReview = (props) => {
     }
 
     const benefits = JSON.stringify(benefitsObject);
-
+ 
 
     axios.post(`${backendServer}/jobSeeker/postSalaryReview`,{
         currentlyWorking: currentlyWorking,
@@ -88,29 +92,100 @@ const AddSalaryReview = (props) => {
 
   return (
     <div>
-      <JobSeekerNavbar />
+       <CompanyTabs />
 
-    <div class="modal-header border-0">
-      <Button
-        variant="primary"
-        size="lg"
-        onClick={handleShow}
-        style={{ borderRadius: "6.25rem", marginLeft: "71%" }}
+    <div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+              <div class="row">
+                <div class="col-3">     
+                <div>
+                  {salary.map((salaryDetails, index) => {
+                  return (
+                    <div key={index}>
+                    <p>Average salaries at {salaryDetails.companyName} </p>
+                    <div>{salaryDetails.jobTitle}</div>
+                    <div>${salaryDetails.annualPay} per year</div>
+                </div>
+                  );
+                  })}
+              </div>
+              </div>
+              <div class="col-3">     
+                <div>
+                  {salary.map((salaryDetails, index) => {
+                  return (
+                    <div key={index}>
+                    <p>Average salaries at {salaryDetails.companyName} </p>
+                    <div>{salaryDetails.jobTitle}</div>
+                    <div>${salaryDetails.annualPay} per year</div>
+                </div>
+                  );
+                  })}
+              </div>
+              </div>
+              <div class="col-3">     
+                <div>
+                  {salary.map((salaryDetails, index) => {
+                  return (
+                    <div key={index}>
+                    <p>Average salaries at {salaryDetails.companyName} </p>
+                    <div>{salaryDetails.jobTitle}</div>
+                    <div>${salaryDetails.annualPay} per year</div>
+                </div>
+                  );
+                  })}
+              </div>
+              </div>
+              
+
+              <div class="col-3">    
+
+          <button type="button" class="btn btn-outline-primary btn-lg" style={{width:'100%'}} onClick={handleShow}>
+          Add Salary Review
+           </button>
+             
+           {/* <button type="button" class="btn btn-outline-info" style={{width:'100%'}} onClick={handleVisible}>
+           Claimed Profile
+             <i class="bi bi-check-circle-fill" style={{color:'green', marginLeft:'4px'}}></i>
+           </button> */}
+
+          <Card  style={{marginTop:'20px'}}>
+           <Card.Body>
+            <Card.Title onClick={handleVisible}>Claimed Profile
+             <i class="bi bi-check-circle-fill" style={{color:'green', marginLeft:'4px'}}></i>
+             </Card.Title>
+             </Card.Body>
+          </Card>
+
+          <Card style={{marginTop:'20px'}}>
+           <Card.Body>
+            <Card.Title>Salary satisfaction</Card.Title>
+            <Card.Text> <a href='/reviews'>Add your rating</a> </Card.Text>
+             </Card.Body>
+          </Card>
+     </div>
+ </div>
+ </div>     
+  </div>
+
+      <Modal
+        visible={visible}
+        onHide={handleCloseVisible}
+        backdrop="static"
+        keyboard={false}
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
       >
-        Add Salary Review
-      </Button>
-
-      <div>
-        {salary.map((salaryDetails, index) => {
-          return (
-            <div key={index}>
-                <p>Average salaries at {salaryDetails.companyName} </p>
-                <div>{salaryDetails.jobTitle}</div>
-                <div>${salaryDetails.annualPay} per year</div>
-            </div>
-          );
-        })}
-    </div>
+      <Modal.Header closeButton>
+          <Modal.Title>Can you tell us about yourself?</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+      An individual from this business has claimed this profile. However,
+                Indeed does not verify the accuracy of this information, and not all information found on this profile has been provided by 
+                or verified by the business.
+        </Modal.Body>
+      </Modal> 
 
       <Modal
         show={show}
@@ -183,8 +258,9 @@ const AddSalaryReview = (props) => {
           </Form>
         </Modal.Body>
       </Modal> 
+
+
     </div>
-  </div>
   );
 };
 
