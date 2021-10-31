@@ -13,12 +13,13 @@ router.post("/postNewJob", (req, res) => {
 					res.writeHead(500,{
 						'Content-Type' : 'application/json'
 					});
-					//console.log(error.message);
+					console.log(error.message);
 					res.end("Server Error. Please Try Again! ");
 				} else {
 					res.writeHead(200,{
 						'Content-Type' : 'application/json'
 					});
+					console.log("Job posted")
 					res.end("Job posted successfully!");
 				}
 	});

@@ -3,10 +3,9 @@ const express = require("express");
 const router = express.Router();
 const connection = require("../config/mysql_connection");
 var mysql = require("mysql");
-router.post('/getEmployerProfile', function(req,res){
-    const employerid = req.body.empid;   
-    
-	let sql1 = "SELECT * FROM Employer e JOIN Company c ON e.companyId=c.companyId WHERE id = "+mysql.escape(employerid) ;
+router.get('/getCompanyDetails', function(req,res){ 
+   
+	let sql1 = "SELECT * FROM Company";
     let query = connection.query(sql1, (error, result) => {
 
     if (error) {
@@ -18,8 +17,8 @@ router.post('/getEmployerProfile', function(req,res){
     //     res.send({ message: "No Profile Exists" })
     //      }   
         else{
-        
-            res.status(200).send(JSON.stringify(result));	
+            //console.log(JSON.stringify(result));
+        res.status(200).send(JSON.stringify(result));	
         }
 		//console.log(JSON.stringify(result));	
 		

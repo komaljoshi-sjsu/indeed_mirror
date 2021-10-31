@@ -28,7 +28,7 @@ class PostJob extends Component {
           loveJobRole: '',
           errors: {},
           successMsg: '',
-          errorMsg: ''
+          errorMsg: '',
       };
     }
     handleChangeCountry = (val) => {
@@ -55,7 +55,11 @@ class PostJob extends Component {
           errors: {},
         });
       }
-
+      handleDashBoard = (e)=>{
+        e.preventDefault();
+        const { history } = this.props;
+		    history.push("/employer");
+      }
       findFormErrors = () => {
         const { companyName, jobTitle, industry, city, shortJobDescription, salaryDetails,
             streetAddress, state, zipcode,country, jobMode, jobType, errors } = this.state;
@@ -376,6 +380,14 @@ class PostJob extends Component {
               <Col colSpan="2">
                 <Button variant="primary" type="submit" onClick={this.handleSubmit}>
                   Post Job
+                </Button>
+              </Col>
+              </Row>
+              <br/>
+              <Row>
+              <Col colSpan="2">
+                <Button variant="primary" type="submit" onClick={this.handleDashBoard}>
+                  DashBoard
                 </Button>
               </Col>
               </Row>
