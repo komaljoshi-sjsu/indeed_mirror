@@ -2,13 +2,13 @@
 import { React, Component} from 'react';
 import axios from 'axios';
 import {
-    Form, Button, Row, Col, Card, Container,InputGroup,Modal
+    Form, Button, Row, Col, Card, Container,InputGroup,Modal,Dropdown
   } from 'react-bootstrap';
 import { CountryDropdown } from 'react-country-region-selector';
 import backendServer from '../../webConfig';
 import EmployerNavbar from './EmployerNavbar'
-import {MdModeEdit} from 'react-icons/md';
-import { Redirect } from 'react-router';
+
+//import { Redirect } from 'react-router';
 // import { response } from 'express';
 
 class EmployerProfile extends Component {
@@ -17,204 +17,110 @@ class EmployerProfile extends Component {
       this.state = {
           employerId : 1,
           employerDetails:{},
-          empdetails:true,
-          compdetails:true,
+          empdetails:false,
+          compdetails:false,
           companyName: '',
+          employerName:'',
+          roleInCompany:'',
+          address:'',
           industry: '',
           jobTitle: '',
-          streetAddress: '',
           city: '',
           state: '',
           zipcode: '',
           country: '',
-          jobMode: '',
-          jobType: '',
-          salaryDetails: '',
-          shortJobDescription: '',
           errors: {},
-          successMsg: '',
-          errorMsg: '',
-          show:false,
+          website:'',
+          headquarters:'',
+          about:'',
+          founded:'',
+          mission:'',
+          companyValues:'',
+          workCulture:'',
+          companyType:'',
+          ceo:'',
+          companySize:'',
+          revenue:'',
+          companyDescription:'',
           update:true,
-          companyupdated:true
+          empupdated:false,
+          companyupdated:false,
+          companyDetails:[],
+          companyadded:false
       };
     }
     
       componentDidMount() {
-        const empid = {
-            empid: this.state.employerId
-        };
-        axios.post(`${backendServer}/getEmployerProfile`,empid).then((response) => {
-            console.log(response.data[0]);
+        axios.get(`${backendServer}/getCompanyDetails`).then((response) => {
+            //console.log(response.data);
             this.setState({
-                employerDetails : response.data[0],
+                companyDetails : this.state.companyDetails.concat(response.data) 
             });
         });
     }
  
     
     
-    handleChangeWebsite = (e) =>{
-        const { employerDetails }= this.state;
-        employerDetails.website = e.target.value;
-        this.setState({employerDetails}); 
-        this.setState({
-            errors: {},
-          });
-      } 
-      handleChangeCompanySize = (e) =>{
-        const { employerDetails }= this.state;
-        employerDetails.companySize = e.target.value;
-        this.setState({employerDetails}); 
-        this.setState({
-            errors: {},
-          });
-      } 
-      handleChangeAbout = (e) =>{
-        const { employerDetails }= this.state;
-        employerDetails.about = e.target.value;
-        this.setState({employerDetails}); 
-        this.setState({
-            errors: {},
-          });
-      } 
-      handleChangeCompanyType = (e) =>{
-        const { employerDetails }= this.state;
-        employerDetails.companyType = e.target.value;
-        this.setState({employerDetails}); 
-        this.setState({
-            errors: {},
-          });
-      } 
-      handleChangeDescription = (e) =>{
-        const { employerDetails }= this.state;
-        employerDetails.companyDescription = e.target.value;
-        this.setState({employerDetails}); 
-        this.setState({
-            errors: {},
-          });
-      } 
-      handleChangeRevenue = (e) =>{
-        const { employerDetails }= this.state;
-        employerDetails.revenue = e.target.value;
-        this.setState({employerDetails});
-        this.setState({
-            errors: {},
-          }); 
-      } 
-      handleChangeHeadquarters = (e) =>{
-        const { employerDetails }= this.state;
-        employerDetails.headquarters = e.target.value;
-        this.setState({employerDetails}); 
-        this.setState({
-            errors: {},
-          });
-      } 
-      handleChangeIndustry = (e) =>{
-        const { employerDetails }= this.state;
-        employerDetails.industry = e.target.value;
-        this.setState({employerDetails}); 
-        this.setState({
-            errors: {},
-          });
-      } 
-      handleChangeFounded = (e) =>{
-        const { employerDetails }= this.state;
-        employerDetails.founded = e.target.value;
-        this.setState({employerDetails}); 
-        this.setState({
-            errors: {},
-          });
-      } 
-      handleChangeMission = (e) =>{
-        const { employerDetails }= this.state;
-        employerDetails.mission = e.target.value;
-        this.setState({employerDetails});
-        this.setState({
-            errors: {},
-          }); 
-      } 
-      handleChangeWorkculture = (e) =>{
-        const { employerDetails }= this.state;
-        employerDetails.workCulture = e.target.value;
-        this.setState({employerDetails}); 
-        this.setState({
-            errors: {},
-          });
-      } 
-      handleChangeCompanyValues = (e) =>{
-        const { employerDetails }= this.state;
-        employerDetails.companyValues = e.target.value;
-        this.setState({employerDetails}); 
-        this.setState({
-            errors: {},
-          });
-      } 
-      handleChangeCeo = (e) =>{
-        const { employerDetails }= this.state;
-        employerDetails.ceo = e.target.value;
-        this.setState({employerDetails}); 
-        this.setState({
-            errors: {},
-          });
-      } 
-    handleChangeEmpName = (e) =>{
-        const { employerDetails }= this.state;
-        employerDetails.employerName = e.target.value;
-        this.setState({employerDetails}); 
-        this.setState({
-            errors: {},
-          });
-      } 
-      handleChangeRole = (e) =>{
-        const { employerDetails }= this.state;
-        employerDetails.roleInCompany = e.target.value;
-        this.setState({employerDetails});
-        this.setState({
-            errors: {},
-          }); 
-      } 
-      handleChangeAddress = (e) =>{
-        const { employerDetails }= this.state;
-        employerDetails.address = e.target.value;
-        this.setState({employerDetails}); 
-        this.setState({
-            errors: {},
-          });
-      } 
-      handleChangeCity = (e) =>{
-        const { employerDetails }= this.state;
-        employerDetails.city = e.target.value;
-        this.setState({employerDetails}); 
-        this.setState({
-            errors: {},
-          });
-      } 
-      handleChangeState = (e) =>{
-        const { employerDetails }= this.state;
-        employerDetails.state = e.target.value;
-        this.setState({employerDetails});
-        this.setState({
-            errors: {},
-          }); 
-      } 
-      handleChangeZipcode = (e) =>{
-        const { employerDetails }= this.state;
-        employerDetails.zipcode = e.target.value;
-        this.setState({employerDetails}); 
-        this.setState({
-            errors: {},
-          });
-      } 
+   
       
-      handleChangeCountry = (val) =>{ 
-        const { employerDetails }= this.state;
-        employerDetails.country = val;
-        this.setState({employerDetails}); 
-        this.setState({
-            errors: {},
-          });
-      } 
+      
+    // handleChangeEmpName = (e) =>{
+    //     const { employerDetails }= this.state;
+    //     employerDetails.employerName = e.target.value;
+    //     this.setState({employerDetails}); 
+    //     this.setState({
+    //         errors: {},
+    //       });
+    //   } 
+    //   handleChangeRole = (e) =>{
+    //     const { employerDetails }= this.state;
+    //     employerDetails.roleInCompany = e.target.value;
+    //     this.setState({employerDetails});
+    //     this.setState({
+    //         errors: {},
+    //       }); 
+    //   } 
+    //   handleChangeAddress = (e) =>{
+    //     const { employerDetails }= this.state;
+    //     employerDetails.address = e.target.value;
+    //     this.setState({employerDetails}); 
+    //     this.setState({
+    //         errors: {},
+    //       });
+    //   } 
+    //   handleChangeCity = (e) =>{
+    //     const { employerDetails }= this.state;
+    //     employerDetails.city = e.target.value;
+    //     this.setState({employerDetails}); 
+    //     this.setState({
+    //         errors: {},
+    //       });
+    //   } 
+    //   handleChangeState = (e) =>{
+    //     const { employerDetails }= this.state;
+    //     employerDetails.state = e.target.value;
+    //     this.setState({employerDetails});
+    //     this.setState({
+    //         errors: {},
+    //       }); 
+    //   } 
+    //   handleChangeZipcode = (e) =>{
+    //     const { employerDetails }= this.state;
+    //     employerDetails.zipcode = e.target.value;
+    //     this.setState({employerDetails}); 
+    //     this.setState({
+    //         errors: {},
+    //       });
+    //   } 
+      
+    //   handleChangeCountry = (val) =>{ 
+    //     const { employerDetails }= this.state;
+    //     employerDetails.country = val;
+    //     this.setState({employerDetails}); 
+    //     this.setState({
+    //         errors: {},
+    //       });
+    //   } 
       handleEmpDetails = (e) => {
         e.preventDefault();
         const newErrors = this.findFormErrorsEmp();
@@ -223,16 +129,24 @@ class EmployerProfile extends Component {
                 errors: newErrors,
             });
         }else{
-            this.sendEmployerAPI(this.state.employerDetails);
+            const employerData = {
+                employerName:this.state.employerName,
+                roleInCompany:this.state.roleInCompany,
+                address:this.state.address,
+                city:this.state.city,
+                state:this.state.state,
+                country:this.state.country,
+                zipcode:this.state.zipcode
+            }
+            this.sendEmployerAPI(employerData);
             this.setState({
-                updated : true 
+                empupdated : true 
             });
-            this.setState({
-                show : true 
-            });
+            
         }  
     }
     handleCompDetails = (e) => {
+       
         e.preventDefault();
         const newErrors = this.findFormErrorsCompany();
         if (Object.keys(newErrors).length > 0) {
@@ -240,49 +154,71 @@ class EmployerProfile extends Component {
                 errors: newErrors,
             });
         }else{
-            this.sendCompanyAPI(this.state.employerDetails);
+            const companyData = {
+                employerId:"4",
+                companyName:this.state.companyName,
+                website:this.state.website,
+                companySize:this.state.companySize,
+                about:this.state.about,
+                companyType:this.state.companyType,
+                companyDescription:this.state.companyDescription,
+                headquarters:this.state.headquarters,
+                industry:this.state.industry,
+                mission:this.state.mission,
+                revenue:this.state.revenue,
+                founded:this.state.founded,
+                workCulture:this.state.workCulture,
+                companyValues:this.state.companyValues,
+                ceo:this.state.ceo,
+               
+            }
+            this.sendCompanyAPI(companyData);
             this.setState({
                 companyupdated : true 
             });
             this.setState({
-                show : true 
+                companyadded : false 
             });
+            // this.setState({
+            //     show : true 
+            // });
         }    
         
     }
     findFormErrorsEmp = () => {
-      const {employerDetails,errors} = this.state;
-      if(!employerDetails.employerName || employerDetails.employerName === '') errors.employerName = 'Employer Name cannot be blank!';
-      if(!employerDetails.roleInCompany || employerDetails.roleInCompany === '') errors.roleInCompany = 'Role cannot be blank!';
-      if(!employerDetails.address || employerDetails.address === '') errors.address = 'Address cannot be blank!';
-      if(!employerDetails.city || employerDetails.city === '') errors.city = 'City cannot be blank!';
-      if(!employerDetails.state || employerDetails.state === '') errors.state = 'State cannot be blank!';
-      if(!employerDetails.country || employerDetails.country === '') errors.country = 'Country cannot be blank!';
-      if(!employerDetails.zipcode || employerDetails.zipcode === '') errors.zipcode = 'Zipcode cannot be blank!';  
+      const {errors} = this.state;
+      if(!this.state.employerName || this.state.employerName === '') errors.employerName = 'Employer Name cannot be blank!';
+      if(!this.state.roleInCompany || this.state.roleInCompany === '') errors.roleInCompany = 'Role cannot be blank!';
+      if(!this.state.address || this.state.address === '') errors.address = 'Address cannot be blank!';
+      if(!this.state.city || this.state.city === '') errors.city = 'City cannot be blank!';
+      if(!this.state.state || this.state.state === '') errors.state = 'State cannot be blank!';
+      if(!this.state.country || this.state.country === '') errors.country = 'Country cannot be blank!';
+      if(!this.state.zipcode || this.state.zipcode === '') errors.zipcode = 'Zipcode cannot be blank!';  
       return errors;
     }
     findFormErrorsCompany = () => {
-        const {employerDetails,errors} = this.state;
-        if(!employerDetails.companyName || employerDetails.companyName === '') errors.companyName = 'Company Name cannot be blank!';
-        if(!employerDetails.about || employerDetails.about === '') errors.about = 'Role cannot be blank!';
-        if(!employerDetails.ceo || employerDetails.ceo === '') errors.ceo = 'CEO Name cannot be blank!';
-        if(!employerDetails.founded || employerDetails.founded === '') errors.founded = 'Founded details cannot be blank!';
-        if(!employerDetails.companySize || employerDetails.companySize === '') errors.companySize = 'Company Size cannot be blank!';
-        if(!employerDetails.revenue || employerDetails.revenue === '') errors.revenue = 'Revenue cannot be blank!';
-        if(!employerDetails.industry || employerDetails.industry === '') errors.industry = 'Industry cannot be blank!'; 
-        if(!employerDetails.companyDescription || employerDetails.companyDescription === '') errors.companyDescription = 'Company Description cannot be blank!';  
-        if(!employerDetails.mission || employerDetails.mission === '') errors.mission = 'Mission & Vision cannot be blank!';  
-        if(!employerDetails.workCulture || employerDetails.workCulture === '') errors.workCulture = 'Work Culture cannot be blank!';  
-        if(!employerDetails.companyValues || employerDetails.companyValues === '') errors.companyValues = 'Comapny values cannot be blank!';  
-        if(!employerDetails.website || employerDetails.website === '') errors.website = 'Website cannot be blank!';  
-        if(!employerDetails.headquarters || employerDetails.headquarters === '') errors.headquarters = 'Headquarters cannot be blank!';  
-        if(!employerDetails.companyType || employerDetails.companyType === '') errors.companyType = 'Company type cannot be blank!';   
+        const {errors} = this.state;
+        if(!this.state.companyName || this.state.companyName === '') errors.companyName = 'Company Name cannot be blank!';
+        if(!this.state.about || this.state.about === '') errors.about = 'Role cannot be blank!';
+        if(!this.state.ceo || this.state.ceo === '') errors.ceo = 'CEO Name cannot be blank!';
+        if(!this.state.founded || this.state.founded === '') errors.founded = 'Founded details cannot be blank!';
+        if(!this.state.companySize || this.state.companySize === '') errors.companySize = 'Company Size cannot be blank!';
+        if(!this.state.revenue || this.state.revenue === '') errors.revenue = 'Revenue cannot be blank!';
+        if(!this.state.industry || this.state.industry === '') errors.industry = 'Industry cannot be blank!'; 
+        if(!this.state.companyDescription || this.state.companyDescription === '') errors.companyDescription = 'Company Description cannot be blank!';  
+        if(!this.state.mission || this.state.mission === '') errors.mission = 'Mission & Vision cannot be blank!';  
+        if(!this.state.workCulture || this.state.workCulture === '') errors.workCulture = 'Work Culture cannot be blank!';  
+        if(!this.state.companyValues || this.state.companyValues === '') errors.companyValues = 'Comapny values cannot be blank!';  
+        if(!this.state.website || this.state.website === '') errors.website = 'Website cannot be blank!';  
+        if(!this.state.headquarters || this.state.headquarters === '') errors.headquarters = 'Headquarters cannot be blank!';  
+        if(!this.state.companyType || this.state.companyType === '') errors.companyType = 'Company type cannot be blank!';   
         return errors;
       }
     sendEmployerAPI = (data) => {
-        axios.post(`${backendServer}/editEmployerDetails`, data)
+        axios.post(`${backendServer}/addEmployerDetails`, data)
             .then(response=> {
                 if (response.status === 200) {
+                    console.log(response)
                     this.setState({
                         successMsg: response.data
                     })
@@ -294,7 +230,7 @@ class EmployerProfile extends Component {
             );
     }    
     sendCompanyAPI = (data) => {
-        axios.post(`${backendServer}/editCompanyDetails`, data)
+        axios.post(`${backendServer}/addCompanyDetails`, data)
             .then(response=> {
                 if (response.status === 200) {
                     this.setState({
@@ -307,55 +243,108 @@ class EmployerProfile extends Component {
             }
             );
     }
-    handleModalClose(){
-        this.setState({show:!this.state.show}) 
-        this.setState({
-            updated : true
-        })
-        this.setState({
-            companyupdated : true
-        })
+    updateCompanyId = (data) => {
+        var id = {
+            employerId:"4",
+            companyid : data
+        }
+        axios.post(`${backendServer}/addCompanyIdToEmployer`, id)
+            .then(response=> {
+                if (response.status === 200) {
+                    axios.post(`${backendServer}/api/createCompanyMongo`, id)
+                    .then(response=> {
+                        if (response.status === 200) {
+                            console.log(response)
+                        }
+                        else {
+                            //this.setState({ errorMsg: response.data });
+                          }
+                    }
+                    );
+                }
+                else {
+                    //this.setState({ errorMsg: response.data });
+                  }
+            }
+            );
     }
-    employerdetails = (e) =>{
-        this.setState({
-            empdetails : false
-        })
-        this.setState({
-            updated : false
-        })
+    handleCompany = (e)=>{
+        e.preventDefault();
+        
+        const val = e.target.value;
+        //console.log(val)
+        if(val !== 'Add'){
+            this.setState({
+                companyadded:false
+            })
+
+           this.updateCompanyId(val)
+        }else {
+
+            this.setState({
+                companyadded:true
+            })
+            
+        }
     }
-    companydetails = (e) =>{
+    handleChangeCountry = (val) => {
+        this.setState({ country: val });
         this.setState({
-            compdetails : false
-        })
+            errors: {},
+          });
+      }
+    handleChange = (e) => {
+        e.preventDefault();
+        this.setState({ [e.target.name]: e.target.value });
         this.setState({
-            companyupdated : false
-        })
-    }
+            errors: {},
+          });
+    } 
+    handleChangeCompanyName = (e) => {
+        e.preventDefault();
+        this.setState({ [e.target.name]: e.target.value });
+        const { companyDetails} = this.state;
+        var {errors} = this.state;
+        this.setState({ [e.target.name]: e.target.value })
+        for (var i = 0; i < companyDetails.length ;i++) {
+            if (e.target.value === companyDetails[i].companyName) {
+                console.log("alra")
+                errors.companyName = "Company Already exsists"
+                return errors;
+            }
+        }
+        errors.companyName = "";
+        return errors;
+        
+    } 
+   
+   
     render() {
-       const {successMsg,errorMsg,updated,companyupdated,errors} = this.state;
+       const {updated,empupdated,companyupdated,errors,companyDetails,companyadded} = this.state;
        var empdetailscol = null;    
        var compdetailscol = null; 
-       if(this.state.empdetails || updated){
+       var companyDetailsDiv = null;
+      
+       if(empupdated){
            empdetailscol = (
                <div>
                     
-                    <label className="dethead">Name:</label> {this.state.employerDetails.employerName}
+                    <label className="dethead">Name:</label> {this.state.employerName}
                     <br/>
-                    <label className="dethead">Role:</label>{this.state.employerDetails.roleInCompany}
+                    <label className="dethead">Role:</label>{this.state.roleInCompany}
                     <br/>
-                    <label className="dethead">Address:</label>{this.state.employerDetails.address}
+                    <label className="dethead">Address:</label>{this.state.address}
                     <br/>
-                    <label className="dethead">City:</label>{this.state.employerDetails.city}
+                    <label className="dethead">City:</label>{this.state.city}
                     <br/>
-                    <label className="dethead">State:</label>{this.state.employerDetails.state}
+                    <label className="dethead">State:</label>{this.state.state}
                     <br/>
-                    <label className="dethead">Country:</label>{this.state.employerDetails.country}
+                    <label className="dethead">Country:</label>{this.state.country}
                     <br/>
-                    <label className="dethead">Zipcode:</label>{this.state.employerDetails.zipcode}
+                    <label className="dethead">Zipcode:</label>{this.state.zipcode}
                </div>
            )
-       }else if(!this.state.empdetails){
+       }else if(!empupdated){
         empdetailscol = (
             <div>
                 <Col>
@@ -366,8 +355,8 @@ class EmployerProfile extends Component {
                  <span style={{color:'red'}}>{errors.employerName}</span>
                  <Row> 
                  &nbsp;&nbsp;&nbsp;<input className="detinput" name="employerName" 
-                 value={this.state.employerDetails.employerName}
-                 onChange={(e) => { this.handleChangeEmpName(e)}}></input>
+                 value={this.state.employerName}
+                 onChange={this.handleChange}></input>
                  </Row>
                  <br/>
                  <Row>
@@ -377,8 +366,8 @@ class EmployerProfile extends Component {
                  
                  <Row> 
                  &nbsp;&nbsp;&nbsp;<input className="detinput" name="roleInCompany" 
-                 value={this.state.employerDetails.roleInCompany}
-                 onChange={(e) => { this.handleChangeRole(e)}}></input>
+                 value={this.state.roleInCompany}
+                 onChange={this.handleChange}></input>
                  </Row>
                  <br/>
                  <Row>
@@ -387,8 +376,8 @@ class EmployerProfile extends Component {
                  <span style={{color:'red'}}>{errors.address}</span>
                  <Row> 
                  &nbsp;&nbsp;&nbsp;<input className="detinput" name="address"
-                  value={this.state.employerDetails.address}
-                  onChange={(e) => { this.handleChangeAddress(e)}}></input>
+                  value={this.state.address}
+                  onChange={this.handleChange}></input>
                  </Row>
                  <br/>
                  <Row>
@@ -398,8 +387,8 @@ class EmployerProfile extends Component {
                  
                  <Row> 
                  &nbsp;&nbsp;&nbsp;<input className="detinput" name="city"
-                  value={this.state.employerDetails.city}
-                  onChange={(e) => { this.handleChangeCity(e)}}></input>
+                  value={this.state.city}
+                  onChange={this.handleChange}></input>
                  </Row>
                  <br/>
                  <Row>
@@ -409,8 +398,8 @@ class EmployerProfile extends Component {
                  
                  <Row> 
                  &nbsp;&nbsp;&nbsp;<input className="detinput" name="state" 
-                 value={this.state.employerDetails.state}
-                 onChange={(e) => { this.handleChangeState(e)}}></input>
+                 value={this.state.state}
+                 onChange={this.handleChange}></input>
                  </Row>
                  
                  <br/>
@@ -421,8 +410,8 @@ class EmployerProfile extends Component {
                  
                  <Row> 
                  &nbsp;&nbsp;&nbsp;<CountryDropdown className="detinput"
-                    value={this.state.employerDetails.country}
-                    onChange={(val) => { this.handleChangeCountry(val)}}       
+                    value={this.state.country}
+                    onChange={(val) => this.handleChangeCountry(val)}      
                   />
                  </Row>
                  <br/>
@@ -433,8 +422,8 @@ class EmployerProfile extends Component {
                 
                  <Row> 
                  &nbsp;&nbsp;&nbsp;<input className="detinput" name="zipcode" 
-                 value={this.state.employerDetails.zipcode}
-                 onChange={(e) => { this.handleChangeZipcode(e)}}></input>
+                 value={this.state.zipcode}
+                 onChange={this.handleChange}></input>
                  </Row>
                  <br/>
                  </Col>
@@ -443,52 +432,89 @@ class EmployerProfile extends Component {
             </div>
         )
     }    
+      
    
-       if(this.state.compdetails || companyupdated ){
+       if(companyupdated){
+           
         compdetailscol = (
             <div>
-              <label className="dethead">Website:</label>{this.state.employerDetails.website}
+                <label className="dethead">Company Name:</label>{this.state.companyName}
+                <br/>
+              <label className="dethead">Website:</label>{this.state.website}
               <br/>
-              <label className="dethead">Company Size:</label>{this.state.employerDetails.companySize}
+              <label className="dethead">Company Size:</label>{this.state.companySize}
               <br/>
-              <label className="dethead">About:</label>{this.state.employerDetails.about}
+              <label className="dethead">About:</label>{this.state.about}
               <br/>
-              <label className="dethead">Company Type:</label>{this.state.employerDetails.companyType}
+              <label className="dethead">Company Type:</label>{this.state.companyType}
               <br/>
-              <label className="dethead"> Description:</label>{this.state.employerDetails.companyDescription}
+              <label className="dethead"> Description:</label>{this.state.companyDescription}
               <br/>
-              <label className="dethead">Revenue:</label>{this.state.employerDetails.revenue}
+              <label className="dethead">Revenue:</label>{this.state.revenue}
               <br/>
-              <label className="dethead">Headquarters:</label>{this.state.employerDetails.headquarters}
+              <label className="dethead">Headquarters:</label>{this.state.headquarters}
               <br/>
-              <label className="dethead"> Industry:</label>{this.state.employerDetails.industry}
+              <label className="dethead"> Industry:</label>{this.state.industry}
               <br/>
-              <label className="dethead">Founded:</label>{this.state.employerDetails.founded}
+              <label className="dethead">Founded:</label>{this.state.founded}
               <br/>
-              <label className="dethead">Mission and Vision:</label>{this.state.employerDetails.mission}
+              <label className="dethead">Mission and Vision:</label>{this.state.mission}
               <br/>
-              <label className="dethead">WorkCulture:</label>{this.state.employerDetails.workCulture}
+              <label className="dethead">WorkCulture:</label>{this.state.workCulture}
               <br/>
-              <label className="dethead">Company Values:</label>{this.state.employerDetails.companyValues}
+              <label className="dethead">Company Values:</label>{this.state.companyValues}
               <br/>
-              <label className="dethead">CEO Name:</label>{this.state.employerDetails.ceo}
+              <label className="dethead">CEO Name:</label>{this.state.ceo}
               <br/>
                </div>
            )
-       }else if(!this.state.compdetails){
+       }else 
+       if(!companyupdated){
+        companyDetailsDiv = (
+            <div>
+            Select a Company
+            <br/>
+            <select  onChange={(e) =>{ this.handleCompany(e)}}>
+            
+            <option value="">Select</option> 
+              {this.state.companyDetails.map(companyDetail=>
+              <option value={companyDetail.companyId}>{companyDetail.companyName}</option>
+              )}
+              <option value="Add">Add Company</option> 
+            </select>
+            &nbsp;
+            <Button onClick = {this.handleCompDetails}>Save</Button>
+         
+            
+            </div>
+            
+       )
+    }  if(companyadded){
         compdetailscol = (
             <div>
                 <Col>
                 <span style={{color:'red'}}>* </span> <span style={{color:'gray'}}>Required Fields</span>
+                <Row>
+                 <label>Company Name<span style={{color:'red'}}>*</span></label>
+                 </Row>
+                 <span style={{color:'red'}}>{errors.companyName}</span>
+                 <Row> 
+                 &nbsp;&nbsp;&nbsp;<input className="detinput" name="companyName"
+                 value={this.state.companyName }
+                 onChange={this.handleChangeCompanyName}></input>
+                 </Row>
+                 
+                 <br/>
                  <Row>
                  <label>Website<span style={{color:'red'}}>*</span></label>
                  </Row>
-                 <span style={{color:'red'}}>{errors.roleInCompany}</span>
+                 <span style={{color:'red'}}>{errors.website}</span>
                  <Row> 
                  &nbsp;&nbsp;&nbsp;<input className="detinput" name="website"
-                 value={this.state.employerDetails.website }
-                 onChange={(e) => { this.handleChangeWebsite(e)}}></input>
+                 value={this.state.website }
+                 onChange={this.handleChange}></input>
                  </Row>
+
                  <br/>
                  <Row>
                  <label>Company Size<span style={{color:'red'}}>*</span></label>    
@@ -497,8 +523,8 @@ class EmployerProfile extends Component {
                  <Row> 
                  &nbsp;&nbsp;&nbsp;<input className="detinput"
                  name="companySize"
-                 value={this.state.employerDetails.companySize }
-                 onChange={(e) => { this.handleChangeCompanySize(e)}}></input>
+                 value={this.state.companySize }
+                 onChange={this.handleChange}></input>
                  </Row>
                  <br/>
                  <Row>
@@ -508,8 +534,8 @@ class EmployerProfile extends Component {
                  <Row> 
                  &nbsp;&nbsp;&nbsp;<textarea className="detinput"
                  name="about"
-                 value={this.state.employerDetails.about }
-                 onChange={(e) => { this.handleChangeAbout(e)}}></textarea>
+                 value={this.state.about }
+                 onChange={this.handleChange}></textarea>
                  </Row>
                  <br/>
                  <Row>
@@ -519,8 +545,8 @@ class EmployerProfile extends Component {
                  <Row> 
                  &nbsp;&nbsp;&nbsp;<input className="detinput"
                  name="companyType"
-                 value={this.state.employerDetails.companyType }
-                 onChange={(e) => { this.handleChangeCompanyType(e)}}></input>
+                 value={this.state.companyType }
+                 onChange={this.handleChange}></input>
                  </Row>
                  <br/>
                  <Row>
@@ -530,8 +556,8 @@ class EmployerProfile extends Component {
                  <Row> 
                  &nbsp;&nbsp;&nbsp;<textarea className="detinput"
                  name="companyDescription"
-                 value={this.state.employerDetails.companyDescription }
-                 onChange={(e) => { this.handleChangeDescription(e)}}></textarea>
+                 value={this.state.companyDescription }
+                 onChange={this.handleChange}></textarea>
                  </Row>
                  <br/>
                  <Row>
@@ -541,8 +567,8 @@ class EmployerProfile extends Component {
                  <Row> 
                  &nbsp;&nbsp;&nbsp;<input className="detinput"
                  name="revenue"
-                 value={this.state.employerDetails.revenue }
-                 onChange={(e) => { this.handleChangeRevenue(e)}}></input>
+                 value={this.state.revenue }
+                 onChange={this.handleChange}></input>
                  </Row>
                  <br/>
                  <Row>
@@ -552,8 +578,8 @@ class EmployerProfile extends Component {
                  <Row> 
                  &nbsp;&nbsp;&nbsp;<input className="detinput"
                  name="headquarters"
-                 value={this.state.employerDetails.headquarters }
-                 onChange={(e) => { this.handleChangeHeadquarters(e)}}></input>
+                 value={this.state.headquarters }
+                 onChange={this.handleChange}></input>
                  </Row>
                  <br/>
                  <Row>
@@ -563,8 +589,8 @@ class EmployerProfile extends Component {
                  <Row> 
                  &nbsp;&nbsp;&nbsp;<input className="detinput"
                  name="industry"
-                 value={this.state.employerDetails.industry }
-                 onChange={(e) => { this.handleChangeIndustry(e)}}></input>
+                 value={this.state.industry }
+                 onChange={this.handleChange}></input>
                  </Row>
                  <br/>
                  <Row>
@@ -574,8 +600,8 @@ class EmployerProfile extends Component {
                  <Row>
                  &nbsp;&nbsp;&nbsp;<textarea className="detinput"
                  name="founded"
-                 value={this.state.employerDetails.founded }
-                 onChange={(e) => { this.handleChangeFounded(e)}}></textarea>
+                 value={this.state.founded }
+                 onChange={this.handleChange}></textarea>
                  </Row>
                  <br/>
                  <Row>
@@ -585,8 +611,8 @@ class EmployerProfile extends Component {
                  <Row> 
                  &nbsp;&nbsp;&nbsp;<textarea className="detinput"
                  name="mission"
-                 value={this.state.employerDetails.mission }
-                 onChange={(e) => { this.handleChangeMission(e)}}></textarea>
+                 value={this.state.mission }
+                 onChange={this.handleChange}></textarea>
                  </Row>
                  <br/>
                  <Row>
@@ -596,8 +622,8 @@ class EmployerProfile extends Component {
                  <Row> 
                  &nbsp;&nbsp;&nbsp;<textarea className="detinput"
                  name="workCulture"
-                 value={this.state.employerDetails.workCulture }
-                 onChange={(e) => { this.handleChangeWorkculture(e)}}></textarea>
+                 value={this.state.workCulture }
+                 onChange={this.handleChange}></textarea>
                  </Row>
                  <br/>
                  <Row>
@@ -607,8 +633,8 @@ class EmployerProfile extends Component {
                  <Row> 
                  &nbsp;&nbsp;&nbsp;<textarea className="detinput"
                  name="companyValues"
-                 value={this.state.employerDetails.companyValues }
-                 onChange={(e) => { this.handleChangeCompanyValues(e)}}></textarea>
+                 value={this.state.companyValues }
+                 onChange={this.handleChange}></textarea>
                  </Row>
                  <br/>
                  <Row>
@@ -618,14 +644,15 @@ class EmployerProfile extends Component {
                  <Row> 
                  &nbsp;&nbsp;&nbsp;<input className="detinput"
                  name="ceo"
-                 value={this.state.employerDetails.ceo }
-                 onChange={(e) => { this.handleChangeCeo(e)}}></input>
+                 value={this.state.ceo }
+                 onChange={this.handleChange}></input>
                  </Row>
+                
                  </Col>
-                 <Button onClick = {this.handleCompDetails}>Save</Button>
+                 
             </div>
         )
-    }     
+        }
 
     
       return (
@@ -635,25 +662,29 @@ class EmployerProfile extends Component {
             
             <div className="main-div">
             <div className = "details">   
-            <h4>Employer Details</h4><span className="editdetails"/><Button onClick={this.employerdetails} variant = "white" ><MdModeEdit/></Button>
+            <h4>Employer Details</h4><span className="editdetails"/>
+            
             </div>   
-             {empdetailscol}
+
+            {empdetailscol}
+            
             </div>
             <div className="main-div">
             <div className = "details">   
-            <h4>Company Details</h4><span className="editdetails"/><Button onClick={this.companydetails} variant = "white"><MdModeEdit/></Button>
+            <h4>Company Details</h4><span className="editdetails"/>
             </div> 
+             {companyDetailsDiv} 
               {compdetailscol}
             </div>
             <div>
-            <Modal size="md-down"
+            {/* <Modal size="md-down"
             aria-labelledby="contained-modal-title-vcenter"
             centered
             show={this.state.show} onHide={()=>this.handleModalClose()}>
                 <Modal.Header closeButton>
                 <Modal.Title>{successMsg} {errorMsg}</Modal.Title>
                 </Modal.Header>
-            </Modal>
+            </Modal> */}
       </div>
        
            

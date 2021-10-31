@@ -12,6 +12,7 @@ import UploadPhotos from './pages/JobSeeker/UploadPhotos.js'
 import CompanyPhotos from './pages/JobSeeker/CompanyPhotos'
 import AdminPhoto from './pages/Admin/AdminPhoto.js'
 import EmployerProfile from './pages/Employer/EmployerProfile'
+import EmployerUpdateProfile from './pages/Employer/EmployerUpdateProfile'
 import Reviews from './pages/JobSeeker/Reviews';
 import AdminReview from './pages/Admin/AdminReview.js'
 //Create a Main Component
@@ -28,6 +29,7 @@ class Main extends Component {
         <Route path="/postJob" component={PostJob} />
         <Route path="/employer" component={Employer} />
         <Route path="/employerprofile" component={EmployerProfile} />
+        <Route path="/employerupdateprofile" component={EmployerUpdateProfile} />
         <Route path="/landingPage" component={JobSeekerLandingPage} />
         <Route path="/company" component={CompanyTabs} />
         <Route path="/photos" component={UploadPhotos} />
