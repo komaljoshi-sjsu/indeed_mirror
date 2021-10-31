@@ -16,7 +16,7 @@ import EmployerProfile from './pages/Employer/EmployerProfile'
 import EmployerUpdateProfile from './pages/Employer/EmployerUpdateProfile'
 import Reviews from './pages/JobSeeker/Reviews';
 import AdminReview from './pages/Admin/AdminReview.js'
-import AddSalaryReview from './pages/JobSeeker/AddSalaryReview'
+import AddSalaryReview from './pages/Company/AddSalaryReview'
 import Resume from './pages/JobSeeker/Resume.js'
 import FindSalaries from './pages/JobSeeker/FindSalaries'
 
