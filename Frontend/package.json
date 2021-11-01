@@ -28,7 +28,7 @@
     "react": "^17.0.1",
     "react-bootstrap": "^1.6.3",
     "react-bootstrap-icons": "^1.6.1",
-    "react-bootstrap-range-slider": "^3.0.2",
+    "react-bootstrap-range-slider": "^3.0.3",
     "react-burger-menu": "^3.0.6",
     "react-chartjs-2": "^3.3.0",
     "react-country-region-selector": "^3.3.0",

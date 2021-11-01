@@ -3,7 +3,8 @@ const initState = {
     id:null,
     accountType:"",
     email:"",
-    token: ""
+    token: "",
+    phone:''
 }
 
 export const userReducer = (state=initState,action) => {
@@ -36,7 +37,12 @@ export const userReducer = (state=initState,action) => {
             let accountType = {
                 ...state,'accountType':action.payload
             }
-            return accountType;        
+            return accountType;   
+        case "setPhone"  :   
+            let phoneState = {
+                ...state,'phone':action.payload
+            }
+            return phoneState;
         
     }
     return state;

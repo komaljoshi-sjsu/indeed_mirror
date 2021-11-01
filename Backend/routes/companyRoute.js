@@ -25,7 +25,7 @@ router.get("/api/snapshot/:companyId", (req, res) => {
                     details = details[0];
                     details.whScore = cmpny.avgWorkHappinessScore;
                     details.lScore = cmpny.avgLearningScore;
-                    details.apScore = cmpny.avgAppreciationSCore;
+                    details.apScore = cmpny.avgAppreciationScore;
                     details.noOfReviews = cmpny.noOfReviews;
                     return res.status(200).send(details);
                 }
