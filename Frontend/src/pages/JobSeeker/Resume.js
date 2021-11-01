@@ -3,12 +3,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {useSelector} from 'react-redux';
 import JobSeekerNavbar from './JobSeekerNavbar';
 import { color } from '@mui/system';
+
+import {Redirect} from 'react-router';
 import { Button, Form } from 'react-bootstrap';
 import { useState } from 'react';
 
 function Resume(props) {
     let fullname = useSelector((state)=>state.userInfo.name);
     const id = useSelector((state)=>state.userInfo.id);
+    const[redirectTo, setRedirectTo] = useState(null);
     const phone = useSelector((state)=>state.userInfo.phone);
     const email = useSelector((state)=>state.userInfo.email);
     const[hideSkip,setHideSkip] = useState(false);
@@ -40,6 +43,7 @@ function Resume(props) {
     }
     return (
         <div>
+            {redirectTo}
             <JobSeekerNavbar></JobSeekerNavbar>
             <div className="container-fullwidth" style={{marginTop:'5%',marginRight:'auto',marginLeft:'auto',width:'50%'}}>
                 <div className="row" hidden={hideDiv}>
@@ -93,7 +97,7 @@ function Resume(props) {
                     <p></p>
                 </div><br></br>
                 <div className="row" hidden={hideDiv} style={{border:'1px solid darkgray', boxShadow:'1px 1px 1px 1px darkgray',padding:'20px 20px 5px 20px'}}>
-                    <b>Job Preferences <img src="/images/pencil.png" height='15px' width='15px'style={{float:'right'}}/></b><p></p>
+                    <b>Job Preferences <img src="/images/pencil.png" height='15px' width='15px'style={{float:'right',cursor:'pointer'}} onClick={()=>setRedirectTo(<Redirect to="/preferences"/>)}/></b><p></p>
                     <p></p>
                     <p><small style={{color:'darkgray'}}>Save specific details like desired pay and schedule that help us match you with better jobs</small></p>
                 </div><br></br>

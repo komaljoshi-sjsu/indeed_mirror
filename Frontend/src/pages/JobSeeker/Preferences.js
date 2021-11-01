@@ -6,7 +6,7 @@ import { color } from '@mui/system';
 import { Button, Form } from 'react-bootstrap';
 import { useState } from 'react';
 import Modal from 'react-bootstrap/Modal'
-import { BsReverseBackspaceReverse } from 'react-icons/bs';
+import {Redirect} from 'react-router';
 
 function Preferences(props) {
 
@@ -14,6 +14,7 @@ function Preferences(props) {
     const[heading, setHeading] = useState('');
     const[modal, showModal] = useState(false);
     const[modalDiv, setModalDiv] = useState(null);
+    const[redirectTo, setRedirectTo] = useState(null);
     let initModal = (question, heading) => {
         setQuestion(question);
         setHeading(heading);
@@ -102,15 +103,15 @@ function Preferences(props) {
                 setModalDiv(
                     <Form>
                         <Form.Group className="mb-3" >
-                            <Form.Control type="number" name = "jobtitle" required min="0"></Form.Control>
+                            <Form.Control type="number" name = "payamount" required min="0"></Form.Control>
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Control as="select">
-                                <option value="per hour"></option>
-                                <option value="per day"></option>
-                                <option value="per week"></option>
-                                <option value="per month"></option>
-                                <option value="per year"></option>
+                            <Form.Control as="select" name='paycat'>
+                                <option value="per hour">per hour</option>
+                                <option value="per day">per day</option>
+                                <option value="per week">per week</option>
+                                <option value="per month">per month</option>
+                                <option value="per year">per year</option>
                             </Form.Control>
                         </Form.Group>
                         <Button variant="primary"  type="submit">
@@ -141,19 +142,20 @@ function Preferences(props) {
     }
     return (
         <div>
+            {redirectTo}
             <JobSeekerNavbar></JobSeekerNavbar>
             <Modal show={modal} onHide={()=> showModal(false)}>
                 <Modal.Header>
                     <Modal.Title>{heading}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body >
-                    <b>{question}</b>
+                    <h5><b>{question}</b></h5><p></p>
                     {modalDiv}
                 </Modal.Body>
             </Modal>
             <div className="container-fullwidth" style={{marginTop:'5%',marginRight:'auto',marginLeft:'auto',width:'50%'}}>
                 <div className="row border-bottom">
-                    <h3><b>Job Preferences</b></h3>
+                    <h3><img src="/images/left-arrow.png" onClick={()=>setRedirectTo(<Redirect to="/resume"/>)} height='30px' width='30px' style={{cursor:'pointer'}}/><br></br><p></p><b>Job Preferences</b></h3>
                     <span style={{color:'darkgray'}}>Update preferences as needed to get better recommendations across Indeed.</span>
                     <p></p>
                 </div>
