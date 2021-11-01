@@ -12,7 +12,7 @@ import backgroundImg from '../../CSS/findSalary.png'
 import Card from "react-bootstrap/Card";
 import backendServer from '../../webConfig';
 
-class JobSeekerLandingPage extends Component {
+class FindSalaries extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -358,4 +358,4 @@ class JobSeekerLandingPage extends Component {
   }
 }
 
-export default JobSeekerLandingPage
+export default FindSalaries
