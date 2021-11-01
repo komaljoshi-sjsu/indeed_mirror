@@ -177,11 +177,13 @@ function Snapshot(props) {
                 <div className="row">
                     <h2><b>Featured Reviews</b></h2>
                     {reviews.map(review=> {
+                        let postedDate = review.postedDate;
+                        postedDate = postedDate.replace('T',' ');
                         return (
                             <div>
                                 <div>
                                     <p><img src="/images/user.png" height='24px' width='24px'/><small style={{color:"gray"}}> {review.reviewerRole} in {review.city},{review.state}</small></p>
-                                    <b>{review.rating} </b><img src="/images/star.png" height='19px' width='19px'/><span style={{color:"gray"}}> on {review.postedDate}</span>
+                                    <b>{review.rating} </b><img src="/images/star.png" height='19px' width='19px'/><span style={{color:"gray"}}> on {postedDate}</span>
                                     <p><b>{review.reviewTitle}</b><br></br></p>
                                     <p>{review.reviewComments}</p><br></br>
                                     <p><b>Pros:</b></p>

@@ -21,6 +21,7 @@ function Login(props) {
     const setId = bindActionCreators(userActionCreator.setId,dispatch);
     const setAccountType = bindActionCreators(userActionCreator.setAccountType,dispatch);
     const setName = bindActionCreators(userActionCreator.setName,dispatch);
+    const setPhone = bindActionCreators(userActionCreator.setPhone,dispatch);
     const setToken = bindActionCreators(userActionCreator.setToken,dispatch);
 
     let redirectToSignUp = (e) => {
@@ -53,6 +54,7 @@ function Login(props) {
                 setName(user.name);
                 setAccountType(accountType);
                 setId(user.id);
+                setPhone(user.jobSeekerContact);
                 //redirectToHome();
             }
         },error=>{

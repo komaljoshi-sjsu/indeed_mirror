@@ -44,3 +44,12 @@ export const setAccountType = (accountType) => {
         });
     } 
 }
+
+export const setPhone = (phone) => {
+    return (dispatch) => {
+        dispatch({
+            type:"setPhone",
+            payload:phone
+        });
+    } 
+}
