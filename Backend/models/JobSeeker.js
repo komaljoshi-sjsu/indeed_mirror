@@ -11,7 +11,7 @@ const jsSchema = new Schema({
         required: true
     },
     jobPreference: [{
-        type: Array,
+        type: Object,
     }],
     savedJobs: [{
         type: Array,

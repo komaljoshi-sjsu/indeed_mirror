@@ -41,22 +41,48 @@ router.get("/api/updateJobSeekerProfile/:id", (req, res) => {
     }
 });
 
-router.get("/api/featuredReviews/:companyId", (req, res) => {
+router.post("/api/setJobPreferences/", (req, res) => {
     try {
-        const cid = req.params.companyId;
-        conn.query('SELECT reviewTitle, reviewerRole, city, state, postedDate, rating, reviewComments, pros, cons FROM Review WHERE companyId=? AND isFeatured=?',[cid,true],(err,reviews)=> {
-            if(err) {
-                console.log(err);
-                return res.status(400).send('Failed to fetch featured reviews');
-            } else {
-                return res.status(200).send(reviews);
+        const jid = req.body.id;
+        const data = req.body.data;
+        let respData = {
+            msg: 'success',
+            code: '200'
+        }
+        const prefKeys = ['Job Title','Job Types','Work Schedules','Pay','Relocation','Remote'];
+        for(let key of data) {
+            if(!prefKeys.includes(key)) {
+                respData.code = '400';
+                respData.msg = 'Invalid job preference "'+key+'" sent from client';
+                return res.send(respData);
             }
+        }
+        JobSeeker.find({jobSeekerId:jid}).then(result=> {
+            result = result[0];
+            let jPref = result.jobPreference;
+            for(let key of data) {
+                console.log('Processing key ',key);
+                jPref.key = data[key];
+            }
+            result.save().then(success=> {
+                return res.send(respData);
+            }).catch(err=> {
+                respData.err = err;
+                respData.code = '400';
+                respData.msg = 'Failed to update job preference. Please refer console for more details';
+                return res.send(respData);
+            })
+        }).catch(err=> {
+            respData.err = err;
+            respData.code = '400';
+            respData.msg = 'Failed to update job preference. Please refer console for more details';
+            return res.send(respData);
         })
         
     }
     catch (error) {
         console.log("ERROR!!!!!" +error);
-        return res.status(400).send("Failed to get featured reviews of the company");
+        return res.status(400).send("Failed to update jobseeker preference");
     }
 });
 
