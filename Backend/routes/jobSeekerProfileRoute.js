@@ -9,35 +9,52 @@ const bcrypt = require("bcryptjs");
 const JobSeeker = require('../models/JobSeeker');
 auth();
 
-router.get("/api/updateJobSeekerProfile/:id", (req, res) => {
+router.post("/api/updateJobSeekerProfile", (req, res) => {
     try {
-        const cid = req.params.id;
-        Company.find({companyId:cid}).then(result=> {
-            console.log(result);
-            let cmpny = result[0];
-            const companyQuery = 'SELECT * FROM Company WHERE companyId=?';
-            conn.query(companyQuery,[cid], (error,details)=> {
-                console.log(details);
-                if(error) {
-                    return res.status(400).send('Failed to get company details');
-                }
-                else {
-                    details = details[0];
-                    details.whScore = cmpny.avgWorkHappinessScore;
-                    details.lScore = cmpny.avgLearningScore;
-                    details.apScore = cmpny.avgAppreciationScore;
-                    details.noOfReviews = cmpny.noOfReviews;
-                    return res.status(200).send(details);
-                }
-            })
-        }).catch(err=> {
-            return res.status(503).send('Failed to get company details');
+        const cid = req.body.id;
+        const data = req.body.data;
+        let queryKeys = '';
+        let queryVal = [];
+        let respData = {
+            msg: 'success',
+            code: '200'
+        }
+        for(let key in data) {
+            if(queryKeys.length == 0) {
+                queryKeys = key+'=?';
+            } else {
+                queryKeys += ','+key+'=?';;
+            }
+
+            queryVal.push(data[key]);
+        }
+        if(queryKeys.length == 0) {
+            respData.code = '203';
+            respData.msg = 'No data came from the client';
+            return res.send(respData);
+        }
+        queryVal.push(cid);
+        const queryStr = 'UPDATE JobSeeker SET '+queryKeys+' WHERE id=?';
+        console.log(queryStr);
+        conn.query(queryStr,queryVal,(err,result)=> {
+            if(err) {
+                console.log(err);
+                respData.code = '203';
+                respData.msg = 'Failed to update profile for the job seeker.';
+                respData.err = err;
+                return res.send(respData);
+            } else {
+                return res.send(respData);
+            }
         })
         
     }
     catch (error) {
-        console.log("ERROR!!!!!" +error);
-        return res.status(400).send("Failed to get company detail");
+        console.log("ERROR while updating job seeker",error);
+        respData.code = '203';
+        respData.msg = 'Failed to update profile for the job seeker.';
+        respData.err = err;
+        return res.send(respData);
     }
 });
 
