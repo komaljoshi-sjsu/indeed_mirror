@@ -41,7 +41,7 @@ router.get("/api/updateJobSeekerProfile/:id", (req, res) => {
     }
 });
 
-router.post("/api/setJobPreferences/", (req, res) => {
+router.post("/api/setJobPreferences", (req, res) => {
     try {
         const jid = req.body.id;
         const data = req.body.data;
@@ -50,7 +50,7 @@ router.post("/api/setJobPreferences/", (req, res) => {
             code: '200'
         }
         const prefKeys = ['Job Title','Job Types','Work Schedules','Pay','Relocation','Remote'];
-        for(let key of data) {
+        for(let key in data) {
             if(!prefKeys.includes(key)) {
                 respData.code = '400';
                 respData.msg = 'Invalid job preference "'+key+'" sent from client';
@@ -59,10 +59,11 @@ router.post("/api/setJobPreferences/", (req, res) => {
         }
         JobSeeker.find({jobSeekerId:jid}).then(result=> {
             result = result[0];
+            console.log(result);
             let jPref = result.jobPreference;
-            for(let key of data) {
-                console.log('Processing key ',key);
-                jPref.key = data[key];
+            for(let key in data) {
+                jPref[key] = data[key];
+                console.log('Processing data ',jPref);
             }
             result.save().then(success=> {
                 return res.send(respData);
@@ -81,7 +82,7 @@ router.post("/api/setJobPreferences/", (req, res) => {
         
     }
     catch (error) {
-        console.log("ERROR!!!!!" +error);
+        console.log("ERROR!!!!!",error);
         return res.status(400).send("Failed to update jobseeker preference");
     }
 });

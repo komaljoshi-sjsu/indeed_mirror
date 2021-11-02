@@ -10,9 +10,9 @@ const jsSchema = new Schema({
         type: String,
         required: true
     },
-    jobPreference: [{
+    jobPreference: {
         type: Object,
-    }],
+    },
     savedJobs: [{
         type: Array,
     }]

@@ -7,14 +7,83 @@ import { Button, Form } from 'react-bootstrap';
 import { useState } from 'react';
 import Modal from 'react-bootstrap/Modal'
 import {Redirect} from 'react-router';
+import axios from 'axios';
+import backendServer from '../../webConfig.js';
 
 function Preferences(props) {
 
+    const id = useSelector((state)=>state.userInfo.id);
     const[question, setQuestion] = useState('');
     const[heading, setHeading] = useState('');
     const[modal, showModal] = useState(false);
     const[modalDiv, setModalDiv] = useState(null);
     const[redirectTo, setRedirectTo] = useState(null);
+    let submitPreference = (e,type) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        let data  = {};
+        switch(type) {
+            case 'Job Title':
+                data[type] = formData.get('jobtitle');
+                break;
+            case 'Job Types':
+                data[type] = formData.get('jobtype');
+                break;
+            case 'Work Schedules':
+                let shiftArr = [];
+                let otherArr = [];
+                let drArr = [];
+                for(let i=1; i<=5;i++) {
+                    let val = "shift"+i;
+                    if(i<=2 && formData.get("dr"+i)!=null) {
+                        drArr.push(formData.get("dr"+i));
+                    }
+                    if(i<=3 && formData.get("other"+i)!=null) {
+                        otherArr.push(formData.get('other'+i));
+                    }
+                    if(formData.get(val)!=null)
+                    shiftArr.push(formData.get(val));
+                }
+                data[type] = {};
+                data[type].shifts = shiftArr;
+                data[type].other = otherArr;
+                data[type].range = drArr;
+                break;
+            case 'Remote':
+                let remoteArr = [];
+                for(let i=1; i<=4;i++) {
+                    let val = "rem"+i;
+                    if(formData.get(val)!=null)
+                        remoteArr.push(formData.get(val));
+                }
+                data[type] = remoteArr;
+                break;
+            case 'Pay':
+                data[type] = {
+                    category: formData.get('paycat'),
+                    amount: formData.get('payamount')
+                };
+                break;
+            case 'Relocation':
+                data[type] = formData.get('relocate')!=null?true:false;
+                break;
+        }
+        console.log('Sending data ', data);
+        axios.post(backendServer+'/api/setJobPreferences',{
+            id: id,
+            data: data
+        }).then(res=> {
+            console.log(res);
+            if(res.status==400 || res.data.code!='200') {
+                alert(res.data.msg);
+            } else {
+                console.log('Updated Job Preferences');
+            }
+        }).catch(err=> {
+            alert('Failed to update job preferences. Refer console for more details');
+            console.log(err);
+        })
+    }
     let initModal = (question, heading) => {
         setQuestion(question);
         setHeading(heading);
@@ -22,7 +91,7 @@ function Preferences(props) {
         switch(heading) {
             case 'Job Types':
                 setModalDiv(
-                    <Form>
+                    <Form onSubmit={(e)=>submitPreference(e,'Job Types')}>
                         <Form.Group className="mb-3" >
                             <Form.Control type="text" name = "jobtype" required maxLength="45"></Form.Control>
                         </Form.Group>
@@ -37,7 +106,7 @@ function Preferences(props) {
                 break;
             case 'Job Title':
                 setModalDiv(
-                    <Form>
+                    <Form onSubmit={(e)=>submitPreference(e,'Job Title')}>
                         <Form.Group className="mb-3" >
                             <Form.Control type="text" name = "jobtitle" required maxLength="45"></Form.Control>
                         </Form.Group>
@@ -52,25 +121,25 @@ function Preferences(props) {
                 break;
             case 'Work Schedules':
                 setModalDiv(
-                    <Form>
+                    <Form onSubmit={(e)=>submitPreference(e,'Work Schedules')}>
                         <Form.Group className="mb-3" >
                             <b>Day ranges</b>
-                            <Form.Check type="checkbox" label='Weekend availability' name="drwa"/>
-                            <Form.Check type="checkbox" label='Monday to Friday' name="drmf"/>
+                            <Form.Check type="checkbox" label='Weekend availability' value='Weekend availability' name="dr1"/>
+                            <Form.Check type="checkbox" label='Monday to Friday' value='Monday to Friday' name="dr2"/>
                         </Form.Group>
                         <Form.Group className="mb-3" >
                             <b>Shifts</b>
-                            <Form.Check type="checkbox" label='8 hour shift' name="shift1"/>
-                            <Form.Check type="checkbox" label='10 hour shift' name="shift2"/>
-                            <Form.Check type="checkbox" label='12 hour shift' name="shift3"/>
-                            <Form.Check type="checkbox" label='Day shift' name="shift4"/>
-                            <Form.Check type="checkbox" label='Night shift' name="shift5"/>
+                            <Form.Check type="checkbox" label='8 hour shift' value='8 hour shift' name="shift1"/>
+                            <Form.Check type="checkbox" label='10 hour shift' value='10 hour shift' name="shift2"/>
+                            <Form.Check type="checkbox" label='12 hour shift' value='12 hour shift' name="shift3"/>
+                            <Form.Check type="checkbox" label='Day shift' value='Day shift' name="shift4"/>
+                            <Form.Check type="checkbox" label='Night shift' value='Night shift' name="shift5"/>
                         </Form.Group>
                         <Form.Group className="mb-3" >
                             <b>Other</b>
-                            <Form.Check type="checkbox" label='On call' name="other1"/>
-                            <Form.Check type="checkbox" label='Holidays' name="other2"/>
-                            <Form.Check type="checkbox" label='Holidays' name="other3"/>
+                            <Form.Check type="checkbox" label='On call' value='On call' name="other1"/>
+                            <Form.Check type="checkbox" label='Holidays' value='Holidays' name="other2"/>
+                            <Form.Check type="checkbox" label='Overtime' value='Overtime' name="other3"/>
                         </Form.Group>
                         <Button variant="primary"  type="submit">
                             Save
@@ -83,12 +152,12 @@ function Preferences(props) {
                 break;
             case 'Remote':
                 setModalDiv(
-                    <Form>
-                        <Form.Group className="mb-3" >
-                            <Form.Check type="checkbox" label='Remote' name="rem1"/>
-                            <Form.Check type="checkbox" label='Hybrid remote' name="rem2"/>
-                            <Form.Check type="checkbox" label='In person' name="rem3"/>
-                            <Form.Check type="checkbox" label='Temporarily remote (COVID-19)' name="rem4"/>
+                    <Form onSubmit={(e)=>submitPreference(e,'Remote')}>
+                        <Form.Group className="mb-3">
+                            <Form.Check type="checkbox" value='Remote' label='Remote' name="rem1"/>
+                            <Form.Check type="checkbox" value='Hybrid remote' label='Hybrid remote' name="rem2"/>
+                            <Form.Check type="checkbox" value='In person' label='In person' name="rem3"/>
+                            <Form.Check type="checkbox" value='Temporarily remote (COVID-19)' label='Temporarily remote (COVID-19)' name="rem4"/>
                         </Form.Group>
                         <Button variant="primary"  type="submit">
                             Save
@@ -101,7 +170,7 @@ function Preferences(props) {
                 break;
             case 'Pay':
                 setModalDiv(
-                    <Form>
+                    <Form onSubmit={(e)=>submitPreference(e,'Pay')}>
                         <Form.Group className="mb-3" >
                             <Form.Control type="number" name = "payamount" required min="0"></Form.Control>
                         </Form.Group>
@@ -125,9 +194,9 @@ function Preferences(props) {
                 break;
             case 'Relocation':
                 setModalDiv(
-                    <Form>
+                    <Form onSubmit={(e)=>submitPreference(e,'Relocation')}>
                         <Form.Group className="mb-3" >
-                            <Form.Check type="checkbox" label="Yes, I'm willing to relocate" name="relocate"/>
+                            <Form.Check type="checkbox" value="relocate" label="Yes, I'm willing to relocate" name="relocate"/>
                         </Form.Group>
                         <Button variant="primary"  type="submit">
                             Save
