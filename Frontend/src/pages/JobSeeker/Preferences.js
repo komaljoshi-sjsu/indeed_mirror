@@ -1,6 +1,6 @@
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import JobSeekerNavbar from './JobSeekerNavbar';
 import { color } from '@mui/system';
 import { Button, Form } from 'react-bootstrap';
@@ -9,10 +9,26 @@ import Modal from 'react-bootstrap/Modal'
 import {Redirect} from 'react-router';
 import axios from 'axios';
 import backendServer from '../../webConfig.js';
+import {bindActionCreators} from 'redux';
+import {prefActionCreator} from '../../reduxutils/actions';
 
 function Preferences(props) {
-
+    const dispatch = useDispatch();
     const id = useSelector((state)=>state.userInfo.id);
+    const title = useSelector((state)=>state.jobPref.title);
+    const type = useSelector((state)=>state.jobPref.type);
+    const pay = useSelector((state)=>state.jobPref.pay);
+    const schedule = useSelector((state)=>state.jobPref.schedule);
+    const remote = useSelector((state)=>state.jobPref.remote);
+    const relocation = useSelector((state)=>state.jobPref.relocation);
+
+    const setTitle = bindActionCreators(prefActionCreator.setTitle,dispatch);
+    const setType = bindActionCreators(prefActionCreator.setType,dispatch);
+    const setPay = bindActionCreators(prefActionCreator.setPay,dispatch);
+    const setSchedule = bindActionCreators(prefActionCreator.setSchedule,dispatch);
+    const setRemote = bindActionCreators(prefActionCreator.setRemote,dispatch);
+    const setRelocation = bindActionCreators(prefActionCreator.setRelocation,dispatch);
+
     const[question, setQuestion] = useState('');
     const[heading, setHeading] = useState('');
     const[modal, showModal] = useState(false);
@@ -78,6 +94,26 @@ function Preferences(props) {
                 alert(res.data.msg);
             } else {
                 showModal(false);
+                switch(type) {
+                    case 'Job Title':
+                        setTitle(formData.get('jobtitle'));
+                        break;
+                    case 'Job Types':
+                        setType(formData.get('jobtype'));
+                        break;
+                    case 'Work Schedules':
+                        setSchedule(data[type]);
+                        break;
+                    case 'Remote':
+                        setRemote(data[type]);
+                        break;
+                    case 'Pay':
+                        setPay(data[type]);
+                        break;
+                    case 'Relocation':
+                        setRelocation(data[type]);
+                        break;
+                }
                 console.log('Updated Job Preferences');
             }
         }).catch(err=> {
@@ -85,6 +121,7 @@ function Preferences(props) {
             console.log(err);
         })
     }
+
     let initModal = (question, heading) => {
         setQuestion(question);
         setHeading(heading);
@@ -94,7 +131,7 @@ function Preferences(props) {
                 setModalDiv(
                     <Form onSubmit={(e)=>submitPreference(e,'Job Types')}>
                         <Form.Group className="mb-3" >
-                            <Form.Control type="text" name = "jobtype" required maxLength="45"></Form.Control>
+                            <Form.Control type="text" name = "jobtype" defaultValue={type} required maxLength="45"></Form.Control>
                         </Form.Group>
                         <Button variant="primary"  type="submit">
                             Save
@@ -109,7 +146,7 @@ function Preferences(props) {
                 setModalDiv(
                     <Form onSubmit={(e)=>submitPreference(e,'Job Title')}>
                         <Form.Group className="mb-3" >
-                            <Form.Control type="text" name = "jobtitle" required maxLength="45"></Form.Control>
+                            <Form.Control type="text" name = "jobtitle" defaultValue={title} required maxLength="45"></Form.Control>
                         </Form.Group>
                         <Button variant="primary"  type="submit">
                             Save
@@ -173,10 +210,10 @@ function Preferences(props) {
                 setModalDiv(
                     <Form onSubmit={(e)=>submitPreference(e,'Pay')}>
                         <Form.Group className="mb-3" >
-                            <Form.Control type="number" name = "payamount" required min="0"></Form.Control>
+                            <Form.Control type="number" name = "payamount" placeHolder="$" defaultValue={pay.amount} required min="0"></Form.Control>
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Control as="select" name='paycat'>
+                            <Form.Control as="select" name='paycat' defaultValue={pay.category}>
                                 <option value="per hour">per hour</option>
                                 <option value="per day">per day</option>
                                 <option value="per week">per week</option>
@@ -197,7 +234,7 @@ function Preferences(props) {
                 setModalDiv(
                     <Form onSubmit={(e)=>submitPreference(e,'Relocation')}>
                         <Form.Group className="mb-3" >
-                            <Form.Check type="checkbox" value="relocate" label="Yes, I'm willing to relocate" name="relocate"/>
+                            <Form.Check type="checkbox" value="relocate" label="Yes, I'm willing to relocate" name="relocate" checked={relocation}/>
                         </Form.Group>
                         <Button variant="primary"  type="submit">
                             Save
