@@ -6,7 +6,7 @@ const initState = {
         amount:null
     },
     schedule:{},
-    remote: null,
+    remote: [],
     relocation:false
 }
 

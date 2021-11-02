@@ -192,10 +192,10 @@ function Preferences(props) {
                 setModalDiv(
                     <Form onSubmit={(e)=>submitPreference(e,'Remote')}>
                         <Form.Group className="mb-3">
-                            <Form.Check type="checkbox" value='Remote' label='Remote' name="rem1"/>
-                            <Form.Check type="checkbox" value='Hybrid remote' label='Hybrid remote' name="rem2"/>
-                            <Form.Check type="checkbox" value='In person' label='In person' name="rem3"/>
-                            <Form.Check type="checkbox" value='Temporarily remote (COVID-19)' label='Temporarily remote (COVID-19)' name="rem4"/>
+                            <Form.Check type="checkbox" value='Remote' label='Remote' name="rem1" defaultChecked={remote.includes('Remote')}/>
+                            <Form.Check type="checkbox" value='Hybrid remote' label='Hybrid remote' name="rem2" defaultChecked={remote.includes('Hybrid remote')}/>
+                            <Form.Check type="checkbox" value='In person' label='In person' name="rem3" defaultChecked={remote.includes('In person')}/>
+                            <Form.Check type="checkbox" value='Temporarily remote (COVID-19)' label='Temporarily remote (COVID-19)' name="rem4" defaultChecked={remote.includes('Temporarily remote (COVID-19)')}/>
                         </Form.Group>
                         <Button variant="primary"  type="submit">
                             Save
@@ -234,7 +234,7 @@ function Preferences(props) {
                 setModalDiv(
                     <Form onSubmit={(e)=>submitPreference(e,'Relocation')}>
                         <Form.Group className="mb-3" >
-                            <Form.Check type="checkbox" value="relocate" label="Yes, I'm willing to relocate" name="relocate" checked={relocation}/>
+                            <Form.Check type="checkbox" value="relocate" label="Yes, I'm willing to relocate" name="relocate" defaultChecked={relocation}/>
                         </Form.Group>
                         <Button variant="primary"  type="submit">
                             Save

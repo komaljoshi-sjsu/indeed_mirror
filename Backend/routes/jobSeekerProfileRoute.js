@@ -44,7 +44,6 @@ router.get("/api/updateJobSeekerProfile/:id", (req, res) => {
 router.post("/api/setJobPreferences", (req, res) => {
     try {
         const jid = req.body.id;
-        console.log('Setting pref for job seeker ',jid);
         const data = req.body.data;
         let respData = {
             msg: 'success',
@@ -62,9 +61,7 @@ router.post("/api/setJobPreferences", (req, res) => {
         }
         let upJson = {};
         upJson['jobPreference.'+updateKey] = data[updateKey];
-        console.log(upJson)
         JobSeeker.findOneAndUpdate({jobSeekerId:jid},{$set: upJson}).then(result=> {
-            console.log('Sending pref for job seeker ',result);
             return res.send(respData);
         }).catch(err=> {
             respData.err = err;
