@@ -77,6 +77,7 @@ function Preferences(props) {
             if(res.status==400 || res.data.code!='200') {
                 alert(res.data.msg);
             } else {
+                showModal(false);
                 console.log('Updated Job Preferences');
             }
         }).catch(err=> {
