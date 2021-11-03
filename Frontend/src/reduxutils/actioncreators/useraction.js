@@ -44,3 +44,39 @@ export const setAccountType = (accountType) => {
         });
     } 
 }
+
+export const setPhone = (phone) => {
+    return (dispatch) => {
+        dispatch({
+            type:"setPhone",
+            payload:phone
+        });
+    } 
+}
+
+export const showErrorModal = (show) => {
+    return (dispatch) => {
+        dispatch({
+            type:"showErrorModal",
+            payload:show
+        });
+    } 
+}
+
+export const showSuccessModal = (show) => {
+    return (dispatch) => {
+        dispatch({
+            type:"showSuccessModal",
+            payload:show
+        });
+    } 
+}
+
+export const logout = (show) => {
+    return (dispatch) => {
+        dispatch({
+            type:"logout",
+            payload:show
+        });
+    }
+}

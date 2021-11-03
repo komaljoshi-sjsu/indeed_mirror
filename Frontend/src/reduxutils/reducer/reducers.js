@@ -3,6 +3,7 @@ import {persistStore, persistReducer} from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import {userReducer} from './userReducer.js';
 import {companyReducer} from './companyReducer.js';
+import {jobPrefReducer} from './jobPrefReducer.js';
   
 const persistConfig = {
     key: "root",
@@ -12,7 +13,8 @@ const persistConfig = {
 const appReducers = combineReducers({
     //Write you individual reducer here like below
     userInfo: userReducer,
-    company: companyReducer
+    company: companyReducer,
+    jobPref: jobPrefReducer
 });
 
 const reducer = (state,action) => {

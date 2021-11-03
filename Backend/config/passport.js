@@ -7,12 +7,12 @@ const conn = require("../config/mysql_connection");
 
 // Setup work and export for the JWT passport strategy
 function auth() {
-    console.log("auth");
+    //console.log("auth");
     var opts = {    
         jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme("JWT"),
         secretOrKey: secret
     };
-    console.log(JSON.stringify(opts.jwtFromRequest));
+    //console.log(JSON.stringify(opts.jwtFromRequest));
     passport.use(
         new JwtStrategy(opts, (jwt_payload, callback) => {
            
