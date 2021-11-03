@@ -31,6 +31,8 @@ class Main extends Component {
         <Route path="/home" component={Home} />
         <Route path="/snapshot" component={Snapshot} />
         <Route path="/whyJoinUs" component={JoinUs} />
+        <Route path="/snapshot" component={Snapshot} />
+        <Route path="/whyJoinUs" component={JoinUs} />
         <Route path="/signup" component={Signup} />
         <Route path="/postJob" component={PostJob} />
         <Route path="/employer" component={Employer} />
@@ -43,6 +45,13 @@ class Main extends Component {
         <Route path="/company" component={CompanyTabs} />
         <Route path="/photos" component={UploadPhotos} />
         <Route path="/companyPhotos" component={CompanyPhotos} />
+        <Route path="/adminPhotos" component={AdminPhoto} />
+        <Route path="/reviews" component={Reviews} />
+        <Route path="/adminReviews" component={AdminReview} />
+        <Route path="/addSalaryReview" component={AddSalaryReview} />
+        <Route path="/resume" component={Resume} />
+        <Route path="/findSalaries" component={FindSalaries} />
+        <Route path="/preferences" component={Preferences} />
         <Route path="/adminPhotos" component={AdminPhoto} />
         <Route path="/reviews" component={Reviews} />
         <Route path="/adminReviews" component={AdminReview} />
