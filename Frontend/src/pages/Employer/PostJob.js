@@ -19,13 +19,16 @@ class PostJob extends Component {
           state: '',
           zipcode: '',
           country: '',
-          jobMode: '',
-          jobType: '',
+          jobMode: 'Remote',
+          jobType: 'Part-time',
           salaryDetails: '',
           shortJobDescription: '',
+          responsibilities: '',
+          qualifications: '',
+          loveJobRole: '',
           errors: {},
           successMsg: '',
-          errorMsg: ''
+          errorMsg: '',
       };
     }
     handleChangeCountry = (val) => {
@@ -52,7 +55,11 @@ class PostJob extends Component {
           errors: {},
         });
       }
-
+      handleDashBoard = (e)=>{
+        e.preventDefault();
+        const { history } = this.props;
+		    history.push("/employer");
+      }
       findFormErrors = () => {
         const { companyName, jobTitle, industry, city, shortJobDescription, salaryDetails,
             streetAddress, state, zipcode,country, jobMode, jobType, errors } = this.state;
@@ -81,7 +88,8 @@ class PostJob extends Component {
             // To-DO : Get logged in company id
             const companyId = 1;
             const { companyName, jobTitle, industry, city, shortJobDescription, salaryDetails,
-                streetAddress, state, zipcode,country, jobMode, jobType } = this.state;
+                streetAddress, state, zipcode,country, jobMode, jobType,responsibilities,
+                qualifications, loveJobRole} = this.state;
             const inputData = {
                 companyId,
                 companyName,
@@ -96,14 +104,18 @@ class PostJob extends Component {
                 state,
                 zipcode,
                 country,
+                responsibilities,
+                qualifications, 
+                loveJobRole,
                 jobPostedDate : Date().toLocaleString(),
 
             };
-            console.log(inputData);
+           // console.log(inputData);
             axios
             .post(`${backendServer}/postNewJob`, inputData)
             .then((response) => {
-                
+              console.log("Response")
+                console.log(response)
               if (response.status === 200) {
                 
                 this.setState({
@@ -118,6 +130,9 @@ class PostJob extends Component {
                   state: '',
                   zipcode: '',
                   country: '',
+                  responsibilities:'',
+                  qualifications:'',
+                  loveJobRole:''
                 });
               } else {
                 this.setState({ errorMsg: response.data });
@@ -132,7 +147,8 @@ class PostJob extends Component {
   
     render() {
         const { companyName, jobTitle, industry, city, shortJobDescription, salaryDetails,
-            streetAddress, state, zipcode,country, errors,successMsg, errorMsg } = this.state;
+            streetAddress, state, zipcode,country, errors,successMsg, errorMsg,
+            qualifications, responsibilities, loveJobRole } = this.state;
             console.log(successMsg)
       return (
         <div>
@@ -240,6 +256,45 @@ class PostJob extends Component {
                     </Col>
                     </Row>
                     <Row>
+                <Col><b>Responsibilities</b></Col>
+                </Row>
+                <Row>
+                    <Col>
+                    <Form.Group className="mb-3">
+                  <Form.Control name="responsibilities" as="textarea" rows={5} className="mr-sm-2" onChange={this.handleChange} value={responsibilities} isInvalid={!!errors.responsibilities}/>
+                  <Form.Control.Feedback type="invalid">
+                    { errors.responsibilities }
+                  </Form.Control.Feedback>
+                </Form.Group>
+                    </Col>
+                    </Row>
+                    <Row>
+                <Col><b>Qualifications</b></Col>
+                </Row>
+                <Row>
+                    <Col>
+                    <Form.Group className="mb-3">
+                  <Form.Control name="qualifications" as="textarea" rows={5} className="mr-sm-2" onChange={this.handleChange} value={qualifications} isInvalid={!!errors.qualifications}/>
+                  <Form.Control.Feedback type="invalid">
+                    { errors.qualifications }
+                  </Form.Control.Feedback>
+                </Form.Group>
+                    </Col>
+                    </Row>
+                    <Row>
+                <Col><b>Reasons for loving this job</b></Col>
+                </Row>
+                <Row>
+                    <Col>
+                    <Form.Group className="mb-3">
+                  <Form.Control name="loveJobRole" as="textarea" rows={5} className="mr-sm-2" onChange={this.handleChange} value={loveJobRole} isInvalid={!!errors.loveJobRole}/>
+                  <Form.Control.Feedback type="invalid">
+                    { errors.loveJobRole }
+                  </Form.Control.Feedback>
+                </Form.Group>
+                    </Col>
+                    </Row>
+                    <Row>
               <Col><b>Salary Details</b></Col>
               </Row>
               <Row>
@@ -325,6 +380,14 @@ class PostJob extends Component {
               <Col colSpan="2">
                 <Button variant="primary" type="submit" onClick={this.handleSubmit}>
                   Post Job
+                </Button>
+              </Col>
+              </Row>
+              <br/>
+              <Row>
+              <Col colSpan="2">
+                <Button variant="primary" type="submit" onClick={this.handleDashBoard}>
+                  DashBoard
                 </Button>
               </Col>
               </Row>

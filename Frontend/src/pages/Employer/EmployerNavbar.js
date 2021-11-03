@@ -39,7 +39,7 @@ class EmployerNavbar extends Component {
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#">
-                    <h5>Find Candidates</h5>
+                    <h5>Reviews</h5>
                   </a>
                 </li>
                 <li class="nav-item">

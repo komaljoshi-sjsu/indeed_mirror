@@ -85,7 +85,7 @@ class CompanyTabs extends Component {
                         <li class="nav-item">
                           <a class="nav-link">
                             <Link
-                              to="/salaries"
+                              to="/addSalaryReview"
                               style={{
                                 textDecoration: 'none',
                                 color: '#474747',
