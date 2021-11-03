@@ -8,7 +8,6 @@ import { Button, Form } from 'react-bootstrap';
 import { useState } from 'react';
 import {userActionCreator} from '../../reduxutils/actions.js';
 import {bindActionCreators} from 'redux';
-import Error from '../Error/ErrorMsg';
 import axios from 'axios';
 import ErrorMsg from '../Error/ErrorMsg';
 import SuccessMsg from '../Success/SuccessMsg';

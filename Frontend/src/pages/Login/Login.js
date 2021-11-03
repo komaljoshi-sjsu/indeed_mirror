@@ -55,7 +55,13 @@ function Login(props) {
                 setAccountType(accountType);
                 setId(user.id);
                 setPhone(user.jobSeekerContact);
-                //redirectToHome();
+                if(accountType=='JobSeeker')  {
+                    redirectValFn(<Redirect to="/resume"/>);
+                } else if(accountType=='Employer')  {
+                    redirectValFn(<Redirect to="/employerprofile"/>);
+                } else if(accountType=='Admin')  {
+                    //redirectValFn(<Redirect to="/employerprofile"/>);
+                }
             }
         },error=>{
             alert('Failed to Login. Please refer console for more details.');
