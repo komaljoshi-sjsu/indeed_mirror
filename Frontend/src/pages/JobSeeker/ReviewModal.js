@@ -7,6 +7,7 @@ import ReactStars from "react-rating-stars-component";
 import RangeSlider from 'react-bootstrap-range-slider';
 import PropTypes from 'prop-types';
 import backendServer from '../../webConfig';
+import { Redirect } from 'react-router';
 
 class ReviewModal extends Component {
   constructor(props) {
@@ -26,6 +27,8 @@ class ReviewModal extends Component {
         reviewerRole: '',
         city: '',
         state: '',
+        openModal: false,
+        redirectFlag: false,
     };
   }
 
@@ -65,6 +68,12 @@ class ReviewModal extends Component {
   onAppreciationScoreChange = (e) => {
     this.setState({appreciationScore: e.target.value});
   }
+
+  closeModal = () => {
+    this.setState({ openModal: false });
+    this.setState({redirectFlag: true});
+  }
+
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -106,12 +115,20 @@ class ReviewModal extends Component {
             
             this.setState({
               successMsg: response.data,
+              rating: 0,
+              workHappinessScore: 0,
+              learningScore: 0,
+              appreciationScore: 0,
               reviewTitle: '',
               reviewComments: '',
               pros: '',
               cons: '',
-              ceoApprovalRating: '',
+              ceoApprovalRating: 0,
               howToPrepare: '',
+              reviewerRole: '',
+              city: '',
+              state: '',
+              openModal: true,
             });
           } else {
             this.setState({ errorMsg: response.data });
@@ -126,10 +143,14 @@ class ReviewModal extends Component {
 
   render() {
     const { addReview, closeModal} = this.props;
-    const { errors, rating, workHappinessScore, appreciationScore, learningScore, reviewTitle, reviewComments, pros, cons, ceoApprovalRating, howToPrepare, reviewerRole, city, state } = this.state;
+    const { openModal, redirectFlag, errors, rating, workHappinessScore, appreciationScore, learningScore, reviewTitle, reviewComments, pros, cons, ceoApprovalRating, howToPrepare, reviewerRole, city, state } = this.state;
+    let redirectVar = null;
+    if (redirectFlag) {
+      redirectVar = <Redirect to={{pathname: "/reviews", flag:true}} />;
+    }
     return (
       <>
-
+      {redirectVar}
         <Modal show={addReview} onHide={closeModal} style={{width: '90vw'}}>
           <Modal.Header closeButton>
             <Modal.Title>Enter review details</Modal.Title>
@@ -312,6 +333,21 @@ class ReviewModal extends Component {
             </Button>
           </Modal.Footer>
         </Modal>
+        {openModal && (
+        <Modal show={openModal} onHide={this.closeModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Success</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <h4>Review added successfully!!</h4>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="primary" onClick={this.closeModal}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+        )}
       </>
     );
   }
