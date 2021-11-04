@@ -273,7 +273,7 @@ class Reviews extends Component {
                     value={review.rating}
                     isHalf={true}
                     activeColor="#9d2b6b"
-                    edit="false"
+                    edit={false}
                   />
                 </Card.Title>
                 </Col>
@@ -319,7 +319,7 @@ class Reviews extends Component {
                       value={review.rating}
                       isHalf={true}
                       activeColor="#9d2b6b"
-                      edit="false"
+                      edit={false}
                     />
                   </Card.Title>
                   </Col>
@@ -352,7 +352,6 @@ class Reviews extends Component {
           ));
           const OtherReviews = otherUserReviews.map((review) => (
             <div>
-              <br />
               <Card style={{ width: '60rem', margin: '0.8em' }}>
                 <Card.Body>
                   <Row>
@@ -365,7 +364,7 @@ class Reviews extends Component {
                       value={review.rating}
                       isHalf={true}
                       activeColor="#9d2b6b"
-                      edit="false"
+                      edit={false}
                     />
                   </Card.Title>
                   </Col>
