@@ -24,7 +24,19 @@ router.post("/addCompanyDetails", (req, res) => {
 					});
 					console.log("Company Added ")
                     const companyId = result.insertId;
-					res.end("Company Added  successfully!");
+                    // res.send(200).json({companyId:companyId})
+					//res.end("Company Added  successfully!");
+                    let sql_companyid = "SELECT companyId,companyName FROM Company WHERE companyId = "+mysql.escape(companyId) ;
+                    let query1 = connection.query(sql_companyid, (error, result_id) => {
+                    
+                        if (error) {
+                                    res.send({ error: error });
+                            }
+                        if(result_id){
+                            res.status(200).end(JSON.stringify(result_id))
+                            // res.end(JSON.stringify(result));
+                        }
+                    })
                     let sql1 = "UPDATE Employer SET companyId = " +mysql.escape(companyId)+
                     " WHERE id = "+mysql.escape(req.body.employerId);
 
@@ -39,11 +51,13 @@ router.post("/addCompanyDetails", (req, res) => {
                             // res.writeHead(200,{
                             //     'Content-Type' : 'application/json'
                             // });
+                            ///res.send(200).json({companyId:companyId})
                             res.end("Company ID updated!");
                         }            
                     });
 
 				}
+                
 	});
 	
     });

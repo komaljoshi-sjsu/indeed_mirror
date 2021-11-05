@@ -118,11 +118,15 @@ router.post("/api/signupJobSeekerMongo", async (req, res) => {
 
 
 router.post("/api/createCompanyMongo", async (req, res) => {
+  // console.log("create mong")
+  console.log(req.body)
   try {
-    const { companyId } = req.body;
-    console.log(req.body);
+    const { compid } = req.body;
+    const { companyname } = req.body;
+   console.log(compid);
     const companyDtls = new Company({
-      companyId,
+      companyId : compid,
+      companyName:companyname,
       avgWorkHappinessScore: 0.00,
       avgLearningScore: 0.00,
       avgAppreciationScore: 0.00,

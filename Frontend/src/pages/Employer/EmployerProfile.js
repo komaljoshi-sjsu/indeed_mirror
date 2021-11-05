@@ -59,68 +59,6 @@ class EmployerProfile extends Component {
         });
     }
  
-    
-    
-   
-      
-      
-    // handleChangeEmpName = (e) =>{
-    //     const { employerDetails }= this.state;
-    //     employerDetails.employerName = e.target.value;
-    //     this.setState({employerDetails}); 
-    //     this.setState({
-    //         errors: {},
-    //       });
-    //   } 
-    //   handleChangeRole = (e) =>{
-    //     const { employerDetails }= this.state;
-    //     employerDetails.roleInCompany = e.target.value;
-    //     this.setState({employerDetails});
-    //     this.setState({
-    //         errors: {},
-    //       }); 
-    //   } 
-    //   handleChangeAddress = (e) =>{
-    //     const { employerDetails }= this.state;
-    //     employerDetails.address = e.target.value;
-    //     this.setState({employerDetails}); 
-    //     this.setState({
-    //         errors: {},
-    //       });
-    //   } 
-    //   handleChangeCity = (e) =>{
-    //     const { employerDetails }= this.state;
-    //     employerDetails.city = e.target.value;
-    //     this.setState({employerDetails}); 
-    //     this.setState({
-    //         errors: {},
-    //       });
-    //   } 
-    //   handleChangeState = (e) =>{
-    //     const { employerDetails }= this.state;
-    //     employerDetails.state = e.target.value;
-    //     this.setState({employerDetails});
-    //     this.setState({
-    //         errors: {},
-    //       }); 
-    //   } 
-    //   handleChangeZipcode = (e) =>{
-    //     const { employerDetails }= this.state;
-    //     employerDetails.zipcode = e.target.value;
-    //     this.setState({employerDetails}); 
-    //     this.setState({
-    //         errors: {},
-    //       });
-    //   } 
-      
-    //   handleChangeCountry = (val) =>{ 
-    //     const { employerDetails }= this.state;
-    //     employerDetails.country = val;
-    //     this.setState({employerDetails}); 
-    //     this.setState({
-    //         errors: {},
-    //       });
-    //   } 
       handleEmpDetails = (e) => {
         e.preventDefault();
         const newErrors = this.findFormErrorsEmp();
@@ -218,10 +156,12 @@ class EmployerProfile extends Component {
         axios.post(`${backendServer}/addEmployerDetails`, data)
             .then(response=> {
                 if (response.status === 200) {
+
                     console.log(response)
                     this.setState({
                         successMsg: response.data
                     })
+
                 }
                 else {
                     this.setState({ errorMsg: response.data });
@@ -232,14 +172,26 @@ class EmployerProfile extends Component {
     sendCompanyAPI = (data) => {
         axios.post(`${backendServer}/addCompanyDetails`, data)
             .then(response=> {
-                if (response.status === 200) {
-                    this.setState({
-                        successMsg: response.data
-                    })
-                }
-                else {
-                    this.setState({ errorMsg: response.data });
-                  }
+               // console.log(response)
+                const compid = response.data[0].companyId;
+                const companyname = response.data[0].companyName;
+                console.log(compid)
+                    axios.post(`${backendServer}/api/createCompanyMongo`,{compid,companyname})
+                    .then(response=> {
+                        console.log(response.data)
+                        // if (response.status === 200) {
+                        //     console.log(response)
+                        // }
+                        // else {
+
+                        //     //this.setState({ errorMsg: response.data });
+                        //   }
+                    }
+                    );
+                // }
+                // else {
+                //     this.setState({ errorMsg: response.data });
+                //   }
             }
             );
     }
@@ -251,16 +203,7 @@ class EmployerProfile extends Component {
         axios.post(`${backendServer}/addCompanyIdToEmployer`, id)
             .then(response=> {
                 if (response.status === 200) {
-                    axios.post(`${backendServer}/api/createCompanyMongo`, id)
-                    .then(response=> {
-                        if (response.status === 200) {
-                            console.log(response)
-                        }
-                        else {
-                            //this.setState({ errorMsg: response.data });
-                          }
-                    }
-                    );
+                   
                 }
                 else {
                     //this.setState({ errorMsg: response.data });
@@ -657,7 +600,7 @@ class EmployerProfile extends Component {
     
       return (
         <div>
-             <EmployerNavbar/>
+             {/* <EmployerNavbar/> */}
             <br></br>
             
             <div className="main-div">

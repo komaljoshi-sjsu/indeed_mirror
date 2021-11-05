@@ -5,7 +5,21 @@
     border-radius: 7px;
     border-width: 1px 0 1px 1px;
 }
-
+.card-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 2rem;
+  
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+  }
+  .container{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin: 0 auto;
+  }
 .noRightborder
 {
     border-color:black;

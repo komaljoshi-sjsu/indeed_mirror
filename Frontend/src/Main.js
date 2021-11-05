@@ -20,7 +20,7 @@ import AddSalaryReview from './pages/Company/AddSalaryReview'
 import Resume from './pages/JobSeeker/Resume.js'
 import FindSalaries from './pages/JobSeeker/FindSalaries'
 import Preferences from './pages/JobSeeker/Preferences.js'
-
+import Header from './pages/Company/Header'
 //Create a Main Component
 class Main extends Component {
   render() {
@@ -29,7 +29,6 @@ class Main extends Component {
         {/*Render Different Component based on Route*/}
         <Route path="/login" component={Login} />
         <Route path="/home" component={Home} />
-        <Route path="/header" component={Header} />
         <Route path="/header" component={Header} />
         <Route path="/snapshot" component={Snapshot}/>
         <Route path="/whyJoinUs" component={JoinUs}/>

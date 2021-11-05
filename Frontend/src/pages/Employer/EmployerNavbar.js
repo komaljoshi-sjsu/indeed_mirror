@@ -33,7 +33,7 @@ class EmployerNavbar extends Component {
                 style={{ marginTop: '15px' }}
               >
                 <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="#">
+                  <a class="nav-link active" aria-current="page" href="/Employer">
                     <h5>Dashboard</h5>
                   </a>
                 </li>
@@ -80,7 +80,7 @@ class EmployerNavbar extends Component {
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="/employerUpdateProfile">
                       <h5 style={{ color: 'black' }}><BsPersonFill/></h5>
                     </a>
                   </li>
