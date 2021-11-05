@@ -148,16 +148,22 @@ router.post("/api/uploadResume/:id", (req, res) => {
     });
 });
 
-router.post("/api/downloadResume", async(req, res) => {
+router.get("/api/downloadResume/:key", async(req, res) => {
     try {
-        const key = req.key;
-        const { Body } = await s3.getObject({
-            Key: key,
-            Bucket: '273indeed'
-        });
-        return res.status(200).send(Body);
+        // const { Body } = await s3.getObject({
+        //     Key: key,
+        //     Bucket: '273indeed'
+        // });
+        const signedUrlExpireSeconds = 60*2 ;// your expiry time in seconds.
+
+        const url = s3.getSignedUrl('getObject', {
+            Bucket: '273indeed',
+            Key: req.params.key,
+            Expires: signedUrlExpireSeconds
+        })
+        return res.status(200).send(url);
     } catch(err) {
-        console.log('Failed to download  resume:',resume);
+        console.log('Failed to download  resume:',err);
         return res.status(400).send('Failed to download resume');
     }
 })

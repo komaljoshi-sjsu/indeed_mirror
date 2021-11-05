@@ -174,6 +174,30 @@ function Resume(props) {
             }
         })
     }
+
+    let handleResumeDownload= (e) => {
+        e.preventDefault();
+        let keyarr = resumeUrl.split('/');
+        let key = keyarr[keyarr.length-1];
+        axios.get(backendServer+'/api/downloadResume/'+key).then(res=>{
+            console.log(res);
+            if(res.status=='200') {
+                download(res.data);
+            } else {
+                showErrorModal(true);
+                setErrMsg(res.data);
+            }
+        })
+    }
+    function download(url){
+        let keyarr = resumeUrl.split('/');
+        let key = keyarr[keyarr.length-1];
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `${key}`);
+        document.body.appendChild(link);
+        link.click();
+    }
     return (
         <div>
             {redirectTo}
@@ -196,7 +220,7 @@ function Resume(props) {
                                 <img src="/images/dots.png"  height='20px' width='20px'></img>
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
-                                <Dropdown.Item >Download</Dropdown.Item>
+                                <Dropdown.Item onClick={handleResumeDownload}>Download</Dropdown.Item>
                                 <Dropdown.Item onClick={handleResumeDelete}>Delete</Dropdown.Item>
                                 <Dropdown.Item onClick={handleResumeReplace}>Replace</Dropdown.Item>
                             </Dropdown.Menu>
