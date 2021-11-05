@@ -22,6 +22,7 @@ import FindSalaries from './pages/JobSeeker/FindSalaries'
 import Preferences from './pages/JobSeeker/Preferences.js'
 import Header from './common/Header'
 import FeaturedReview from './pages/Employer/featuredReview';
+import CompanyReviews from './pages/JobSeeker/companyReviews';
 
 //Create a Main Component
 class Main extends Component {
@@ -52,6 +53,7 @@ class Main extends Component {
         <Route path="/resume" component={Resume}/>
         <Route path="/findSalaries" component={FindSalaries}/>
         <Route path="/preferences" component={Preferences}/>
+        <Route path="/allReviews" component={CompanyReviews}/>
       </div>
     )
   }
