@@ -44,12 +44,19 @@ router.get("/api/snapshot/:companyId", (req, res) => {
 router.get("/api/featuredReviews/:companyId", (req, res) => {
     try {
         const cid = req.params.companyId;
-        conn.query('SELECT reviewTitle, reviewerRole, city, state, postedDate, rating, reviewComments, pros, cons FROM Review WHERE companyId=? AND isFeatured=?',[cid,true],(err,reviews)=> {
+        conn.query('SELECT reviewTitle, reviewerRole, city, state, postedDate, rating, reviewComments, pros, cons FROM Review WHERE companyId=? AND isFeatured=? ORDER BY rating',[cid,true],(err,reviews)=> {
             if(err) {
                 console.log(err);
                 return res.status(400).send('Failed to fetch featured reviews');
             } else {
-                return res.status(200).send(reviews);
+                if(result.length<=5)
+                    return res.status(200).send(reviews);
+                else {
+                    const highest = reviews[0,5];
+                    const lowest = reviews[reviews.length-1];
+                    highest.push(lowest);
+                    return res.status(200).send(highest);
+                }
             }
         })
         

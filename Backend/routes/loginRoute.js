@@ -6,6 +6,7 @@ const { auth } = require("../config/passport");
 const { secret } = require("../config/config");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const JobSeeker = require('../models/JobSeeker');
 auth();
 
 router.post("/api/login", (req, res) => {
@@ -28,13 +29,20 @@ router.post("/api/login", (req, res) => {
                     }
                     console.log(results[0])
                     const compRes = await bcrypt.compare(password, results[0].password);
-                    const payload = { id: results[0].id, accountType: results[0].accountType, user: results[0] };
+                    let payload = { id: results[0].id, accountType: results[0].accountType, user: results[0] };
                     if (compRes) {
-                        const token = jwt.sign(payload, secret, {
-                            expiresIn: 1008000,
-                        });
-                        console.log("JWT " + token);
-                        res.status(200).json("JWT " + token);
+                        JobSeeker.find({jobSeekerId:payload.id},'resumeUrl').then(resume => {
+                            console.log('resume:',resume);
+                            resume  = resume[0];
+                            if(resume!=null)
+                            payload.resumeUrl=resume.resumeUrl;
+                            const token = jwt.sign(payload, secret, {
+                                expiresIn: 1008000,
+                            });
+                            console.log("JWT " + token);
+                            res.status(200).json("JWT " + token);
+                        })
+                        
                     } else {
                         console.log("incorrect");
                         res.status(400).send("Password incorrect");

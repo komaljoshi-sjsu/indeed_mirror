@@ -14,8 +14,8 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const s3 = new aws.S3({
-  accessKeyId: process.env.AWS_ACCESS_KEY,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  accessKeyId: 'AKIAYOG23DSW7KVLQRVN',
+  secretAccessKey: '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',
   Bucket: "273indeed",
 });
 
@@ -104,7 +104,7 @@ router.post("/api/setJobPreferences", (req, res) => {
     }
 });
 
-router.post("/api/uploadResume", (req, res) => {
+router.post("/api/uploadResume/:id", (req, res) => {
     console.log("key" + s3.accessKeyId);
     console.log("secretAccessKey" + s3.secretAccessKey);
     let respData = {
@@ -115,7 +115,7 @@ router.post("/api/uploadResume", (req, res) => {
       if (error) {
         console.log("Error uploading resume", error);
         respData.code = '400';
-        respData.msg = 'Failed to upload resume';
+        respData.msg = error;
         return res.send(respData);
       } else {
         if (req.file === undefined) {
@@ -132,13 +132,56 @@ router.post("/api/uploadResume", (req, res) => {
             respData.msg = 'File data does not exist';
             return res.send(respData);
           } else {
-            console.log("Image loc from backend" + fileLocation)
-            return res.send(respData);
+            console.log("Image loc from backend" + fileLocation);
+            JobSeeker.findOneAndUpdate({jobSeekerId:req.params.id},{resumeUrl:fileLocation}).then(success=>{
+                respData.location = fileLocation;
+                respData.key = fileName;
+                return res.send(respData);
+            }).catch(err=> {
+                respData.code='203';
+                respData.msg = 'Failed to set resume location on database. Please contact admimistrator';
+                return res.send(respData);
+            })
           }
         }
       }
     });
 });
+
+router.post("/api/downloadResume", async(req, res) => {
+    try {
+        const key = req.key;
+        const { Body } = await s3.getObject({
+            Key: key,
+            Bucket: '273indeed'
+        });
+        return res.status(200).send(Body);
+    } catch(err) {
+        console.log('Failed to download  resume:',resume);
+        return res.status(400).send('Failed to download resume');
+    }
+})
+
+router.delete("/api/deleteResume/:key", async(req, res) => {
+    try {
+        const key = req.params.key;
+        s3.deleteObject({
+            Key: key,
+            Bucket: '273indeed'
+        }, (err,data)=>{
+            if(err) {
+                console.log('deletion failed',err)
+                return res.status(400).send('Failed to delete resume');
+            } else {
+                console.log('Successfully deleted resume');
+                return res.status(200).send('success');
+            }
+        });
+    } catch(err) {
+        console.log('Failed to download  resume:',resume);
+        return res.status(400).send('Failed to delete resume');
+    }
+})
 
 const uploadResume = multer({
     storage: multerS3({
@@ -146,7 +189,8 @@ const uploadResume = multer({
       bucket: "273indeed",
       acl: "public-read",
       key: function (req, file, cb) {
-        file.originalname = 'resume_'+req.body.id;
+        file.originalname = 'resume_'+req.params.id;
+        console.log('id is:',req.body.id);
         cb(
           null,
           path.basename(file.originalname, path.extname(file.originalname))

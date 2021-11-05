@@ -4,7 +4,8 @@ import {useSelector, useDispatch} from 'react-redux';
 import JobSeekerNavbar from './JobSeekerNavbar';
 import backendServer from '../../webConfig.js';
 import {Redirect} from 'react-router';
-import { Button, Form } from 'react-bootstrap';
+import React, { useEffect } from 'react';
+import { Button, Form, Dropdown } from 'react-bootstrap';
 import { useState } from 'react';
 import {userActionCreator} from '../../reduxutils/actions.js';
 import {bindActionCreators} from 'redux';
@@ -26,6 +27,7 @@ function Resume(props) {
     const id = useSelector((state)=>state.userInfo.id);
     const phone = useSelector((state)=>state.userInfo.phone);
     const email = useSelector((state)=>state.userInfo.email);
+    const resumeUrl = useSelector((state)=>state.userInfo.resumeUrl);
 
     const logout = bindActionCreators(userActionCreator.logout,dispatch);
     const showSuccessModal = bindActionCreators(userActionCreator.showSuccessModal,dispatch);
@@ -33,7 +35,14 @@ function Resume(props) {
     const showErrorModal = bindActionCreators(userActionCreator.showErrorModal,dispatch);
     const setName = bindActionCreators(userActionCreator.setName,dispatch);
     const setPhone = bindActionCreators(userActionCreator.setPhone,dispatch);
+    const setResumeUrl = bindActionCreators(userActionCreator.setResumeUrl,dispatch);
     //const[showContactDiv, setShowContactDiv] = useState(true);
+
+    useEffect(()=> {
+        if(resumeUrl!=null && resumeUrl.length>0) {
+            hideResumeUpdate();
+        }
+    },[])
 
     let nameArr = fullname.split(/\s+/);
     const [fname,...lnames] = nameArr;
@@ -42,9 +51,15 @@ function Resume(props) {
         lname += ln;
     }
     let hideResumeUpdate = ()  => {
-        setResumeTextUpload('Upload a resume');
-        setResumeTextCreate('Build a resume');
-        setResumeHeading('Get Started');
+        if(resumeUrl!=null && resumeUrl.length>0) {
+            setNoResume(false);
+            setResumeHeading('Resume');
+        }
+        else {
+            setResumeTextUpload('Upload a resume');
+            setResumeTextCreate('Build a resume');
+            setResumeHeading('Get Started');
+        }
         setHideSkip(true);
         setHideDiv(false);
     }
@@ -103,6 +118,52 @@ function Resume(props) {
         }
         
     }
+
+    const hiddenFileInput = React.useRef(null);
+    const[noResume,setNoResume] = useState(true);
+    let uploadResume = async (e)=>{
+        hiddenFileInput.current.click();
+    }
+
+    let handleResumeUpload= (e) => {
+        const fileUploaded = e.target.files[0];
+        const filename = fileUploaded.name;
+        console.log('Successfully uploaded ',filename);
+        var data = new FormData();
+        data.append("file", fileUploaded);
+        axios.post(backendServer+'/api/uploadResume/'+id,data).then(res=>{
+            console.log(res);
+            if(res.data.code=='200') {
+                hideResumeUpdate();
+                setNoResume(false);
+                setResumeUrl(res.data.location);
+            } else {
+                showErrorModal(true);
+                setErrMsg(res.data.msg);
+                setNoResume(true);
+            }
+        })
+    }
+    let handleResumeReplace= (e) => {
+        e.preventDefault();
+        handleResumeDelete(e);
+        uploadResume();
+       
+    }
+    let handleResumeDelete= async(e) => {
+        e.preventDefault();
+        let key = resumeUrl.split('/')[-1];
+        await axios.delete(backendServer+'/api/deleteResume/'+key).then(res=>{
+            console.log(res);
+            if(res.status=='200') {
+                setNoResume(true);
+                setResumeUrl('');
+            } else {
+                showErrorModal(true);
+                setErrMsg(res.data);
+            }
+        })
+    }
     return (
         <div>
             {redirectTo}
@@ -113,10 +174,25 @@ function Resume(props) {
                 <div className="row" hidden={hideDiv}>
                     <h3 style={{color:'darkgray'}}><b>Your Name</b></h3>
                 </div>
-                <div className="row" style={{border:'1px solid darkgray', boxShadow:'1px 1px 1px 1px darkgray',padding:'20px 20px 5px 20px'}}>
+                <div className="row" style={{border:'1px solid darkgray', boxShadow:'1px 1px 1px 1px darkgray',padding:'20px 20px 5px 20px'}} hidden={noResume}>
+                    <b>{resumeHeading} </b><p></p>
+                    <Dropdown>
+                        <Dropdown.Toggle variant="success" id="dropdown-basic">
+                            <img src="/images/dots.png" style={{float:'right'}} height='20px' width='20px'></img>
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item >Download</Dropdown.Item>
+                            <Dropdown.Item onClick={handleResumeDelete}>Delete</Dropdown.Item>
+                            <Dropdown.Item onClick={handleResumeReplace}>Replace</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                    <p></p>
+                </div><br></br>
+                <div className="row" style={{border:'1px solid darkgray', boxShadow:'1px 1px 1px 1px darkgray',padding:'20px 20px 5px 20px'}} hidden={!noResume}>
                     <h3><b>{resumeHeading}</b></h3><p></p>
                     <div className="col">
-                        <Button type='primary' style={{borderRadius: '15px 15px 15px 15px'}}>{resumeTextUpload}</Button>
+                        <input type="file" id='resumeupload' style={{display:'none'}}  ref={hiddenFileInput} onChange={handleResumeUpload}></input>
+                        <Button type='primary' style={{borderRadius: '15px 15px 15px 15px'}} onClick={uploadResume}>{resumeTextUpload}</Button>
                     </div>
                     <div className="col">
                         <Button type='primary' style={{borderRadius: '15px 15px 15px 15px'}}>{resumeTextCreate}</Button>

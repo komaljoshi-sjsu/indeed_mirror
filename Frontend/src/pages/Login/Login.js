@@ -22,6 +22,7 @@ function Login(props) {
     const setAccountType = bindActionCreators(userActionCreator.setAccountType,dispatch);
     const setName = bindActionCreators(userActionCreator.setName,dispatch);
     const setPhone = bindActionCreators(userActionCreator.setPhone,dispatch);
+    const setResumeUrl = bindActionCreators(userActionCreator.setResumeUrl,dispatch);
     const setToken = bindActionCreators(userActionCreator.setToken,dispatch);
 
     let redirectToSignUp = (e) => {
@@ -39,9 +40,7 @@ function Login(props) {
             email:email,
             password:password,
             accountType: accountType
-        }).then(res=> {
-            console.log(res);
-            
+        }).then(res=> {            
             if(res.status!=200) {
                 alert(res.data);
             } else {
@@ -50,12 +49,14 @@ function Login(props) {
                 setToken(res.data);
                 var decoded = jwt_decode(res.data.split(' ')[1]);
                 const user = decoded.user;
+                console.log(decoded);
                 setEmail(user.email);
                 setName(user.name);
                 setAccountType(accountType);
                 setId(user.id);
                 setPhone(user.jobSeekerContact);
                 if(accountType=='JobSeeker')  {
+                    setResumeUrl(decoded.resumeUrl);
                     redirectValFn(<Redirect to="/resume"/>);
                 } else if(accountType=='Employer')  {
                     redirectValFn(<Redirect to="/employerprofile"/>);
