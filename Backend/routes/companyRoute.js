@@ -49,10 +49,10 @@ router.get("/api/featuredReviews/:companyId", (req, res) => {
                 console.log(err);
                 return res.status(400).send('Failed to fetch featured reviews');
             } else {
-                if(result.length<=5)
+                if(reviews.length<=5)
                     return res.status(200).send(reviews);
                 else {
-                    const highest = reviews[0,5];
+                    const highest = reviews.slice(0,4);
                     const lowest = reviews[reviews.length-1];
                     highest.push(lowest);
                     return res.status(200).send(highest);
