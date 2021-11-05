@@ -6,6 +6,10 @@ const comSchema = new Schema({
         type: Number,
         required: true
     },
+    companyName: {
+        type: String,
+        required: true
+    },
     avgWorkHappinessScore: {
         type: Number
     },

@@ -32,7 +32,6 @@ class Main extends Component {
         <Route path="/login" component={Login} />
         <Route path="/home" component={Home} />
         <Route path="/header" component={Header} />
-        <Route path="/header" component={Header} />
         <Route path="/snapshot" component={Snapshot}/>
         <Route path="/whyJoinUs" component={JoinUs}/>
         <Route path="/signup" component={Signup} />
