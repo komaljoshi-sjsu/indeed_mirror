@@ -87,11 +87,13 @@ class PostJob extends Component {
         } else {
             // To-DO : Get logged in company id
             const companyId = 1;
+            const employeeId = 1;
             const { companyName, jobTitle, industry, city, shortJobDescription, salaryDetails,
                 streetAddress, state, zipcode,country, jobMode, jobType,responsibilities,
                 qualifications, loveJobRole} = this.state;
             const inputData = {
                 companyId,
+                employeeId,
                 companyName,
                 jobTitle,
                 industry,

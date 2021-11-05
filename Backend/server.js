@@ -56,6 +56,7 @@ app.use(require("./routes/employerFeaturedReviews"))
 app.use(require("./routes/getPostedJobs"))
 app.use(require("./routes/getApplicantsName"))
 app.use(require("./routes/getJobSeekerProfile"))
+app.use(require("./routes/allCompanyReviews"))
 //Define all the routes
 //app.use('/postNewJob', postNewJob)
 

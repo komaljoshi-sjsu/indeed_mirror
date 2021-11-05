@@ -80,3 +80,12 @@ export const logout = (show) => {
         });
     }
 }
+
+export const setResumeUrl = (url) => {
+    return (dispatch) => {
+        dispatch({
+            type:"setResumeUrl",
+            payload:url
+        });
+    }
+}

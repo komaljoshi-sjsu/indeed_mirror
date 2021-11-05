@@ -6,7 +6,8 @@ const initState = {
     token: "",
     phone:'',
     successModal: false,
-    errorModal: false
+    errorModal: false,
+    resumeUrl:''
 }
 
 export const userReducer = (state=initState,action) => {
@@ -55,6 +56,11 @@ export const userReducer = (state=initState,action) => {
                 ...state,'errorModal':action.payload
             }
             return errorState;
+        case 'setResumeUrl':
+            let urlState = {
+                ...state,'resumeUrl':action.payload
+            }
+            return urlState;
     }
     return state;
 }
