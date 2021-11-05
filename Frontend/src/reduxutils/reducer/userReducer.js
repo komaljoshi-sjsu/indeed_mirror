@@ -4,7 +4,9 @@ const initState = {
     accountType:"",
     email:"",
     token: "",
-    phone:''
+    phone:'',
+    successModal: false,
+    errorModal: false
 }
 
 export const userReducer = (state=initState,action) => {
@@ -43,7 +45,16 @@ export const userReducer = (state=initState,action) => {
                 ...state,'phone':action.payload
             }
             return phoneState;
-        
+        case "showSuccessModal":
+            let successState = {
+                ...state,'successModal':action.payload
+            }
+            return successState;
+        case "showErrorModal":
+            let errorState = {
+                ...state,'errorModal':action.payload
+            }
+            return errorState;
     }
     return state;
 }

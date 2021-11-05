@@ -21,6 +21,8 @@ import Resume from './pages/JobSeeker/Resume.js'
 import FindSalaries from './pages/JobSeeker/FindSalaries'
 import EmployerAnalytics from './pages/Employer/EmployerAnalytics'
 import Preferences from './pages/JobSeeker/Preferences.js'
+import Header from './common/Header'
+import FeaturedReview from './pages/Employer/featuredReview';
 
 //Create a Main Component
 class Main extends Component {
@@ -30,6 +32,7 @@ class Main extends Component {
         {/*Render Different Component based on Route*/}
         <Route path="/login" component={Login} />
         <Route path="/home" component={Home} />
+        <Route path="/header" component={Header} />
         <Route path="/snapshot" component={Snapshot}/>
         <Route path="/whyJoinUs" component={JoinUs}/>
         <Route path="/signup" component={Signup} />
@@ -41,8 +44,10 @@ class Main extends Component {
         <Route path="/company" component={CompanyTabs} />
         <Route path="/photos" component={UploadPhotos} />
         <Route path="/companyPhotos" component={CompanyPhotos} />
+        <Route path="/adminPhotos" component={AdminPhoto} />
         <Route path="/adminPhotos" component={AdminPhoto}/>
         <Route path="/reviews" component={Reviews}/>
+        <Route path="/featuredReviews" component={FeaturedReview}/>
         <Route path="/adminReviews" component={AdminReview}/>
         <Route path="/addSalaryReview" component={AddSalaryReview} />
         <Route path="/resume" component={Resume}/>

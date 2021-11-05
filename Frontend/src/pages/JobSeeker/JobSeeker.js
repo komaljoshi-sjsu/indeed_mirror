@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import '../../CSS/JobSeekerLanding.css'
 import TextField from '@mui/material/TextField'
+import { Rating, RatingView } from 'react-simple-star-rating'
 import { makeStyles } from '@material-ui/styles'
 import Autocomplete from '@mui/material/Autocomplete'
 import axios from 'axios'
@@ -51,14 +52,21 @@ class JobSeekerLandingPage extends Component {
       jobs: [],
       whatSearch: [],
       whereSearch: [],
+      noOfCompanyReviews: [],
+      avgCompanyRating: [],
       roleName: '',
       companyName: '',
       city: '',
       state: '',
       zip: '',
+      rating: 0,
+      reviewCount: 0,
       jobType: '',
       salary: '',
       location: '',
+      responsibilities: '',
+      qualifications: '',
+      loveJobRole: '',
     }
     this.getCurrentDate()
   }
@@ -91,17 +99,14 @@ class JobSeekerLandingPage extends Component {
   }
 
   componentDidMount() {
-    axios.get('http://localhost:5000/jobSeeker/home').then(
+    this.getAllData()
+  }
+
+  async getAllData() {
+    let job
+    await axios.get('http://localhost:5000/jobSeeker/home').then(
       (response) => {
         console.log(response.data, response.status)
-        //this.state.jobs = response.data
-
-        //console.log(response.data[0].fullJobDesc)
-
-        // let jobDesc = JSON.parse(response.data[0].fullJobDesc)
-
-        // console.log(jobDesc)
-
         let jobTitles = response.data.map((job) => {
           return job.jobTitle
         })
@@ -138,7 +143,7 @@ class JobSeekerLandingPage extends Component {
           (job, index, self) => index === self.findIndex((j) => j === job),
         )
 
-        let job = response.data[0]
+        job = response.data[0]
 
         this.setState({
           jobs: this.state.jobs.concat(response.data),
@@ -154,6 +159,46 @@ class JobSeekerLandingPage extends Component {
           salary: job.salaryDetails,
           location: job.city,
         })
+      },
+      (error) => {
+        console.log(error)
+      },
+    )
+
+    await axios.get('http://localhost:5000/jobSeeker/getCompanyReviews').then(
+      (response) => {
+        console.log(response.data, response.status)
+
+        this.setState({
+          noOfCompanyReviews: this.state.noOfCompanyReviews.concat(
+            response.data,
+          ),
+        })
+        let companyId = job.companyId
+        let reviews = this.state.noOfCompanyReviews.filter(
+          (reviews) => reviews.companyId === companyId,
+        )[0]
+
+        this.setState({ reviewCount: reviews.NoOfReviews })
+      },
+      (error) => {
+        console.log(error)
+      },
+    )
+
+    await axios.get('http://localhost:5000/jobSeeker/getCompanyRating').then(
+      (response) => {
+        console.log(response.data, response.status)
+
+        this.setState({
+          avgCompanyRating: this.state.avgCompanyRating.concat(response.data),
+        })
+        let companyId = job.companyId
+        let avgrating = this.state.avgCompanyRating.filter(
+          (rating) => rating.companyId === companyId,
+        )[0]
+
+        this.setState({ rating: avgrating.avgRating })
       },
       (error) => {
         console.log(error)
@@ -241,6 +286,17 @@ class JobSeekerLandingPage extends Component {
     let job = this.state.allJobs.filter((job) => job.jobId === jobId)[0]
 
     console.log(job.jobTitle)
+    console.log(job.companyId)
+    let companyId = job.companyId
+    let reviews = this.state.noOfCompanyReviews.filter(
+      (reviews) => reviews.companyId === companyId,
+    )[0]
+    let avgrating = this.state.avgCompanyRating.filter(
+      (rating) => rating.companyId === companyId,
+    )[0]
+
+    console.log(reviews.NoOfReviews)
+    console.log(avgrating.avgRating)
 
     this.setState({
       roleName: job.jobTitle,
@@ -248,9 +304,14 @@ class JobSeekerLandingPage extends Component {
       city: job.city,
       state: job.state,
       zip: job.zip,
+      reviewCount: reviews.NoOfReviews,
+      rating: avgrating.avgRating,
       jobType: job.jobMode,
       salary: job.salaryDetails,
       location: job.city,
+      responsibilities: job.responsibilities,
+      qualifications: job.qualifications,
+      loveJobRole: job.loveJobRole,
     })
   }
 
@@ -432,8 +493,10 @@ class JobSeekerLandingPage extends Component {
                   <div class="card-body">
                     <h4 class="card-title">{job.jobTitle}</h4>
                     <h6 class="card-title">{job.companyName}</h6>
-                    <h6 class="card-title">{job.city}</h6>
-                    <h6 class="card-title">{job.salaryDetails}</h6>
+                    <h6 class="card-title">
+                      {job.city}, {job.state}, {job.zip}
+                    </h6>
+                    <h6 class="card-title">$ {job.salaryDetails}</h6>
                     <br />
                     <br />
                     <p class="card-text">{job.shortJobDescription}</p>
@@ -447,8 +510,9 @@ class JobSeekerLandingPage extends Component {
                 <div class="card-body">
                   <h4 class="card-title">{this.state.roleName}</h4>
                   <h6 class="card-title">{this.state.companyName}</h6>
-                  <h6 class="card-title">Average Rating</h6>
-                  <h6 class="card-title">Number of reviews</h6>
+                  <RatingView ratingValue={this.state.rating} />
+                  <br />
+                  <h6 class="card-title">{this.state.reviewCount} reviews</h6>
                   <h6 class="card-title">
                     {this.state.city}, {this.state.state}
                   </h6>
@@ -488,9 +552,13 @@ class JobSeekerLandingPage extends Component {
                   <br />
                   <h6>Job Description:</h6>
                   <br />
-                  <h6>What you will do:</h6> <br />
-                  <h6>What you will need:</h6> <br />
-                  <h6>Why You’ll love working:</h6> <br />
+                  <h6>What you will do:</h6>
+                  <h6>{this.state.responsibilities}</h6>
+                  <br />
+                  <h6>What you will need:</h6>
+                  <h6>{this.state.qualifications}</h6> <br />
+                  <h6>Why You’ll love working:</h6>
+                  <h6>{this.state.loveJobRole}</h6> <br />
                 </div>
               </div>
             </div>

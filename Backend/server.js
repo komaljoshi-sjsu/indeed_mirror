@@ -51,6 +51,11 @@ app.use(require('./routes/addCompanyDetails'))
 app.use(require("./routes/getCompanyDetails"))
 app.use(require("./routes/addCompanyIdToEmployer"))
 app.use(require("./routes/employerAnalytics"))
+app.use(require("./routes/jobSeekerProfileRoute"))
+app.use(require("./routes/employerFeaturedReviews"))
+app.use(require("./routes/getPostedJobs"))
+app.use(require("./routes/getApplicantsName"))
+app.use(require("./routes/getJobSeekerProfile"))
 //Define all the routes
 //app.use('/postNewJob', postNewJob)
 

@@ -1,29 +1,43 @@
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import JobSeekerNavbar from './JobSeekerNavbar';
-import { color } from '@mui/system';
-
+import backendServer from '../../webConfig.js';
 import {Redirect} from 'react-router';
 import { Button, Form } from 'react-bootstrap';
 import { useState } from 'react';
+import {userActionCreator} from '../../reduxutils/actions.js';
+import {bindActionCreators} from 'redux';
+import Error from '../Error/ErrorMsg';
+import axios from 'axios';
+import ErrorMsg from '../Error/ErrorMsg';
+import SuccessMsg from '../Success/SuccessMsg';
 
 function Resume(props) {
-    let fullname = useSelector((state)=>state.userInfo.name);
-    const id = useSelector((state)=>state.userInfo.id);
-    const[redirectTo, setRedirectTo] = useState(null);
-    const phone = useSelector((state)=>state.userInfo.phone);
-    const email = useSelector((state)=>state.userInfo.email);
+    const dispatch = useDispatch();
     const[hideSkip,setHideSkip] = useState(false);
+    const[redirectTo, setRedirectTo] = useState(null);
     const[hideDiv,setHideDiv] = useState(true);
+    const[errMsg,setErrMsg] = useState('');
     const[resumeHeading, setResumeHeading] = useState('Add a resume to Indeed');
     const[resumeTextUpload,setResumeTextUpload]  = useState('Upload your resume');
     const[resumeTextCreate,setResumeTextCreate]  = useState('Create a new resume');
     const[hideContactDiv, setHideContactDiv] = useState(true);
+    let fullname = useSelector((state)=>state.userInfo.name);
+    const id = useSelector((state)=>state.userInfo.id);
+    const phone = useSelector((state)=>state.userInfo.phone);
+    const email = useSelector((state)=>state.userInfo.email);
+
+    const logout = bindActionCreators(userActionCreator.logout,dispatch);
+    const showSuccessModal = bindActionCreators(userActionCreator.showSuccessModal,dispatch);
+    const setEmail = bindActionCreators(userActionCreator.setEmail,dispatch);
+    const showErrorModal = bindActionCreators(userActionCreator.showErrorModal,dispatch);
+    const setName = bindActionCreators(userActionCreator.setName,dispatch);
+    const setPhone = bindActionCreators(userActionCreator.setPhone,dispatch);
     //const[showContactDiv, setShowContactDiv] = useState(true);
 
-    fullname = fullname.split(/\s+/);
-    const [fname,...lnames] = fullname;
+    let nameArr = fullname.split(/\s+/);
+    const [fname,...lnames] = nameArr;
     let lname = '';
     for(let ln of lnames) {
         lname += ln;
@@ -41,9 +55,60 @@ function Resume(props) {
     let expandContactInfo = () => {
         setHideContactDiv(false);
     }
+    let updateBasicInfo = (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const fname = formData.get('fname');
+        const lname = formData.get('lname');
+        const name = fname+' '+lname;
+        const emailId = formData.get('email');
+        const phoneno = formData.get('phone');
+        const data = {};
+        if(name!=fullname)
+            data.name = name;
+        if(phoneno!=phone)
+            data.jobSeekerContact = phoneno;
+        if(email!=emailId)
+            data.email = emailId;
+        if(Object.keys(data).length>0) {
+            axios.post(backendServer+'/api/updateJobSeekerProfile',{
+                id: id,
+                data: data
+            }).then(res => {
+                if(res.data.code == '200') {
+                    setEmail(emailId);
+                    setName(name);
+                    setPhone(phoneno);
+                    showSuccessModal(true);
+                    if(email!=emailId) {
+                        showSuccessModal(true);
+                        setErrMsg('Successfully updated user data. Since you changed email, you will be logged out. Please login again.');
+                        setTimeout(function () {
+                            logout(true);
+                            setRedirectTo(<Redirect to="/landingPage"/>);
+                        }, 1500)
+                        
+                    }
+                    else
+                        setErrMsg('Successfully updated user data');
+                } else {
+                    setErrMsg(res.data.msg);
+                    showErrorModal(true);
+                    console.log(res.data.err);
+                }
+            }).catch(err=>{
+                console.log(err);
+                setErrMsg('Failed to update Profile. Please refer console for more details');
+                showErrorModal(true);
+            });
+        }
+        
+    }
     return (
         <div>
             {redirectTo}
+            <ErrorMsg err={errMsg}></ErrorMsg>
+            <SuccessMsg msg={errMsg}></SuccessMsg>
             <JobSeekerNavbar></JobSeekerNavbar>
             <div className="container-fullwidth" style={{marginTop:'5%',marginRight:'auto',marginLeft:'auto',width:'50%'}}>
                 <div className="row" hidden={hideDiv}>
@@ -64,7 +129,7 @@ function Resume(props) {
                     <b>Contact Information <img src="/images/pencil.png" height='15px' width='15px'style={{float:'right',cursor:'pointer'}} onClick={expandContactInfo}/></b><p></p>
                     <div hidden={hideContactDiv}>
                         <p><span style={{color:'red'}}>* </span><small style={{color:'darkgray'}}>Required Fields</small></p>
-                        <Form>
+                        <Form onSubmit={updateBasicInfo}>
                             <Form.Group className="mb-3" >
                                 <Form.Label><b>First Name </b><span style={{color:'red'}}>* </span></Form.Label>
                                 <Form.Control type="text" name = "fname" defaultValue={fname} required maxLength="45"></Form.Control>

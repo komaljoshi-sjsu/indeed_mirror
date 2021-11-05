@@ -9,13 +9,18 @@ const mysql = require('mysql');
 const http = require('http');
 const url = require('url');
 
-router.get("/companyReviews", (req, res) => {
+router.get("/companyReviewsPaginated", (req, res) => {
 
     const queryObject = url.parse(req.url,true).query;
     const adminReviewStatus = 'APPROVED';
-	let sql = 'SELECT r.*, c.companyName FROM Review r, Company c where r.companyId='+mysql.escape(queryObject.companyId)+ ' and r.companyId = c.companyId and r.isFeatured=1 and r.adminReviewStatus=? order by r.postedDate' ;
+    const pageNumber = queryObject.currentPage;
+    const limit = 5;
+    const offset = (pageNumber - 1) * limit;
+    console.log("pageNumber" +pageNumber);
+    console.log("offset" +offset);
+	let sql = 'SELECT r.*, c.companyName FROM Review r, Company c where r.companyId='+mysql.escape(queryObject.companyId)+ ' and r.companyId = c.companyId and r.isFeatured=1 and r.adminReviewStatus=? ORDER BY FIELD(jobSeekerId, ?) DESC LIMIT ?,?' ;
     console.log(sql);
-    connection.query(sql, [adminReviewStatus], (err, results) => {
+    connection.query(sql, [adminReviewStatus, queryObject.jobSeekerId, offset, limit], (err, results) => {
         if (err) {
             res.writeHead(401,{
                 'Content-Type' : 'application/json'
@@ -26,7 +31,8 @@ router.get("/companyReviews", (req, res) => {
             res.writeHead(200,{
                 'Content-Type' : 'application/json'
             });
-            let reviewData = []
+            let reviewData = [];
+            console.log(results.length);
             for(let i=0; i<results.length; i++){
             let reviewDetails = {
                 reviewId: results[i].reviewId,
@@ -53,6 +59,249 @@ router.get("/companyReviews", (req, res) => {
         }
             console.log("Review data : ",JSON.stringify(reviewData));
             res.end(JSON.stringify(reviewData));
+            
+        }else{
+            res.writeHead(400,{
+                'Content-Type' : 'application/json'
+            });
+            console.log("No reviews available!");
+            res.end("No reviews available!!");
+        }
+    });	
+});
+
+router.get("/companyReviewsRatingSort", (req, res) => {
+
+    console.log("Inside sort");
+    const queryObject = url.parse(req.url,true).query;
+    const adminReviewStatus = 'APPROVED';
+    const pageNumber = queryObject.currentPage;
+    const limit = 5;
+    const offset = (pageNumber - 1) * limit;
+    console.log("pageNumber" +pageNumber);
+    console.log("offset" +offset);
+	let sql = 'SELECT r.*, c.companyName FROM Review r, Company c where r.companyId='+mysql.escape(queryObject.companyId)+ ' and r.companyId = c.companyId and r.isFeatured=1 and r.adminReviewStatus=? ORDER BY rating DESC LIMIT ?,?' ;
+    console.log(sql);
+    connection.query(sql, [adminReviewStatus, offset, limit], (err, results) => {
+        if (err) {
+            res.writeHead(401,{
+                'Content-Type' : 'application/json'
+            });
+            res.end("Server error. Please try again later!");
+        }
+        else if(results.length > 0){
+            res.writeHead(200,{
+                'Content-Type' : 'application/json'
+            });
+            let reviewData = [];
+            console.log(results.length);
+            for(let i=0; i<results.length; i++){
+            let reviewDetails = {
+                reviewId: results[i].reviewId,
+                reviewTitle : results[i].reviewTitle,
+                companyName: results[i].companyName,
+                reviewerRole : results[i].reviewerRole,
+                city: results[i].city,
+                state: results[i].state,
+                postedDate : results[i].postedDate,
+                rating : results[i].rating,
+                reviewComments : results[i].reviewComments,
+                pros : results[i].pros,
+                cons : results[i].cons,
+                ceoApprovalRating : results[i].ceoApprovalRating,
+                howToPrepare : results[i].howToPrepare,
+                noHelpfulCount : results[i].noHelpfulCount,
+                yesReviewHelpfulCount: results[i].yesReviewHelpfulCount,
+                isFeatured: results[i].isFeatured,
+                adminReviewStatus: results[i].adminReviewStatus,
+                jobSeekerId: results[i].jobSeekerId,
+                companyId: results[i].companyId,
+            };
+            reviewData.push(reviewDetails);
+        }
+            console.log("Review data : ",JSON.stringify(reviewData));
+            res.end(JSON.stringify(reviewData));
+            
+        }else{
+            res.writeHead(400,{
+                'Content-Type' : 'application/json'
+            });
+            console.log("No reviews available!");
+            res.end("No reviews available!!");
+        }
+    });	
+});
+
+router.get("/companyReviewsDateSort", (req, res) => {
+
+    console.log("Inside sort");
+    const queryObject = url.parse(req.url,true).query;
+    const adminReviewStatus = 'APPROVED';
+    const pageNumber = queryObject.currentPage;
+    const limit = 5;
+    const offset = (pageNumber - 1) * limit;
+    console.log("pageNumber" +pageNumber);
+    console.log("offset" +offset);
+	let sql = 'SELECT r.*, c.companyName FROM Review r, Company c where r.companyId='+mysql.escape(queryObject.companyId)+ ' and r.companyId = c.companyId and r.isFeatured=1 and r.adminReviewStatus=? ORDER BY postedDate DESC LIMIT ?,?' ;
+    console.log(sql);
+    connection.query(sql, [adminReviewStatus, offset, limit], (err, results) => {
+        if (err) {
+            res.writeHead(401,{
+                'Content-Type' : 'application/json'
+            });
+            res.end("Server error. Please try again later!");
+        }
+        else if(results.length > 0){
+            res.writeHead(200,{
+                'Content-Type' : 'application/json'
+            });
+            let reviewData = [];
+            console.log(results.length);
+            for(let i=0; i<results.length; i++){
+            let reviewDetails = {
+                reviewId: results[i].reviewId,
+                reviewTitle : results[i].reviewTitle,
+                companyName: results[i].companyName,
+                reviewerRole : results[i].reviewerRole,
+                city: results[i].city,
+                state: results[i].state,
+                postedDate : results[i].postedDate,
+                rating : results[i].rating,
+                reviewComments : results[i].reviewComments,
+                pros : results[i].pros,
+                cons : results[i].cons,
+                ceoApprovalRating : results[i].ceoApprovalRating,
+                howToPrepare : results[i].howToPrepare,
+                noHelpfulCount : results[i].noHelpfulCount,
+                yesReviewHelpfulCount: results[i].yesReviewHelpfulCount,
+                isFeatured: results[i].isFeatured,
+                adminReviewStatus: results[i].adminReviewStatus,
+                jobSeekerId: results[i].jobSeekerId,
+                companyId: results[i].companyId,
+            };
+            reviewData.push(reviewDetails);
+        }
+            console.log("Review data : ",JSON.stringify(reviewData));
+            res.end(JSON.stringify(reviewData));
+            
+        }else{
+            res.writeHead(400,{
+                'Content-Type' : 'application/json'
+            });
+            console.log("No reviews available!");
+            res.end("No reviews available!!");
+        }
+    });	
+});
+
+router.get("/companyReviewsHelpfulSort", (req, res) => {
+
+    console.log("Inside sort");
+    const queryObject = url.parse(req.url,true).query;
+    const adminReviewStatus = 'APPROVED';
+    const pageNumber = queryObject.currentPage;
+    const limit = 5;
+    const offset = (pageNumber - 1) * limit;
+    console.log("pageNumber" +pageNumber);
+    console.log("offset" +offset);
+	let sql = 'SELECT r.*, c.companyName FROM Review r, Company c where r.companyId='+mysql.escape(queryObject.companyId)+ ' and r.companyId = c.companyId and r.isFeatured=1 and r.adminReviewStatus=? ORDER BY yesReviewHelpfulCount DESC LIMIT ?,?' ;
+    console.log(sql);
+    connection.query(sql, [adminReviewStatus, offset, limit], (err, results) => {
+        if (err) {
+            res.writeHead(401,{
+                'Content-Type' : 'application/json'
+            });
+            res.end("Server error. Please try again later!");
+        }
+        else if(results.length > 0){
+            res.writeHead(200,{
+                'Content-Type' : 'application/json'
+            });
+            let reviewData = [];
+            console.log(results.length);
+            for(let i=0; i<results.length; i++){
+            let reviewDetails = {
+                reviewId: results[i].reviewId,
+                reviewTitle : results[i].reviewTitle,
+                companyName: results[i].companyName,
+                reviewerRole : results[i].reviewerRole,
+                city: results[i].city,
+                state: results[i].state,
+                postedDate : results[i].postedDate,
+                rating : results[i].rating,
+                reviewComments : results[i].reviewComments,
+                pros : results[i].pros,
+                cons : results[i].cons,
+                ceoApprovalRating : results[i].ceoApprovalRating,
+                howToPrepare : results[i].howToPrepare,
+                noHelpfulCount : results[i].noHelpfulCount,
+                yesReviewHelpfulCount: results[i].yesReviewHelpfulCount,
+                isFeatured: results[i].isFeatured,
+                adminReviewStatus: results[i].adminReviewStatus,
+                jobSeekerId: results[i].jobSeekerId,
+                companyId: results[i].companyId,
+            };
+            reviewData.push(reviewDetails);
+        }
+            console.log("Review data : ",JSON.stringify(reviewData));
+            res.end(JSON.stringify(reviewData));
+            
+        }else{
+            res.writeHead(400,{
+                'Content-Type' : 'application/json'
+            });
+            console.log("No reviews available!");
+            res.end("No reviews available!!");
+        }
+    });	
+});
+
+router.get("/companyReviews", (req, res) => {
+
+    const queryObject = url.parse(req.url,true).query;
+    const adminReviewStatus = 'APPROVED';
+	let sql = 'SELECT r.*, c.companyName FROM Review r, Company c where r.companyId='+mysql.escape(queryObject.companyId)+ ' and r.companyId = c.companyId and r.isFeatured=1 and r.adminReviewStatus=?' ;
+    console.log(sql);
+    connection.query(sql, [adminReviewStatus], (err, results) => {
+        if (err) {
+            res.writeHead(401,{
+                'Content-Type' : 'application/json'
+            });
+            res.end("Server error. Please try again later!");
+        }
+        else if(results.length > 0){
+            res.writeHead(200,{
+                'Content-Type' : 'application/json'
+            });
+            let reviewData = [];
+            console.log(results.length);
+            for(let i=0; i<results.length; i++){
+            let reviewDetails = {
+                reviewId: results[i].reviewId,
+                reviewTitle : results[i].reviewTitle,
+                companyName: results[i].companyName,
+                reviewerRole : results[i].reviewerRole,
+                city: results[i].city,
+                state: results[i].state,
+                postedDate : results[i].postedDate,
+                rating : results[i].rating,
+                reviewComments : results[i].reviewComments,
+                pros : results[i].pros,
+                cons : results[i].cons,
+                ceoApprovalRating : results[i].ceoApprovalRating,
+                howToPrepare : results[i].howToPrepare,
+                noHelpfulCount : results[i].noHelpfulCount,
+                yesReviewHelpfulCount: results[i].yesReviewHelpfulCount,
+                isFeatured: results[i].isFeatured,
+                adminReviewStatus: results[i].adminReviewStatus,
+                jobSeekerId: results[i].jobSeekerId,
+                companyId: results[i].companyId,
+            };
+            reviewData.push(reviewDetails);
+        }
+            console.log("Review data : ",JSON.stringify(reviewData));
+            res.end(JSON.stringify(reviewData));
+            
         }else{
             res.writeHead(400,{
                 'Content-Type' : 'application/json'
