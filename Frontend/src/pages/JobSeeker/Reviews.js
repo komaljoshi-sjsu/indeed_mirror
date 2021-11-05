@@ -405,7 +405,7 @@ class Reviews extends Component {
             <Card.Title>
               <br />
                <Row>
-                 <Col> <h4>{companyName}{' '}Employee Reviews</h4>
+                 <Col> <h4>{companyName}{' '} Reviews</h4>
                  </Col>
                  <Col />
                  <Col>
