@@ -29,7 +29,7 @@ const ReportEmployer = () => {
       .then(res => {
         // console.log(res);
         for (const dataObj of res.data) {
-          jobCnt.push(parseInt(dataObj.countCompId));
+          jobCnt.push(parseInt(dataObj.countJobId));
           empName.push(dataObj.name);
         }
         setChartTwoData({

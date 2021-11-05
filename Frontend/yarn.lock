@@ -11153,15 +11153,15 @@
   dependencies:
     "prop-types" "^15.7.2"
 
-"react-bootstrap-range-slider@^3.0.2":
-  "integrity" "sha512-Fk/dbIcu/wKcDF7CdIuPUxPAc9u2JBpVJ96wgAiGkTwYxZgAB37XzoMkLgAX8RfdRkkYS12WntCXMkdyDGsHFg=="
-  "resolved" "https://registry.npmjs.org/react-bootstrap-range-slider/-/react-bootstrap-range-slider-3.0.2.tgz"
-  "version" "3.0.2"
+"react-bootstrap-range-slider@^3.0.3":
+  "integrity" "sha512-D2L0yDltDQCC0Yq40vHgVL2hHYVa+cLHv2OqgzuFUEB/IdqzHbz22yGjuj5jS12VIRB1CX+KxzeH+7nBojg+Sg=="
+  "resolved" "https://registry.npmjs.org/react-bootstrap-range-slider/-/react-bootstrap-range-slider-3.0.3.tgz"
+  "version" "3.0.3"
   dependencies:
     "classnames" "^2.3.1"
     "prop-types" "^15.7.2"
 
-"react-bootstrap@^1.6.1", "react-bootstrap@^1.6.3":
+"react-bootstrap@^1.0.0 || ^2.0.0", "react-bootstrap@^1.6.3":
   "integrity" "sha512-z3BhBD4bEZuLP8VrYqAD7OT7axdcSkkyvWBWnS2U/4MhyabUihrUyucPWkan7aMI1XIHbmH4LCpEtzWGfx/yfA=="
   "resolved" "https://registry.npmjs.org/react-bootstrap/-/react-bootstrap-1.6.4.tgz"
   "version" "1.6.4"
@@ -11586,6 +11586,16 @@
   dependencies:
     "object-assign" "^4.1.1"
     "react-is" "^16.12.0 || ^17.0.0"
+
+"react-simple-star-rating@^3.0.0":
+  "integrity" "sha512-kxl9ucQTr1TzXGT/klBe7EMqCN9uuRoSlZqKCr9HMMriEY8rB/VwABtwELYhSClhkE0LIRpWw12EAG9hq5DOSg=="
+  "resolved" "https://registry.npmjs.org/react-simple-star-rating/-/react-simple-star-rating-3.0.0.tgz"
+  "version" "3.0.0"
+
+"react-star-rating-input@^8.0.1":
+  "integrity" "sha512-WqtQhacmI4KCh/6hS7QqEzThbp2TcUWN6Wqo23bNn/0SRZwY3S1JpYe0sP/RJoAC8XeTcNEC9GbwrIBW9BApww=="
+  "resolved" "https://registry.npmjs.org/react-star-rating-input/-/react-star-rating-input-8.0.1.tgz"
+  "version" "8.0.1"
 
 "react-star-rating@^1.4.2":
   "integrity" "sha1-C2QJ7vEjZ3cpBmKxFJZqBxk5mYY="

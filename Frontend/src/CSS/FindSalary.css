@@ -66,3 +66,18 @@
   #clearBtn {
     cursor: pointer;
   }
+
+  .card-container{
+    display: flex;
+  flex-wrap: wrap;
+  }
+
+  .App{
+    padding:4rem;
+
+  }
+
+  .salary{
+    display: flex;
+  flex-wrap: wrap;
+  }

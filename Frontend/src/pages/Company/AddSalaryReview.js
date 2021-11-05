@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form';
 import backendServer from '../../webConfig';
 import CompanyTabs from './CompanyTabs';
 import Card from "react-bootstrap/Card";
+import '../../CSS/FindSalary.css'
 
 const AddSalaryReview = (props) => {
   const [show, setShow] = useState(false);
@@ -99,7 +100,7 @@ const AddSalaryReview = (props) => {
             <div class="col-10">
               <div class="row">
                 <div class="col-3">     
-                <div>
+                <div style={{display:'block'}}>
                   {salary.map((salaryDetails, index) => {
                   return (
                     <div key={index}>
@@ -111,36 +112,8 @@ const AddSalaryReview = (props) => {
                   })}
               </div>
               </div>
-              <div class="col-3">     
-                <div>
-                  {salary.map((salaryDetails, index) => {
-                  return (
-                    <div key={index}>
-                    <p>Average salaries at {salaryDetails.companyName} </p>
-                    <div>{salaryDetails.jobTitle}</div>
-                    <div>${salaryDetails.annualPay} per year</div>
-                </div>
-                  );
-                  })}
-              </div>
-              </div>
-              <div class="col-3">     
-                <div>
-                  {salary.map((salaryDetails, index) => {
-                  return (
-                    <div key={index}>
-                    <p>Average salaries at {salaryDetails.companyName} </p>
-                    <div>{salaryDetails.jobTitle}</div>
-                    <div>${salaryDetails.annualPay} per year</div>
-                </div>
-                  );
-                  })}
-              </div>
-              </div>
-              
 
-              <div class="col-3">    
-
+              <div class="col-3"> 
           <button type="button" class="btn btn-outline-primary btn-lg" style={{width:'100%'}} onClick={handleShow}>
           Add Salary Review
            </button>
@@ -165,9 +138,9 @@ const AddSalaryReview = (props) => {
              </Card.Body>
           </Card>
      </div>
+     </div>
  </div>
  </div>     
-  </div>
 
       <Modal
         visible={visible}

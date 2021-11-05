@@ -11,6 +11,8 @@ import JobSeekerNavbar from './JobSeekerNavbar'
 import backgroundImg from '../../CSS/findSalary.png'
 import Card from "react-bootstrap/Card";
 import backendServer from '../../webConfig';
+import '../../CSS/FindSalary.css'
+
 
 class FindSalaries extends Component {
   constructor(props) {
@@ -327,17 +329,16 @@ class FindSalaries extends Component {
 
     {/* render details */}
 
-    <div class="container mt-4">
-    <div class="row">
-        <div class="col-auto mb-3">
+<div className="App">
+    <div className="card-container">
         {this.state.jobs.map((job) => (  
             <div class="card" id={job.jobTitle} 
             // onClick={this.handleCardClick}
-            style={{marginTop:'10px'}}>
+            style={{marginTop:'1.5rem',marginInline:'1.5rem',width:'250px'}}>
                 <div class="card-body">
                     <h5 class="card-title"><a href='#'> {job.jobTitle} </a></h5>
                     {/* <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6> */}
-                    <p class="card-text">Average Salary ${job.salaryDetails} per year</p>
+                    <p class="card-text">Average Salary ${job.salaryDetails}/year</p>
                     <hr/>
                     {/* <p>Skills</p> */}
                     <a href="#" class="card-link">Skills</a>
@@ -346,8 +347,7 @@ class FindSalaries extends Component {
             </div>
           ))}
         </div>
-      </div>
-     </div>       
+     </div>    
 </div> 
 
 
