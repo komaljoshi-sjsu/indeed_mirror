@@ -162,9 +162,10 @@ router.post("/api/downloadResume", async(req, res) => {
     }
 })
 
-router.delete("/api/deleteResume/:key", async(req, res) => {
+router.delete("/api/deleteResume/:key/:id", async(req, res) => {
     try {
         const key = req.params.key;
+        const id = req.params.id;
         s3.deleteObject({
             Key: key,
             Bucket: '273indeed'
@@ -173,8 +174,12 @@ router.delete("/api/deleteResume/:key", async(req, res) => {
                 console.log('deletion failed',err)
                 return res.status(400).send('Failed to delete resume');
             } else {
-                console.log('Successfully deleted resume');
-                return res.status(200).send('success');
+                console.log('Successfully deleted resume with key ',key);
+                JobSeeker.findOneAndUpdate({jobSeekerId:id},{resumeUrl:''}).then(success=>{
+                    return res.status(200).send('success');
+                }).catch(err=> {
+                    return res.status(400).send('Failed to delete resume url from mongo.');
+                })
             }
         });
     } catch(err) {

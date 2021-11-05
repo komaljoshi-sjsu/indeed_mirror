@@ -23,6 +23,8 @@ function Resume(props) {
     const[resumeTextUpload,setResumeTextUpload]  = useState('Upload your resume');
     const[resumeTextCreate,setResumeTextCreate]  = useState('Create a new resume');
     const[hideContactDiv, setHideContactDiv] = useState(true);
+    const[resumeFileName,setResumeFileName] = useState('');
+
     let fullname = useSelector((state)=>state.userInfo.name);
     const id = useSelector((state)=>state.userInfo.id);
     const phone = useSelector((state)=>state.userInfo.phone);
@@ -40,9 +42,13 @@ function Resume(props) {
 
     useEffect(()=> {
         if(resumeUrl!=null && resumeUrl.length>0) {
+            let keyarr = resumeUrl.split('/');
+            let key = keyarr[keyarr.length-1];
+            setResumeFileName(key);
             hideResumeUpdate();
         }
     },[])
+
 
     let nameArr = fullname.split(/\s+/);
     const [fname,...lnames] = nameArr;
@@ -53,6 +59,9 @@ function Resume(props) {
     let hideResumeUpdate = ()  => {
         if(resumeUrl!=null && resumeUrl.length>0) {
             setNoResume(false);
+            let keyarr = resumeUrl.split('/');
+            let key = keyarr[keyarr.length-1];
+            setResumeFileName(key);
             setResumeHeading('Resume');
         }
         else {
@@ -134,9 +143,9 @@ function Resume(props) {
         axios.post(backendServer+'/api/uploadResume/'+id,data).then(res=>{
             console.log(res);
             if(res.data.code=='200') {
-                hideResumeUpdate();
-                setNoResume(false);
                 setResumeUrl(res.data.location);
+                setNoResume(false);
+                hideResumeUpdate();
             } else {
                 showErrorModal(true);
                 setErrMsg(res.data.msg);
@@ -152,8 +161,9 @@ function Resume(props) {
     }
     let handleResumeDelete= async(e) => {
         e.preventDefault();
-        let key = resumeUrl.split('/')[-1];
-        await axios.delete(backendServer+'/api/deleteResume/'+key).then(res=>{
+        let keyarr = resumeUrl.split('/');
+        let key = keyarr[keyarr.length-1];
+        await axios.delete(backendServer+'/api/deleteResume/'+key+'/'+id).then(res=>{
             console.log(res);
             if(res.status=='200') {
                 setNoResume(true);
@@ -176,16 +186,22 @@ function Resume(props) {
                 </div>
                 <div className="row" style={{border:'1px solid darkgray', boxShadow:'1px 1px 1px 1px darkgray',padding:'20px 20px 5px 20px'}} hidden={noResume}>
                     <b>{resumeHeading} </b><p></p>
-                    <Dropdown>
-                        <Dropdown.Toggle variant="success" id="dropdown-basic">
-                            <img src="/images/dots.png" style={{float:'right'}} height='20px' width='20px'></img>
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            <Dropdown.Item >Download</Dropdown.Item>
-                            <Dropdown.Item onClick={handleResumeDelete}>Delete</Dropdown.Item>
-                            <Dropdown.Item onClick={handleResumeReplace}>Replace</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
+                    <div className="col"style={{float:'left'}}>
+                        <img src="/images/docs.png" height='40px' width='40px'></img>
+                        {resumeFileName}
+                    </div>
+                    <div className="col">
+                        <Dropdown>
+                            <Dropdown.Toggle variant="outline-light" id="dropdown-basic" style={{float:'right'}}>
+                                <img src="/images/dots.png"  height='20px' width='20px'></img>
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                <Dropdown.Item >Download</Dropdown.Item>
+                                <Dropdown.Item onClick={handleResumeDelete}>Delete</Dropdown.Item>
+                                <Dropdown.Item onClick={handleResumeReplace}>Replace</Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </div>
                     <p></p>
                 </div><br></br>
                 <div className="row" style={{border:'1px solid darkgray', boxShadow:'1px 1px 1px 1px darkgray',padding:'20px 20px 5px 20px'}} hidden={!noResume}>
