@@ -14,7 +14,7 @@ import backendServer from '../../webConfig';
 import '../../CSS/FindSalary.css'
 
 
-class FindSalaries extends Component {
+class FindSalByTitle extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -196,31 +196,21 @@ class FindSalaries extends Component {
   render() {
     return (
       <div>
-        <div style={{ backgroundImage: `url(${backgroundImg})`,objectFit:'contain'}}>
           <JobSeekerNavbar />
           <div id="Second" class="row searchNav" >
           <div class="row">
             <div class="col-1"></div>
                 <div class="col-3">
-                  <h5>
+                  <h3>
                     <span style={{ color: '#003399' , fontWeight: 'bolder', fontSize: '30px'}}>
-                    Find a career you'll love
+                    Build a career you'll love
                     </span>
-                  </h5>
+                  </h3>
+                  <br/>
                 </div>
             <div class="col-4"></div>
           </div>
 
-          <div class="row" style={{ marginTop: '10px',marginBottom: '20px'  }}>
-          <div class="col-1"></div>
-              <div class="col-5">
-                <h5>
-                Explore which careers have the highest job satisfaction, best salaries, and more.
-                </h5>
-              </div>
-          <div class="col-4"></div>
-          </div>
-        </div>
 
       {/* Search bars */}
 
@@ -330,29 +320,31 @@ class FindSalaries extends Component {
     {/* render details */}
 
 <div className="App">
-    <div className="card-container">
-        {this.state.jobs.map((job) => (  
+<div className="card-container">
+        {this.state.jobs.filter((jobId) => this.props.match.params.jobId)
+            .map((job) => (  
+            <div>
+            <h5 class="card-title">{job.jobTitle} Salary in {job.state} </h5>
+            <h6>How much does a {job.jobTitle}  make in the {job.state}</h6>
+            
             <div class="card" id={job.jobTitle} 
-            // onClick={this.handleCardClick}
             style={{marginTop:'1.5rem',marginInline:'1.5rem',width:'250px'}}>
                 <div class="card-body">
-                    <h5 class="card-title" 
-                    onClick={() => {
-                          window.location = `/findSalByTitle/${job.jobId}`;
-                        }}>{job.jobTitle} </h5>
-                    {/* <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6> */}
-                    <p class="card-text">Average Salary ${job.salaryDetails}/year</p>
-                    <hr/>
-                    {/* <p>Skills</p> */}
-                    <a href="#" class="card-link">Skills</a>
-                    <a href="#" class="card-link" >Job Openings</a>
+               
                 </div>
             </div>
-          ))}
-        </div>
-     </div>    
-</div> 
+          </div>
+            ))}
+</div>
 
+<div>
+<div className="card-container">
+<h5 class="card-title">Top companies for Front Desk Agents in United States</h5>
+</div>
+</div>
+
+</div> 
+</div>
 
 
 
@@ -361,4 +353,4 @@ class FindSalaries extends Component {
   }
 }
 
-export default FindSalaries
+export default FindSalByTitle;

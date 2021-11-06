@@ -5,7 +5,7 @@ const conn = require('./../config/mysql_connection')
 
 router.get('/findSalaries', (req, res) => {
   try {
-    conn.query('select companyId,avg(salaryDetails) as salaryDetails,jobTitle,companyName,city,state,zip,industry from Job group by jobTitle;', async function (err, results) {
+    conn.query('select companyId,avg(salaryDetails) as salaryDetails,jobId,jobTitle,companyName,city,state,zip,industry from Job group by jobTitle;', async function (err, results) {
       if (results.length <= 0) {
         console.log('Not found')
         res.status(400).send('Job details not found')

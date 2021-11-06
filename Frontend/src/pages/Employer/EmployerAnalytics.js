@@ -18,7 +18,13 @@ const ReportEmployer = () => {
     datasets: [
       {
         data: []
-      }]
+      },
+      {
+          data: []
+        },
+        {
+          data: []
+        }]
   });
   
   const barChartOne = async () => {
@@ -32,16 +38,16 @@ const ReportEmployer = () => {
           jobCnt.push(parseInt(dataObj.countJobId));
           empName.push(dataObj.name);
         }
-        setChartTwoData({
+        setChartOneData({
           labels: empName,
           datasets: [
             {
               label: "job posted",
               data: jobCnt,
-              backgroundColor: ["rgba(75, 192, 192, 0.6)"],
-              borderWidth: 4
-            }
-          ]
+              backgroundColor: ["Orange"],
+              borderWidth: 4,
+              barThickness:100
+            }]
         });
       })
       .catch(err => {
@@ -51,24 +57,65 @@ const ReportEmployer = () => {
   };
 
   const barChartTwo = async () => {
-    let appCnt = [];
-    let compName = [];
+    let appApppliedCnt = [];
+    let appRejectedCnt = [];
+    let appAcceptedCnt = [];
+    let compName =[];
+    // let compAppliedName = [];
+    // let compRejectedName = [];
+    // let compAcceptedName = [];
    await axios
       .get(`${backendServer}/applicantsDetail`)
       .then(res => {
         // console.log(res);
         for (const dataObj of res.data) {
-          appCnt.push(parseInt(dataObj.countAppId));
+          if(dataObj.status === "Applied"){
+            appApppliedCnt.push(parseInt(dataObj.countAppId));
+            console.log(appApppliedCnt);
+            // compAppliedName.push(dataObj.companyName);
+          }
+          else if(dataObj.status === "Rejected"){
+            appRejectedCnt.push(parseInt(dataObj.countAppId));
+            console.log(appRejectedCnt);
+            // compRejectedName.push(dataObj.companyName);
+          }
+          else if(dataObj.status === "Accepted"){
+            appAcceptedCnt.push(parseInt(dataObj.countAppId));
+            console.log(appAcceptedCnt);
+            // compAcceptedName.push(dataObj.companyName);
+          }
+          else {
+            appApppliedCnt.push(0);
+            appRejectedCnt.push(0);
+            appAcceptedCnt.push(0);
+          }
+         if(!compName.includes(dataObj.companyName)){
           compName.push(dataObj.companyName);
+         } 
         }
-        setChartOneData({
+        setChartTwoData({
           labels: compName,
           datasets: [
             {
-              label: "jobs applied",
-              data: appCnt,
-              backgroundColor: ["rgba(75, 192, 192, 0.6)"],
-              borderWidth: 4
+              label: "applicants applied",
+              data: appApppliedCnt,
+              backgroundColor: ["Blue"],
+              borderWidth: 4,
+              barThickness:100
+            },
+            {
+              label: "applicants accepted",
+              data: appAcceptedCnt,
+              backgroundColor: ["Cyan"],
+              borderWidth: 4,
+              barThickness:100
+            },
+            {
+              label: "applicants rejected",
+              data: appRejectedCnt,
+              backgroundColor: ["rgb(255, 99, 132)"],
+              borderWidth: 4,
+              barThickness:100
             }
           ]
         });
@@ -85,8 +132,9 @@ const ReportEmployer = () => {
   }, []);
 
   return (
+    <div>        
+       <EmployerNavbar/>
     <div className="App">
-         <EmployerNavbar/>
       <h1>JOB POSTED IN A YEAR</h1>
       <div>
         <Bar
@@ -118,8 +166,9 @@ const ReportEmployer = () => {
           }}
         />
       </div>
-
-      <h1>APPLICATIONS ACCEPTED/REJECTED</h1>
+      <br />
+      <br />
+      <h1>APPLICATIONS DETAILS</h1>
       <div>
         <Bar
           data={chartTwoData}
@@ -131,7 +180,7 @@ const ReportEmployer = () => {
                 {
                   ticks: {
                     autoSkip: true,
-                    maxTicksLimit: 10,
+                    maxTicksLimit: 500,
                     beginAtZero: true
                   },
                   gridLines: {
@@ -150,6 +199,7 @@ const ReportEmployer = () => {
           }}
         />
       </div>
+    </div>
     </div>
   );
 };
