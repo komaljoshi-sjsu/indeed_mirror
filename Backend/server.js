@@ -29,24 +29,24 @@ require('./models/Company')
 require('./models/Photo')
 
 //Define all the routes
-app.use(require("./routes/loginRoute"));
-app.use(require("./routes/companyRoute"));
-app.use(require("./routes/postNewJob"));
-app.use(require("./routes/signupRoute"));
+app.use(require('./routes/loginRoute'))
+app.use(require('./routes/companyRoute'))
+app.use(require('./routes/postNewJob'))
+app.use(require('./routes/signupRoute'))
 app.use(require('./routes/jobSeekerHome'))
+app.use(require('./routes/jobs'))
 app.use(require('./routes/uploadPhotos'))
 app.use(require('./routes/getAllPhotos'))
 app.use(require('./routes/getJobSeekerPhotos'))
 app.use(require('./routes/adminPhotos'))
-app.use(require('./routes/postNewJob'))
 app.use(require('./routes/getEmployerProfile'))
 app.use(require('./routes/editEmployerDetails'))
 app.use(require('./routes/addEmployerDetails'))
 app.use(require('./routes/editCompanyDetails'))
-app.use(require('./routes/salaryReviewRoute'));
+app.use(require('./routes/salaryReviewRoute'))
 app.use(require('./routes/adminReviews'))
-app.use(require("./routes/companyReviews"))
-app.use(require("./routes/findSalary"))
+app.use(require('./routes/companyReviews'))
+app.use(require('./routes/findSalary'))
 app.use(require('./routes/addCompanyDetails'))
 app.use(require("./routes/getCompanyDetails"))
 app.use(require("./routes/addCompanyIdToEmployer"))

@@ -1,13 +1,12 @@
 //sample employer component
 import { React, Component} from 'react';
 import axios from 'axios';
-import { Button, Row, Col, Card, Container, Form, InputGroup,
+import { Button, Row, Col, Card, Container, Form,
   } from 'react-bootstrap';
   import ReactStars from "react-rating-stars-component";
 import backendServer from '../../webConfig';
 import '../../style/button-group.css';
 import { Link } from 'react-router-dom';
-import { MdLocationPin } from 'react-icons/md';
 
 class Reviews extends Component {
     constructor(props) {
@@ -68,12 +67,12 @@ class Reviews extends Component {
        
         const reviewsDisplay = reviewDetails.map((review) => (
           <div>
-            <Card style={{ width: '22rem', margin: '0.1em', border: 'none' }}>
+            <Card style={{ width: '20rem', margin: '0.1em', border: 'none' }}>
                 <Card.Body>
                     <Row>
                 <Col xs={2}><img src="../../../images/user.png" alt="helo" style={{ maxHeight: '30px', maxWidth: '30px' }} /></Col>
                 <Col xs={5}>
-                  <h5>{review.companyName}</h5>
+                <Link style={{color:'black', textDecoration: 'none'}} to="/snapshot"><h5>{review.companyName}</h5></Link>
                   </Col>
                   <Col xs={4}/>
                   </Row>
@@ -107,7 +106,7 @@ class Reviews extends Component {
       return (
         <div>
             <br></br>
-            <Container style={{ width: '75rem', display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
+            <Container style={{ width: '70rem', display:'flex', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start' }}>
             
             <Card style={{ width: '50rem', margin: '0.8em', border: 'none' }}>
             <Card.Title>
@@ -128,7 +127,6 @@ class Reviews extends Component {
                   <Form.Control name="companyName" type="text"
                   className="mr-sm-2" onChange={this.handleChange} value={companyName}/>
                 </Form.Group>
-                <InputGroup.Append><MdLocationPin /></InputGroup.Append>
               </Col>
                       <Col><Form.Group className="mb-3">
                   <Form.Control name="location" type="text"
@@ -146,6 +144,7 @@ class Reviews extends Component {
             </Card.Title>
               </Card>  
               <br /> 
+            
               {reviewsDisplay}
               </Container>
         </div>

@@ -129,3 +129,9 @@ hr {
     margin-top: 10px;
     border-radius: 10px;
 }
+
+.companyNameCss
+{
+    color: #003399;
+    cursor: pointer;
+}
