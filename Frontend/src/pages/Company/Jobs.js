@@ -1,49 +1,16 @@
-// Job Seeker Landing Page
 import React, { Component } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
-import '../../CSS/JobSeekerLanding.css'
 import TextField from '@mui/material/TextField'
-import { RatingView } from 'react-simple-star-rating'
 import { makeStyles } from '@material-ui/styles'
 import Autocomplete from '@mui/material/Autocomplete'
 import axios from 'axios'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { useSelector } from 'react-redux'
-import JobSeekerNavbar from './JobSeekerNavbar'
-import Pagination from './../JobSeeker/Pagination'
+import CompanyTabs from './CompanyTabs'
+import Pagination from '../JobSeeker/Pagination'
 
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     '& .MuiInputLabel-outlined:not(.MuiInputLabel-shrink)': {
-//       // Default transform is "translate(14px, 20px) scale(1)""
-//       // This lines up the label with the initial cursor position in the input
-//       // after changing its padding-left.
-//       transform: 'translate(34px, 20px) scale(1);',
-//       width: '',
-//     },
-//   },
-//   inputRoot: {
-//     color: 'purple',
-//     // This matches the specificity of the default styles at https://github.com/mui-org/material-ui/blob/v4.11.3/packages/material-ui-lab/src/Autocomplete/Autocomplete.js#L90
-//     '&[class*="MuiOutlinedInput-root"] .MuiAutocomplete-input:first-child': {
-//       // Default left padding is 6px
-//       paddingLeft: 26,
-//     },
-//     '& .MuiOutlinedInput-notchedOutline': {
-//       borderColor: 'green',
-//     },
-//     '&:hover .MuiOutlinedInput-notchedOutline': {
-//       borderColor: 'red',
-//     },
-//     '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-//       borderColor: 'purple',
-//     },
-//   },
-// }))
-
-class JobSeekerLandingPage extends Component {
+class CompanyJobs extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -56,8 +23,6 @@ class JobSeekerLandingPage extends Component {
       jobs: [],
       whatSearch: [],
       whereSearch: [],
-      noOfCompanyReviews: [],
-      avgCompanyRating: [],
       roleName: '',
       companyName: '',
       companyId: '',
@@ -108,14 +73,28 @@ class JobSeekerLandingPage extends Component {
   }
 
   componentDidMount() {
-    this.getAllData()
+    let companyName = this.props.companyInfo.name
+    this.setState(
+      {
+        companyName: companyName,
+      },
+      () => {
+        this.getAllData()
+      },
+    )
   }
 
   async getAllData() {
+    await this.getPaginatedData()
+
     let job
-    await axios.get('http://localhost:5000/jobSeeker/home').then(
+    let companyName = this.state.companyName
+    const data = { companyName }
+    console.log(this.props.companyInfo.name)
+    await axios.post('http://localhost:5000/jobs/companyJobs', data).then(
       (response) => {
         console.log(response.data, response.status)
+
         let jobTitles = response.data.map((job) => {
           return job.jobTitle
         })
@@ -176,53 +155,16 @@ class JobSeekerLandingPage extends Component {
       },
     )
 
-    await axios.get('http://localhost:5000/jobSeeker/getCompanyReviews').then(
-      (response) => {
-        console.log(response.data, response.status)
-
-        this.setState({
-          noOfCompanyReviews: this.state.noOfCompanyReviews.concat(
-            response.data,
-          ),
-        })
-        let companyId = job.companyId
-        let reviews = this.state.noOfCompanyReviews.filter(
-          (reviews) => reviews.companyId === companyId,
-        )[0]
-
-        this.setState({ reviewCount: reviews.NoOfReviews })
-      },
-      (error) => {
-        console.log(error)
-      },
-    )
-
-    await axios.get('http://localhost:5000/jobSeeker/getCompanyRating').then(
-      (response) => {
-        console.log(response.data, response.status)
-
-        this.setState({
-          avgCompanyRating: this.state.avgCompanyRating.concat(response.data),
-        })
-        let companyId = job.companyId
-        let avgrating = this.state.avgCompanyRating.filter(
-          (rating) => rating.companyId === companyId,
-        )[0]
-
-        this.setState({ rating: avgrating.avgRating })
-      },
-      (error) => {
-        console.log(error)
-      },
-    )
-
-    await this.getPaginatedData()
+    await this.calculateDaysSincePosted()
   }
 
   getPaginatedData() {
-    let data = { currentPage: this.state.currentPage }
+    let data = {
+      currentPage: this.state.currentPage,
+      companyName: this.state.companyName,
+    }
     axios
-      .post('http://localhost:5000/jobSeeker/paginatedData', data)
+      .post('http://localhost:5000/jobs/paginatedData', data)
       .then((response) => {
         console.log(response.data, response.status)
 
@@ -230,6 +172,37 @@ class JobSeekerLandingPage extends Component {
           jobs: response.data,
         })
       })
+  }
+
+  calculateDaysSincePosted() {
+    let jobs = this.state.jobs
+    for (let x in jobs) {
+      jobs[x].jobPostedDate = this.calculateDays(jobs[x].jobPostedDate)
+    }
+
+    this.setState({
+      jobs: jobs,
+    })
+  }
+
+  calculateDays(jobPostedDate) {
+    console.log(jobPostedDate)
+    const oneDay = 24 * 60 * 60 * 1000 // hours*minutes*seconds*milliseconds
+    const jobDate = new Date(jobPostedDate)
+    const firstDate = new Date(
+      jobDate.getFullYear(),
+      jobDate.getMonth() + 1,
+      jobDate.getDate(),
+    )
+    const today = new Date()
+    const secondDate = new Date(
+      today.getFullYear(),
+      today.getMonth() + 1,
+      today.getDate(),
+    )
+    const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay))
+    console.log(diffDays)
+    return diffDays
   }
 
   handleWhatVal = (evt, value) => {
@@ -270,9 +243,10 @@ class JobSeekerLandingPage extends Component {
         currentPage: 1,
         wherekeyword: this.state.whereVal,
         whatkeyword: this.state.whatVal,
+        companyName: this.state.companyName,
       }
       axios
-        .post('http://localhost:5000/jobSeeker/filterOnLocationAndTitle', data)
+        .post('http://localhost:5000/jobs/filterOnLocationAndTitle', data)
         .then((response) => {
           console.log(response.data, response.status)
           job = response.data.result
@@ -298,9 +272,13 @@ class JobSeekerLandingPage extends Component {
         })
     } else if (this.state.whereVal.length && !this.state.whatVal) {
       console.log('only where')
-      let data = { currentPage: 1, keyword: this.state.whereVal }
+      let data = {
+        currentPage: 1,
+        keyword: this.state.whereVal,
+        companyName: this.state.companyName,
+      }
       axios
-        .post('http://localhost:5000/jobSeeker/filterOnLocation', data)
+        .post('http://localhost:5000/jobs/filterOnLocation', data)
         .then((response) => {
           console.log(response.data, response.status)
           job = response.data.result
@@ -326,12 +304,13 @@ class JobSeekerLandingPage extends Component {
         })
     } else if (!this.state.whereVal.length && this.state.whatVal) {
       console.log('only what')
-      let data = { currentPage: 1, keyword: this.state.whatVal }
+      let data = {
+        currentPage: 1,
+        keyword: this.state.whatVal,
+        companyName: this.state.companyName,
+      }
       axios
-        .post(
-          'http://localhost:5000/jobSeeker/filterOnJobTitleOrCompanyName',
-          data,
-        )
+        .post('http://localhost:5000/jobs/filterOnJobTitleOrCompanyName', data)
         .then((response) => {
           console.log(
             response.data.result,
@@ -370,15 +349,6 @@ class JobSeekerLandingPage extends Component {
     console.log(job.jobTitle)
     console.log(job.companyId)
     let companyId = job.companyId
-    let reviews = this.state.noOfCompanyReviews.filter(
-      (reviews) => reviews.companyId === companyId,
-    )[0]
-    let avgrating = this.state.avgCompanyRating.filter(
-      (rating) => rating.companyId === companyId,
-    )[0]
-
-    console.log(reviews.NoOfReviews)
-    console.log(avgrating.avgRating)
 
     this.setState({
       roleName: job.jobTitle,
@@ -388,8 +358,6 @@ class JobSeekerLandingPage extends Component {
       city: job.city,
       state: job.state,
       zip: job.zip,
-      reviewCount: reviews.NoOfReviews,
-      rating: avgrating.avgRating,
       jobType: job.jobMode,
       salary: job.salaryDetails,
       location: job.city,
@@ -397,26 +365,6 @@ class JobSeekerLandingPage extends Component {
       qualifications: job.qualifications,
       loveJobRole: job.loveJobRole,
     })
-  }
-
-  async handleCompanyLink() {
-    const payload1 = this.state.companyName
-
-    this.props.companyInfoCreatorName(payload1)
-
-    const payload2 = this.state.companyId
-
-    this.props.companyInfoCreatorId(payload2)
-
-    let data = { id: this.state.companyId }
-    console.log(data)
-    await axios
-      .post('http://localhost:5000/jobSeeker/updateNoOfViews', data)
-      .then((response) => {
-        console.log(response.data, response.status)
-      })
-
-    this.props.history.push('/snapshot')
   }
 
   handleApply(evt) {
@@ -433,27 +381,7 @@ class JobSeekerLandingPage extends Component {
       const data = { appliedDate, jobId, id, companyId }
       console.log(data)
       axios
-        .post('http://localhost:5000/jobSeeker/applyJob', data)
-        .then((response) => {
-          console.log(response.data, response.status)
-        })
-    } else {
-      console.log("User didn't sign in")
-      this.props.history.push('/login')
-    }
-  }
-
-  async handleSaveJob(evt) {
-    console.log(evt.currentTarget.id)
-    const companyId = evt.currentTarget.id
-    const userInfo = this.props.userInfo
-    console.log(userInfo)
-    if (userInfo.email !== '' && userInfo.accountType === 'JobSeeker') {
-      console.log('User has signed in')
-      const userId = userInfo.id
-      const data = { companyId, userId }
-      await axios
-        .post('http://localhost:5000/jobSeeker/saveJob', data)
+        .post('http://localhost:5000/jobs/applyJob', data)
         .then((response) => {
           console.log(response.data, response.status)
         })
@@ -478,7 +406,7 @@ class JobSeekerLandingPage extends Component {
   render() {
     return (
       <div>
-        <JobSeekerNavbar />
+        <CompanyTabs />
         <div id="Second" class="row searchNav">
           <div class="row">
             <div class="col-2"></div>
@@ -580,161 +508,95 @@ class JobSeekerLandingPage extends Component {
               </div>
             </div>
           </div>
-
-          <div class="row">
-            <div class="col-4"></div>
-            <div class="col-4">
-              <h5>
-                <span class="hoverUnderline" style={{ color: '#003399' }}>
-                  Post your resume
-                </span>
-                &nbsp;- It only takes a few seconds
-              </h5>
-            </div>
-            <div class="col-4"></div>
-          </div>
-
-          <div class="row" style={{ marginTop: '10px' }}>
-            <div class="col-4"></div>
-            <div class="col-4">
-              <h5 style={{ marginLeft: '120px' }}>
-                Employers:
-                <span class="hoverUnderline" style={{ color: '#003399' }}>
-                  Post a Job
-                </span>
-              </h5>
-            </div>
-            <div class="col-4"></div>
-          </div>
-        </div>
-        <hr />
-        <div id="third" class="row" style={{ marginTop: '10px' }}>
-          <div class="row">
-            <div class="col-4"></div>
-            <div class="col-7">
-              <div class="row">
-                <div class="col-3">
-                  <h3
-                    class="headinghoverUnderline"
-                    style={{ color: '#003399' }}
+          <div
+            id="third"
+            class="row "
+            style={{ backgroundColor: '#f7f7f7', marginTop: '20px' }}
+          >
+            <div class="row">
+              <div class="col-2"></div>
+              <div class="col-4" style={{ marginLeft: '0px' }}>
+                <h4 style={{ marginTop: '10px' }}>
+                  {this.state.month} {this.state.day}, {this.state.year}
+                </h4>
+                Job based on your searches
+                {this.state.jobs.map((job) => (
+                  <div
+                    class="card cardStyle2"
+                    id={job.jobId}
+                    onClick={this.handleCardClick}
                   >
-                    <u style={{ color: '#003399' }}>Job feed </u>
-                  </h3>
-                </div>
-                <div class="col-4">
-                  <h3 class="headinghoverUnderline">Recent Searches</h3>
-                </div>
+                    <div class="card-body">
+                      <h4 class="card-title">{job.jobTitle}</h4>
+                      <h6 class="card-title">{job.companyName}</h6>
+                      <h6 class="card-title">
+                        {job.city}, {job.state}, {job.zip}
+                      </h6>
+                      <h6 class="card-title">$ {job.salaryDetails}</h6>
+                      <br />
+                      <p class="card-text">{job.shortJobDescription}</p>
+                      <br />
+                      <p class="card-text">{job.jobPostedDate} days ago</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-            </div>
-            <div class="col-1"></div>
-          </div>
-        </div>
-        <div
-          id="third"
-          class="row "
-          style={{ backgroundColor: '#f7f7f7', marginTop: '20px' }}
-        >
-          <div class="row">
-            <div class="col-2"></div>
-            <div class="col-4" style={{ marginLeft: '0px' }}>
-              <h4 style={{ marginTop: '10px' }}>
-                {this.state.month} {this.state.day}, {this.state.year}
-              </h4>
-              Job based on your searches
-              {this.state.jobs.map((job) => (
-                <div
-                  class="card cardStyle2"
-                  id={job.jobId}
-                  onClick={this.handleCardClick}
-                >
+
+              <div class="col-5">
+                <div class="card cardStyle">
                   <div class="card-body">
-                    <h4 class="card-title">{job.jobTitle}</h4>
-                    <h6 class="card-title">{job.companyName}</h6>
+                    <h4 class="card-title">{this.state.roleName}</h4>
+                    <h6 class="card-title">{this.state.companyName}</h6>
                     <h6 class="card-title">
-                      {job.city}, {job.state}, {job.zip}
+                      {this.state.city}, {this.state.state}
                     </h6>
-                    <h6 class="card-title">$ {job.salaryDetails}</h6>
-                    <br />
-                    <br />
-                    <p class="card-text">{job.shortJobDescription}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div class="col-5">
-              <div class="card cardStyle">
-                <div class="card-body">
-                  <h4 class="card-title">{this.state.roleName}</h4>
-                  <h6
-                    class="card-title companyNameCss"
-                    onClick={this.handleCompanyLink.bind(this)}
-                  >
-                    {this.state.companyName}
-                  </h6>
-                  <RatingView ratingValue={this.state.rating} />
-                  <br />
-                  <h6 class="card-title">{this.state.reviewCount} reviews</h6>
-                  <h6 class="card-title">
-                    {this.state.city}, {this.state.state}
-                  </h6>
-                  <h6 class="card-title">{this.state.zip}</h6>
-                  You must create an Indeed account before continuing to the
-                  company website to apply
-                  <br />
-                  <br />
-                  <div class="btn-group" role="group" aria-label="Third group">
-                    <button
-                      type="button"
-                      class="btn applybtn"
-                      onClick={this.handleApply.bind(this)}
-                      id={this.state.jobId}
+                    <h6 class="card-title">{this.state.zip}</h6>
+                    <div
+                      class="btn-group"
+                      role="group"
+                      aria-label="Third group"
                     >
-                      <h5 style={{ marginTop: '4px', color: 'white' }}>
-                        Apply On Company Site
-                      </h5>
-                    </button>
+                      <button
+                        type="button"
+                        class="btn applybtn"
+                        onClick={this.handleApply.bind(this)}
+                        id={this.state.jobId}
+                      >
+                        <h5 style={{ marginTop: '4px', color: 'white' }}>
+                          Apply On Company Site
+                        </h5>
+                      </button>
+                    </div>
+                    <br />
+                    <hr />
+                    <br />
+                    <h5 class="card-title">Job details</h5>
+                    <br />
+                    <h6>Job Type:</h6>
+                    <h6>{this.state.jobType}</h6> <br />
+                    <h6>Salary:</h6>
+                    <h6>${this.state.salary}</h6>
+                    <br />
+                    <hr />
+                    <h5 class="card-title">Full Job Description</h5>
+                    <br />
+                    <h6>Location:</h6>
+                    <h6>{this.state.location}</h6>
+                    <br />
+                    <h6>Job Description:</h6>
+                    <br />
+                    <h6>What you will do:</h6>
+                    <h6>{this.state.responsibilities}</h6>
+                    <br />
+                    <h6>What you will need:</h6>
+                    <h6>{this.state.qualifications}</h6> <br />
+                    <h6>Why You’ll love working:</h6>
+                    <h6>{this.state.loveJobRole}</h6> <br />
                   </div>
-                  <div class="btn-group" role="group" aria-label="Third group">
-                    <button
-                      type="button"
-                      class="btn savebtn"
-                      id={this.state.companyId}
-                      onClick={this.handleSaveJob.bind(this)}
-                    >
-                      <h5 style={{ marginTop: '4px', color: 'white' }}>Save</h5>
-                    </button>
-                  </div>
-                  <br />
-                  <br />
-                  <hr />
-                  <br />
-                  <h5 class="card-title">Job details</h5>
-                  <br />
-                  <h6>Job Type:</h6>
-                  <h6>{this.state.jobType}</h6> <br />
-                  <h6>Salary:</h6>
-                  <h6>${this.state.salary}</h6>
-                  <br />
-                  <hr />
-                  <h5 class="card-title">Full Job Description</h5>
-                  <br />
-                  <h6>Location:</h6>
-                  <h6>{this.state.location}</h6>
-                  <br />
-                  <h6>Job Description:</h6>
-                  <br />
-                  <h6>What you will do:</h6>
-                  <h6>{this.state.responsibilities}</h6>
-                  <br />
-                  <h6>What you will need:</h6>
-                  <h6>{this.state.qualifications}</h6> <br />
-                  <h6>Why You’ll love working:</h6>
-                  <h6>{this.state.loveJobRole}</h6> <br />
                 </div>
               </div>
+              <div class="col-1"></div>
             </div>
-            <div class="col-1"></div>
           </div>
         </div>
         <Pagination
@@ -747,23 +609,9 @@ class JobSeekerLandingPage extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  console.log('dispatching props')
-  return {
-    companyInfoCreatorName: (payload) => {
-      dispatch({ type: 'setName', payload })
-    },
-    companyInfoCreatorId: (payload) => {
-      dispatch({ type: 'setId', payload })
-    },
-  }
-}
-
 const mapStateToProps = (state) => ({
+  companyInfo: state.companyInfo,
   userInfo: state.userInfo,
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withRouter(JobSeekerLandingPage))
+export default connect(mapStateToProps, null)(withRouter(CompanyJobs))

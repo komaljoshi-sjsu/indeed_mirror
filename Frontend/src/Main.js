@@ -14,15 +14,16 @@ import CompanyPhotos from './pages/JobSeeker/CompanyPhotos'
 import AdminPhoto from './pages/Admin/AdminPhoto.js'
 import EmployerProfile from './pages/Employer/EmployerProfile'
 import EmployerUpdateProfile from './pages/Employer/EmployerUpdateProfile'
-import Reviews from './pages/JobSeeker/Reviews';
+import Reviews from './pages/JobSeeker/Reviews'
 import AdminReview from './pages/Admin/AdminReview.js'
 import AddSalaryReview from './pages/Company/AddSalaryReview'
 import Resume from './pages/JobSeeker/Resume.js'
 import FindSalaries from './pages/JobSeeker/FindSalaries'
 import Preferences from './pages/JobSeeker/Preferences.js'
+import CompanyJobs from './pages/Company/Jobs.js'
 import Header from './common/Header'
-import FeaturedReview from './pages/Employer/featuredReview';
-import CompanyReviews from './pages/JobSeeker/companyReviews';
+import FeaturedReview from './pages/Employer/featuredReview'
+import CompanyReviews from './pages/JobSeeker/companyReviews'
 
 //Create a Main Component
 class Main extends Component {
@@ -33,27 +34,30 @@ class Main extends Component {
         <Route path="/login" component={Login} />
         <Route path="/home" component={Home} />
         <Route path="/header" component={Header} />
-        <Route path="/snapshot" component={Snapshot}/>
-        <Route path="/whyJoinUs" component={JoinUs}/>
+        <Route path="/snapshot" component={Snapshot} />
+        <Route path="/whyJoinUs" component={JoinUs} />
         <Route path="/signup" component={Signup} />
         <Route path="/postJob" component={PostJob} />
         <Route path="/employer" component={Employer} />
         <Route path="/employerprofile" component={EmployerProfile} />
-        <Route path="/employerupdateprofile" component={EmployerUpdateProfile} />
+        <Route
+          path="/employerupdateprofile"
+          component={EmployerUpdateProfile}
+        />
         <Route path="/landingPage" component={JobSeekerLandingPage} />
         <Route path="/company" component={CompanyTabs} />
         <Route path="/photos" component={UploadPhotos} />
         <Route path="/companyPhotos" component={CompanyPhotos} />
         <Route path="/adminPhotos" component={AdminPhoto} />
-        <Route path="/adminPhotos" component={AdminPhoto}/>
-        <Route path="/reviews" component={Reviews}/>
-        <Route path="/featuredReviews" component={FeaturedReview}/>
-        <Route path="/adminReviews" component={AdminReview}/>
+        <Route path="/jobs" component={CompanyJobs} />
+        <Route path="/reviews" component={Reviews} />
+        <Route path="/featuredReviews" component={FeaturedReview} />
+        <Route path="/adminReviews" component={AdminReview} />
         <Route path="/addSalaryReview" component={AddSalaryReview} />
-        <Route path="/resume" component={Resume}/>
-        <Route path="/findSalaries" component={FindSalaries}/>
-        <Route path="/preferences" component={Preferences}/>
-        <Route path="/allReviews" component={CompanyReviews}/>
+        <Route path="/resume" component={Resume} />
+        <Route path="/findSalaries" component={FindSalaries} />
+        <Route path="/preferences" component={Preferences} />
+        <Route path="/allReviews" component={CompanyReviews} />
       </div>
     )
   }
