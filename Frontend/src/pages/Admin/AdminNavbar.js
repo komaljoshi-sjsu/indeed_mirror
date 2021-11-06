@@ -49,7 +49,7 @@ class AdminNavbar extends Component {
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">
+                  <a class="nav-link" href="/adminCompany">
                     <h5>Companies</h5>
                   </a>
                 </li>
