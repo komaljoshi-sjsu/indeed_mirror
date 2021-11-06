@@ -24,6 +24,7 @@ function Login(props) {
     const setPhone = bindActionCreators(userActionCreator.setPhone,dispatch);
     const setResumeUrl = bindActionCreators(userActionCreator.setResumeUrl,dispatch);
     const setToken = bindActionCreators(userActionCreator.setToken,dispatch);
+    //const setCompanyId = bindActionCreators(userActionCreator.setCompanyId,dispatch);
 
     let redirectToSignUp = (e) => {
         redirectValFn(<Redirect to="/signup"/>);
@@ -59,7 +60,13 @@ function Login(props) {
                     setResumeUrl(decoded.resumeUrl);
                     redirectValFn(<Redirect to="/resume"/>);
                 } else if(accountType=='Employer')  {
-                    redirectValFn(<Redirect to="/employerprofile"/>);
+                    //setCompanyId();
+                    if(user.companyId==null) {
+                        redirectValFn(<Redirect to="/employerprofile"/>);
+                    }
+                    else {
+                        redirectValFn(<Redirect to="/employer"/>);
+                    }
                 } else if(accountType=='Admin')  {
                     //redirectValFn(<Redirect to="/employerprofile"/>);
                 }
