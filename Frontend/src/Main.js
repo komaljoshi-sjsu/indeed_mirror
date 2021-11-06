@@ -20,6 +20,7 @@ import AddSalaryReview from './pages/Company/AddSalaryReview'
 import Resume from './pages/JobSeeker/Resume.js'
 import FindSalaries from './pages/JobSeeker/FindSalaries'
 import Preferences from './pages/JobSeeker/Preferences.js'
+import CompanyJobs from './pages/Company/Jobs.js'
 
 //Create a Main Component
 class Main extends Component {
@@ -29,8 +30,6 @@ class Main extends Component {
         {/*Render Different Component based on Route*/}
         <Route path="/login" component={Login} />
         <Route path="/home" component={Home} />
-        <Route path="/snapshot" component={Snapshot} />
-        <Route path="/whyJoinUs" component={JoinUs} />
         <Route path="/snapshot" component={Snapshot} />
         <Route path="/whyJoinUs" component={JoinUs} />
         <Route path="/signup" component={Signup} />
@@ -52,13 +51,7 @@ class Main extends Component {
         <Route path="/resume" component={Resume} />
         <Route path="/findSalaries" component={FindSalaries} />
         <Route path="/preferences" component={Preferences} />
-        <Route path="/adminPhotos" component={AdminPhoto} />
-        <Route path="/reviews" component={Reviews} />
-        <Route path="/adminReviews" component={AdminReview} />
-        <Route path="/addSalaryReview" component={AddSalaryReview} />
-        <Route path="/resume" component={Resume} />
-        <Route path="/findSalaries" component={FindSalaries} />
-        <Route path="/preferences" component={Preferences} />
+        <Route path="/jobs" component={CompanyJobs} />
       </div>
     )
   }
