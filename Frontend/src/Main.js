@@ -31,6 +31,7 @@ import AdminAnalytics from './pages/Admin/AdminAnalytics.js'
 // import AdminCompany from './pages/Admin/AdminCompany'
 
 
+
 //Create a Main Component
 class Main extends Component {
   render() {
@@ -70,6 +71,8 @@ class Main extends Component {
         {/* <Route path="/findSalByTitle/:id" component={FindSalByTitle} /> */}
         <Route path="/findSalByTitle/:jobTitle" component={FindSalByTitle} />
         <Route path="/adminAnalytics" component={AdminAnalytics} />
+        <Route path="/adminCompany" component={AdminCompany}/>
+
       </div>
     )
   }
