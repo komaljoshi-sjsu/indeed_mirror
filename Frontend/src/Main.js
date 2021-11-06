@@ -30,6 +30,7 @@ import FindSalByTitle from './pages/JobSeeker/FindSalByTitle'
 import AdminAnalytics from './pages/Admin/AdminAnalytics.js'
 import AdminCompany from './pages/Admin/AdminCompany'
 
+
 //Create a Main Component
 class Main extends Component {
   render() {
