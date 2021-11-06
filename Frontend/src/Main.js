@@ -26,11 +26,10 @@ import Header from './common/Header'
 import FeaturedReview from './pages/Employer/featuredReview'
 import CompanyReviews from './pages/JobSeeker/companyReviews'
 import AdminCompany from './pages/Admin/AdminCompany'
+import FeaturedReview from './pages/Employer/featuredReview';
+import CompanyReviews from './pages/JobSeeker/companyReviews';
 import FindSalByTitle from './pages/JobSeeker/FindSalByTitle'
 import AdminAnalytics from './pages/Admin/AdminAnalytics.js'
-// import AdminCompany from './pages/Admin/AdminCompany'
-
-
 
 //Create a Main Component
 class Main extends Component {
@@ -71,8 +70,6 @@ class Main extends Component {
         {/* <Route path="/findSalByTitle/:id" component={FindSalByTitle} /> */}
         <Route path="/findSalByTitle/:jobTitle" component={FindSalByTitle} />
         <Route path="/adminAnalytics" component={AdminAnalytics} />
-        <Route path="/adminCompany" component={AdminCompany}/>
-
       </div>
     )
   }
