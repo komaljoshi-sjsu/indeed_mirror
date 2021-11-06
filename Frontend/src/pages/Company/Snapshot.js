@@ -61,6 +61,7 @@ function Snapshot(props) {
                 setCulture(res.data.workCulture);
                 setValues(res.data.companyValues);
                 setIndustry(res.data.industry);
+                setAbout(res.data.about);
             } else {
                 alert(res.data);
             }
@@ -170,7 +171,8 @@ function Snapshot(props) {
                     </div>
                 </div><br></br>
                 <div className="row">
-                    <p style={{color:"darkgray"}}>About Us</p>{about}<br></br>
+                    <p><b>About Us</b></p>
+                    <p>{about}</p><br></br>
                     <p><b>Description:</b><br></br>{description}</p><br></br>
                     <p><b>Mission:</b><br></br>{mission}</p>
                 </div><br></br><br></br>

@@ -9,16 +9,21 @@ import { FaLongArrowAltDown } from 'react-icons/fa';
 import backendServer from '../../webConfig';
 import '../../style/button-group.css';
 import ReviewModal from '../JobSeeker/ReviewModal';
+import Pagination from "./../JobSeeker/Pagination";
 
 class Reviews extends Component {
     constructor(props) {
       super(props);
       this.state = {
         reviewDetails: [],
+        reviewDetailsRatingSort: [],
+        reviewDetailsDateSort: [],
+        reviewDetailsHelpfulSort: [],
         openModal: false,
         rateSortFlag: false,
         dateSortFlag: false,
         helpfulSortFlag: false,
+        totalPosts: 0,
       };
     }
     
@@ -27,6 +32,7 @@ class Reviews extends Component {
         const companyId = 1;
         const jobSeekerId = 1;
         let { reviewDetails } = this.state;
+        const currentPage = 1;
         reviewDetails = [];
         axios.get(`${backendServer}/companyReviews`, {
           params: {
@@ -36,9 +42,94 @@ class Reviews extends Component {
         })
           .then((response) => {
             this.setState({
-                reviewDetails: reviewDetails.concat(response.data),
+                //reviewDetails: reviewDetails.concat(response.data),
+                totalPosts: response.data.length,
               });
           });
+
+          axios.get(`${backendServer}/companyReviewsPaginated`, {
+            params: {
+              companyId,
+              jobSeekerId,
+              currentPage,
+            },
+          })
+            .then((response) => {
+              this.setState({
+                  reviewDetails: reviewDetails.concat(response.data),
+                });
+            });
+      }
+
+      paginate = (pageNumber) => {
+        alert(pageNumber);
+        let currentPage = pageNumber;
+        const companyId = 1;
+        const jobSeekerId = 1;
+        const { rateSortFlag, dateSortFlag, helpfulSortFlag } = this.state;
+        if(rateSortFlag){
+          let { reviewDetailsRatingSort } = this.state;
+          reviewDetailsRatingSort = [];
+          axios.get(`${backendServer}/companyReviewsRatingSort`, {
+            params: {
+            companyId,
+            jobSeekerId,
+            currentPage,
+          },
+        })
+          .then((response) => {
+            this.setState({
+              reviewDetailsRatingSort: reviewDetailsRatingSort.concat(response.data),
+              });
+          });
+        }
+        else if(dateSortFlag){
+          let { reviewDetailsDateSort } = this.state;
+          reviewDetailsDateSort = [];
+          axios.get(`${backendServer}/companyReviewsDateSort`, {
+            params: {
+            companyId,
+            jobSeekerId,
+            currentPage,
+          },
+        })
+          .then((response) => {
+            this.setState({
+              reviewDetailsDateSort: reviewDetailsDateSort.concat(response.data),
+              });
+          });
+        }else if(helpfulSortFlag){
+          let { reviewDetailsHelpfulSort } = this.state;
+          reviewDetailsHelpfulSort = [];
+          axios.get(`${backendServer}/companyReviewsHelpfulSort`, {
+            params: {
+            companyId,
+            jobSeekerId,
+            currentPage,
+          },
+        })
+          .then((response) => {
+            this.setState({
+              reviewDetailsHelpfulSort: reviewDetailsHelpfulSort.concat(response.data),
+              });
+          });
+        }
+        else{
+          let { reviewDetails } = this.state;
+          reviewDetails = [];
+          axios.get(`${backendServer}/companyReviewsPaginated`, {
+            params: {
+              companyId,
+              jobSeekerId,
+              currentPage,
+            },
+          })
+            .then((response) => {
+              this.setState({
+                  reviewDetails: reviewDetails.concat(response.data),
+                });
+            });
+          }
       }
 
       addReview = (e) => {
@@ -47,19 +138,71 @@ class Reviews extends Component {
       }
 
       closeModal = () => {
+        console.log('inside close modal')
         this.setState({ openModal: false });
       }
 
       ratingSort = () => {
         this.setState({ rateSortFlag: true, dateSortFlag: false, helpfulSortFlag: false });
+        const companyId = 1;
+        const jobSeekerId = 1;
+        let { reviewDetailsRatingSort } = this.state;
+        const currentPage = 1;
+        reviewDetailsRatingSort = [];
+        axios.get(`${backendServer}/companyReviewsRatingSort`, {
+          params: {
+            companyId,
+            jobSeekerId,
+            currentPage,
+          },
+        })
+          .then((response) => {
+            this.setState({
+              reviewDetailsRatingSort: reviewDetailsRatingSort.concat(response.data),
+              });
+          });
       }
 
       dateSort = () => {
         this.setState({ rateSortFlag: false, dateSortFlag: true, helpfulSortFlag: false });
+        const companyId = 1;
+        const jobSeekerId = 1;
+        let { reviewDetailsDateSort } = this.state;
+        const currentPage = 1;
+        reviewDetailsDateSort = [];
+        axios.get(`${backendServer}/companyReviewsDateSort`, {
+          params: {
+            companyId,
+            jobSeekerId,
+            currentPage,
+          },
+        })
+          .then((response) => {
+            this.setState({
+              reviewDetailsDateSort: reviewDetailsDateSort.concat(response.data),
+              });
+          });
       }
 
       helpfulSort= () => {
         this.setState({ rateSortFlag: false, dateSortFlag: false, helpfulSortFlag: true });
+        const companyId = 1;
+        const jobSeekerId = 1;
+        let { reviewDetailsHelpfulSort } = this.state;
+        const currentPage = 1;
+        reviewDetailsHelpfulSort = [];
+        axios.get(`${backendServer}/companyReviewsHelpfulSort`, {
+          params: {
+            companyId,
+            jobSeekerId,
+            currentPage,
+          },
+        })
+          .then((response) => {
+            this.setState({
+              reviewDetailsHelpfulSort: reviewDetailsHelpfulSort.concat(response.data),
+              });
+          });
       }
 
       handleSubmit = (e, reviewId, type) => {
@@ -97,21 +240,23 @@ class Reviews extends Component {
 
     render() {
       // To-DO Fetch logged in userid from store
+        console.log(this.props.location.flag);
         const jobSeekerId = 1;
-        const { reviewDetails, openModal, dateSortFlag, rateSortFlag, helpfulSortFlag } = this.state;
+        const { reviewDetails, reviewDetailsRatingSort, reviewDetailsDateSort, reviewDetailsHelpfulSort, openModal, dateSortFlag, rateSortFlag, helpfulSortFlag, totalPosts } = this.state;
         const loggedInUserReviews =  reviewDetails.filter((review) => review.jobSeekerId === jobSeekerId);
         const otherUserReviews = reviewDetails.filter((review) => review.jobSeekerId !== jobSeekerId);
         const companies = reviewDetails.map(review => review.companyName);
         const companyName = companies[0];
+        console.log(reviewDetails);
         let sortedReviews =[];
         if(rateSortFlag){
-          sortedReviews = reviewDetails.sort((a,b) => b.rating - a.rating);
+          sortedReviews = reviewDetailsRatingSort;
         }
         if(dateSortFlag){
-          sortedReviews = reviewDetails.sort((a,b) => b.postedDate - a.postedDate);
+          sortedReviews = reviewDetailsDateSort;
         }
         if(helpfulSortFlag){
-          sortedReviews = reviewDetails.sort((a,b) => b.yesReviewHelpfulCount - a.yesReviewHelpfulCount);
+          sortedReviews = reviewDetailsHelpfulSort;
         }
         const sortedReviewsDisplay = sortedReviews.map((review) => (
           <div>
@@ -128,7 +273,7 @@ class Reviews extends Component {
                     value={review.rating}
                     isHalf={true}
                     activeColor="#9d2b6b"
-                    edit="false"
+                    edit={false}
                   />
                 </Card.Title>
                 </Col>
@@ -174,7 +319,7 @@ class Reviews extends Component {
                       value={review.rating}
                       isHalf={true}
                       activeColor="#9d2b6b"
-                      edit="false"
+                      edit={false}
                     />
                   </Card.Title>
                   </Col>
@@ -207,7 +352,6 @@ class Reviews extends Component {
           ));
           const OtherReviews = otherUserReviews.map((review) => (
             <div>
-              <br />
               <Card style={{ width: '60rem', margin: '0.8em' }}>
                 <Card.Body>
                   <Row>
@@ -220,7 +364,7 @@ class Reviews extends Component {
                       value={review.rating}
                       isHalf={true}
                       activeColor="#9d2b6b"
-                      edit="false"
+                      edit={false}
                     />
                   </Card.Title>
                   </Col>
@@ -253,7 +397,6 @@ class Reviews extends Component {
           ));
       return (
         <div>
-            
             <br></br>
             <Container style={{ display: 'flex', justifyContent: 'center' }}>
             
@@ -262,7 +405,7 @@ class Reviews extends Component {
             <Card.Title>
               <br />
                <Row>
-                 <Col> <h4>{companyName}{' '}Employee Reviews</h4>
+                 <Col> <h4>{companyName}{' '} Reviews</h4>
                  </Col>
                  <Col />
                  <Col>
@@ -285,6 +428,9 @@ class Reviews extends Component {
               {(rateSortFlag || dateSortFlag || helpfulSortFlag) && sortedReviewsDisplay}
               {(!rateSortFlag && !dateSortFlag && !helpfulSortFlag) && userReviews}
               {(!rateSortFlag && !dateSortFlag && !helpfulSortFlag) && OtherReviews}
+              </Container>
+              <Container style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+              <Pagination postsPerPage={5} totalPosts={totalPosts} paginate={this.paginate}/>
               </Container>
               { openModal
                   ? (

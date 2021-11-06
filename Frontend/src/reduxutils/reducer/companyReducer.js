@@ -36,7 +36,7 @@ export const companyReducer = (state=initState,action) => {
             return revState;
         case "setAbout":
             let aboutState = {
-                ...state,'id':action.payload
+                ...state,'about':action.payload
             }
             return aboutState;     
         case "setDescription":

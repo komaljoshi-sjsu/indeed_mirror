@@ -6,6 +6,10 @@ const comSchema = new Schema({
     type: Number,
     required: true,
   },
+  companyName: {
+    type: String,
+    required: true,
+  },
   avgWorkHappinessScore: {
     type: Number,
   },
@@ -16,9 +20,6 @@ const comSchema = new Schema({
     type: Number,
   },
   noOfReviews: {
-    type: Number,
-  },
-  noOfViews: {
     type: Number,
   },
   companyAvgRating: {

@@ -21,6 +21,9 @@ import Resume from './pages/JobSeeker/Resume.js'
 import FindSalaries from './pages/JobSeeker/FindSalaries'
 import Preferences from './pages/JobSeeker/Preferences.js'
 import CompanyJobs from './pages/Company/Jobs.js'
+import Header from './common/Header'
+import FeaturedReview from './pages/Employer/featuredReview'
+import CompanyReviews from './pages/JobSeeker/companyReviews'
 
 //Create a Main Component
 class Main extends Component {
@@ -30,6 +33,7 @@ class Main extends Component {
         {/*Render Different Component based on Route*/}
         <Route path="/login" component={Login} />
         <Route path="/home" component={Home} />
+        <Route path="/header" component={Header} />
         <Route path="/snapshot" component={Snapshot} />
         <Route path="/whyJoinUs" component={JoinUs} />
         <Route path="/signup" component={Signup} />
@@ -45,13 +49,15 @@ class Main extends Component {
         <Route path="/photos" component={UploadPhotos} />
         <Route path="/companyPhotos" component={CompanyPhotos} />
         <Route path="/adminPhotos" component={AdminPhoto} />
+        <Route path="/jobs" component={CompanyJobs} />
         <Route path="/reviews" component={Reviews} />
+        <Route path="/featuredReviews" component={FeaturedReview} />
         <Route path="/adminReviews" component={AdminReview} />
         <Route path="/addSalaryReview" component={AddSalaryReview} />
         <Route path="/resume" component={Resume} />
         <Route path="/findSalaries" component={FindSalaries} />
         <Route path="/preferences" component={Preferences} />
-        <Route path="/jobs" component={CompanyJobs} />
+        <Route path="/allReviews" component={CompanyReviews} />
       </div>
     )
   }
