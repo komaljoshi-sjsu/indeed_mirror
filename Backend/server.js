@@ -58,8 +58,12 @@ app.use(require("./routes/getApplicantsName"))
 app.use(require("./routes/getJobSeekerProfile"))
 app.use(require("./routes/allCompanyReviews"))
 app.use(require("./routes/adminAnalytics"))
+<<<<<<< HEAD
 app.use(require("./routes/updateJobSeekerStatus"))
 
+=======
+app.use(require("./routes/getAllReviews"))
+>>>>>>> d9c2528 (admin company changes)
 // app.use(require("./routes/findSalary/:id"))
 //Define all the routes
 //app.use('/postNewJob', postNewJob)
