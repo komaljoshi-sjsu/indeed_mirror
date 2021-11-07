@@ -123,7 +123,7 @@ router.post("/api/createCompanyMongo", async (req, res) => {
   try {
     const { compid } = req.body;
     const { companyname } = req.body;
-   console.log(compid);
+   console.log(id);
     const companyDtls = new Company({
       companyId : compid,
       companyName:companyname,

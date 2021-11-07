@@ -1,11 +1,14 @@
 // Employer Landing Page
 import React, { Component } from 'react'
 import EmployerNavbar from './EmployerNavbar'
-import {Button,Card,ListGroup,ListGroupItem,Modal,Row,Col} from 'react-bootstrap';
+import {Button,Card,ListGroup,ListGroupItem,Modal,Row,Col,Pagination} from 'react-bootstrap';
 import axios from "axios";
 import backendServer from '../../webConfig';
 import '../../CSS/EmployerLanding.css'
-
+// import { connect } from "react-redux";
+// import PropTypes from "prop-types";
+// import {companyActionCreator} from '../../reduxutils/actions.js';
+// import { setId} from "../../actions/loginActions";
 class Employer extends Component {
   constructor(props) {
     super(props)
@@ -21,7 +24,9 @@ class Employer extends Component {
       liststatus:null,
       applicantProfile:[],
       jobPreference:[],
-      showprofile:false
+      showprofile:false,
+      curPage: 1,
+      pageSize: 5,
     }
     //this.getCurrentDate()
   }
@@ -107,10 +112,40 @@ handleModalCloseProfile(){
 
   render() {
     const {postedJobs,applicantsName,statusmsg,liststatus,applicantProfile,jobPreference} = this.state;
-    console.log("*****")
-    console.log(applicantProfile)
-    console.log(jobPreference)
-    console.log("*****")
+    let paginationItemsTag = [];
+    let items = postedJobs;
+
+    let pgSize = this.state.pageSize;
+
+    let count = 1;
+    let num = items.length / pgSize;
+    console.log(items.length / pgSize);
+    console.log(Number.isInteger(items.length / pgSize));
+    if (Number.isInteger(num)) {
+      count = num;
+    } else {
+      count = Math.floor(num) + 1;
+    }
+    let active = this.state.curPage;
+
+    for (let number = 1; number <= count; number++) {
+      paginationItemsTag.push(
+        <Pagination.Item key={number} active={number === active}>
+          {number}
+        </Pagination.Item>
+      );
+    }
+    let start = parseInt(pgSize * (this.state.curPage - 1));
+    let end = this.state.pageSize + start;
+    //   console.log("start: ", start, ", end: ", end);
+    let displayitems = [];
+    if (end > items.length) {
+      end = items.length;
+    }
+    for (start; start < end; start++) {
+      displayitems.push(items[start]);
+    }
+
     var jobsList = null; var applicantsList = null; var profile = null;
     if(liststatus === "Applicants List"){
       applicantsList = (
@@ -161,7 +196,7 @@ handleModalCloseProfile(){
 
             </div>
           )}
-            <br/>
+            <br/>   
         {jobPreference.map(job=>
             <div>
                <h5>Job Preferences</h5>
@@ -341,5 +376,17 @@ handleModalCloseProfile(){
 }
 
 export default Employer
+
+// Employer.propTypes = {
+//   setId: PropTypes.func.isRequired,
+//   id: PropTypes.object.isRequired,
+// };
+
+// const mapStateToProps = (state) => {
+//   return {
+//     id: state.id
+//   };
+// };
+// export default connect(mapStateToProps, {setId})(Employer);
 
 
