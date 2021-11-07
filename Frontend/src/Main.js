@@ -62,7 +62,7 @@ class Main extends Component {
         <Route path="/employerAnalytics" component={EmployerAnalytics}/>
         <Route path="/preferences" component={Preferences}/>
         <Route path="/allReviews" component={CompanyReviews}/>
-        <Route path="/findSalByTitle/:id" component={FindSalByTitle}/>
+        <Route path="/findSalByTitle/:jobTitle" component={FindSalByTitle}/>
         <Route path="/adminAnalytics" component={AdminAnalytics}/>
       </div>
     )

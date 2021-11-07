@@ -90,11 +90,11 @@ const AddSalaryReview = (props) => {
             console.log("returned");
             console.log(response.data);
             window.location = '/addSalaryReview';
-        }else {
-          setErrorMessage(response.data.message);
-        }
+          }
         }).catch((err) => {
-          console.log(err);
+          console.log("caught an error");
+          console.log(err.response);
+          setErrorMessage(err.response.data);
         });
     };
 
@@ -106,20 +106,17 @@ const AddSalaryReview = (props) => {
             <div class="col-1"></div>
             <div class="col-10">
               <div class="row">
-                <div class="col-3">     
-                <div style={{display:'block'}}>
-                <p>Average salaries at Amazon
-                  {/* {companyName} */}
-                  </p>
-                  {salary.map((salaryDetails, index) => {
+                <div class="col-3">  
+                {salary.map((salaryDetails, index) => {
                   return (
-                    <div key={index}>
-                    <div>{salaryDetails.jobTitle}</div>
-                    <div>${salaryDetails.annualPay} per year</div>
-                </div>
+                    <Card  key={index} style={{marginTop:'20px'}}>
+                    <Card.Body>
+                  <Card.Title>{salaryDetails.jobTitle}</Card.Title>
+                  <Card.Text> ${salaryDetails.annualPay} per year</Card.Text>
+                  </Card.Body>
+                  </Card>
                   );
-                  })}
-              </div>
+                        })}
               </div>
 
               <div class="col-3"> 
@@ -235,7 +232,7 @@ const AddSalaryReview = (props) => {
             <Button variant="primary" size="sm" type="submit">
               Add
             </Button>
-            <h3 style={{ color: "red" }}>{errorMessage} </h3> 
+            <h6 style={{ color: "red" }}>{errorMessage} </h6> 
             <Button variant="primary" size="sm" onClick={handleClose}>
               Cancel
             </Button>

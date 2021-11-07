@@ -37,7 +37,7 @@ class FindSalByTitle extends Component {
 
 
   componentDidMount() {
-    axios.get(`${backendServer}/findSalaries`).then(
+    axios.get(`${backendServer}/findSalByTitle`).then(
       (response) => {
         console.log(response.data, response.status)
         let jobTitles = response.data.map((job) => {
@@ -320,37 +320,25 @@ class FindSalByTitle extends Component {
     {/* render details */}
 
 <div className="App">
+<h5 class="card-title">Top companies for Front Desk Agents in United States</h5>
 <div className="card-container">
-        {this.state.jobs.filter((jobId) => this.props.match.params.jobId)
-            .map((job) => (  
+        {this.state.jobs.map((job) => (  
             <div>
-            <h5 class="card-title">{job.jobTitle} Salary in {job.state} </h5>
-            <h6>How much does a {job.jobTitle}  make in the {job.state}</h6>
-            
-            <div class="card" id={job.jobTitle} 
-            style={{marginTop:'1.5rem',marginInline:'1.5rem',width:'250px'}}>
+            {/* <h5 class="card-title">{job.jobTitle} Salary in {job.state} </h5>
+            <h6>How much does a {job.jobTitle}  make in the {job.state}</h6> */}
+            <div class="card" id={job.jobTitle} style={{marginTop:'1.5rem',marginInline:'1.5rem',width:'250px'}}>
                 <div class="card-body">
-               
+                <div class="card-text">{job.jobTitle}</div>
+                <div class="card-text">${job.salaryDetails}per year</div>
                 </div>
             </div>
           </div>
             ))}
 </div>
-
-<div>
-<div className="card-container">
-<h5 class="card-title">Top companies for Front Desk Agents in United States</h5>
-</div>
-</div>
-
 </div> 
 </div>
-
-
-
-
     )
-  }
+ }
 }
 
 export default FindSalByTitle;

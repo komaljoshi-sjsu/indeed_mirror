@@ -338,7 +338,7 @@ class FindSalaries extends Component {
                 <div class="card-body">
                     <h5 class="card-title" 
                     onClick={() => {
-                          window.location = `/findSalByTitle/${job.jobId}`;
+                          window.location = `/findSalByTitle/${job.jobTitle}`;
                         }}>{job.jobTitle} </h5>
                     {/* <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6> */}
                     <p class="card-text">Average Salary ${job.salaryDetails}/year</p>
