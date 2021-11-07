@@ -12,6 +12,18 @@ class EmployerNavbar extends Component {
     this.state = {}
   }
 
+  componentDidMount(){
+    let collection = document.getElementsByClassName("nav-link")
+    for (let i = 0; i < collection.length; i++) {
+        if(collection[i].href===window.location.href){
+            collection[i].classList.add('active')
+        }
+        else{
+            collection[i].classList.remove('active')
+        }
+    }
+  }
+  
   render() {
     return (
       <div>

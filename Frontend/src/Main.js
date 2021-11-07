@@ -23,14 +23,10 @@ import EmployerAnalytics from './pages/Employer/EmployerAnalytics'
 import Preferences from './pages/JobSeeker/Preferences.js'
 import CompanyJobs from './pages/Company/Jobs.js'
 import Header from './common/Header'
-<<<<<<< HEAD
 import FeaturedReview from './pages/Employer/featuredReview';
 import CompanyReviews from './pages/JobSeeker/companyReviews';
 import FindSalByTitle from './pages/JobSeeker/FindSalByTitle'
-=======
-import FeaturedReview from './pages/Employer/featuredReview'
-import CompanyReviews from './pages/JobSeeker/companyReviews'
->>>>>>> 02248fefa250e26e7169a8556de8442f01b07f78
+import AdminAnalytics from './pages/Admin/AdminAnalytics.js'
 
 //Create a Main Component
 class Main extends Component {
@@ -67,6 +63,7 @@ class Main extends Component {
         <Route path="/preferences" component={Preferences}/>
         <Route path="/allReviews" component={CompanyReviews}/>
         <Route path="/findSalByTitle/:id" component={FindSalByTitle}/>
+        <Route path="/adminAnalytics" component={AdminAnalytics}/>
       </div>
     )
   }
