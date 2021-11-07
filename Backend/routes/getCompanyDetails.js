@@ -29,8 +29,41 @@ router.get("/getCompanyDetailsPaginated", function (req, res) {
                 console.log("Error occured while querying"+err);
                 return res.status(400).send("Error occurred while retrieving pending reviews");
               }
-              console.log("server result" + rows);
+              //console.log("server result" + rows);
               return res.status(200).json({ companyDtls: rows, count:rows2[0].total});
+            })
+          }
+    });
+});
+
+router.get("/searchAdminCompany", function (req, res) {
+    const searchTerm = "%"+req.query.data+"%"
+    const query = "SELECT * FROM Company WHERE companyName LIKE ?";
+    connection.query(query, [searchTerm], (error, rows) => {
+        if (error) {
+            res.status(400).send("Error occured while retrieving company details");
+        } else{
+            return res.status(200).json({ companyDtls: rows});
+          }
+    });
+});
+
+router.get("/companyJobStatistics", function (req, res) {
+    const companyId= Number(req.query.data)
+    const hired = "Hired";
+    const reject = "Rejected"
+    const countQuery = "SELECT COUNT(*) as count, YEAR(appliedDate) as year FROM AppliedJobs WHERE companyId=? AND status=? GROUP BY YEAR(appliedDate)";
+    connection.query(countQuery, [companyId,hired], (error, rows) => {
+        if (error) {
+            console.log(error)
+            res.status(400).send("Error occured while retrieving company details");
+        } else{
+            connection.query(countQuery, [companyId,reject], function (err, rows2) {
+              if (err) {
+                console.log("Error occured while querying"+err);
+                return res.status(400).send("Error occurred while retrieving pending reviews");
+              }
+              return res.status(200).json({ hired: rows, rejected:rows2});
             })
           }
     });
