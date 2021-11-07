@@ -29,7 +29,11 @@ router.get("/getCompanyDetailsPaginated", function (req, res) {
                 console.log("Error occured while querying"+err);
                 return res.status(400).send("Error occurred while retrieving pending reviews");
               }
+<<<<<<< HEAD
               //console.log("server result" + rows);
+=======
+              console.log("server result" + rows);
+>>>>>>> d9c2528 (admin company changes)
               return res.status(200).json({ companyDtls: rows, count:rows2[0].total});
             })
           }
