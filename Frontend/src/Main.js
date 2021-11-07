@@ -19,11 +19,14 @@ import AdminReview from './pages/Admin/AdminReview.js'
 import AddSalaryReview from './pages/Company/AddSalaryReview'
 import Resume from './pages/JobSeeker/Resume.js'
 import FindSalaries from './pages/JobSeeker/FindSalaries'
+import EmployerAnalytics from './pages/Employer/EmployerAnalytics'
 import Preferences from './pages/JobSeeker/Preferences.js'
 import CompanyJobs from './pages/Company/Jobs.js'
 import Header from './common/Header'
-import FeaturedReview from './pages/Employer/featuredReview'
-import CompanyReviews from './pages/JobSeeker/companyReviews'
+import FeaturedReview from './pages/Employer/featuredReview';
+import CompanyReviews from './pages/JobSeeker/companyReviews';
+import FindSalByTitle from './pages/JobSeeker/FindSalByTitle'
+import AdminAnalytics from './pages/Admin/AdminAnalytics.js'
 
 //Create a Main Component
 class Main extends Component {
@@ -54,10 +57,13 @@ class Main extends Component {
         <Route path="/featuredReviews" component={FeaturedReview} />
         <Route path="/adminReviews" component={AdminReview} />
         <Route path="/addSalaryReview" component={AddSalaryReview} />
-        <Route path="/resume" component={Resume} />
-        <Route path="/findSalaries" component={FindSalaries} />
-        <Route path="/preferences" component={Preferences} />
-        <Route path="/allReviews" component={CompanyReviews} />
+        <Route path="/resume" component={Resume}/>
+        <Route path="/findSalaries" component={FindSalaries}/>
+        <Route path="/employerAnalytics" component={EmployerAnalytics}/>
+        <Route path="/preferences" component={Preferences}/>
+        <Route path="/allReviews" component={CompanyReviews}/>
+        <Route path="/findSalByTitle/:id" component={FindSalByTitle}/>
+        <Route path="/adminAnalytics" component={AdminAnalytics}/>
       </div>
     )
   }

@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form';
 import backendServer from '../../webConfig';
 import CompanyTabs from './CompanyTabs';
 import Card from "react-bootstrap/Card";
+import '../../CSS/FindSalary.css'
 
 const AddSalaryReview = (props) => {
   const [show, setShow] = useState(false);
@@ -18,6 +19,7 @@ const AddSalaryReview = (props) => {
   const handleCloseVisible = () => setVisible(false);
   console.log('visible' ,visible);
 
+  
   useEffect(() => {
     axios.get(`${backendServer}/jobSeeker/getSalaryReview`)
       .then((response) => {
@@ -32,8 +34,14 @@ const AddSalaryReview = (props) => {
   }, []);
 
 
+  const formValidation =() =>{
+
+  }
+
   const addSalaryReview = (e) => {
     e.preventDefault();
+    const isValid = formValidation();
+    
     const formData = new FormData(e.target);
     const currentlyWorking = formData.get('currentlyWorking');
     const companyName = formData.get('companyName');
@@ -99,11 +107,13 @@ const AddSalaryReview = (props) => {
             <div class="col-10">
               <div class="row">
                 <div class="col-3">     
-                <div>
+                <div style={{display:'block'}}>
+                <p>Average salaries at Amazon
+                  {/* {companyName} */}
+                  </p>
                   {salary.map((salaryDetails, index) => {
                   return (
                     <div key={index}>
-                    <p>Average salaries at {salaryDetails.companyName} </p>
                     <div>{salaryDetails.jobTitle}</div>
                     <div>${salaryDetails.annualPay} per year</div>
                 </div>
@@ -111,36 +121,8 @@ const AddSalaryReview = (props) => {
                   })}
               </div>
               </div>
-              <div class="col-3">     
-                <div>
-                  {salary.map((salaryDetails, index) => {
-                  return (
-                    <div key={index}>
-                    <p>Average salaries at {salaryDetails.companyName} </p>
-                    <div>{salaryDetails.jobTitle}</div>
-                    <div>${salaryDetails.annualPay} per year</div>
-                </div>
-                  );
-                  })}
-              </div>
-              </div>
-              <div class="col-3">     
-                <div>
-                  {salary.map((salaryDetails, index) => {
-                  return (
-                    <div key={index}>
-                    <p>Average salaries at {salaryDetails.companyName} </p>
-                    <div>{salaryDetails.jobTitle}</div>
-                    <div>${salaryDetails.annualPay} per year</div>
-                </div>
-                  );
-                  })}
-              </div>
-              </div>
-              
 
-              <div class="col-3">    
-
+              <div class="col-3"> 
           <button type="button" class="btn btn-outline-primary btn-lg" style={{width:'100%'}} onClick={handleShow}>
           Add Salary Review
            </button>
@@ -165,9 +147,9 @@ const AddSalaryReview = (props) => {
              </Card.Body>
           </Card>
      </div>
+     </div>
  </div>
  </div>     
-  </div>
 
       <Modal
         visible={visible}
@@ -206,19 +188,20 @@ const AddSalaryReview = (props) => {
               </Form.Group>
               <Form.Group>
                   <Form.Label>Are you currently working at this company?</Form.Label>
+                  <br/>
                   <ToggleButtonGroup type="radio" name="currentlyWorking">
                     <ToggleButton id="tbg-btn-1" value="Yes">
                       Yes
                     </ToggleButton>
-                    <ToggleButton id="tbg-btn-2" value="No" >
+                    <ToggleButton id="tbg-btn-2" value="No" onChange={()=>handleVisible} >
                       No
                     </ToggleButton>
                   </ToggleButtonGroup>
                   <br/>
                   <br/>
               </Form.Group>
-              <Form.Group>
-                  <Form.Label>End date</Form.Label>
+              <Form.Group visible={visible}>
+                  <Form.Label >End date</Form.Label>
                   <Form.Control type="text" placeholder="End Date" name="endDate" required/><br/>
               </Form.Group>
               <Form.Group>
@@ -247,7 +230,8 @@ const AddSalaryReview = (props) => {
                   <Form.Check type="checkbox" label="Other benefits" id="otherBenefits"/><br/>
                   <Form.Label>Other Benefits</Form.Label>
                   <Form.Control as="textarea" rows={3} id="otherBenefitsText" name="otherBenefitsText"/>
-              </Form.Group>                 
+              </Form.Group>   
+              <br/>              
             <Button variant="primary" size="sm" type="submit">
               Add
             </Button>

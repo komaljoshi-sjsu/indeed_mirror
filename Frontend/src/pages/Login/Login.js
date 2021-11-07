@@ -15,8 +15,8 @@ function Login(props) {
   const [redirectVal, redirectValFn] = useState(null)
   const dispatch = useDispatch()
 
-    const[redirectVal,redirectValFn] = useState(null);
-    const dispatch = useDispatch();
+    // const[redirectVal,redirectValFn] = useState(null);
+    // const dispatch = useDispatch();
 
     const setEmail = bindActionCreators(userActionCreator.setEmail,dispatch);
     const setId = bindActionCreators(userActionCreator.setId,dispatch);
