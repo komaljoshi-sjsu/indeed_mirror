@@ -1,40 +1,21 @@
-'use strict'
 const express = require('express')
 const router = express.Router()
 const conn = require('./../config/mysql_connection')
-const mongoose = require('mongoose')
 const { json } = require('body-parser')
-const Company = mongoose.model('Company')
-const JobSeeker = mongoose.model('JobSeeker')
 
-router.get('/jobSeeker/home', (req, res) => {
-  conn.query('select * from Job;', async function (err, results) {
-    if (results && results.length <= 0) {
-      console.log('Not found')
-      res.status(400).send('Job details not found')
-    }
-    if (err) {
-      console.log('error')
-      res.status(400).send('Error ocurred')
-    }
-    return res.send(results)
-  })
-})
-
-router.post('/jobSeeker/paginatedData', (req, res) => {
-  //console.log(JSON.stringify(req.body))
-  const postsPerPage = 5
-  const currentPage = req.body.currentPage
+router.post('/jobs/companyJobs', (req, res) => {
+  const { companyName } = req.body
+  console.log(req.body)
   conn.query(
-    'select * from Job limit ?,?',
-    [(currentPage - 1) * postsPerPage, postsPerPage],
+    'select * from Job where companyName = ?',
+    [companyName],
     async function (err, results) {
       if (results && results.length <= 0) {
         console.log('Not found')
         res.status(400).send('Job details not found')
       }
       if (err) {
-        console.log('error')
+        console.log('error ' + err)
         res.status(400).send('Error ocurred')
       }
       return res.send(results)
@@ -42,9 +23,32 @@ router.post('/jobSeeker/paginatedData', (req, res) => {
   )
 })
 
-router.post('/jobSeeker/filterOnJobTitleOrCompanyName', (req, res) => {
+router.post('/jobs/paginatedData', (req, res) => {
+  //console.log(JSON.stringify(req.body))
+  const postsPerPage = 5
+  const currentPage = req.body.currentPage
+  const { companyName } = req.body
+  console.log(req.body)
+  conn.query(
+    'select * from Job where companyName = ? limit ?,?',
+    [companyName, (currentPage - 1) * postsPerPage, postsPerPage],
+    async function (err, results) {
+      if (results && results.length <= 0) {
+        console.log('Not found')
+        res.status(400).send('Job details not found')
+      }
+      if (err) {
+        console.log('error ' + err)
+        res.status(400).send('Error ocurred')
+      }
+      return res.send(results)
+    },
+  )
+})
+
+router.post('/jobs/filterOnJobTitleOrCompanyName', (req, res) => {
   console.log(JSON.stringify(req.body))
-  const companyName = req.body.keyword
+  const { companyName } = req.body
   const jobTitle = req.body.keyword
   const postsPerPage = 5
   const currentPage = req.body.currentPage
@@ -80,20 +84,28 @@ router.post('/jobSeeker/filterOnJobTitleOrCompanyName', (req, res) => {
   )
 })
 
-router.post('/jobSeeker/filterOnLocation', (req, res) => {
+router.post('/jobs/filterOnLocation', (req, res) => {
   console.log(JSON.stringify(req.body))
   const city = req.body.keyword
   const state = req.body.keyword
   const zip = req.body.keyword
+  const { companyName } = req.body
   const postsPerPage = 5
   const currentPage = req.body.currentPage
   conn.query(
-    'select * from Job where city = ? or state = ? or zip = ? limit ?,?',
-    [city, state, zip, (currentPage - 1) * postsPerPage, postsPerPage],
+    'select * from Job where (city = ? or state = ? or zip = ?) and companyName = ? limit ?,?',
+    [
+      city,
+      state,
+      zip,
+      companyName,
+      (currentPage - 1) * postsPerPage,
+      postsPerPage,
+    ],
     async function (err, results) {
       await conn.query(
-        'select count(*) as count from Job where city = ? or state = ? or zip = ?',
-        [city, state, zip],
+        'select count(*) as count from Job where (city = ? or state = ? or zip = ?) and companyName = ? ',
+        [city, state, zip, companyName],
         (err2, count) => {
           if (count && count.length <= 0) {
             console.log('Not found')
@@ -119,17 +131,17 @@ router.post('/jobSeeker/filterOnLocation', (req, res) => {
   )
 })
 
-router.post('/jobSeeker/filterOnLocationAndTitle', (req, res) => {
+router.post('/jobs/filterOnLocationAndTitle', (req, res) => {
   console.log(JSON.stringify(req.body))
   const city = req.body.wherekeyword
   const state = req.body.wherekeyword
   const zip = req.body.wherekeyword
-  const companyName = req.body.whatkeyword
+  const companyName = req.body.companyName
   const jobTitle = req.body.whatkeyword
   const postsPerPage = 5
   const currentPage = req.body.currentPage
   conn.query(
-    'select * from Job where (city = ? or state = ? or zip = ?) and (jobTitle = ? or companyName = ?) limit ?,?',
+    'select * from Job where (city = ? or state = ? or zip = ?) and jobTitle = ? and companyName = ? limit ?,?',
     [
       city,
       state,
@@ -141,7 +153,7 @@ router.post('/jobSeeker/filterOnLocationAndTitle', (req, res) => {
     ],
     async function (err, results) {
       await conn.query(
-        'select count(*) as count from Job where (city = ? or state = ? or zip = ?) and (jobTitle = ? or companyName = ?)',
+        'select count(*) as count from Job where (city = ? or state = ? or zip = ?) and jobTitle = ? and companyName = ?',
         [city, state, zip, jobTitle, companyName],
         (err2, count) => {
           if (count && count.length <= 0) {
@@ -167,91 +179,7 @@ router.post('/jobSeeker/filterOnLocationAndTitle', (req, res) => {
   )
 })
 
-router.get('/jobSeeker/getCompanyReviews', (req, res) => {
-  conn.query(
-    "select count(reviewId) as NoOfReviews,companyId from Review where adminReviewStatus = 'APPROVED' group by companyId",
-    async function (err, results) {
-      if (results.length <= 0) {
-        console.log('Not found')
-        res.status(400).send('Reviews not found')
-      }
-      if (err) {
-        console.log('error')
-        res.status(400).send('Error ocurred')
-      }
-      return res.send(results)
-    },
-  )
-})
-
-router.get('/jobSeeker/getCompanyRating', (req, res) => {
-  conn.query(
-    'select CAST(avg(rating)AS DECIMAL(10,2)) as avgRating, companyId from Review',
-    async function (err, results) {
-      if (results.length <= 0) {
-        console.log('Not found')
-        res.status(400).send('Rating not found')
-      }
-      if (err) {
-        console.log('error')
-        res.status(400).send('Error ocurred')
-      }
-      return res.send(results)
-    },
-  )
-})
-
-router.post('/jobSeeker/updateNoOfViews', (req, res) => {
-  const { id } = req.body
-  console.log(JSON.stringify(req.body))
-  try {
-    console.log('exec')
-    Company.updateOne({ companyId: id }, { $inc: { noOfViews: 1 } })
-      .then((result) => {
-        console.log(result)
-        return res.status(200).send(result)
-      })
-      .catch((err) => {
-        console.log('Error occured while querying' + err)
-        return res
-          .status(400)
-          .send('Error occurred while retrieving no of views')
-      })
-  } catch {
-    ;(err) => {
-      return res.status(400).json({ error: err })
-    }
-  }
-})
-
-router.post('/jobSeeker/saveJob', (req, res) => {
-  let { companyId, userId } = req.body
-  companyId = parseInt(companyId)
-  console.log(JSON.stringify(req.body))
-  try {
-    console.log('exec')
-    JobSeeker.updateOne(
-      { jobSeekerId: userId },
-      { $addToSet: { savedJobs: companyId } },
-    )
-      .then((result) => {
-        console.log(result)
-        return res.status(200).send(result)
-      })
-      .catch((err) => {
-        console.log('Error occured while querying' + err)
-        return res
-          .status(400)
-          .send('Error occurred while retrieving no of views')
-      })
-  } catch {
-    ;(err) => {
-      return res.status(400).json({ error: err })
-    }
-  }
-})
-
-router.post('/jobSeeker/applyJob', (req, res) => {
+router.post('/jobs/applyJob', (req, res) => {
   let { appliedDate, jobId, id, companyId } = req.body
   console.log(req.body)
   conn.query(

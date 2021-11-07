@@ -9,6 +9,7 @@ router.post('/getJobSeekerProfile', function(req,res){
     //var res = {status: '', jobseekerData : []};
     var jobseekerData = [];
     const jobSeekerId = req.body.id;
+    console.log(req.body.id)
     let sql1 = "SELECT email,jobSeekerContact from JobSeeker WHERE id = "+mysql.escape(jobSeekerId);
     let query = connection.query(sql1, (error, result) => {
 

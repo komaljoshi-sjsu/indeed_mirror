@@ -111,7 +111,7 @@ class CompanyTabs extends Component {
                         <li class="nav-item">
                           <a class="nav-link">
                             <Link
-                              to="/photos"
+                              to="/companyPhotos"
                               style={{
                                 textDecoration: 'none',
                                 color: '#474747',

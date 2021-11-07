@@ -12,6 +12,18 @@ class EmployerNavbar extends Component {
     this.state = {}
   }
 
+  componentDidMount(){
+    let collection = document.getElementsByClassName("nav-link")
+    for (let i = 0; i < collection.length; i++) {
+        if(collection[i].href===window.location.href){
+            collection[i].classList.add('active')
+        }
+        else{
+            collection[i].classList.remove('active')
+        }
+    }
+  }
+  
   render() {
     return (
       <div>
@@ -43,7 +55,7 @@ class EmployerNavbar extends Component {
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">
+                  <a class="nav-link" href="/employerAnalytics">
                     <h5>Analytics</h5>
                   </a>
                 </li>

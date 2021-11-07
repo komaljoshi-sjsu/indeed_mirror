@@ -63,6 +63,11 @@ class AdminNavbar extends Component {
                     <h5>Reviews</h5>
                   </a>
                 </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/adminAnalytics">
+                    <h5>Analytics</h5>
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
