@@ -10,7 +10,7 @@ router.get("/api/getAdminReviews", async (req, res) => {
   const currentPage = params.currentPage;
   const offset = 5*(currentPage-1)
   const condition = "PENDING_APPROVAL"
-  const query = "SELECT * from Review WHERE adminReviewStatus = ? LIMIT ?, ?";
+  const query = "SELECT r.*, c.companyName FROM Review r, Company c WHERE r.companyId = c.companyId and r.adminReviewStatus = ? order by r.postedDate LIMIT ?,?";
   const count = "SELECT COUNT(*) AS total FROM Review WHERE adminReviewStatus = ?";
   conn.query(query, [condition,offset,postsPerPage], function (err, rows) {
     if (err) {

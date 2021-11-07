@@ -53,6 +53,7 @@ const AdminReview = (props) => {
       {reviews.map((review,index)=>(
         <Card style={{width:"40%", padding:5}}>
           <div>
+            <p>Company Name: {review.companyName}</p>
             <p>Review Title: {review.reviewTitle}</p>
             <p>Review Comments: {review.reviewComments}</p>
             <p>Rating: {review.rating}</p>

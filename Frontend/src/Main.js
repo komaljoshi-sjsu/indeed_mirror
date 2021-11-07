@@ -25,6 +25,7 @@ import CompanyJobs from './pages/Company/Jobs.js'
 import Header from './common/Header'
 import FeaturedReview from './pages/Employer/featuredReview';
 import CompanyReviews from './pages/JobSeeker/companyReviews';
+import AdminCompany from './pages/Admin/AdminCompany'
 import FindSalByTitle from './pages/JobSeeker/FindSalByTitle'
 import AdminAnalytics from './pages/Admin/AdminAnalytics.js'
 
@@ -62,6 +63,8 @@ class Main extends Component {
         <Route path="/employerAnalytics" component={EmployerAnalytics}/>
         <Route path="/preferences" component={Preferences}/>
         <Route path="/allReviews" component={CompanyReviews}/>
+        <Route path="/adminCompany" component={AdminCompany}/>
+        <Route path="/findSalByTitle/:id" component={FindSalByTitle}/>
         <Route path="/findSalByTitle/:jobTitle" component={FindSalByTitle}/>
         <Route path="/adminAnalytics" component={AdminAnalytics}/>
       </div>
