@@ -106,20 +106,17 @@ const AddSalaryReview = (props) => {
             <div class="col-1"></div>
             <div class="col-10">
               <div class="row">
-                <div class="col-3">     
-                <div style={{display:'block'}}>
-                <p>Average salaries at Amazon
-                  {/* {companyName} */}
-                  </p>
-                  {salary.map((salaryDetails, index) => {
+                <div class="col-3">  
+                {salary.map((salaryDetails, index) => {
                   return (
-                    <div key={index}>
-                    <div>{salaryDetails.jobTitle}</div>
-                    <div>${salaryDetails.annualPay} per year</div>
-                </div>
+                    <Card  key={index} style={{marginTop:'20px'}}>
+                    <Card.Body>
+                  <Card.Title>{salaryDetails.jobTitle}</Card.Title>
+                  <Card.Text> ${salaryDetails.annualPay} per year</Card.Text>
+                  </Card.Body>
+                  </Card>
                   );
-                  })}
-              </div>
+                        })}
               </div>
 
               <div class="col-3"> 
