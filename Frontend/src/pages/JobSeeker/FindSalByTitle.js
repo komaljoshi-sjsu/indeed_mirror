@@ -321,21 +321,28 @@ class FindSalByTitle extends Component {
 
 <div className="App">
 <h5 class="card-title">Top companies for Front Desk Agents in United States</h5>
-<div className="card-container">
-        {this.state.jobs.map((job) => (  
-            <div>
-            {/* <h5 class="card-title">{job.jobTitle} Salary in {job.state} </h5>
-            <h6>How much does a {job.jobTitle}  make in the {job.state}</h6> */}
-            <div class="card" id={job.jobTitle} style={{marginTop:'1.5rem',marginInline:'1.5rem',width:'250px'}}>
-                <div class="card-body">
-                <div class="card-text">{job.jobTitle}</div>
-                <div class="card-text">${job.salaryDetails}per year</div>
-                </div>
-            </div>
-          </div>
-            ))}
+<div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+              <div class="row">
+                <div class="col-3" style={{width:'100%'}}>  
+                {this.state.jobs.map((job, index) =>{
+                  return (
+                    <Card  key={index} style={{marginTop:'20px'}} id={job.jobTitle}>
+                    <Card.Body>
+                  <Card.Title>{job.jobTitle}</Card.Title>
+                  <Card.Text> ${job.salaryDetails} per year</Card.Text>
+                  </Card.Body>
+                  </Card>
+                  );
+                        })}
+              </div>
+              </div>
+              </div>
+              </div>
 </div>
-</div> 
+
+
 </div>
     )
  }
