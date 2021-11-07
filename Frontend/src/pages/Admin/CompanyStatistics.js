@@ -78,12 +78,13 @@ const CompanyStatistics = (props) => {
           <Modal.Title>Statistics</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <Bar
+          {(hiredArray.length > 0 || rejectArray.length > 0) && <Bar
           data={data}
           width={null}
           height={null}
           options={options}
-        />
+        />}
+        {(hiredArray.length <= 0 || rejectArray.length <= 0) && <p>No data found</p>}
         </Modal.Body>
       </Modal>
     </div>
