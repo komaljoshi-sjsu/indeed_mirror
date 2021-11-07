@@ -90,11 +90,11 @@ const AddSalaryReview = (props) => {
             console.log("returned");
             console.log(response.data);
             window.location = '/addSalaryReview';
-        }else {
-          setErrorMessage(response.data.message);
-        }
+          }
         }).catch((err) => {
-          console.log(err);
+          console.log("caught an error");
+          console.log(err.response);
+          setErrorMessage(err.response.data);
         });
     };
 
@@ -235,7 +235,7 @@ const AddSalaryReview = (props) => {
             <Button variant="primary" size="sm" type="submit">
               Add
             </Button>
-            <h3 style={{ color: "red" }}>{errorMessage} </h3> 
+            <h6 style={{ color: "red" }}>{errorMessage} </h6> 
             <Button variant="primary" size="sm" onClick={handleClose}>
               Cancel
             </Button>
