@@ -13,5 +13,28 @@ router.get("/getCompanyDetails", function (req, res) {
     });
 });
 
+router.get("/getCompanyDetailsPaginated", function (req, res) {
+    const params = JSON.parse(req.query.data)
+    const postsPerPage = 20;
+    const currentPage = params.currentPage;
+    const offset = 5*(currentPage-1)
+    const query = "SELECT * FROM Company LIMIT ?, ?";
+    const count = "SELECT COUNT(*) AS total FROM Company";
+    connection.query(query, [offset, postsPerPage], (error, rows) => {
+        if (error) {
+            res.status(400).send("Error occured while retrieving company details");
+        } else{
+            connection.query(count, function (err, rows2) {
+              if (err) {
+                console.log("Error occured while querying"+err);
+                return res.status(400).send("Error occurred while retrieving pending reviews");
+              }
+              console.log("server result" + rows);
+              return res.status(200).json({ companyDtls: rows, count:rows2[0].total});
+            })
+          }
+    });
+});
+
 module.exports = router;
 
