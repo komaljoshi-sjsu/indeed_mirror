@@ -6,10 +6,12 @@ import {
   } from 'react-bootstrap';
 import { CountryDropdown } from 'react-country-region-selector';
 import backendServer from '../../webConfig';
+import {useDispatch} from 'react-redux';
 import EmployerNavbar from './EmployerNavbar'
-
-//import { Redirect } from 'react-router';
-// import { response } from 'express';
+import { connect } from "react-redux";
+import {bindActionCreators} from 'redux';
+import PropTypes from "prop-types";
+import {setCompId} from '../../reduxutils/actioncreators/companyaction';
 
 class EmployerProfile extends Component {
     constructor(props) {
@@ -48,6 +50,7 @@ class EmployerProfile extends Component {
           companyDetails:[],
           companyadded:false
       };
+      
     }
     
       componentDidMount() {
@@ -170,12 +173,13 @@ class EmployerProfile extends Component {
             );
     }    
     sendCompanyAPI = (data) => {
+        let compid = '';
         axios.post(`${backendServer}/addCompanyDetails`, data)
             .then(response=> {
                // console.log(response)
-                const compid = response.data[0].companyId;
+               compid = response.data[0].companyId;
                 const companyname = response.data[0].companyName;
-                console.log(compid)
+                this.props.setCompId(compid);
                     axios.post(`${backendServer}/api/createCompanyMongo`,{compid,companyname})
                     .then(response=> {
                         console.log(response.data)
@@ -193,11 +197,15 @@ class EmployerProfile extends Component {
                 //     this.setState({ errorMsg: response.data });
                 //   }
             }
+            
             );
+            // const dispatch = useDispatch();
+            // const setId = bindActionCreators(userActionCreator.setId,dispatch);
+            
     }
     updateCompanyId = (data) => {
         var id = {
-            employerId:"4",
+           // employerId:this.props.compid,
             companyid : data
         }
         axios.post(`${backendServer}/addCompanyIdToEmployer`, id)
@@ -635,4 +643,26 @@ class EmployerProfile extends Component {
       );
     }
   }
-  export default EmployerProfile;
+
+  const mapStateToProps = (state) => {
+    return {
+        
+        empid: state.id
+    };
+  };
+  function mapDispatchToProps(dispatch) {
+    return {
+        setCompId: compid => dispatch(setCompId(compid))
+    };
+  }
+//   const EmployerProfile = connect(mapStateToProps, mapDispatchToProps)(ConnectedForm);
+//   export default EmployerProfile;
+//   function mapDispatchToProps(dispatch) {
+//     return {
+//         setId: (inputData) => dispatch({ type: RESTDETAILS, payload: inputData }),
+//     };
+//   }
+export default connect(mapStateToProps,mapDispatchToProps)(EmployerProfile);
+  //export default EmployerProfile;
+
+

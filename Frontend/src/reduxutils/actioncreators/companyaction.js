@@ -1,5 +1,15 @@
-//Actions will be written in beelow format
+//Actions will be written in below format
 
+export const setCompId = (compid) => {
+    // console.log("id")
+    // console.log(compid)
+    return (dispatch) => {
+        dispatch({
+            type:"setCompId",
+            payload:compid
+        });
+    } 
+}
 export const setCeo = (ceo) => {
     return (dispatch) => {
         dispatch({

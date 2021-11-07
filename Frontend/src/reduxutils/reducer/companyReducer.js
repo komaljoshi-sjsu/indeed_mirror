@@ -1,4 +1,5 @@
 const initState = {
+    compid:"",
     ceo:"",
     founded:"",
     industry:"",
@@ -18,7 +19,14 @@ const initState = {
 
 export const companyReducer = (state=initState,action) => {
     let type = action.type;
+    console.log(action.type)
+    console.log(action.payload)
     switch(type) {
+        case "setCompId":
+            let IdState = {
+                ...state,'compid':action.payload
+            }
+            return IdState;
         case "setCeo":
             let ceoState = {
                 ...state,'ceo':action.payload
