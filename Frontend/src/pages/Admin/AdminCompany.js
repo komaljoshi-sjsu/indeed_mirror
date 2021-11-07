@@ -8,11 +8,11 @@ import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment';
 import Pagination from "./../JobSeeker/Pagination";
+import CompanyStatistics from "./CompanyStatistics";
 
 const AdminCompany = (props) => {
 
   const [search, setSearch] = useState("");
-  const [searchString, setSearchString] = useState("");
   const [companyId, setCompanyId] = useState(Number);
   const [companyDtls, setCompanyDtls] = useState([]);
   const [reviews, setReviews] = useState([]);
@@ -25,51 +25,48 @@ const AdminCompany = (props) => {
     getCompanyDetails();
   }, [currentCompanyPage]);
 
+  useEffect(() => {
+    getReviews();
+  }, [companyId, currentReviewPage]);
+
   const getCompanyDetails = async () => {
     const data1 = { currentPage: currentCompanyPage }
     const companyDetails = await axios("/getCompanyDetailsPaginated/", { params: { data: data1 } });
-    console.log(companyDetails.data.companyDtls)
+    //console.log(companyDetails.data.companyDtls)
     setCompanyDtls(companyDetails.data.companyDtls)
     setTotalCompanyPosts(companyDetails.data.count)
     setCompanyId(companyDetails.data.companyDtls[0].companyId)
     getReviews()
-    //console.log(companyDetails.data.companyDtls[0].companyId)
   };
 
   const searchChangeHandler = (e) => {
     e.preventDefault();
     setSearch(e.target.value)
-    console.log(search)
   }
 
-  const handleSearch = (searchString) => {
+  const handleSearch = async (searchString) => {
     console.log("searching")
-    const searchResult = companyDtls.filter((company) => {
-      const searchCompany = (company.companyName).trim().toLowerCase() === searchString.trim().toLowerCase()
-      return searchCompany;
-    });
-    console.log(searchResult)
-    if (searchResult.length > 0) {
-      setCompanyDtls(searchResult)
+    const searchTerm = searchString.trim().toLowerCase()
+    const searchResult = await axios("/searchAdminCompany", {params: {data:searchTerm}});
+    if (searchResult.data.companyDtls.length>0){
+      setCompanyDtls(searchResult.data.companyDtls)
+      setCompanyId(searchResult.data.companyDtls[0].companyId)
     }
-
+    else{
+      setCompanyDtls([])
+      setCompanyId(Number)
+      setReviews([])
+      setTotalReviewPosts(0)
+    }
   }
 
   const searchkeyPress = (e) => {
     if (e.keyCode === 13) {
-      console.log('value', e.target.value);
-      setSearchString(e.target.value)
-      console.log(searchString)
-      handleSearch(searchString)
+      handleSearch(e.target.value)
     }
   }
 
-  useEffect(() => {
-    getReviews();
-  }, [companyId, currentReviewPage]);
-
   const cardHandler = async (e) => {
-    console.log(e)
     setCompanyId(e);
   }
 
@@ -93,7 +90,8 @@ const AdminCompany = (props) => {
     <div>
       <AdminNavbar />
       <div id="Second" class="row">
-        <div class="col-4" style={{ width: "60%" }}>
+        <div 
+      >
           <TextField
             id="input-with-icon-textfield"
             placeholder="Company Name?"
@@ -107,9 +105,8 @@ const AdminCompany = (props) => {
             }}
             onKeyDown={searchkeyPress}
             onChange={searchChangeHandler}
-            variant="filled"
             size="small"
-
+            style={{marginLeft:"1%", marginTop:"1%", width:"90%"}}
           />
         </div>
       </div>
@@ -121,25 +118,25 @@ const AdminCompany = (props) => {
       >
         <div class="row">
           <div class="col-1"></div>
-          <div class="col-6" style={{ marginLeft: '0px' }}>
+          <div class="col-6" style={{ marginLeft: '0px', marginTop:"5px" }}>
 
             {companyDtls.map((company) => (
               <div>
-                <Card onClick={() => cardHandler(company.companyId)} style={{ width: "60%", padding: 5 }}>
+                <Card onClick={() => cardHandler(company.companyId)} style={{ width: "60%", padding: 5}}>
                   <div>
                     <p>{company.companyName}</p>
                   </div>
                   <div>
-                  {/* <a href="/adminPhotos">Company</a> */}
+                    <CompanyStatistics companyId = {company.companyId}/>
                   </div>
                 </Card>
               </div>
             ))}
-            <Pagination postsPerPage={20} totalPosts={totalCompanyPosts} paginate={paginate1} />
+            <Pagination postsPerPage={10} totalPosts={totalCompanyPosts} paginate={paginate1} />
           </div>
 
 
-          <div class="col-5">
+          <div class="col-5"  style={{ marginLeft: '0px', marginTop:"5px" }}>
             {reviews.map((review) => (
               <div>
                 <Card style={{ width: "80%", padding: 5 }}>
