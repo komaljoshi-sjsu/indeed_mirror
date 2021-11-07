@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Bar } from "react-chartjs-2";
+import { Bar, Line } from "react-chartjs-2";
 import axios from "axios";
 import backendServer from '../../webConfig';
 import AdminNavbar from './AdminNavbar'
@@ -18,13 +18,7 @@ const AdminAnalytics = () => {
     datasets: [
       {
         data: []
-      },
-      {
-          data: []
-        },
-        {
-          data: []
-        }]
+      }]
   });
   
   const barChartOne = async () => {
@@ -57,74 +51,32 @@ const AdminAnalytics = () => {
   };
 
   const barChartTwo = async () => {
-    let appApppliedCnt = [];
-    let appRejectedCnt = [];
-    let appAcceptedCnt = [];
-    let compName =[];
-    // let compAppliedName = [];
-    // let compRejectedName = [];
-    // let compAcceptedName = [];
+    let revCnt = [];
+    let name = [];
    await axios
-      .get(`${backendServer}/applicantsDetail`)
+      .get(`${backendServer}/acceptedRev`)
       .then(res => {
         // console.log(res);
         for (const dataObj of res.data) {
-          if(dataObj.status === "Applied"){
-            appApppliedCnt.push(parseInt(dataObj.countAppId));
-            console.log(appApppliedCnt);
-            // compAppliedName.push(dataObj.companyName);
-          }
-          else if(dataObj.status === "Rejected"){
-            appRejectedCnt.push(parseInt(dataObj.countAppId));
-            console.log(appRejectedCnt);
-            // compRejectedName.push(dataObj.companyName);
-          }
-          else if(dataObj.status === "Accepted"){
-            appAcceptedCnt.push(parseInt(dataObj.countAppId));
-            console.log(appAcceptedCnt);
-            // compAcceptedName.push(dataObj.companyName);
-          }
-          else {
-            appApppliedCnt.push(0);
-            appRejectedCnt.push(0);
-            appAcceptedCnt.push(0);
-          }
-         if(!compName.includes(dataObj.companyName)){
-          compName.push(dataObj.companyName);
-         } 
+            revCnt.push(parseInt(dataObj.revId));
+            name.push(dataObj.name);
         }
         setChartTwoData({
-          labels: compName,
+          labels: name,
           datasets: [
             {
-              label: "applicants applied",
-              data: appApppliedCnt,
-              backgroundColor: ["Blue"],
+              label: "review posted",
+              data: revCnt,
+              backgroundColor: ["Orange"],
               borderWidth: 4,
               barThickness:100
-            },
-            {
-              label: "applicants accepted",
-              data: appAcceptedCnt,
-              backgroundColor: ["Cyan"],
-              borderWidth: 4,
-              barThickness:100
-            },
-            {
-              label: "applicants rejected",
-              data: appRejectedCnt,
-              backgroundColor: ["rgb(255, 99, 132)"],
-              borderWidth: 4,
-              barThickness:100
-            }
-          ]
+            }]
         });
       })
       .catch(err => {
         console.log(err);
       });
-    // console.log(jobCnt, empName);
-  };
+  }
 
   useEffect(() => {
     barChartOne();
@@ -168,9 +120,9 @@ const AdminAnalytics = () => {
       </div>
       <br />
       <br />
-      {/* <h1>APPLICATIONS DETAILS</h1>
+      <h1>Top 5 job seekers based on total accepted reviews</h1>
       <div>
-        <Bar
+        <Line
           data={chartTwoData}
           options={{
             responsive: true,
@@ -198,7 +150,7 @@ const AdminAnalytics = () => {
             }
           }}
         />
-      </div> */}
+      </div>
     </div>
     </div>
   );

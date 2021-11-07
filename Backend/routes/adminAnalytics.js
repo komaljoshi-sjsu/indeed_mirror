@@ -22,4 +22,24 @@ router.get('/revPerDay', (req, res) => {
   }
 })
 
+
+router.get('/acceptedRev', (req, res) => {
+  try {
+    conn.query('SELECT  count(reviewId) as revId, JobSeeker.name as name from Review,JobSeeker where Review.jobSeekerId = JobSeeker.id and adminReviewStatus= "APPROVED"  group by jobSeekerId order by revId LIMIT 5;', async function (err, results) {
+      if (results.length <= 0) {
+        console.log('Not found')
+        res.status(400).send(' Details not found')
+      }
+      if (err) {
+        console.log('error')
+        res.status(400).send('Error ocurred')
+      }
+      return res.send(results)
+    })
+  } catch (error) {
+    console.log('ERROR!' + error)
+    return res.status(400).send('Error while fetching details')
+  }
+})
+
 module.exports = router;
