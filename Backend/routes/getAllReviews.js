@@ -20,8 +20,8 @@ router.get("/api/getAllReviewsByCompanyId", async (req, res) => {
           console.log("Error occured while querying"+err);
           return res.status(400).send("Error occurred while retrieving all the reviews");
         }
-        console.log("server result" + JSON.stringify(rows));
-        console.log("server count" + rows2[0].total);
+        //console.log("server result" + JSON.stringify(rows));
+        //console.log("server count" + rows2[0].total);
         return res.status(200).json({ reviews: rows, count:rows2[0].total});
       })
     }
