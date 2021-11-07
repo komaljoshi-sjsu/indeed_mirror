@@ -15,19 +15,17 @@ function Login(props) {
   const [redirectVal, redirectValFn] = useState(null)
   const dispatch = useDispatch()
 
-  const setEmail = bindActionCreators(userActionCreator.setEmail, dispatch)
-  const setId = bindActionCreators(userActionCreator.setId, dispatch)
-  const setAccountType = bindActionCreators(
-    userActionCreator.setAccountType,
-    dispatch,
-  )
-  const setName = bindActionCreators(userActionCreator.setName, dispatch)
-  const setPhone = bindActionCreators(userActionCreator.setPhone, dispatch)
-  const setResumeUrl = bindActionCreators(
-    userActionCreator.setResumeUrl,
-    dispatch,
-  )
-  const setToken = bindActionCreators(userActionCreator.setToken, dispatch)
+    const[redirectVal,redirectValFn] = useState(null);
+    const dispatch = useDispatch();
+
+    const setEmail = bindActionCreators(userActionCreator.setEmail,dispatch);
+    const setId = bindActionCreators(userActionCreator.setId,dispatch);
+    const setAccountType = bindActionCreators(userActionCreator.setAccountType,dispatch);
+    const setName = bindActionCreators(userActionCreator.setName,dispatch);
+    const setPhone = bindActionCreators(userActionCreator.setPhone,dispatch);
+    const setResumeUrl = bindActionCreators(userActionCreator.setResumeUrl,dispatch);
+    const setToken = bindActionCreators(userActionCreator.setToken,dispatch);
+    //const setCompanyId = bindActionCreators(userActionCreator.setCompanyId,dispatch);
 
   let redirectToSignUp = (e) => {
     redirectValFn(<Redirect to="/signup" />)
@@ -41,37 +39,40 @@ function Login(props) {
     const accountType =
       formData.get('accountType') == 'Employer' ? 'Employer' : 'JobSeeker'
 
-    axios
-      .post(`${backendServer}/api/login`, {
-        email: email,
-        password: password,
-        accountType: accountType,
-      })
-      .then(
-        (res) => {
-          if (res.status != 200) {
-            alert(res.data)
-          } else {
-            alert('Successfully logged in')
-            //const jwt_decode = require('jwt-decode');
-            setToken(res.data)
-            var decoded = jwt_decode(res.data.split(' ')[1])
-            const user = decoded.user
-            console.log(decoded)
-            setEmail(user.email)
-            setName(user.name)
-            setAccountType(accountType)
-            setId(user.id)
-            setPhone(user.jobSeekerContact)
-            if (accountType == 'JobSeeker') {
-              setResumeUrl(decoded.resumeUrl)
-              redirectValFn(<Redirect to="/resume" />)
-            } else if (accountType == 'Employer') {
-              redirectValFn(<Redirect to="/employerprofile" />)
-            } else if (accountType == 'Admin') {
-              //redirectValFn(<Redirect to="/employerprofile"/>);
+        axios.post(`${backendServer}/api/login`,{
+            email:email,
+            password:password,
+            accountType: accountType
+        }).then(res=> {            
+            if(res.status!=200) {
+                alert(res.data);
+            } else {
+                alert('Successfully logged in');
+                //const jwt_decode = require('jwt-decode');
+                setToken(res.data);
+                var decoded = jwt_decode(res.data.split(' ')[1]);
+                const user = decoded.user;
+                console.log(decoded);
+                setEmail(user.email);
+                setName(user.name);
+                setAccountType(accountType);
+                setId(user.id);
+                setPhone(user.jobSeekerContact);
+                if(accountType=='JobSeeker')  {
+                    setResumeUrl(decoded.resumeUrl);
+                    redirectValFn(<Redirect to="/resume"/>);
+                } else if(accountType=='Employer')  {
+                    //setCompanyId();
+                    if(user.companyId==null) {
+                        redirectValFn(<Redirect to="/employerprofile"/>);
+                    }
+                    else {
+                        redirectValFn(<Redirect to="/employer"/>);
+                    }
+                } else if(accountType=='Admin')  {
+                    //redirectValFn(<Redirect to="/employerprofile"/>);
+                }
             }
-          }
         },
         (error) => {
           alert('Failed to Login. Please refer console for more details.')
