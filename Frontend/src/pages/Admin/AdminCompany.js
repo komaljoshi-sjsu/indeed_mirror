@@ -13,6 +13,7 @@ import CompanyStatistics from "./CompanyStatistics";
 const AdminCompany = (props) => {
 
   const [search, setSearch] = useState("");
+  const [searchString, setSearchString] = useState("");
   const [companyId, setCompanyId] = useState(Number);
   const [companyDtls, setCompanyDtls] = useState([]);
   const [reviews, setReviews] = useState([]);
@@ -37,6 +38,7 @@ const AdminCompany = (props) => {
     setTotalCompanyPosts(companyDetails.data.count)
     setCompanyId(companyDetails.data.companyDtls[0].companyId)
     getReviews()
+    //console.log(companyDetails.data.companyDtls[0].companyId)
   };
 
   const searchChangeHandler = (e) => {
