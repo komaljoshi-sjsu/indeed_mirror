@@ -9,6 +9,7 @@ import { bindActionCreators } from 'redux'
 import jwt_decode from 'jwt-decode'
 import backendServer from '../../webConfig'
 import { userActionCreator } from '../../reduxutils/actions.js'
+import {companyActionCreator} from '../../reduxutils/actions.js';
 import logo from '../../images/Indeed_logo.png'
 import ErrorMsg from '../Error/ErrorMsg'
 
@@ -25,6 +26,7 @@ function Login(props) {
     const setResumeUrl = bindActionCreators(userActionCreator.setResumeUrl,dispatch);
     const setToken = bindActionCreators(userActionCreator.setToken,dispatch);
     const showErrorModal = bindActionCreators(userActionCreator.showErrorModal,dispatch);
+    const setCompId = bindActionCreators(companyActionCreator.setCompId,dispatch);
     //const setCompanyId = bindActionCreators(userActionCreator.setCompanyId,dispatch);
 
   let redirectToSignUp = (e) => {
@@ -74,11 +76,11 @@ function Login(props) {
                 setPhone(user.jobSeekerContact);
                 redirectValFn(<Redirect to="/resume"/>);
             } else if(accountType=='Employer')  {
-                //setCompanyId();
                 if(user.companyId==null) {
                     redirectValFn(<Redirect to="/employerprofile"/>);
                 }
                 else {
+                    setCompId(user.companyId);
                     redirectValFn(<Redirect to="/employer"/>);
                 }
             } else if(accountType=='Admin')  {
