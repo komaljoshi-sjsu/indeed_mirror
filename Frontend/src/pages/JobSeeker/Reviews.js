@@ -30,11 +30,11 @@ class Reviews extends Component {
     
     componentDidMount() {
         // To-DO : Get selected company id
-        const companyId = this.props.companyInfo.id;
-        console.log("company Info : "+this.props.companyInfo);
+        
+        console.log("company Info : "+this.props.company);
         console.log("User Info : "+this.props.userInfo);
-        console.log("companyId :"+companyId);
-        const jobSeekerId = 1;
+        const companyId = this.props.company.compid;
+        const jobSeekerId = this.props.userInfo.id;
         let { reviewDetails } = this.state;
         const currentPage = 1;
         reviewDetails = [];
@@ -67,8 +67,8 @@ class Reviews extends Component {
 
       paginate = (pageNumber) => {
         let currentPage = pageNumber;
-        const companyId = 1;
-        const jobSeekerId = 1;
+        const companyId = this.props.company.compid;
+        const jobSeekerId = this.props.userInfo.id;
         const { rateSortFlag, dateSortFlag, helpfulSortFlag } = this.state;
         if(rateSortFlag){
           let { reviewDetailsRatingSort } = this.state;
@@ -147,8 +147,8 @@ class Reviews extends Component {
 
       ratingSort = () => {
         this.setState({ rateSortFlag: true, dateSortFlag: false, helpfulSortFlag: false });
-        const companyId = 1;
-        const jobSeekerId = 1;
+        const companyId = this.props.company.compid;
+        const jobSeekerId = this.props.userInfo.id;
         let { reviewDetailsRatingSort } = this.state;
         const currentPage = 1;
         reviewDetailsRatingSort = [];
@@ -168,8 +168,8 @@ class Reviews extends Component {
 
       dateSort = () => {
         this.setState({ rateSortFlag: false, dateSortFlag: true, helpfulSortFlag: false });
-        const companyId = 1;
-        const jobSeekerId = 1;
+        const companyId = this.props.company.compid;
+        const jobSeekerId = this.props.userInfo.id;
         let { reviewDetailsDateSort } = this.state;
         const currentPage = 1;
         reviewDetailsDateSort = [];
@@ -189,8 +189,8 @@ class Reviews extends Component {
 
       helpfulSort= () => {
         this.setState({ rateSortFlag: false, dateSortFlag: false, helpfulSortFlag: true });
-        const companyId = 1;
-        const jobSeekerId = 1;
+        const companyId = this.props.company.compid;
+        const jobSeekerId = this.props.userInfo.id;
         let { reviewDetailsHelpfulSort } = this.state;
         const currentPage = 1;
         reviewDetailsHelpfulSort = [];
@@ -244,7 +244,7 @@ class Reviews extends Component {
     render() {
       // To-DO Fetch logged in userid from store
         console.log(this.props.location.flag);
-        const jobSeekerId = 1;
+        const jobSeekerId = this.props.userInfo.id;
         const { reviewDetails, reviewDetailsRatingSort, reviewDetailsDateSort, reviewDetailsHelpfulSort, openModal, dateSortFlag, rateSortFlag, helpfulSortFlag, totalPosts } = this.state;
         const loggedInUserReviews =  reviewDetails.filter((review) => review.jobSeekerId === jobSeekerId);
         const otherUserReviews = reviewDetails.filter((review) => review.jobSeekerId !== jobSeekerId);
@@ -446,7 +446,7 @@ class Reviews extends Component {
   }
   const mapStateToProps = (state) => ({
     userInfo: state.userInfo,
-    companyInfo: state.companyInfo
+    company: state.company
   })
   
   export default connect(mapStateToProps)(Reviews);
