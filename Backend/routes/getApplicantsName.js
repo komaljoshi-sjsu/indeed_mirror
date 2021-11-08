@@ -6,9 +6,10 @@ var mysql = require("mysql");
 router.post('/getApplicantsName', function(req,res){ 
   console.log(req.body)
    const jobId = req.body.jobId;
-   let get_job = "SELECT name,j.id FROM JobSeeker j "+
+   const compid = req.body.compid;
+   let get_job = "SELECT name,j.id,status,a.jobId FROM JobSeeker j "+
    "JOIN AppliedJobs a on a.id = j.id "+ 
-    "AND a.jobId = "+mysql.escape(jobId);
+    "AND a.jobId = "+mysql.escape(jobId)+" AND a.companyId = "+mysql.escape(compid) ;
     //console.log(get_job)
  
     let job_query = connection.query(get_job, (error, result) => {

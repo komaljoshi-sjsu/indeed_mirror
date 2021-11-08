@@ -6,7 +6,7 @@ import {
   } from 'react-bootstrap';
 import { CountryDropdown } from 'react-country-region-selector';
 import backendServer from '../../webConfig';
-
+import { connect } from "react-redux";
 class PostJob extends Component {
     constructor(props) {
       super(props);
@@ -400,4 +400,10 @@ class PostJob extends Component {
       );
     }
   }
-  export default PostJob;
+  //export default PostJob;
+  const mapStateToProps = (state) => ({
+    userInfo: state.userInfo,
+    companyInfo: state.companyInfo
+  })
+  
+  export default connect(mapStateToProps)(PostJob);

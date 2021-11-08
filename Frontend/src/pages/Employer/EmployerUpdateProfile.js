@@ -9,13 +9,14 @@ import backendServer from '../../webConfig';
 import EmployerNavbar from './EmployerNavbar'
 import {MdModeEdit} from 'react-icons/md';
 import { Redirect } from 'react-router';
+import { connect } from "react-redux";
 // import { response } from 'express';
 
 class EmployerProfile extends Component {
     constructor(props) {
       super(props);
       this.state = {
-          employerId : 1,
+          employerId : '',
           employerDetails:{},
           empdetails:true,
           compdetails:true,
@@ -42,7 +43,7 @@ class EmployerProfile extends Component {
     
       componentDidMount() {
         const empid = {
-            empid: this.state.employerId
+            empid: this.props.userInfo.id
         };
         axios.post(`${backendServer}/getEmployerProfile`,empid).then((response) => {
             console.log(response.data[0]);
@@ -290,6 +291,7 @@ class EmployerProfile extends Component {
     sendEmployerAPI = (data) => {
         axios.post(`${backendServer}/editEmployerDetails`, data)
             .then(response=> {
+                console.log(response.data)
                 if (response.status === 200) {
                     this.setState({
                         successMsg: response.data
@@ -348,19 +350,37 @@ class EmployerProfile extends Component {
            empdetailscol = (
                <div>
                     
-                    <label className="dethead">Name:</label> {this.state.employerDetails.name}
+                    <label className="dethead1">Name :</label> <label className="dethead">{this.state.employerDetails.name}</label>
                     <br/>
-                    <label className="dethead">Role:</label>{this.state.employerDetails.roleInCompany}
                     <br/>
-                    <label className="dethead">Address:</label>{this.state.employerDetails.address}
-                    <br/>
-                    <label className="dethead">City:</label>{this.state.employerDetails.city}
-                    <br/>
-                    <label className="dethead">State:</label>{this.state.employerDetails.state}
-                    <br/>
-                    <label className="dethead">Country:</label>{this.state.employerDetails.country}
-                    <br/>
-                    <label className="dethead">Zipcode:</label>{this.state.employerDetails.zipcode}
+                    <Row>
+                        <Col>
+                        <label className="dethead1">Role :</label><label className="dethead">{this.state.employerDetails.roleInCompany}</label>
+                        </Col>
+                        <Col>
+                        <label className="dethead1">Address :</label><label className="dethead">{this.state.employerDetails.address}</label>
+                        </Col>
+                    </Row>  
+                    <br/>  
+                    <Row>
+                        <Col>
+                        <label className="dethead1">City :</label><label className="dethead">{this.state.employerDetails.city}</label>
+                        </Col>
+                        <Col>
+                        <label className="dethead1">State :</label><label className="dethead">{this.state.employerDetails.state}</label>
+                        </Col>
+                    </Row> 
+                    <br/>  
+                    <Row>
+                        <Col>
+                        <label className="dethead1">Country :</label><label className="dethead">{this.state.employerDetails.country}</label>
+                        </Col>
+                        <Col>
+                        <label className="dethead1">Zipcode :</label><label className="dethead">{this.state.employerDetails.zipcode}</label>
+                        </Col>
+                    </Row> 
+                   
+                    
                </div>
            )
        }else if(!this.state.empdetails){
@@ -455,33 +475,71 @@ class EmployerProfile extends Component {
        if(this.state.compdetails || companyupdated ){
         compdetailscol = (
             <div>
-             <label className="dethead">Company Name:</label>{this.state.employerDetails.companyName}
+             <label className="dethead1">Company Name : </label><label className="dethead">{this.state.employerDetails.companyName}</label>
               <br/>
-              <label className="dethead">Website:</label>{this.state.employerDetails.website}
               <br/>
-              <label className="dethead">Company Size:</label>{this.state.employerDetails.companySize}
+              <Row>
+                <Col>
+                    <label className="dethead1">Website : </label><label className="dethead"></label><label className="dethead">{this.state.employerDetails.website}</label>
+                </Col>
+                <Col>
+                    <label className="dethead1">Company Size :</label><label className="dethead"></label><label className="dethead">{this.state.employerDetails.companySize}</label>
+                </Col>
+              </Row>
               <br/>
-              <label className="dethead">About:</label>{this.state.employerDetails.about}
+             
+              <label className="dethead1">About :</label><label className="dethead">{this.state.employerDetails.about}</label>
               <br/>
-              <label className="dethead">Company Type:</label>{this.state.employerDetails.companyType}
               <br/>
-              <label className="dethead"> Description:</label>{this.state.employerDetails.companyDescription}
+              <Row>
+                  <Col>
+                  <label className="dethead1">Company Type :</label><label className="dethead">{this.state.employerDetails.companyType}</label>
+                  
+                  </Col>  
+                  <Col>
+                  <label className="dethead1">Revenue :</label><label className="dethead">{this.state.employerDetails.revenue}</label>
+                 
+                  </Col>
+              </Row>
               <br/>
-              <label className="dethead">Revenue:</label>{this.state.employerDetails.revenue}
+             
+                  <label className="dethead1"> Description :</label><label className="dethead">{this.state.employerDetails.companyDescription} </label>
               <br/>
-              <label className="dethead">Headquarters:</label>{this.state.employerDetails.headquarters}
               <br/>
-              <label className="dethead"> Industry:</label>{this.state.employerDetails.industry}
+              <Row>
+                  <Col>
+                   <label className="dethead1">Headquarters :</label><label className="dethead">{this.state.employerDetails.headquarters}</label>
+                  </Col>
+                  <Col>
+                  <label className="dethead1"> Industry :</label><label className="dethead">{this.state.employerDetails.industry}</label>
+                  </Col>
+             </Row>
               <br/>
-              <label className="dethead">Founded:</label>{this.state.employerDetails.founded}
+              <Row>
+                  <Col>
+                  <label className="dethead1">Founded :</label><label className="dethead">{this.state.employerDetails.founded}</label>
+                  </Col>
+                  <Col>
+                  <label className="dethead1">CEO Name :</label><label className="dethead">{this.state.employerDetails.ceo}</label>
+                  </Col>
+              </Row>
               <br/>
-              <label className="dethead">Mission and Vision:</label>{this.state.employerDetails.mission}
+              <Row>
+                  <Col>
+                  <label className="dethead1">Company Values :</label><label className="dethead">{this.state.employerDetails.companyValues}</label>
+                 
+                  </Col>
+                  <Col>
+                  <label className="dethead1">WorkCulture :</label><label className="dethead">{this.state.employerDetails.workCulture}</label>
+                  </Col>
+              </Row>    
+              
               <br/>
-              <label className="dethead">WorkCulture:</label>{this.state.employerDetails.workCulture}
+              <label className="dethead1">Mission and Vision :</label><label className="dethead">{this.state.employerDetails.mission}</label>
               <br/>
-              <label className="dethead">Company Values:</label>{this.state.employerDetails.companyValues}
+              
               <br/>
-              <label className="dethead">CEO Name:</label>{this.state.employerDetails.ceo}
+              
               <br/>
                </div>
            )
@@ -653,15 +711,15 @@ class EmployerProfile extends Component {
              <EmployerNavbar/>
             <br></br>
             
-            <div className="main-div">
+            <div className="main-div1">
             <div className = "details">   
-            <h4>Employer Details</h4><span className="editdetails"/><Button onClick={this.employerdetails} variant = "white" ><MdModeEdit/></Button>
+            <h3>Employer Details</h3><span className="editdetails"/><Button onClick={this.employerdetails} variant = "white" ><MdModeEdit/></Button>
             </div>   
              {empdetailscol}
             </div>
-            <div className="main-div">
+            <div className="main-div1">
             <div className = "details">   
-            <h4>Company Details</h4><span className="editdetails"/><Button onClick={this.companydetails} variant = "white"><MdModeEdit/></Button>
+            <h3>Company Details</h3><span className="editdetails"/><Button onClick={this.companydetails} variant = "white"><MdModeEdit/></Button>
             </div> 
               {compdetailscol}
             </div>
@@ -681,4 +739,9 @@ class EmployerProfile extends Component {
       );
     }
   }
-  export default EmployerProfile;
+  const mapStateToProps = (state) => ({
+    userInfo: state.userInfo,
+    companyInfo: state.companyInfo
+  })
+  
+  export default connect(mapStateToProps)(EmployerProfile);
