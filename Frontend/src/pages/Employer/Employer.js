@@ -56,7 +56,6 @@ class Employer extends Component {
       const compId = {
         companyId:companyId
       }
-      
       axios.post(`${backendServer}/getPostedJobs`,compId).then((response) => {
         console.log(response.data)
         if(response.status === 200){
