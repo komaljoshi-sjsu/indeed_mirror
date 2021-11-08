@@ -784,7 +784,7 @@ class EmployerProfile extends Component {
 
   const mapStateToProps = (state) => ({
     userInfo: state.userInfo,
-    companyInfo: state.companyInfo
+    company: state.company
   })
   function mapDispatchToProps(dispatch) {
     return {

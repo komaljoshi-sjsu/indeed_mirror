@@ -86,8 +86,8 @@ class PostJob extends Component {
         });
         } else {
             // To-DO : Get logged in company id
-            const companyId = 1;
-            const employeeId = 1;
+            const companyId = this.props.company.compid;
+            const employeeId = this.props.userInfo.id;
             const { companyName, jobTitle, industry, city, shortJobDescription, salaryDetails,
                 streetAddress, state, zipcode,country, jobMode, jobType,responsibilities,
                 qualifications, loveJobRole} = this.state;
@@ -403,7 +403,7 @@ class PostJob extends Component {
   //export default PostJob;
   const mapStateToProps = (state) => ({
     userInfo: state.userInfo,
-    companyInfo: state.companyInfo
+    company: state.company
   })
   
   export default connect(mapStateToProps)(PostJob);
