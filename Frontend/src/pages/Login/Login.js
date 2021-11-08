@@ -70,7 +70,7 @@ function Login(props) {
                         redirectValFn(<Redirect to="/employer"/>);
                     }
                 } else if(accountType=='Admin')  {
-                    //redirectValFn(<Redirect to="/employerprofile"/>);
+                    redirectValFn(<Redirect to="/adminPhotos"/>);
                 }
             }
         },
