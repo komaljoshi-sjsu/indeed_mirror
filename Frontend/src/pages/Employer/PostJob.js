@@ -87,13 +87,7 @@ class PostJob extends Component {
         } else {
             // To-DO : Get logged in company id
             const companyId = this.props.company.compid;
-            console.log("***")
-            console.log(companyId)
-            console.log("***")
             const employeeId = this.props.userInfo.id;
-            console.log("***")
-            console.log(employeeId)
-            console.log("***")
             const { companyName, jobTitle, industry, city, shortJobDescription, salaryDetails,
                 streetAddress, state, zipcode,country, jobMode, jobType,responsibilities,
                 qualifications, loveJobRole} = this.state;
