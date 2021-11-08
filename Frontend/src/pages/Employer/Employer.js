@@ -51,9 +51,8 @@ class Employer extends Component {
              
   }
   componentDidMount() {
-      console.log("here")
+      //console.log("here")
       const companyId = this.props.company.compid;
-      console.log(companyId)
       const compId = {
         companyId:companyId
       }
