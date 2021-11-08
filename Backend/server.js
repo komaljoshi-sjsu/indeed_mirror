@@ -58,6 +58,8 @@ app.use(require("./routes/getApplicantsName"))
 app.use(require("./routes/getJobSeekerProfile"))
 app.use(require("./routes/allCompanyReviews"))
 app.use(require("./routes/adminAnalytics"))
+app.use(require("./routes/updateJobSeekerStatus"))
+
 // app.use(require("./routes/findSalary/:id"))
 //Define all the routes
 //app.use('/postNewJob', postNewJob)

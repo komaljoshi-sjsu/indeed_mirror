@@ -6,7 +6,7 @@ const connection = require("../config/mysql_connection");
 
 router.post("/addEmployerDetails", (req, res) => {
     console.log(req.body.employerName)
-        const employerId = 4;
+        const employerId = req.body.employerId;
         const employerName = req.body.employerName;
         const roleInCompany = req.body.roleInCompany;
         const address = req.body.address;

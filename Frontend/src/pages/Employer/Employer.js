@@ -5,8 +5,8 @@ import {Button,Card,ListGroup,ListGroupItem,Modal,Row,Col,Pagination} from 'reac
 import axios from "axios";
 import backendServer from '../../webConfig';
 import '../../CSS/EmployerLanding.css'
-// import { connect } from "react-redux";
-// import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 // import {companyActionCreator} from '../../reduxutils/actions.js';
 // import { setId} from "../../actions/loginActions";
 class Employer extends Component {
@@ -26,19 +26,39 @@ class Employer extends Component {
       jobPreference:[],
       showprofile:false,
       curPage: 1,
-      pageSize: 5,
+      pageSize: 4,
+      status:''
     }
     //this.getCurrentDate()
   }
+  updatestatusfn = (id,status,jobId) =>{
+   
+    const statuschange = {
+      id:id,
+      status:status,
+      jobId:jobId
+    }
+    //console.log(ordertypedata)
+   this.updateJobSeekerStatus(statuschange);
+    
+  }
+  updateJobSeekerStatus = (statuschange)=>{
+    console.log(statuschange)
+     axios.post(`${backendServer}/updateJobSeekerStatus`, statuschange)
+             .then(response => {
+                 console.log(response)
+             })
+             
+  }
   componentDidMount() {
-      console.log("here")
-      const companyId = 1;
+      //console.log("here")
+      const companyId = this.props.companyInfo.id;
       const compId = {
         companyId:companyId
       }
       
       axios.post(`${backendServer}/getPostedJobs`,compId).then((response) => {
-        //console.log(response.status)
+        console.log(response.data)
         if(response.status === 200){
           
           this.setState({
@@ -87,8 +107,17 @@ handleModalCloseProfile(){
       }
     });
   }
+  onPage = (e) => {
+    // console.log("In pagination");
+    // console.log(e.target);
+    // console.log(e.target.text);
+    this.setState({
+      curPage: e.target.text,
+    });
+  };
   viewUsersList = (val) => {
    const JobId = {
+     compid : this.props.companyInfo.id,
      jobId : val
    }
     axios.post(`${backendServer}/getApplicantsName`,JobId).then((response) => {
@@ -109,44 +138,54 @@ handleModalCloseProfile(){
       show:true
     })
   }
+  handleChange = (e, jobseekerid) => {
+    console.log(jobseekerid)
+    const { applicantsName } = this.state;
+    const index = applicantsName.findIndex((applicant) => applicant.id === jobseekerid);
+    const orders = [...applicantsName];
+    orders[index].status = e.target.value;
+    this.setState({ applicantsName: orders });
+  }
+
+
 
   render() {
-    const {postedJobs,applicantsName,statusmsg,liststatus,applicantProfile,jobPreference} = this.state;
+    const {applicantsName,statusmsg,liststatus,applicantProfile,jobPreference} = this.state;
+    var jobsList = null; var applicantsList = null; var profile = null;
     let paginationItemsTag = [];
-    let items = postedJobs;
-
+    let items = this.state.postedJobs;
     let pgSize = this.state.pageSize;
-
     let count = 1;
     let num = items.length / pgSize;
-    console.log(items.length / pgSize);
-    console.log(Number.isInteger(items.length / pgSize));
+    //console.log(items.length / pgSize);
+    //console.log(Number.isInteger(items.length / pgSize));
     if (Number.isInteger(num)) {
       count = num;
     } else {
       count = Math.floor(num) + 1;
     }
-    let active = this.state.curPage;
+  //   console.log("count:", count);
+  // console.log("items.length:", items.length);
+  let active = this.state.curPage;
 
-    for (let number = 1; number <= count; number++) {
-      paginationItemsTag.push(
-        <Pagination.Item key={number} active={number === active}>
-          {number}
-        </Pagination.Item>
-      );
-    }
-    let start = parseInt(pgSize * (this.state.curPage - 1));
-    let end = this.state.pageSize + start;
-    //   console.log("start: ", start, ", end: ", end);
-    let displayitems = [];
-    if (end > items.length) {
-      end = items.length;
-    }
-    for (start; start < end; start++) {
-      displayitems.push(items[start]);
-    }
-
-    var jobsList = null; var applicantsList = null; var profile = null;
+  for (let number = 1; number <= count; number++) {
+    paginationItemsTag.push(
+      <Pagination.Item key={number} active={number === active}>
+        {number}
+      </Pagination.Item>
+    );
+  }
+  let start = parseInt(pgSize * (this.state.curPage - 1));
+        let end = this.state.pageSize + start;
+        //   console.log("start: ", start, ", end: ", end);
+        let displayitems = [];
+        if (end > items.length) {
+          end = items.length;
+        }
+        for (start; start < end; start++) {
+          displayitems.push(items[start]);
+        }
+    
     if(liststatus === "Applicants List"){
       applicantsList = (
         <div>
@@ -164,6 +203,24 @@ handleModalCloseProfile(){
               </Col>
               <Col>
               <Button variant="link">Resume</Button>
+              </Col>
+              <Col>
+             <select name="status" value={applicant.status} onChange={(e) => { this.handleChange(e,applicant.id)}}  >
+              	<option value="Submitted">Submitted</option> 
+              	<option value="Reviewed" >Reviewed</option>
+              	<option value="Initial screening"  >Initial screening</option>
+              	<option value="Interviewing" >Interviewing</option>
+                <option value="Rejected" >Rejected</option>
+                <option value="Hired" >Hired</option>
+            	</select>
+              &nbsp;
+              <Button className="statusbtn"
+                type="submit" 
+                onClick={() => {
+                this.updatestatusfn(applicant.id,applicant.status,applicant.jobId);
+                }}>
+                Change
+              </Button>
               </Col>
             </Row></div>
           )}
@@ -269,35 +326,45 @@ handleModalCloseProfile(){
     if(statusmsg === "Jobs Found"){
       
       jobsList = (
-      <div className='card-list'>
-      {postedJobs.map(job=>
-        
-        <div className="container">
-        <Card style={{ width: "18rem" }}>
-        <Card.Body>
-        <Card.Title><Button  variant="link" 
-        onClick={() => {
-          this.viewUsersList(job.jobId);
-        }}
-        >
-          <h5>{job.jobTitle}</h5>
-          </Button>
-          </Card.Title>
-        <ListGroup className="list-group-flush">
-          <ListGroupItem>{job.jobType}</ListGroupItem>
-          <ListGroupItem>{new Date(job.jobPostedDate).toDateString()}</ListGroupItem>
-          <ListGroupItem>Total Applicants : {job.applicantsNo}</ListGroupItem>
-        </ListGroup> 
-        </Card.Body> 
-        </Card>                           
+      <div >
+       
+        {displayitems && displayitems.length > 0 ? (
+        <div className="card-list">
+            {displayitems.map(job=> {
+              return (
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                 
+                  <Card style={{ width: "18rem" }}>
+                  <Card.Body>
+                  <Card.Title><Button  variant="link" 
+                  onClick={() => {
+                    this.viewUsersList(job.jobId);
+                  }}>
+                    <h5>{job.jobTitle}</h5>
+                    </Button>
+                    </Card.Title>
+                  <ListGroup className="list-group-flush">
+                    <ListGroupItem>{job.jobType}</ListGroupItem>
+                    <ListGroupItem>{new Date(job.jobPostedDate).toDateString()}</ListGroupItem>
+                    <ListGroupItem>Total Applicants : {job.applicantsNo}</ListGroupItem>
+                  </ListGroup> 
+                  </Card.Body> 
+                  </Card>                           
+                </div>
+              )
+            } 
+        )
+      }
+        </div>
+        ):(
+        <div>
+          <h4 className="">No Jobs </h4>
+        </div>
+        )
+      }
       </div>
-      
       )
     }
-    </div>
-      )
-      }
-
     return (
       <div >
         <EmployerNavbar/>
@@ -333,10 +400,17 @@ handleModalCloseProfile(){
           </div>
         </div>
         <hr />
-        <div>  <h5 style={{ marginLeft: '120px' }}>Jobs Posted</h5></div>
+        <div className="container">  <h5 style={{ marginLeft: '120px' }}>Jobs Posted</h5></div>
+        
+            
         {jobsList}
+        <Pagination 
+                    onClick={this.onPage}
+                    className="pageJobs">
+                    {paginationItemsTag}
+                </Pagination>
         <div>
-         <Modal size="md-down"
+         <Modal size="lg"
           aria-labelledby="contained-modal-title-vcenter"
           centered
            show={this.state.show} onHide={()=>this.handleModalClose()}>
@@ -375,7 +449,14 @@ handleModalCloseProfile(){
   }
 }
 
-export default Employer
+
+const mapStateToProps = (state) => ({
+  userInfo: state.userInfo,
+  companyInfo: state.companyInfo
+})
+
+export default connect(mapStateToProps)(Employer);
+
 
 // Employer.propTypes = {
 //   setId: PropTypes.func.isRequired,
