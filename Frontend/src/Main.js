@@ -23,8 +23,9 @@ import EmployerAnalytics from './pages/Employer/EmployerAnalytics'
 import Preferences from './pages/JobSeeker/Preferences.js'
 import CompanyJobs from './pages/Company/Jobs.js'
 import Header from './common/Header'
-import FeaturedReview from './pages/Employer/featuredReview';
-import CompanyReviews from './pages/JobSeeker/companyReviews';
+import FeaturedReview from './pages/Employer/featuredReview'
+import CompanyReviews from './pages/JobSeeker/companyReviews'
+import AdminCompany from './pages/Admin/AdminCompany'
 import FindSalByTitle from './pages/JobSeeker/FindSalByTitle'
 import AdminAnalytics from './pages/Admin/AdminAnalytics.js'
 import AdminCompany from './pages/Admin/AdminCompany'
@@ -35,6 +36,7 @@ class Main extends Component {
     return (
       <div>
         {/*Render Different Component based on Route*/}
+        <Route path="/" component={JobSeekerLandingPage} />
         <Route path="/login" component={Login} />
         <Route path="/home" component={Home} />
         <Route path="/header" component={Header} />
@@ -58,14 +60,15 @@ class Main extends Component {
         <Route path="/featuredReviews" component={FeaturedReview} />
         <Route path="/adminReviews" component={AdminReview} />
         <Route path="/addSalaryReview" component={AddSalaryReview} />
-        <Route path="/resume" component={Resume}/>
-        <Route path="/findSalaries" component={FindSalaries}/>
-        <Route path="/employerAnalytics" component={EmployerAnalytics}/>
-        <Route path="/preferences" component={Preferences}/>
-        <Route path="/allReviews" component={CompanyReviews}/>
-        <Route path="/findSalByTitle/:jobTitle" component={FindSalByTitle}/>
-        <Route path="/adminAnalytics" component={AdminAnalytics}/>
-        <Route path="/adminCompany" component={AdminCompany}/>
+        <Route path="/resume" component={Resume} />
+        <Route path="/findSalaries" component={FindSalaries} />
+        <Route path="/employerAnalytics" component={EmployerAnalytics} />
+        <Route path="/preferences" component={Preferences} />
+        <Route path="/allReviews" component={CompanyReviews} />
+        <Route path="/adminCompany" component={AdminCompany} />
+        <Route path="/findSalByTitle/:id" component={FindSalByTitle} />
+        <Route path="/findSalByTitle/:jobTitle" component={FindSalByTitle} />
+        <Route path="/adminAnalytics" component={AdminAnalytics} />
       </div>
     )
   }
