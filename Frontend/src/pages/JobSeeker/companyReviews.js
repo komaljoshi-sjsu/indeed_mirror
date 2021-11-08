@@ -1,12 +1,13 @@
 //sample employer component
 import { React, Component} from 'react';
 import axios from 'axios';
-import { Button, Row, Col, Card, Container, Form,
+import { Button, Row, Col, Card, Container, Form, ListGroup,
   } from 'react-bootstrap';
   import ReactStars from "react-rating-stars-component";
 import backendServer from '../../webConfig';
 import '../../style/button-group.css';
 import { Link } from 'react-router-dom';
+import { AiFillStar } from 'react-icons/ai'
 
 class Reviews extends Component {
     constructor(props) {
@@ -15,7 +16,9 @@ class Reviews extends Component {
         reviewDetails: [],
         successMsg: '',
         companyName: '',
-        location: ''
+        location: '',
+        searchFlag: false,
+        reviewSearchDetails: [],
       };
     }
     
@@ -35,24 +38,27 @@ class Reviews extends Component {
         });
       }
 
-      handleSubmit = (e, reviewId) => {
+      handleSubmit = () => {
         
-        const { reviewDetails } = this.state;
-        const index = reviewDetails.findIndex((review) => review.reviewId === reviewId);
-        const reviews = [...reviewDetails];
+        let { reviewSearchDetails, companyName, location } = this.state;
+        reviewSearchDetails = [];
         const inputData = {
-          reviewId: reviews[index].reviewId,
+          companyName,
+          location
         }
-        reviews[index].isFeatured = 1;
-        this.setState({reviewDetails : reviews});
         console.log(inputData);
         axios
-          .post(`${backendServer}/updateFeaturedReview`, inputData)
+          .post(`${backendServer}/searchReview`, inputData)
           .then((response) => {
             if (response.status === 200) {
-              this.setState({ successMsg: response.data });
+              this.setState({ 
+                reviewSearchDetails: reviewSearchDetails.concat(response.data),
+                searchFlag: true,
+              });
             } else {
-              this.setState({ errorMsg: response.data });
+              this.setState({ 
+                reviewSearchDetails: [],
+                errorMsg: response.data });
             }
           })
           .catch((err) => {
@@ -62,8 +68,35 @@ class Reviews extends Component {
 
     render() {
       // To-DO Fetch logged in userid from store
-        const { reviewDetails, companyName, location } = this.state;
-        console.log(reviewDetails);
+        const { reviewDetails, companyName, location, searchFlag, reviewSearchDetails } = this.state;
+        console.log(reviewSearchDetails.length);
+        let searchReviewsDisplay = '';
+        if(searchFlag){
+          if(reviewSearchDetails[0].companyName !== '' && reviewSearchDetails[0].companyName !== undefined ){
+                searchReviewsDisplay = reviewSearchDetails.map((review) => (
+                <div>
+                  <ListGroup style={{ width: '50rem', margin: '0.1em', border: 'none' }}>
+                    <ListGroup.Item>
+                    <Row>
+                      <Col><img src="../../../images/user.png" alt="helo" style={{ maxHeight: '30px', maxWidth: '30px' }} /></Col>
+                      <Col><Link style={{color:'#2457a7', textDecoration: 'none'}} to="/snapshot"><h5>{review.companyName}</h5></Link>
+                      <Link style={{color:'black', textDecoration: 'none'}} to="/reviews">{review.companyAvgRating}</Link><AiFillStar /></Col>
+                      <Col><Link style={{color:'#2457a7', textDecoration: 'none'}} to="/reviews">Reviews</Link></Col>
+                      <Col>
+                            <Link style={{color:'#2457a7', textDecoration: 'none'}} to="/findSalaries">Salaries</Link>
+                            </Col>
+                            <Col>
+                            <Link style={{color:'#2457a7', textDecoration: 'none'}} to="/findSalaries">Open Jobs</Link>
+                            </Col>
+                        </Row>
+                    </ListGroup.Item>
+                  </ListGroup>
+                </div>
+              ));
+            }else{
+              searchReviewsDisplay = <h4>No reviews available for the search!!</h4>
+            }
+        }
        
         const reviewsDisplay = reviewDetails.map((review) => (
           <div>
@@ -117,7 +150,7 @@ class Reviews extends Component {
                   <Row>
                       <Col>Company Name
                       </Col>
-                      <Col>City, State, or Zip(Optional)
+                      <Col>Location
                       </Col>
                       <Col />
                   </Row>
@@ -145,7 +178,8 @@ class Reviews extends Component {
               </Card>  
               <br /> 
             
-              {reviewsDisplay}
+              {!searchFlag &&reviewsDisplay}
+              {searchFlag && searchReviewsDisplay}
               </Container>
         </div>
       );

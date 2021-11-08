@@ -70,7 +70,7 @@ function Login(props) {
                         redirectValFn(<Redirect to="/employer"/>);
                     }
                 } else if(accountType=='Admin')  {
-                    //redirectValFn(<Redirect to="/employerprofile"/>);
+                    redirectValFn(<Redirect to="/adminPhotos"/>);
                 }
             }
         },
@@ -160,7 +160,14 @@ function Login(props) {
                 name="accountType"
                 value="Employer"
               />
+              <Form.Check
+                type="radio"
+                label="Admin"
+                name="accountType"
+                value="Admin"
+              />
             </Form.Group>
+            
             <Button
               bsStyle="primary"
               bsSize="large"

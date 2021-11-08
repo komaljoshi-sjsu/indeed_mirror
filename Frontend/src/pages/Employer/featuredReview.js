@@ -7,6 +7,7 @@ import { Button, Row, Col, Card, Container,
 import backendServer from '../../webConfig';
 import '../../style/button-group.css';
 import { FaCheckCircle } from 'react-icons/fa';
+import Pagination from "./../JobSeeker/Pagination";
 
 class Reviews extends Component {
     constructor(props) {
@@ -14,6 +15,7 @@ class Reviews extends Component {
       this.state = {
         reviewDetails: [],
         successMsg: '',
+        totalPosts: 0,
       };
     }
     
@@ -21,9 +23,42 @@ class Reviews extends Component {
         // To-DO : Get company id from store
         const companyId = 1;
         let { reviewDetails } = this.state;
+        const currentPage = 1;
+        reviewDetails = [];
         axios.get(`${backendServer}/allCompanyReviews`, {
           params: {
             companyId,
+          },
+        })
+          .then((response) => {
+            this.setState({
+                //reviewDetails: reviewDetails.concat(response.data),
+                totalPosts: response.data.length,
+              });
+          });
+
+          axios.get(`${backendServer}/allCompanyReviewsPaginated`, {
+            params: {
+              companyId,
+              currentPage,
+            },
+          })
+            .then((response) => {
+              this.setState({
+                  reviewDetails: reviewDetails.concat(response.data),
+                });
+            });
+      }
+
+      paginate = (pageNumber) => {
+        let currentPage = pageNumber;
+        const companyId = 1;
+        let { reviewDetails } = this.state;
+        reviewDetails = [];
+        axios.get(`${backendServer}/allCompanyReviewsPaginated`, {
+          params: {
+            companyId,
+            currentPage,
           },
         })
           .then((response) => {
@@ -60,7 +95,7 @@ class Reviews extends Component {
 
     render() {
       // To-DO Fetch logged in userid from store
-        const { reviewDetails } = this.state;
+        const { reviewDetails, totalPosts } = this.state;
         console.log(reviewDetails);
        
         const reviewsDisplay = reviewDetails.map((review) => (
@@ -122,6 +157,9 @@ class Reviews extends Component {
               </Container>
               <Container style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {reviewsDisplay}
+              </Container>
+              <Container style={{ display: 'flex', justifyContent: 'center' }}>
+              <Pagination postsPerPage={5} totalPosts={totalPosts} paginate={this.paginate}/>
               </Container>
         </div>
       );
