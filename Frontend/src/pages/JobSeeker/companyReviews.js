@@ -7,7 +7,8 @@ import { Button, Row, Col, Card, Container, Form, ListGroup,
 import backendServer from '../../webConfig';
 import '../../style/button-group.css';
 import { Link } from 'react-router-dom';
-import { AiFillStar } from 'react-icons/ai'
+import { AiFillStar } from 'react-icons/ai';
+import JobSeekerNavbar from './JobSeekerNavbar'
 
 class Reviews extends Component {
     constructor(props) {
@@ -138,6 +139,7 @@ class Reviews extends Component {
         ));
       return (
         <div>
+          <JobSeekerNavbar />
             <br></br>
             <Container style={{ width: '70rem', display:'flex', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start' }}>
             

@@ -1,6 +1,7 @@
 //sample employer component
 import { React, Component} from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux'
 import { Button, Row, Col, Card, Container,
   } from 'react-bootstrap';
   import ReactStars from "react-rating-stars-component";
@@ -8,6 +9,8 @@ import backendServer from '../../webConfig';
 import '../../style/button-group.css';
 import { FaCheckCircle } from 'react-icons/fa';
 import Pagination from "./../JobSeeker/Pagination";
+import EmployerNavbar from './EmployerNavbar';
+
 
 class Reviews extends Component {
     constructor(props) {
@@ -21,7 +24,8 @@ class Reviews extends Component {
     
     componentDidMount() {
         // To-DO : Get company id from store
-        const companyId = 1;
+        const companyId = this.props.company.compid;
+        console.log(this.props.company);
         let { reviewDetails } = this.state;
         const currentPage = 1;
         reviewDetails = [];
@@ -52,7 +56,7 @@ class Reviews extends Component {
 
       paginate = (pageNumber) => {
         let currentPage = pageNumber;
-        const companyId = 1;
+        const companyId = this.props.company.compid;
         let { reviewDetails } = this.state;
         reviewDetails = [];
         axios.get(`${backendServer}/allCompanyReviewsPaginated`, {
@@ -142,6 +146,7 @@ class Reviews extends Component {
         ));
       return (
         <div>
+           <EmployerNavbar />
             <br></br>
             <Container style={{ display: 'flex', justifyContent: 'center' }}>
             
@@ -165,4 +170,9 @@ class Reviews extends Component {
       );
     }
   }
-  export default Reviews;
+  const mapStateToProps = (state) => ({
+    userInfo: state.userInfo,
+    company: state.company
+  })
+  
+  export default connect(mapStateToProps)(Reviews);

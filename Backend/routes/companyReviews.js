@@ -31,34 +31,9 @@ router.get("/companyReviewsPaginated", (req, res) => {
             res.writeHead(200,{
                 'Content-Type' : 'application/json'
             });
-            let reviewData = [];
-            console.log(results.length);
-            for(let i=0; i<results.length; i++){
-            let reviewDetails = {
-                reviewId: results[i].reviewId,
-                reviewTitle : results[i].reviewTitle,
-                companyName: results[i].companyName,
-                reviewerRole : results[i].reviewerRole,
-                city: results[i].city,
-                state: results[i].state,
-                postedDate : results[i].postedDate,
-                rating : results[i].rating,
-                reviewComments : results[i].reviewComments,
-                pros : results[i].pros,
-                cons : results[i].cons,
-                ceoApprovalRating : results[i].ceoApprovalRating,
-                howToPrepare : results[i].howToPrepare,
-                noHelpfulCount : results[i].noHelpfulCount,
-                yesReviewHelpfulCount: results[i].yesReviewHelpfulCount,
-                isFeatured: results[i].isFeatured,
-                adminReviewStatus: results[i].adminReviewStatus,
-                jobSeekerId: results[i].jobSeekerId,
-                companyId: results[i].companyId,
-            };
-            reviewData.push(reviewDetails);
-        }
-            console.log("Review data : ",JSON.stringify(reviewData));
-            res.end(JSON.stringify(reviewData));
+            
+            console.log("Review data : ",JSON.stringify(results));
+            res.end(JSON.stringify(results));
             
         }else{
             res.writeHead(400,{
@@ -93,34 +68,9 @@ router.get("/companyReviewsRatingSort", (req, res) => {
             res.writeHead(200,{
                 'Content-Type' : 'application/json'
             });
-            let reviewData = [];
-            console.log(results.length);
-            for(let i=0; i<results.length; i++){
-            let reviewDetails = {
-                reviewId: results[i].reviewId,
-                reviewTitle : results[i].reviewTitle,
-                companyName: results[i].companyName,
-                reviewerRole : results[i].reviewerRole,
-                city: results[i].city,
-                state: results[i].state,
-                postedDate : results[i].postedDate,
-                rating : results[i].rating,
-                reviewComments : results[i].reviewComments,
-                pros : results[i].pros,
-                cons : results[i].cons,
-                ceoApprovalRating : results[i].ceoApprovalRating,
-                howToPrepare : results[i].howToPrepare,
-                noHelpfulCount : results[i].noHelpfulCount,
-                yesReviewHelpfulCount: results[i].yesReviewHelpfulCount,
-                isFeatured: results[i].isFeatured,
-                adminReviewStatus: results[i].adminReviewStatus,
-                jobSeekerId: results[i].jobSeekerId,
-                companyId: results[i].companyId,
-            };
-            reviewData.push(reviewDetails);
-        }
-            console.log("Review data : ",JSON.stringify(reviewData));
-            res.end(JSON.stringify(reviewData));
+            
+            console.log("Review data : ",JSON.stringify(results));
+            res.end(JSON.stringify(results));
             
         }else{
             res.writeHead(400,{
@@ -155,34 +105,9 @@ router.get("/companyReviewsDateSort", (req, res) => {
             res.writeHead(200,{
                 'Content-Type' : 'application/json'
             });
-            let reviewData = [];
-            console.log(results.length);
-            for(let i=0; i<results.length; i++){
-            let reviewDetails = {
-                reviewId: results[i].reviewId,
-                reviewTitle : results[i].reviewTitle,
-                companyName: results[i].companyName,
-                reviewerRole : results[i].reviewerRole,
-                city: results[i].city,
-                state: results[i].state,
-                postedDate : results[i].postedDate,
-                rating : results[i].rating,
-                reviewComments : results[i].reviewComments,
-                pros : results[i].pros,
-                cons : results[i].cons,
-                ceoApprovalRating : results[i].ceoApprovalRating,
-                howToPrepare : results[i].howToPrepare,
-                noHelpfulCount : results[i].noHelpfulCount,
-                yesReviewHelpfulCount: results[i].yesReviewHelpfulCount,
-                isFeatured: results[i].isFeatured,
-                adminReviewStatus: results[i].adminReviewStatus,
-                jobSeekerId: results[i].jobSeekerId,
-                companyId: results[i].companyId,
-            };
-            reviewData.push(reviewDetails);
-        }
-            console.log("Review data : ",JSON.stringify(reviewData));
-            res.end(JSON.stringify(reviewData));
+            
+            console.log("Review data : ",JSON.stringify(results));
+            res.end(JSON.stringify(results));
             
         }else{
             res.writeHead(400,{
@@ -217,34 +142,9 @@ router.get("/companyReviewsHelpfulSort", (req, res) => {
             res.writeHead(200,{
                 'Content-Type' : 'application/json'
             });
-            let reviewData = [];
-            console.log(results.length);
-            for(let i=0; i<results.length; i++){
-            let reviewDetails = {
-                reviewId: results[i].reviewId,
-                reviewTitle : results[i].reviewTitle,
-                companyName: results[i].companyName,
-                reviewerRole : results[i].reviewerRole,
-                city: results[i].city,
-                state: results[i].state,
-                postedDate : results[i].postedDate,
-                rating : results[i].rating,
-                reviewComments : results[i].reviewComments,
-                pros : results[i].pros,
-                cons : results[i].cons,
-                ceoApprovalRating : results[i].ceoApprovalRating,
-                howToPrepare : results[i].howToPrepare,
-                noHelpfulCount : results[i].noHelpfulCount,
-                yesReviewHelpfulCount: results[i].yesReviewHelpfulCount,
-                isFeatured: results[i].isFeatured,
-                adminReviewStatus: results[i].adminReviewStatus,
-                jobSeekerId: results[i].jobSeekerId,
-                companyId: results[i].companyId,
-            };
-            reviewData.push(reviewDetails);
-        }
-            console.log("Review data : ",JSON.stringify(reviewData));
-            res.end(JSON.stringify(reviewData));
+            
+            console.log("Review data : ",JSON.stringify(results));
+            res.end(JSON.stringify(results));
             
         }else{
             res.writeHead(400,{
@@ -273,34 +173,9 @@ router.get("/companyReviews", (req, res) => {
             res.writeHead(200,{
                 'Content-Type' : 'application/json'
             });
-            let reviewData = [];
-            console.log(results.length);
-            for(let i=0; i<results.length; i++){
-            let reviewDetails = {
-                reviewId: results[i].reviewId,
-                reviewTitle : results[i].reviewTitle,
-                companyName: results[i].companyName,
-                reviewerRole : results[i].reviewerRole,
-                city: results[i].city,
-                state: results[i].state,
-                postedDate : results[i].postedDate,
-                rating : results[i].rating,
-                reviewComments : results[i].reviewComments,
-                pros : results[i].pros,
-                cons : results[i].cons,
-                ceoApprovalRating : results[i].ceoApprovalRating,
-                howToPrepare : results[i].howToPrepare,
-                noHelpfulCount : results[i].noHelpfulCount,
-                yesReviewHelpfulCount: results[i].yesReviewHelpfulCount,
-                isFeatured: results[i].isFeatured,
-                adminReviewStatus: results[i].adminReviewStatus,
-                jobSeekerId: results[i].jobSeekerId,
-                companyId: results[i].companyId,
-            };
-            reviewData.push(reviewDetails);
-        }
-            console.log("Review data : ",JSON.stringify(reviewData));
-            res.end(JSON.stringify(reviewData));
+            
+            console.log("Review data : ",JSON.stringify(results));
+            res.end(JSON.stringify(results));
             
         }else{
             res.writeHead(400,{
