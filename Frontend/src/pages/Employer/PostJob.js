@@ -86,8 +86,14 @@ class PostJob extends Component {
         });
         } else {
             // To-DO : Get logged in company id
-            const companyId = 1;
-            const employeeId = 1;
+            const companyId = this.props.companyInfo.compid;
+            console.log("***")
+            console.log(companyId)
+            console.log("***")
+            const employeeId = this.props.userInfo.id;
+            console.log("***")
+            console.log(employeeId)
+            console.log("***")
             const { companyName, jobTitle, industry, city, shortJobDescription, salaryDetails,
                 streetAddress, state, zipcode,country, jobMode, jobType,responsibilities,
                 qualifications, loveJobRole} = this.state;

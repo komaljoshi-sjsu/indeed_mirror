@@ -45,6 +45,7 @@ class EmployerProfile extends Component {
         const empid = {
             empid: this.props.userInfo.id
         };
+        console.log(empid) 
         axios.post(`${backendServer}/getEmployerProfile`,empid).then((response) => {
             console.log(response.data[0]);
             this.setState({

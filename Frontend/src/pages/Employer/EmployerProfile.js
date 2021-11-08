@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 import {bindActionCreators} from 'redux';
 import PropTypes from "prop-types";
 import logo from '../../images/employers.png'
-import {setCompId} from '../../reduxutils/actioncreators/companyaction';
+import {setCompId} from '../../reduxutils/actioncreators/companyInfoAction';
 
 class EmployerProfile extends Component {
     constructor(props) {
@@ -215,8 +215,8 @@ class EmployerProfile extends Component {
     }
     updateCompanyId = (data) => {
         var id = {
-           // employerId:this.props.compid,
-            companyid : data
+           employerId:this.props.userInfo.id,
+           companyid : data
         }
         axios.post(`${backendServer}/addCompanyIdToEmployer`, id)
             .then(response=> {

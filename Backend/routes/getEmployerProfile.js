@@ -5,7 +5,8 @@ const connection = require("../config/mysql_connection");
 var mysql = require("mysql");
 router.post('/getEmployerProfile', function(req,res){
     const employerid = req.body.empid;   
-    
+    console.log("****")
+    console.log(employerid)
 	let sql1 = "SELECT * FROM Employer e JOIN Company c ON e.companyId=c.companyId WHERE id = "+mysql.escape(employerid) ;
     let query = connection.query(sql1, (error, result) => {
 
