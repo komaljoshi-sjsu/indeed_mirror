@@ -6,7 +6,7 @@ const conn = require('../config/mysql_connection')
 router.get('/jobPosted', (req, res) => {
   try {
     // add [id] to get data for particular employer
-    conn.query('SELECT count(Job.jobId) as countJobId ,Employer.name from Job,Employer where Employer.id=Job.id  and Job.id =1 and YEAR(Job.jobPostedDate) <=YEAR(CURDATE()) and YEAR(Job.jobPostedDate) >= YEAR(CURDATE())-1;', async function (err, results) {
+    conn.query('SELECT count(Job.jobId) as countJobId ,Job.jobTitle from Job,Employer where Employer.id=Job.id  and Job.id =1 and YEAR(Job.jobPostedDate) <=YEAR(CURDATE()) and YEAR(Job.jobPostedDate) >= YEAR(CURDATE())-1 group by Job.jobTitle limit 10;', async function (err, results) {
       if (results.length <= 0) {
         console.log('Not found')
         res.status(400).send('Report details not found')

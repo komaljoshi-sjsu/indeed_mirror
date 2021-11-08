@@ -25,12 +25,9 @@ import CompanyJobs from './pages/Company/Jobs.js'
 import Header from './common/Header'
 import FeaturedReview from './pages/Employer/featuredReview';
 import CompanyReviews from './pages/JobSeeker/companyReviews';
-<<<<<<< HEAD
 import FindSalByTitle from './pages/JobSeeker/FindSalByTitle'
 import AdminAnalytics from './pages/Admin/AdminAnalytics.js'
-=======
 import AdminCompany from './pages/Admin/AdminCompany'
->>>>>>> edbc4b2 (Admin company changes)
 
 //Create a Main Component
 class Main extends Component {
@@ -66,12 +63,9 @@ class Main extends Component {
         <Route path="/employerAnalytics" component={EmployerAnalytics}/>
         <Route path="/preferences" component={Preferences}/>
         <Route path="/allReviews" component={CompanyReviews}/>
-<<<<<<< HEAD
         <Route path="/findSalByTitle/:jobTitle" component={FindSalByTitle}/>
         <Route path="/adminAnalytics" component={AdminAnalytics}/>
-=======
         <Route path="/adminCompany" component={AdminCompany}/>
->>>>>>> edbc4b2 (Admin company changes)
       </div>
     )
   }

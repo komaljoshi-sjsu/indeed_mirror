@@ -29,24 +29,24 @@ const ReportEmployer = () => {
   
   const barChartOne = async () => {
     let jobCnt = [];
-    let empName = [];
+    let jobTitle = [];
    await axios
       .get(`${backendServer}/jobPosted`)
       .then(res => {
         // console.log(res);
         for (const dataObj of res.data) {
           jobCnt.push(parseInt(dataObj.countJobId));
-          empName.push(dataObj.name);
+          jobTitle.push(dataObj.jobTitle);
         }
         setChartOneData({
-          labels: empName,
+          labels: jobTitle,
           datasets: [
             {
               label: "job posted",
               data: jobCnt,
               backgroundColor: ["Orange"],
               borderWidth: 4,
-              barThickness:100
+              barThickness:70
             }]
         });
       })
@@ -69,17 +69,17 @@ const ReportEmployer = () => {
       .then(res => {
         // console.log(res);
         for (const dataObj of res.data) {
-          if(dataObj.status === "Applied"){
+          if(dataObj.status.toLowerCase() === "submitted"){
             appApppliedCnt.push(parseInt(dataObj.countAppId));
             console.log(appApppliedCnt);
             // compAppliedName.push(dataObj.companyName);
           }
-          else if(dataObj.status === "Rejected"){
+          else if(dataObj.status.toLowerCase() === "rejected"){
             appRejectedCnt.push(parseInt(dataObj.countAppId));
             console.log(appRejectedCnt);
             // compRejectedName.push(dataObj.companyName);
           }
-          else if(dataObj.status === "Accepted"){
+          else if(dataObj.status.toLowerCase() === "hired"){
             appAcceptedCnt.push(parseInt(dataObj.countAppId));
             console.log(appAcceptedCnt);
             // compAcceptedName.push(dataObj.companyName);
@@ -101,21 +101,21 @@ const ReportEmployer = () => {
               data: appApppliedCnt,
               backgroundColor: ["Blue"],
               borderWidth: 4,
-              barThickness:100
+              barThickness:70
             },
             {
               label: "applicants accepted",
               data: appAcceptedCnt,
               backgroundColor: ["Cyan"],
               borderWidth: 4,
-              barThickness:100
+              barThickness:70
             },
             {
               label: "applicants rejected",
               data: appRejectedCnt,
               backgroundColor: ["rgb(255, 99, 132)"],
               borderWidth: 4,
-              barThickness:100
+              barThickness:70
             }
           ]
         });
