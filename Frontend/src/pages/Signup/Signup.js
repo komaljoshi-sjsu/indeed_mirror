@@ -29,28 +29,31 @@ function Signup(props) {
             password: password,
             accountType: accountType
         }).then(res => {
-            //console.log(res);
             if (res.status != 200) {
                 alert(res.data);
             } else {
-                //alert('Successfully signed up');
                 //adding job seeker model in mongoDB after successful signup
                 console.log("signup data" + res.data);
-                axios.post("/api/signupJobSeekerMongo", {
-                    jobSeekerId: res.data.id,
-                    resumeUrl: " ",
-                    jobPreference: [],
-                    savedJobs: []
-                }).then((response1) => {
-                    if (response1.status === 200) {
-                        alert('Successfully signed up');
-                        redirectToLogin();
-                    }
-                })
-                    .catch((err) => {
-                        alert("Failed to signup");
-                        console.log(err);
-                    });
+                if ("JobSeeker" === accountType) {
+                    console.log("calling mongo signup")
+                    axios.post("/api/signupJobSeekerMongo", {
+                        jobSeekerId: res.data.id,
+                        resumeUrl: " ",
+                        jobPreference: [],
+                        savedJobs: []
+                    }).then((response1) => {
+                        if (response1.status === 200) {
+                            alert('Successfully signed up');
+                            redirectToLogin();
+                        }
+                    })
+                        .catch((err) => {
+                            alert("Failed to signup");
+                            console.log(err);
+                        });
+                }
+                alert('Successfully signed up');
+                redirectToLogin();
             }
         }, error => {
             alert('Failed to signup. Please refer console for more details.');
@@ -58,7 +61,7 @@ function Signup(props) {
         })
     }
     return (
-        <div className="container-fullwidth" style={{margin:'auto', marginTop:'5%', width:'30%'}}>
+        <div className="container-fullwidth" style={{ margin: 'auto', marginTop: '5%', width: '30%' }}>
             {redirectVal}
             <div className="row">
                 <a class="navbar-brand" href="/landingPage">
@@ -71,31 +74,31 @@ function Signup(props) {
                     />
                 </a>
             </div><br></br><br></br>
-            <div className="row" style={{background:'whitesmoke',padding:'10% 5% 5% 5%'}}>
+            <div className="row" style={{ background: 'whitesmoke', padding: '10% 5% 5% 5%' }}>
                 <div className="row">
                     <h5><b>Create an account(it's free)</b></h5>
                 </div><br></br>
                 <div className="row">
-                    <Form onSubmit = {signUp}>
+                    <Form onSubmit={signUp}>
                         <Form.Group className="mb-3" >
                             <Form.Label><b>Name</b></Form.Label>
-                            <Form.Control type="text" placeholder="Full Name" name = "name" maxLength="45" required></Form.Control>
+                            <Form.Control type="text" placeholder="Full Name" name="name" maxLength="45" required></Form.Control>
                         </Form.Group>
                         <Form.Group className="mb-3" >
                             <Form.Label><b>Email Address</b></Form.Label>
-                            <Form.Control type="email" placeholder="Enter Email" name = "email" maxLength="45" required></Form.Control>
+                            <Form.Control type="email" placeholder="Enter Email" name="email" maxLength="45" required></Form.Control>
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label><b>Password</b></Form.Label>
-                            <Form.Control type="password" placeholder="Password" name = "password" maxLength="8" required></Form.Control>
+                            <Form.Control type="password" placeholder="Password" name="password" maxLength="8" required></Form.Control>
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <p><small><b>Your Role</b></small><br></br>
-                            <small style={{color:'gray'}}>Let us know how you'll be using our products</small></p>
-                            <Form.Check type="radio" label='Job Seeker' name="accountType" value="Job Seeker" required/><br></br>
-                            <Form.Check type="radio" label='Employer' name="accountType" value="Employer"/>
+                                <small style={{ color: 'gray' }}>Let us know how you'll be using our products</small></p>
+                            <Form.Check type="radio" label='Job Seeker' name="accountType" value="Job Seeker" required /><br></br>
+                            <Form.Check type="radio" label='Employer' name="accountType" value="Employer" />
                         </Form.Group>
-                        <Button bsStyle="primary" bsSize="large" block style={{width:'100%'}} type='submit'>
+                        <Button bsStyle="primary" bsSize="large" block style={{ width: '100%' }} type='submit'>
                             Create Account
                         </Button>
                     </Form>
