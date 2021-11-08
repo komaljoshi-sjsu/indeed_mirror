@@ -73,7 +73,7 @@ class CompanyJobs extends Component {
   }
 
   componentDidMount() {
-    let companyName = this.props.companyInfo.name
+    let companyName = this.props.companyInfo.compName
     this.setState(
       {
         companyName: companyName,
@@ -90,7 +90,7 @@ class CompanyJobs extends Component {
     let job
     let companyName = this.state.companyName
     const data = { companyName }
-    console.log(this.props.companyInfo.name)
+    console.log(this.props.companyInfo.compName)
     await axios.post('http://localhost:5000/jobs/companyJobs', data).then(
       (response) => {
         console.log(response.data, response.status)
@@ -610,7 +610,7 @@ class CompanyJobs extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  companyInfo: state.companyInfo,
+  companyInfo: state.company,
   userInfo: state.userInfo,
 })
 
