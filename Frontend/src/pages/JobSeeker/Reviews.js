@@ -437,6 +437,8 @@ class Reviews extends Component {
               { openModal
                   ? (
                     <ReviewModal
+                      companyId={this.props.company.compid}
+                      jobSeekerId={this.props.userInfo.id}
                       closeModal={this.closeModal}
                       addReview={this.addReview}
                     />
