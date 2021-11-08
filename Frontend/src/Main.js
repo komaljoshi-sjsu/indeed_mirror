@@ -28,7 +28,7 @@ import CompanyReviews from './pages/JobSeeker/companyReviews'
 import AdminCompany from './pages/Admin/AdminCompany'
 import FindSalByTitle from './pages/JobSeeker/FindSalByTitle'
 import AdminAnalytics from './pages/Admin/AdminAnalytics.js'
-import AdminCompany from './pages/Admin/AdminCompany'
+// import AdminCompany from './pages/Admin/AdminCompany'
 
 
 //Create a Main Component
@@ -67,7 +67,7 @@ class Main extends Component {
         <Route path="/preferences" component={Preferences} />
         <Route path="/allReviews" component={CompanyReviews} />
         <Route path="/adminCompany" component={AdminCompany} />
-        <Route path="/findSalByTitle/:id" component={FindSalByTitle} />
+        {/* <Route path="/findSalByTitle/:id" component={FindSalByTitle} /> */}
         <Route path="/findSalByTitle/:jobTitle" component={FindSalByTitle} />
         <Route path="/adminAnalytics" component={AdminAnalytics} />
       </div>

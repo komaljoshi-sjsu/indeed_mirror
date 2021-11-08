@@ -17,10 +17,19 @@ const AddSalaryReview = (props) => {
   const [salary, setSalary] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [visible, setVisible] = useState(false);
+  const [showEndDate, setShowEndDate] = useState(false);
+  const [showOtherBenefits, setShowOtherBenefits] = useState(false);
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
   const handleVisible = () => setVisible(true);
-  const handleCloseVisible = () => setVisible(false);
+  const handleCloseVisible = () => {
+    // console.log("func called");
+    setVisible(false);
+    setShow(false);
+    setShowEndDate(false);
+    setShowOtherBenefits(false);
+    setErrorMessage("")
+  }
   const [companyDtls, setCompanyDtls] = useState([]);
   const [jobDtls, setJobDtls] =useState([]);
   const [nameComp, setNameComp] =useState(null);
@@ -208,7 +217,7 @@ const AddSalaryReview = (props) => {
 
       <Modal
         show={show}
-        onHide={handleClose}
+        onHide={handleCloseVisible}
         backdrop="static"
         keyboard={false}
         aria-labelledby="contained-modal-title-vcenter"
@@ -241,20 +250,22 @@ const AddSalaryReview = (props) => {
                   <Form.Label>Are you currently working at this company?</Form.Label>
                   <br/>
                   <ToggleButtonGroup type="radio" name="currentlyWorking">
-                    <ToggleButton id="tbg-btn-1" value="Yes">
+                    <ToggleButton id="tbg-btn-1" value="Yes" onChange={()=>setShowEndDate(false)}>
                       Yes
                     </ToggleButton>
-                    <ToggleButton id="tbg-btn-2" value="No" onChange={()=>handleVisible} >
+                    <ToggleButton id="tbg-btn-2" value="No" onChange={()=>setShowEndDate(true)} >
                       No
                     </ToggleButton>
                   </ToggleButtonGroup>
                   <br/>
                   <br/>
               </Form.Group>
-              <Form.Group visible={visible}>
+              { showEndDate ?
+              <Form.Group>
                   <Form.Label >End date</Form.Label>
                   <Form.Control type="text" placeholder="End Date" name="endDate" required/><br/>
-              </Form.Group>
+              </Form.Group> : null
+              }
               <Form.Group>
                   <Form.Label>What’s your job title?</Form.Label>
                   <Autocomplete
@@ -322,16 +333,20 @@ const AddSalaryReview = (props) => {
                   <Form.Check type="checkbox" label="Life insurance" id="lifeInsurance"/>
                   <Form.Check type="checkbox" label="Dental / Vision insurance" id="dentalVision"/>
                   <Form.Check type="checkbox" label="Retirement / 401(k)" id="retirement"/>
-                  <Form.Check type="checkbox" label="Other benefits" id="otherBenefits"/><br/>
+                  <Form.Check type="checkbox" label="Other benefits" id="otherBenefits" onClick={()=>setShowOtherBenefits(!showOtherBenefits)}/><br/>
+                  {
+                    showOtherBenefits ?
+                    <div>
                   <Form.Label>Other Benefits</Form.Label>
-                  <Form.Control as="textarea" rows={3} id="otherBenefitsText" name="otherBenefitsText"/>
+                  <Form.Control as="textarea" rows={3} id="otherBenefitsText" name="otherBenefitsText"/> </div>: null
+                  } 
               </Form.Group>   
               <br/>              
             <Button variant="primary" size="sm" type="submit">
               Add
             </Button>
             <h6 style={{ color: "red" }}>{errorMessage} </h6> 
-            <Button variant="primary" size="sm" onClick={handleClose}>
+            <Button variant="primary" size="sm" onClick={handleCloseVisible}>
               Cancel
             </Button>
           </Form>
