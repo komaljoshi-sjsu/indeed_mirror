@@ -50,7 +50,7 @@ class JobSeekerNavbar extends Component {
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">
+                  <a class="nav-link" href="/allReviews">
                     <h5>Company Reviews</h5>
                   </a>
                 </li>
