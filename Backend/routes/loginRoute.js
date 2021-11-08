@@ -9,12 +9,36 @@ const bcrypt = require("bcryptjs");
 const JobSeeker = require('../models/JobSeeker');
 auth();
 
+const admin = {
+    name: 'admin user',
+    email: 'admin@indeed.com',
+    password: 'admin',
+    id: 'adminid_1'
+}
+
 router.post("/api/login", (req, res) => {
     try {
         const email = req.body.email;
         const password = req.body.password;
         const accountType = req.body.accountType;
-        if ("JobSeeker" === accountType) {
+        if("Admin" === accountType) {
+            console.log('Logging on admin');
+            if(email!=admin.email) {
+                console.log("No admin present with this email");
+                return res.status(403).send("No admin present with this email");
+            } else if( password!=admin.password) {
+                console.log("Your password is incorrect");
+                return res.status(403).send("Your password is incorrect");
+            } else {
+                let payload = { id: admin.id, accountType: 'Admin', user: {email:email, name: admin.name, id: admin.id} };
+                const token = jwt.sign(payload, secret, {
+                    expiresIn: 1008000,
+                });
+                console.log("JWT " + token);
+                return res.status(200).json("JWT " + token);
+            }
+        }
+        else if ("JobSeeker" === accountType) {
             conn.query(
                 "select * from JobSeeker where email = ?",
                 [email],

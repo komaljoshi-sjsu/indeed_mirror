@@ -10,13 +10,12 @@ import jwt_decode from 'jwt-decode'
 import backendServer from '../../webConfig'
 import { userActionCreator } from '../../reduxutils/actions.js'
 import logo from '../../images/Indeed_logo.png'
+import ErrorMsg from '../Error/ErrorMsg'
 
 function Login(props) {
-  const [redirectVal, redirectValFn] = useState(null)
-  const dispatch = useDispatch()
-
-    // const[redirectVal,redirectValFn] = useState(null);
-    // const dispatch = useDispatch();
+    const [redirectVal, redirectValFn] = useState(null)
+    const dispatch = useDispatch()
+    const[errMsg,setErrMsg] = useState('');
 
     const setEmail = bindActionCreators(userActionCreator.setEmail,dispatch);
     const setId = bindActionCreators(userActionCreator.setId,dispatch);
@@ -25,6 +24,7 @@ function Login(props) {
     const setPhone = bindActionCreators(userActionCreator.setPhone,dispatch);
     const setResumeUrl = bindActionCreators(userActionCreator.setResumeUrl,dispatch);
     const setToken = bindActionCreators(userActionCreator.setToken,dispatch);
+    const showErrorModal = bindActionCreators(userActionCreator.showErrorModal,dispatch);
     //const setCompanyId = bindActionCreators(userActionCreator.setCompanyId,dispatch);
 
   let redirectToSignUp = (e) => {
@@ -35,50 +35,63 @@ function Login(props) {
     e.preventDefault()
     const formData = new FormData(e.target)
     const email = formData.get('email')
-    const password = formData.get('password')
-    const accountType =
-      formData.get('accountType') == 'Employer' ? 'Employer' : 'JobSeeker'
-
-        axios.post(`${backendServer}/api/login`,{
-            email:email,
-            password:password,
-            accountType: accountType
-        }).then(res=> {            
-            if(res.status!=200) {
-                alert(res.data);
-            } else {
-                alert('Successfully logged in');
-                //const jwt_decode = require('jwt-decode');
-                setToken(res.data);
-                var decoded = jwt_decode(res.data.split(' ')[1]);
-                const user = decoded.user;
-                console.log(decoded);
-                setEmail(user.email);
-                setName(user.name);
-                setAccountType(accountType);
-                setId(user.id);
-                setPhone(user.jobSeekerContact);
-                if(accountType=='JobSeeker')  {
+    const password = formData.get('password');
+    let accountType = "";
+    switch(formData.get('accountType')) {
+        case 'Employer':
+            accountType = 'Employer';break;
+        case 'Job Seeker':
+            accountType = 'JobSeeker';break;
+        case 'Admin':
+            accountType = 'Admin';break;
+        default:
+            setErrMsg('Please do not mess with the radio button UI.');
+            showErrorModal(true);
+            break;
+    }
+    axios.post(`${backendServer}/api/login`,{
+        email:email,
+        password:password,
+        accountType: accountType
+    }).then(res=> {   
+        if(res.status!=200) {
+            setErrMsg(res.data);
+            showErrorModal(true);
+        } else {
+            alert('Successfully logged in');
+            //const jwt_decode = require('jwt-decode');
+            setToken(res.data);
+            var decoded = jwt_decode(res.data.split(' ')[1]);
+            const user = decoded.user;
+            console.log(decoded);
+            setEmail(user.email);
+            setName(user.name);
+            setAccountType(accountType);
+            setId(user.id);
+            if(accountType=='JobSeeker')  {
+                if(decoded.resumeUrl!=null && decoded.resumeUrl.trim().length>0)
                     setResumeUrl(decoded.resumeUrl);
-                    redirectValFn(<Redirect to="/resume"/>);
-                } else if(accountType=='Employer')  {
-                    //setCompanyId();
-                    if(user.companyId==null) {
-                        redirectValFn(<Redirect to="/employerprofile"/>);
-                    }
-                    else {
-                        redirectValFn(<Redirect to="/employer"/>);
-                    }
-                } else if(accountType=='Admin')  {
-                    redirectValFn(<Redirect to="/adminPhotos"/>);
+                setPhone(user.jobSeekerContact);
+                redirectValFn(<Redirect to="/resume"/>);
+            } else if(accountType=='Employer')  {
+                //setCompanyId();
+                if(user.companyId==null) {
+                    redirectValFn(<Redirect to="/employerprofile"/>);
                 }
+                else {
+                    redirectValFn(<Redirect to="/employer"/>);
+                }
+            } else if(accountType=='Admin')  {
+                redirectValFn(<Redirect to="/adminPhotos"/>);
             }
-        },
-        (error) => {
-          alert('Failed to Login. Please refer console for more details.')
-          console.log(error)
-        },
-      )
+        }
+    },
+    (error) => {
+        setErrMsg(error.response.data);
+        showErrorModal(true);
+        console.log('error is',error)
+    },
+    )
   }
   return (
     <div
@@ -86,6 +99,7 @@ function Login(props) {
       style={{ margin: 'auto', marginTop: '5%', width: '30%' }}
     >
       {redirectVal}
+      <ErrorMsg err={errMsg}></ErrorMsg>
       <div className="row">
         <a class="navbar-brand" href="/landingPage">
           <img
