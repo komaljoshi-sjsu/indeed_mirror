@@ -51,8 +51,9 @@ class Employer extends Component {
              
   }
   componentDidMount() {
-      //console.log("here")
-      const companyId = this.props.companyInfo.id;
+      console.log("here")
+      const companyId = this.props.companyInfo.compid;
+      console.log(companyId)
       const compId = {
         companyId:companyId
       }
@@ -117,7 +118,7 @@ handleModalCloseProfile(){
   };
   viewUsersList = (val) => {
    const JobId = {
-     compid : this.props.companyInfo.id,
+     compid : this.props.companyInfo.compid,
      jobId : val
    }
     axios.post(`${backendServer}/getApplicantsName`,JobId).then((response) => {

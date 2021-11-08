@@ -7,11 +7,11 @@ export const setName = (name) => {
   }
 }
 
-export const setId = (id) => {
+export const setCompId = (compid) => {
   return (dispatch) => {
     dispatch({
-      type: 'setId',
-      payload: id,
+      type: 'setCompId',
+      payload: compid,
     })
   }
 }
