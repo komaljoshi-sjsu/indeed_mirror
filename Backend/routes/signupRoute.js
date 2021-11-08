@@ -118,12 +118,11 @@ router.post("/api/signupJobSeekerMongo", async (req, res) => {
 
 
 router.post("/api/createCompanyMongo", async (req, res) => {
-  // console.log("create mong")
+  console.log("create mong")
   console.log(req.body)
   try {
     const { compid } = req.body;
     const { companyname } = req.body;
-   console.log(id);
     const companyDtls = new Company({
       companyId : compid,
       companyName:companyname,
@@ -147,7 +146,8 @@ router.post("/api/createCompanyMongo", async (req, res) => {
           .json({ error: "Error while inserting company details in mongoDB" + err });
       });
   } catch (err) {
-    return res.status(400).json({ error: "error" });
+    console.log(err.message)
+    //return res.status(400).json({ error: "error" });
   }
 });
 

@@ -193,13 +193,7 @@ class EmployerProfile extends Component {
                     axios.post(`${backendServer}/api/createCompanyMongo`,{compid,companyname})
                     .then(response=> {
                         console.log(response.data)
-                        // if (response.status === 200) {
-                        //     console.log(response)
-                        // }
-                        // else {
-
-                        //     //this.setState({ errorMsg: response.data });
-                        //   }
+                      
                     }
                     );
                 // }
