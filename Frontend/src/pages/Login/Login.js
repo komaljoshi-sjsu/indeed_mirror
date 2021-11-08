@@ -160,7 +160,14 @@ function Login(props) {
                 name="accountType"
                 value="Employer"
               />
+              <Form.Check
+                type="radio"
+                label="Admin"
+                name="accountType"
+                value="Admin"
+              />
             </Form.Group>
+            
             <Button
               bsStyle="primary"
               bsSize="large"
