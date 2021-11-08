@@ -1,6 +1,7 @@
 //sample employer component
 import { React, Component} from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux'
 import {
     ButtonGroup, Button, Row, Col, Card, Container,
   } from 'react-bootstrap';
@@ -29,7 +30,10 @@ class Reviews extends Component {
     
     componentDidMount() {
         // To-DO : Get selected company id
-        const companyId = 1;
+        const companyId = this.props.companyInfo.id;
+        console.log("company Info : "+this.props.companyInfo);
+        console.log("User Info : "+this.props.userInfo);
+        console.log("companyId :"+companyId);
         const jobSeekerId = 1;
         let { reviewDetails } = this.state;
         const currentPage = 1;
@@ -62,7 +66,6 @@ class Reviews extends Component {
       }
 
       paginate = (pageNumber) => {
-        alert(pageNumber);
         let currentPage = pageNumber;
         const companyId = 1;
         const jobSeekerId = 1;
@@ -398,16 +401,14 @@ class Reviews extends Component {
       return (
         <div>
             <br></br>
-            <Container style={{ display: 'flex', justifyContent: 'center' }}>
+            <Container style={{ display: 'flex', justifyContent: 'flex-start' }}>
             
             <Card style={{ width: '60rem', margin: '0.8em', background:'whitesmoke' }}>
-                <Container>
             <Card.Title>
               <br />
                <Row>
                  <Col> <h4>{companyName}{' '} Reviews</h4>
                  </Col>
-                 <Col />
                  <Col>
                  <Button onClick={this.addReview} style={{backgroundColor:'white', color:'#567cbb', border: '1px solid gray'}}><b>Review this company</b></Button>
                  </Col>
@@ -421,7 +422,6 @@ class Reviews extends Component {
                 <Button className={dateSortFlag ? 'active' : 'customButton'} variant="light" onClick={this.dateSort}>Date<FaLongArrowAltDown /></Button>
             </ButtonGroup>
               </Card.Body>
-              </Container>
               </Card>
               </Container>
               <Container style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
@@ -444,4 +444,9 @@ class Reviews extends Component {
       );
     }
   }
-  export default Reviews;
+  const mapStateToProps = (state) => ({
+    userInfo: state.userInfo,
+    companyInfo: state.companyInfo
+  })
+  
+  export default connect(mapStateToProps)(Reviews);
