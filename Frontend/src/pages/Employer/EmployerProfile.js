@@ -182,6 +182,7 @@ class EmployerProfile extends Component {
             );
     }    
     sendCompanyAPI = (data) => {
+        
         console.log(data)
         let compid = '';
         axios.post(`${backendServer}/addCompanyDetails`, data)
@@ -192,20 +193,23 @@ class EmployerProfile extends Component {
                 this.props.setCompId(compid);
                     axios.post(`${backendServer}/api/createCompanyMongo`,{compid,companyname})
                     .then(response=> {
+                        if(response.status === 200){
+                            
+                        }
+                        
                         console.log(response.data)
                       
                     }
                     );
-                // }
-                // else {
-                //     this.setState({ errorMsg: response.data });
-                //   }
+                     
             }
+            
             
             );
             // const dispatch = useDispatch();
             // const setId = bindActionCreators(userActionCreator.setId,dispatch);
-            
+            const {history} = this.props;
+            history.push('/employer');    
     }
     updateCompanyId = (data) => {
         var id = {
@@ -222,6 +226,8 @@ class EmployerProfile extends Component {
                   }
             }
             );
+            const {history} = this.props;
+            history.push('/employer'); 
     }
     handleCompany = (e)=>{
         e.preventDefault();
@@ -760,14 +766,7 @@ class EmployerProfile extends Component {
               {compdetailscol}
             </div>
             <div>
-            {/* <Modal size="md-down"
-            aria-labelledby="contained-modal-title-vcenter"
-            centered
-            show={this.state.show} onHide={()=>this.handleModalClose()}>
-                <Modal.Header closeButton>
-                <Modal.Title>{successMsg} {errorMsg}</Modal.Title>
-                </Modal.Header>
-            </Modal> */}
+           
       </div>
        
            

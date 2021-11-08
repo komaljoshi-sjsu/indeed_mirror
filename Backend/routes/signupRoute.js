@@ -146,8 +146,8 @@ router.post("/api/createCompanyMongo", async (req, res) => {
           .json({ error: "Error while inserting company details in mongoDB" + err });
       });
   } catch (err) {
-    console.log(err.message)
-    //return res.status(400).json({ error: "error" });
+    //console.log(err.message)
+    return res.status(400).json({ error: "error" });
   }
 });
 
