@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import logo from '../../images/indeedemployers_logo.png'
 import {IoMdHelpCircle, IoMdChatboxes} from 'react-icons/io';
 import {BsFillBellFill, BsPersonFill} from 'react-icons/bs';
-
+import { Link } from 'react-router-dom'
 
 class EmployerNavbar extends Component {
   constructor(props) {
@@ -44,9 +44,19 @@ class EmployerNavbar extends Component {
                 class="navbar-nav me-auto mb-2 mb-lg-0"
                 style={{ marginTop: '15px' }}
               >
+                
                 <li class="nav-item">
+                  
                   <a class="nav-link active" aria-current="page" href="/Employer">
-                    <h5>Dashboard</h5>
+                  <Link to="/employer"
+                              style={{
+                                textDecoration: 'none',
+                                color: '#474747',
+                              }}
+                            >
+                              <h5>Applicant Page</h5>
+                            </Link>
+                    <h5></h5>
                   </a>
                 </li>
                 <li class="nav-item">
@@ -55,8 +65,15 @@ class EmployerNavbar extends Component {
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="/employerAnalytics">
-                    <h5>Analytics</h5>
+                  <a class="nav-link" >
+                  <Link to="/employerAnalytics"
+                              style={{
+                                textDecoration: 'none',
+                                color: '#474747',
+                              }}
+                            >
+                              <h5>Report</h5>
+                            </Link>
                   </a>
                 </li>
               </ul>
@@ -92,8 +109,16 @@ class EmployerNavbar extends Component {
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="/employerUpdateProfile">
-                      <h5 style={{ color: 'black' }}><BsPersonFill/></h5>
+                    <a class="nav-link">
+                    <Link to="/employerUpdateProfile"
+                              style={{
+                                textDecoration: 'none',
+                                color: '#474747',
+                              }}
+                            >
+                              <h5 style={{ color: 'black' }}><BsPersonFill/></h5>
+                            </Link>
+                      
                     </a>
                   </li>
                 </ul>

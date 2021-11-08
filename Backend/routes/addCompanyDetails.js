@@ -5,8 +5,9 @@ var mysql = require("mysql");
 const connection = require("../config/mysql_connection");
 
 router.post("/addCompanyDetails", (req, res) => {
+    console.log("************")
     console.log(req.body)
-
+    console.log("************")
     let addCompany_sql = 'INSERT INTO Company(companyName, website, companySize, about, ceo, companyValues, workCulture, founded, revenue, mission, headquarters,industry,companyDescription,companyType) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
     let compDetails = [req.body.companyName, req.body.website, req.body.companySize, req.body.about, req.body.ceo, req.body.companyValues, req.body.workCulture, req.body.founded, req.body.revenue, req.body.mission, req.body.headquarters,req.body.industry,
 		req.body.companyDescription, req.body.companyType];
@@ -24,6 +25,7 @@ router.post("/addCompanyDetails", (req, res) => {
 					});
 					console.log("Company Added ")
                     const companyId = result.insertId;
+                    
                     // res.send(200).json({companyId:companyId})
 					//res.end("Company Added  successfully!");
                     let sql_companyid = "SELECT companyId,companyName FROM Company WHERE companyId = "+mysql.escape(companyId) ;
