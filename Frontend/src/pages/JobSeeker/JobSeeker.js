@@ -188,9 +188,13 @@ class JobSeekerLandingPage extends Component {
         let companyId = job.companyId
         let reviews = this.state.noOfCompanyReviews.filter(
           (reviews) => reviews.companyId === companyId,
-        )[0]
+        )
 
-        this.setState({ reviewCount: reviews.NoOfReviews })
+        if (reviews.length > 1) {
+          reviews = reviews[0]
+
+          this.setState({ reviewCount: reviews.NoOfReviews })
+        } else this.setState({ reviewCount: 0 })
       },
       (error) => {
         console.log(error)
@@ -207,9 +211,12 @@ class JobSeekerLandingPage extends Component {
         let companyId = job.companyId
         let avgrating = this.state.avgCompanyRating.filter(
           (rating) => rating.companyId === companyId,
-        )[0]
+        )
 
-        this.setState({ rating: avgrating.avgRating })
+        if (avgrating.length > 1) {
+          avgrating = avgrating[0]
+          this.setState({ rating: avgrating.avgRating })
+        } else this.setState({ rating: 0 })
       },
       (error) => {
         console.log(error)
@@ -372,10 +379,19 @@ class JobSeekerLandingPage extends Component {
     let companyId = job.companyId
     let reviews = this.state.noOfCompanyReviews.filter(
       (reviews) => reviews.companyId === companyId,
-    )[0]
+    )
+    if (reviews.length > 1) {
+      reviews = reviews[0]
+
+      this.setState({ reviewCount: reviews.NoOfReviews })
+    } else this.setState({ reviewCount: 0 })
     let avgrating = this.state.avgCompanyRating.filter(
       (rating) => rating.companyId === companyId,
-    )[0]
+    )
+    if (avgrating.length > 1) {
+      avgrating = avgrating[0]
+      this.setState({ rating: avgrating.avgRating })
+    } else this.setState({ rating: 0 })
 
     console.log(reviews.NoOfReviews)
     console.log(avgrating.avgRating)
@@ -388,8 +404,6 @@ class JobSeekerLandingPage extends Component {
       city: job.city,
       state: job.state,
       zip: job.zip,
-      reviewCount: reviews.NoOfReviews,
-      rating: avgrating.avgRating,
       jobType: job.jobMode,
       salary: job.salaryDetails,
       location: job.city,
