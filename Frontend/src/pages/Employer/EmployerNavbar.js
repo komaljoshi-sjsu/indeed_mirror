@@ -60,8 +60,15 @@ class EmployerNavbar extends Component {
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">
+                <a class="nav-link" >
+                <Link to="/featuredReviews"
+                              style={{
+                                textDecoration: 'none',
+                                color: '#474747',
+                              }}
+                            >
                     <h5>Reviews</h5>
+                    </Link>
                   </a>
                 </li>
                 <li class="nav-item">
