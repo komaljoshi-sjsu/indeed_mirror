@@ -402,11 +402,11 @@ class JobSeekerLandingPage extends Component {
   async handleCompanyLink() {
     const payload1 = this.state.companyName
 
-    this.props.companyInfoCreatorName(payload1)
+    this.props.companyName(payload1)
 
     const payload2 = this.state.companyId
 
-    this.props.companyInfoCreatorId(payload2)
+    this.props.companyId(payload2)
 
     let data = { id: this.state.companyId }
     console.log(data)
@@ -750,11 +750,11 @@ class JobSeekerLandingPage extends Component {
 const mapDispatchToProps = (dispatch) => {
   console.log('dispatching props')
   return {
-    companyInfoCreatorName: (payload) => {
-      dispatch({ type: 'setName', payload })
+    companyName: (payload) => {
+      dispatch({ type: 'setCompName', payload })
     },
-    companyInfoCreatorId: (payload) => {
-      dispatch({ type: 'setId', payload })
+    companyId: (payload) => {
+      dispatch({ type: 'setCompId', payload })
     },
   }
 }
