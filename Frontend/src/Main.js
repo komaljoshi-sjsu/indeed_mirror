@@ -36,7 +36,7 @@ class Main extends Component {
     return (
       <div>
         {/*Render Different Component based on Route*/}
-        <Route path="/" component={JobSeekerLandingPage} />
+        <Route exact path="/" component={JobSeekerLandingPage} />
         <Route path="/login" component={Login} />
         <Route path="/home" component={Home} />
         <Route path="/header" component={Header} />
