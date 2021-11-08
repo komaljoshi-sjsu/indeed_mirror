@@ -11,6 +11,7 @@ import backendServer from '../../webConfig';
 import '../../style/button-group.css';
 import ReviewModal from '../JobSeeker/ReviewModal';
 import Pagination from "./../JobSeeker/Pagination";
+import CompanyTabs from '../Company/CompanyTabs';
 
 class Reviews extends Component {
     constructor(props) {
@@ -400,6 +401,7 @@ class Reviews extends Component {
           ));
       return (
         <div>
+          <CompanyTabs></CompanyTabs>
             <br></br>
             <Container style={{ display: 'flex', justifyContent: 'flex-start' }}>
             
