@@ -98,19 +98,6 @@ class CompanyTabs extends Component {
                         <li class="nav-item">
                           <a class="nav-link">
                             <Link
-                              to="/benefits"
-                              style={{
-                                textDecoration: 'none',
-                                color: '#474747',
-                              }}
-                            >
-                              <h5>Benefits</h5>
-                            </Link>
-                          </a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link">
-                            <Link
                               to="/companyPhotos"
                               style={{
                                 textDecoration: 'none',
@@ -131,32 +118,6 @@ class CompanyTabs extends Component {
                               }}
                             >
                               <h5>Jobs</h5>
-                            </Link>
-                          </a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link">
-                            <Link
-                              to="/qa"
-                              style={{
-                                textDecoration: 'none',
-                                color: '#474747',
-                              }}
-                            >
-                              <h5>Q&A</h5>
-                            </Link>
-                          </a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link">
-                            <Link
-                              to="/interviews"
-                              style={{
-                                textDecoration: 'none',
-                                color: '#474747',
-                              }}
-                            >
-                              <h5>Interviews</h5>
                             </Link>
                           </a>
                         </li>
