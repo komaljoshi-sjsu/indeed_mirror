@@ -4,7 +4,6 @@ import storage from 'redux-persist/lib/storage'
 import { userReducer } from './userReducer.js'
 import { companyReducer } from './companyReducer.js'
 import { jobPrefReducer } from './jobPrefReducer.js'
-import { accessCompanyInfoReducer } from './accessCompanyInfoReducer.js'
 
 const persistConfig = {
   key: 'root',
@@ -16,7 +15,6 @@ const appReducers = combineReducers({
   userInfo: userReducer,
   company: companyReducer,
   jobPref: jobPrefReducer,
-  companyInfo: accessCompanyInfoReducer,
 })
 
 const reducer = (state, action) => {
