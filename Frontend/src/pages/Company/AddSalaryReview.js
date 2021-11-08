@@ -7,6 +7,10 @@ import backendServer from '../../webConfig';
 import CompanyTabs from './CompanyTabs';
 import Card from "react-bootstrap/Card";
 import '../../CSS/FindSalary.css'
+import Autocomplete from '@mui/material/Autocomplete'
+import TextField from '@material-ui/core/TextField';
+import {   Row, Col} from 'react-bootstrap';
+
 
 const AddSalaryReview = (props) => {
   const [show, setShow] = useState(false);
@@ -17,6 +21,11 @@ const AddSalaryReview = (props) => {
   const handleClose = () => setShow(false);
   const handleVisible = () => setVisible(true);
   const handleCloseVisible = () => setVisible(false);
+  const [companyDtls, setCompanyDtls] = useState([]);
+  const [jobDtls, setJobDtls] =useState([]);
+  const [nameComp, setNameComp] =useState(null);
+  const [titleJob, setTitleJob] =useState(null);
+  const [locJob, setLocJob] =useState(null);
   console.log('visible' ,visible);
 
   
@@ -31,27 +40,52 @@ const AddSalaryReview = (props) => {
       }).catch((err) => {
         console.log(err);
       });
+
+
+      axios.get(`${backendServer}/getCompanyDetails`) .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          setCompanyDtls(response.data);
+          console.log(response.data);
+      }
+      }).catch((err) => {
+        console.log(err);
+      });
+
+
+      axios.get(`${backendServer}/jobSeeker/home`) .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          setJobDtls(response.data);
+          console.log(response.data);
+      }
+      }).catch((err) => {
+        console.log(err);
+      });
+
+
   }, []);
 
 
-  const formValidation =() =>{
-
-  }
-
   const addSalaryReview = (e) => {
     e.preventDefault();
-    const isValid = formValidation();
+    // const isValid = formValidation();
     
     const formData = new FormData(e.target);
     const currentlyWorking = formData.get('currentlyWorking');
-    const companyName = formData.get('companyName');
+    // const companyName = formData.get('nameComp');
+    const companyName=nameComp.companyName;
     const endDate = formData.get('endDate');
-    const jobTitle = formData.get('jobTitle');
-    const jobLocation = formData.get('jobLocation');
+    // const jobTitle = formData.get('jobTitle');
+    const jobTitle = titleJob.jobTitle;
+    // const jobLocation = formData.get('jobLocation');
+    const jobLocation = locJob.city;
     const annualPay = formData.get('annualPay');
     const yrsOfExp = formData.get('yrsOfExp');
     // const benefitsObject = {};
     const benefitsObject = [];
+    
+
     if(document.getElementById("paidTimeOff").checked) {
       benefitsObject.push("paidTimeOff");
     }
@@ -73,6 +107,12 @@ const AddSalaryReview = (props) => {
 
     const benefits = JSON.stringify(benefitsObject);
  
+    console.log(  'currentlyWorking', currentlyWorking);
+      console.log( 'companyName', companyName);
+        console.log( 'endDate',  endDate,);
+          console.log( 'jobTitle', titleJob);
+            console.log( 'jobLocation',  locJob);
+              console.log(' annualPay',  annualPay);
 
     axios.post(`${backendServer}/jobSeeker/postSalaryReview`,{
         currentlyWorking: currentlyWorking,
@@ -102,24 +142,25 @@ const AddSalaryReview = (props) => {
     <div>
        <CompanyTabs />
 
-    <div class="row">
-            <div class="col-1"></div>
-            <div class="col-10">
-              <div class="row">
-                <div class="col-3">  
+            <Row>
+                <Col xs={8}>              
+                <div className="card-container" style={{marginLeft:"50px"}}>
                 {salary.map((salaryDetails, index) => {
                   return (
-                    <Card  key={index} style={{marginTop:'20px'}}>
-                    <Card.Body>
-                  <Card.Title>{salaryDetails.jobTitle}</Card.Title>
-                  <Card.Text> ${salaryDetails.annualPay} per year</Card.Text>
-                  </Card.Body>
-                  </Card>
+                    <div class="card" key={index} style={{marginTop:'20px',marginInline:'1.5rem',width:'250px'}}>
+                    <div class="card-body">
+                  <div class="card-title"><b>{salaryDetails.jobTitle}</b></div>
+                  <div class="card-text"> ${salaryDetails.annualPay} per year</div>
+                  </div>
+                  </div>
+               
                   );
                         })}
-              </div>
-
-              <div class="col-3"> 
+                          </div>
+                       
+                     
+              </Col>
+              <Col xs={3}> 
           <button type="button" class="btn btn-outline-primary btn-lg" style={{width:'100%'}} onClick={handleShow}>
           Add Salary Review
            </button>
@@ -143,10 +184,9 @@ const AddSalaryReview = (props) => {
             <Card.Text> <a href='/reviews'>Add your rating</a> </Card.Text>
              </Card.Body>
           </Card>
-     </div>
-     </div>
- </div>
- </div>     
+     </Col>
+     <Col></Col>
+ </Row>     
 
       <Modal
         visible={visible}
@@ -181,7 +221,21 @@ const AddSalaryReview = (props) => {
           <Form onSubmit={addSalaryReview}>
               <Form.Group controlId="formFile" className="mb-3">
                   <Form.Label>What’s your company name?</Form.Label>
-                  <Form.Control type="text" placeholder="Company Name" name="companyName" required/><br/>
+                    <Autocomplete
+                      id="nameComp"
+                      options={companyDtls}
+                      renderInput={params => (
+                        <TextField {...params} label="Company Name" variant="outlined" style={{dispaly:"flex"}}/>
+                      )}
+                      getOptionLabel={option => option.companyName}
+                      style={{ width: 270 }}
+                      value={nameComp}
+                      name="nameComp"
+                      onChange={(_event, companyName) => {
+                        setNameComp(companyName);
+                      }}
+                      required
+                 /><br/>
               </Form.Group>
               <Form.Group>
                   <Form.Label>Are you currently working at this company?</Form.Label>
@@ -203,11 +257,55 @@ const AddSalaryReview = (props) => {
               </Form.Group>
               <Form.Group>
                   <Form.Label>What’s your job title?</Form.Label>
-                  <Form.Control type="text" placeholder="Job Title"  name="jobTitle" required/><br/>
+                  <Autocomplete
+                      id="jobtitle"
+                      // options={jobDtls.filter(companyName => nameComp)}
+                      options={jobDtls}
+                      renderInput={params => (
+                        <TextField {...params} label="Job Title" variant="outlined" />
+                      )}
+                      getOptionLabel={option => option.jobTitle}
+                      style={{ width: 270 }}
+                      value={titleJob}
+                      name="jobTitle"
+                      onChange={(_event, jobtitle) => {
+                        setTitleJob(jobtitle);
+                      }}
+                      required
+                 /><br/>
               </Form.Group>
               <Form.Group>
                   <Form.Label>Where’s your job location?</Form.Label>
-                  <Form.Control type="text" placeholder="Job Location" name="jobLocation" required/><br/>
+                  <Autocomplete
+                      id="jobloc"
+                      options={jobDtls}
+                      // renderOption={(props, option) => (
+                      //     <Box
+                      //         component='li'
+                      //         {...props}
+                      //     >
+                      //         {option.name}
+                      //     </Box>
+                      // )}
+                      renderOption={(props, option) => {
+                        return (
+                          <li {...props} key={option.city}>
+                            {option.city}
+                          </li>
+                        );
+                      }}
+                      renderInput={params => (
+                        <TextField {...params} label="Job Location" variant="outlined" />
+                      )}
+                      getOptionLabel={option => option.city}
+                      style={{ width: 270 }}
+                      value={locJob}
+                      name="jobLocation"
+                      onChange={(_event, jobLoc) => {
+                        setLocJob(jobLoc);
+                      }}
+                      required
+                 /><br/>
               </Form.Group>
               <Form.Group>
                   <Form.Label>What’s your annual pay at the company?</Form.Label>
