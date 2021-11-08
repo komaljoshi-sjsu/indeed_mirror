@@ -84,8 +84,8 @@ class ReviewModal extends Component {
     });
     } else {
         // To-DO : Get logged in company id
-        const companyId = 1;
-        const jobSeekerId = 1;
+        const companyId = this.props.companyId;
+        const jobSeekerId = this.props.jobSeekerId;
         const { rating, reviewTitle, workHappinessScore, learningScore, appreciationScore, reviewComments, pros, cons, ceoApprovalRating, howToPrepare, reviewerRole, city, state } = this.state;
         const inputData = {
             companyId,
