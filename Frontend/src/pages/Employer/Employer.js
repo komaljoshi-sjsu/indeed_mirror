@@ -52,7 +52,7 @@ class Employer extends Component {
   }
   componentDidMount() {
       console.log("here")
-      const companyId = this.props.companyInfo.compid;
+      const companyId = this.props.company.compid;
       console.log(companyId)
       const compId = {
         companyId:companyId
@@ -118,7 +118,7 @@ handleModalCloseProfile(){
   };
   viewUsersList = (val) => {
    const JobId = {
-     compid : this.props.companyInfo.compid,
+     compid : this.props.company.compid,
      jobId : val
    }
     axios.post(`${backendServer}/getApplicantsName`,JobId).then((response) => {
@@ -453,7 +453,7 @@ handleModalCloseProfile(){
 
 const mapStateToProps = (state) => ({
   userInfo: state.userInfo,
-  companyInfo: state.companyInfo
+  company: state.company
 })
 
 export default connect(mapStateToProps)(Employer);

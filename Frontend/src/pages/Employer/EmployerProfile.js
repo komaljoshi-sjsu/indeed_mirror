@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 import {bindActionCreators} from 'redux';
 import PropTypes from "prop-types";
 import logo from '../../images/employers.png'
-import {setCompId} from '../../reduxutils/actioncreators/companyInfoAction';
+import {setCompId} from '../../reduxutils/actioncreators/companyaction';
 
 class EmployerProfile extends Component {
     constructor(props) {
@@ -784,7 +784,7 @@ class EmployerProfile extends Component {
 
   const mapStateToProps = (state) => ({
     userInfo: state.userInfo,
-    companyInfo: state.companyInfo
+    company: state.company
   })
   function mapDispatchToProps(dispatch) {
     return {

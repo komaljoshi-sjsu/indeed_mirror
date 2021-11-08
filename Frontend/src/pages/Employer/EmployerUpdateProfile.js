@@ -742,7 +742,7 @@ class EmployerProfile extends Component {
   }
   const mapStateToProps = (state) => ({
     userInfo: state.userInfo,
-    companyInfo: state.companyInfo
+    company: state.company
   })
   
   export default connect(mapStateToProps)(EmployerProfile);
