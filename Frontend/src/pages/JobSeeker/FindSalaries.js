@@ -345,7 +345,7 @@ class FindSalaries extends Component {
                     <hr/>
                     {/* <p>Skills</p> */}
                     <a href="#" class="card-link">Skills</a>
-                    <a href="#" class="card-link" >Job Openings</a>
+                    <a href="/landingPage" class="card-link" >Job Openings</a>
                 </div>
             </div>
           ))}
