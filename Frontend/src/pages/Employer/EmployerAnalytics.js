@@ -3,6 +3,8 @@ import { Bar } from "react-chartjs-2";
 import axios from "axios";
 import backendServer from '../../webConfig';
 import EmployerNavbar from './EmployerNavbar'
+import {useSelector} from 'react-redux';
+
 
 const ReportEmployer = () => {
   const [chartOneData, setChartOneData] = useState({
@@ -26,12 +28,20 @@ const ReportEmployer = () => {
           data: []
         }]
   });
+
+  const employerId = useSelector((state)=>state.userInfo.id);
+
   
   const barChartOne = async () => {
     let jobCnt = [];
     let jobTitle = [];
+    console.log("FE employerid: ", employerId);
    await axios
-      .get(`${backendServer}/jobPosted`)
+      .get(`${backendServer}/jobPosted`,{
+        params: {
+          employerId : employerId
+        }
+      })
       .then(res => {
         // console.log(res);
         for (const dataObj of res.data) {
@@ -65,11 +75,15 @@ const ReportEmployer = () => {
     // let compRejectedName = [];
     // let compAcceptedName = [];
    await axios
-      .get(`${backendServer}/applicantsDetail`)
+      .get(`${backendServer}/applicantsDetail`, {
+        params: {
+          employerId : employerId
+        }
+      })
       .then(res => {
         // console.log(res);
         for (const dataObj of res.data) {
-          if(dataObj.status.toLowerCase() === "submitted"){
+          if(dataObj.status.toLowerCase() === "submitted" || dataObj.status.toLowerCase() === "applied"){
             appApppliedCnt.push(parseInt(dataObj.countAppId));
             console.log(appApppliedCnt);
             // compAppliedName.push(dataObj.companyName);

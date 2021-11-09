@@ -6,10 +6,6 @@ const conn = require('./../config/mysql_connection')
 router.get('/findSalaries', (req, res) => {
   try {
     conn.query('select companyId,avg(salaryDetails) as salaryDetails,jobId,jobTitle,companyName,city,state,zip,industry from Job group by jobTitle;', async function (err, results) {
-      if (results.length <= 0) {
-        console.log('Not found')
-        res.status(400).send('Job details not found')
-      }
       if (err) {
         console.log('error')
         res.status(400).send('Error ocurred')
@@ -130,41 +126,47 @@ router.get('/findSalByTitle', (req, res) => {
   const subquery1 ='select round(avg(Review.rating),2) as rating,count(Review.reviewId) as revCnt from Review where Review.companyId=?;';
   const subquery2='select count(SalaryReview.companyId) as salRevCnt from SalaryReview where SalaryReview.companyId=?;'; 
   // try {
-    conn.query(query, async (err, results)=> {
-      if (results.length <= 0) {
-        console.log('Not found')
-        res.status(400).send('Job details not found')
-      }
+    // conn.query(query, async (err, results)=> {
+      // if (results.length <= 0) {
+      //   console.log('Not found')
+      //   res.status(400).send('Job details not found')
+      // }
+  try {
+    conn.query('select companyId,avg(salaryDetails) as salaryDetails,jobId,jobTitle,companyName,city,state,zip,industry from Job where lower(jobTitle) like lower("S%")  group by jobTitle order by salaryDetails  DESC limit 5 ;', async function (err, results) {
       if (err) {
         console.log('error')
          res.status(400).send('Error ocurred')
       }
       if(results.length > 0) {
-        await results.forEach(dataObj => {
-          conn.query(subquery1,[dataObj.companyId],  async function(err, rows1) {
+        // await results.forEach(dataObj => {
+          // conn.query(subquery1,[dataObj.companyId],  async function(err, rows1) {
+            conn.query(subquery1,[results[0].companyId],  async function(err, rows1) {
             if (err) {
               console.log('error')
               // res.status(400).send('Error ocurred')
             }  
             // conn.query(subquery2,[1],  function (err, rows2) {
-             conn.query(subquery2,[dataObj.companyId],  async function (err, rows2) {
+            //  conn.query(subquery2,[dataObj.companyId],  async function (err, rows2) {
+              conn.query(subquery2,[results[0].companyId],  async function (err, rows2) {
               if (err) {
                 console.log('error')
               //  res.status(400).send('Error ocurred')
               }
-              await finalResult.push(Object.assign({},...results,...rows1,...rows2));
+              // await finalResult.push(Object.assign({},...results,...rows1,...rows2));
               console.log("finalresultone",finalResult);
+              return res.status(200).send([Object.assign({},...results,...rows1,...rows2)]);
+
             }) 
           })
-        });
+        // });
         console.log("finalresult",finalResult);
-        return res.status(200).send(finalResult);
+        // return res.status(200).send(finalResult);
       }
     })
-  // } catch (error) {
-  //   console.log('ERROR!' + error)
-  //   return res.status(400).send('Error while fetching details')
-  // }
+  } catch (error) {
+    console.log('ERROR!' + error)
+    return res.status(400).send('Error while fetching details')
+  }
 })
 
 module.exports = router

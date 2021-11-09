@@ -10,7 +10,7 @@ import '../../CSS/FindSalary.css'
 import Autocomplete from '@mui/material/Autocomplete'
 import TextField from '@material-ui/core/TextField';
 import {   Row, Col} from 'react-bootstrap';
-
+import {useSelector} from 'react-redux';
 
 const AddSalaryReview = (props) => {
   const [show, setShow] = useState(false);
@@ -36,10 +36,16 @@ const AddSalaryReview = (props) => {
   const [titleJob, setTitleJob] =useState(null);
   const [locJob, setLocJob] =useState(null);
   console.log('visible' ,visible);
-
+  const companyId = useSelector((state)=>state.company.compid);
+  const jobSeekerId = useSelector((state)=>state.userInfo.id);
   
   useEffect(() => {
-    axios.get(`${backendServer}/jobSeeker/getSalaryReview`)
+    console.log("companyid",companyId);
+    axios.get(`${backendServer}/jobSeeker/getSalaryReview`,{
+      params: {
+        companyId : companyId
+      }
+    })
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
@@ -131,7 +137,8 @@ const AddSalaryReview = (props) => {
         jobLocation:  jobLocation,
         annualPay:  annualPay,
         yrsOfExp: yrsOfExp,
-        benefits: benefits
+        benefits: benefits,
+        jobSeekerId: jobSeekerId
       })
         .then((response) => {
           console.log(response);

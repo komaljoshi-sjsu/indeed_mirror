@@ -26,8 +26,6 @@ import Header from './common/Header'
 import FeaturedReview from './pages/Employer/featuredReview'
 import CompanyReviews from './pages/JobSeeker/companyReviews'
 import AdminCompany from './pages/Admin/AdminCompany'
-import FeaturedReview from './pages/Employer/featuredReview';
-import CompanyReviews from './pages/JobSeeker/companyReviews';
 import FindSalByTitle from './pages/JobSeeker/FindSalByTitle'
 import AdminAnalytics from './pages/Admin/AdminAnalytics.js'
 

@@ -42,6 +42,7 @@ class FindSalByTitle extends Component {
 
 
   componentDidMount() {
+    let job;
     axios.get(`${backendServer}/findSalByTitle`).then(
        (response) => {
         console.log(response.data, response.status)
