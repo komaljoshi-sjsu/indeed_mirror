@@ -39,6 +39,7 @@ const AdminCompany = (props) => {
     setCompanyId(companyDetails.data.companyDtls[0].companyId)
     getReviews()
     //console.log(companyDetails.data.companyDtls[0].companyId)
+
   };
 
   const searchChangeHandler = (e) => {
