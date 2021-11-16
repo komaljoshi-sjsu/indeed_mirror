@@ -12,7 +12,9 @@ import backgroundImg from '../../CSS/findSalary.png'
 import Card from "react-bootstrap/Card";
 import backendServer from '../../webConfig';
 import '../../CSS/FindSalary.css'
-
+import ReactStars from "react-rating-stars-component";
+import {  Row, Col} from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 class FindSalByTitle extends Component {
   constructor(props) {
@@ -32,13 +34,17 @@ class FindSalByTitle extends Component {
       jobType: '',
       salary: '',
       location: '',
+      rating:'',
+      revCnt: '',
+      salRevCnt:''
     }
   }
 
 
   componentDidMount() {
+    let job;
     axios.get(`${backendServer}/findSalByTitle`).then(
-      (response) => {
+       (response) => {
         console.log(response.data, response.status)
         let jobTitles = response.data.map((job) => {
           return job.jobTitle
@@ -91,6 +97,9 @@ class FindSalByTitle extends Component {
           jobType: job.jobMode,
           salary: job.salaryDetails,
           location: job.city,
+          rating:job.rating,
+          revCnt: job.revCnt,
+          salRevCnt:job.salRevCnt
         })
       },
       (error) => {
@@ -321,21 +330,55 @@ class FindSalByTitle extends Component {
 
 <div className="App">
 <h5 class="card-title">Top companies for Front Desk Agents in United States</h5>
-<div className="card-container">
-        {this.state.jobs.map((job) => (  
-            <div>
-            {/* <h5 class="card-title">{job.jobTitle} Salary in {job.state} </h5>
-            <h6>How much does a {job.jobTitle}  make in the {job.state}</h6> */}
-            <div class="card" id={job.jobTitle} style={{marginTop:'1.5rem',marginInline:'1.5rem',width:'250px'}}>
-                <div class="card-body">
-                <div class="card-text">{job.jobTitle}</div>
-                <div class="card-text">${job.salaryDetails}per year</div>
-                </div>
-            </div>
-          </div>
-            ))}
+<div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+              <div class="row">
+                <div class="col-3" style={{width:'100%'}}>  
+                {this.state.jobs.map((job, index) =>{
+                  return (
+                    <Card  key={index} style={{marginTop:'20px'}} id={job.jobTitle}>
+                    <Card.Body>
+                  <Row>
+                <Col xs={2}><img src="../../../images/user.png" alt="helo" style={{ maxHeight: '30px', maxWidth: '30px' }} /></Col>
+                <Col xs={3}>
+                <Link style={{color:'black', textDecoration: 'none'}} to="/snapshot"><h2>{job.companyName}</h2></Link>
+                  </Col>
+                  <Col xs={6} style={{textAlign:"left"}}>
+                <Link style={{color:'black', textDecoration: 'none'}} to="/findSalaries"><h5>${job.salaryDetails} per year</h5></Link>
+                  </Col>
+                  <Col xs={4}/>
+                  </Row>
+                  <Row>  
+                  <Col xs={1}>{job.rating}{' '}</Col>
+                    <Col xs={2}>
+                <ReactStars
+                    count={5}
+                    size={20}
+                    value={job.rating}
+                    isHalf={true}
+                    activeColor="#9d2b6b"
+                    edit={false}
+                  />
+                  </Col>
+                  <Col xs={3}>
+                  <Link style={{textDecoration: 'none'}} to="/reviews"><small>{job.revCnt}{' '}reviews</small></Link>
+                  </Col>
+                  <Col xs={3}>
+                  <Link style={{textDecoration: 'none'}} to="/reviews"><small>{job.salRevCnt}{' '}salaries{' '}reported</small></Link>
+                  </Col>
+                  </Row>
+                  </Card.Body>
+                  </Card>
+                  );
+                        })}
+              </div>
+              </div>
+              </div>
+              </div>
 </div>
-</div> 
+
+
 </div>
     )
  }

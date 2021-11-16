@@ -11,8 +11,8 @@ import {bindActionCreators} from 'redux';
 import {companyActionCreator} from '../../reduxutils/actions.js';
 
 function Snapshot(props) {
-    let companyid = '1';
     const dispatch = useDispatch();
+    const companyid = useSelector((state)=>state.company.compid);
     const ceo = useSelector((state)=>state.company.ceo);
     const founded = useSelector((state)=>state.company.founded);
     const industry = useSelector((state)=>state.company.industry);

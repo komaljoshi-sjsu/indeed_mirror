@@ -5,13 +5,14 @@ const conn = require('./../config/mysql_connection')
 
 
 router.get('/jobSeeker/getSalaryReview', (req, res) => {
-  let companyId=req.params.companyId;
-    try {
-      conn.query('select avg(salaryDetails) as annualPay,jobTitle,companyName,companyId from Job where companyId=1 group by jobTitle;', async function (err, results) {
-        // conn.query('select avg(annualPay) as annualPay ,jobTitle,companyName,companyId from SalaryReview where companyId=? group by jobTitle;',[companyId], async function (err, results) {
+  let companyId=req.query.companyId;
+  console.log("BE:",companyId);
+      try {
+      // conn.query('select avg(salaryDetails) as annualPay,jobTitle,companyName,companyId from Job where companyId=1 group by jobTitle;', async function (err, results) {
+        conn.query('select avg(annualPay) as annualPay ,jobTitle,companyName,companyId from SalaryReview where companyId=? group by jobTitle;',[companyId], async function (err, results) {
         if (results.length <= 0) {
-          console.log('Not found')
-          res.status(400).send('Salary details not found')
+          console.log('Salary review not found')
+          // res.status(400).send('Salary details not found')
         }
         if (err) {
           console.log('error')
@@ -23,7 +24,7 @@ router.get('/jobSeeker/getSalaryReview', (req, res) => {
       console.log('ERROR!' + error)
       return res.status(400).send('Error while fetching details')
     }
-  })
+  });
   
 
 router.post('/jobSeeker/postSalaryReview', (req, res) => {
@@ -51,7 +52,7 @@ router.post('/jobSeeker/postSalaryReview', (req, res) => {
                       req.body.annualPay,
                       req.body.yrsOfExp,
                       req.body.benefits,
-                      1,
+                      req.body.jobSeekerId,
                       registeredCompanyId],
                   function (err, rows) {
                     if(err) {
