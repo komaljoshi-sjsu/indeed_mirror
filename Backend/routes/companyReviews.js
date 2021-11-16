@@ -4,6 +4,7 @@ const router = express.Router();
 const connection = require("../config/mysql_connection");
 const mongoose = require("mongoose");
 const Company = mongoose.model("Company");
+const redisClient = require("../config/redisClient");
 
 const mysql = require('mysql');
 const http = require('http');
@@ -160,31 +161,49 @@ router.get("/companyReviews", (req, res) => {
 
     const queryObject = url.parse(req.url,true).query;
     const adminReviewStatus = 'APPROVED';
-	let sql = 'SELECT r.*, c.companyName FROM Review r, Company c where r.companyId='+mysql.escape(queryObject.companyId)+ ' and r.companyId = c.companyId and r.isFeatured=1 and r.adminReviewStatus=?' ;
-    console.log(sql);
-    connection.query(sql, [adminReviewStatus], (err, results) => {
-        if (err) {
-            res.writeHead(401,{
-                'Content-Type' : 'application/json'
-            });
-            res.end("Server error. Please try again later!");
-        }
-        else if(results.length > 0){
+    redisClient.get('companyReviews1', async (err, data) => {
+        // If value for key is available in Redis
+        if (data) {
+            // send data as output
             res.writeHead(200,{
                 'Content-Type' : 'application/json'
             });
             
-            console.log("Review data : ",JSON.stringify(results));
-            res.end(JSON.stringify(results));
-            
-        }else{
-            res.writeHead(400,{
-                'Content-Type' : 'application/json'
-            });
-            console.log("No reviews available!");
-            res.end("No reviews available!!");
+            console.log("Review data from redis : ",data);
+            console.log("redis data done");
+            res.end(data);
+        } 
+        // If value for given key is not available in Redis
+        else {
+            let sql = 'SELECT r.*, c.companyName FROM Review1 r, Company c where r.companyId='+mysql.escape(queryObject.companyId)+ ' and r.companyId = c.companyId and r.isFeatured=1 and r.adminReviewStatus=?' ;
+            console.log(sql);
+            connection.query(sql, [adminReviewStatus], (err, results) => {
+                if (err) {
+                    res.writeHead(401,{
+                        'Content-Type' : 'application/json'
+                    });
+                    res.end("Server error. Please try again later!");
+                }
+                else if(results.length > 0){
+                    res.writeHead(200,{
+                        'Content-Type' : 'application/json'
+                    });
+                    redisClient.setex('companyReviews1', 36000, JSON.stringify(results));
+                    
+                    console.log("Review data : ",JSON.stringify(results));
+                    console.log("DB data done");
+                    res.end(JSON.stringify(results));
+                    
+                }else{
+                    res.writeHead(400,{
+                        'Content-Type' : 'application/json'
+                    });
+                    console.log("No reviews available!");
+                    res.end("No reviews available!!");
+                }
+            });	
         }
-    });	
+    });
 });
 
 router.post("/updateHelpfulCount", (req, res) => {
@@ -261,6 +280,52 @@ router.post("/saveReview", (req, res) => {
                 res.end("Review saved successfully");
                 });       
             }         
+    });
+});
+
+router.get("/companyReviewsRedis", (req, res) => {
+
+    const queryObject = url.parse(req.url,true).query;
+    redisClient.get('companyReviews1', async (err, data) => {
+        // If value for key is available in Redis
+        if (data) {
+            // send data as output
+            res.writeHead(200,{
+                'Content-Type' : 'application/json'
+            });
+            
+            res.end(data);
+        } 
+        // If value for given key is not available in Redis
+        else {
+            let sql = 'SELECT * FROM Review1' ;
+            console.log(sql);
+            connection.query(sql, (err, results) => {
+                if (err) {
+                    res.writeHead(401,{
+                        'Content-Type' : 'application/json'
+                    });
+                    res.end("Server error. Please try again later!");
+                }
+                else if(results.length > 0){
+                    res.writeHead(200,{
+                        'Content-Type' : 'application/json'
+                    });
+                    redisClient.setex('companyReviews1', 36000, JSON.stringify(results));
+                    
+                    //console.log("Review data : ",JSON.stringify(results));
+                    //console.log("DB data done");
+                    res.end(JSON.stringify(results));
+                    
+                }else{
+                    res.writeHead(400,{
+                        'Content-Type' : 'application/json'
+                    });
+                    console.log("No reviews available!");
+                    res.end("No reviews available!!");
+                }
+            });	
+        }
     });
 });
 
