@@ -12,6 +12,8 @@
         "mongoose": "^6.0.10",
         "multer": "^1.4.3",
         "multer-s3": "^2.10.0",
-        "mysql": "^2.18.1"
+        "mysql": "^2.18.1",
+        "redis": "^3.1.2",
+        "redisclient": "0.0.8"
     }
 }
