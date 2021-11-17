@@ -66,6 +66,7 @@ class EmployerProfile extends Component {
  
       handleEmpDetails = (e) => {
         e.preventDefault();
+        console.log("here")
         const newErrors = this.findFormErrorsEmp();
         if (Object.keys(newErrors).length > 0) {
             this.setState({

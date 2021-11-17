@@ -23,19 +23,6 @@ router.post('/getJobSeekerResume', function(req,res){
             res.status(200).send(getresume[0].resumeUrl)
             //console.log(getresume[0].resumeUrl)
         }
-          //jobseekerData.concat(getjobpreference[0].jobPreference)
-           
-        //    let profile1 = {
-        //     JobTitle : getjobpreference[0].jobPreference['Job Title'],
-        //     JobTypes : getjobpreference[0].jobPreference['Job Types'],
-        //     WorkSchedules :getjobpreference[0].jobPreference['Work Schedules'],
-        //     pay:getjobpreference[0].jobPreference['Pay'],
-        //     relocation:getjobpreference[0].jobPreference['Relocation'],
-        //     remote:getjobpreference[0].jobPreference['Remote'],
-        // };
-        // jobseekerData.push(profile1);
-        // }
-        // res.status(200).send(jobseekerData)
     })
     
 });
