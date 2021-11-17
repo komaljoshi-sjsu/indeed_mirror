@@ -74,7 +74,7 @@ function Snapshot(props) {
   )
   useEffect(() => {
     axios
-      .get('http://52.87.242.30:5000/api/snapshot/' + companyid)
+      .get('http://54.91.190.192:5000/api/snapshot/' + companyid)
       .then((res) => {
         console.log('snapshot', res)
         if (res.status == 200) {
@@ -103,7 +103,7 @@ function Snapshot(props) {
       })
 
     axios
-      .get('http://52.87.242.30:5000/api/featuredReviews/' + companyid)
+      .get('http://54.91.190.192:5000/api/featuredReviews/' + companyid)
       .then((res) => {
         console.log('Featured reviews', res)
         if (res.status == 200) {

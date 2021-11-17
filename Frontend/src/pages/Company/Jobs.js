@@ -91,7 +91,7 @@ class CompanyJobs extends Component {
     let companyName = this.state.companyName
     const data = { companyName }
     console.log(this.props.companyInfo.compName)
-    await axios.post('http://52.87.242.30:5000/jobs/companyJobs', data).then(
+    await axios.post('http://54.91.190.192:5000/jobs/companyJobs', data).then(
       (response) => {
         console.log(response.data, response.status)
 
@@ -164,7 +164,7 @@ class CompanyJobs extends Component {
       companyName: this.state.companyName,
     }
     axios
-      .post('http://52.87.242.30:5000/jobs/paginatedData', data)
+      .post('http://54.91.190.192:5000/jobs/paginatedData', data)
       .then((response) => {
         console.log(response.data, response.status)
 
@@ -246,7 +246,7 @@ class CompanyJobs extends Component {
         companyName: this.state.companyName,
       }
       axios
-        .post('http://52.87.242.30:5000/jobs/filterOnLocationAndTitle', data)
+        .post('http://54.91.190.192:5000/jobs/filterOnLocationAndTitle', data)
         .then((response) => {
           console.log(response.data, response.status)
           job = response.data.result
@@ -278,7 +278,7 @@ class CompanyJobs extends Component {
         companyName: this.state.companyName,
       }
       axios
-        .post('http://52.87.242.30:5000/jobs/filterOnLocation', data)
+        .post('http://54.91.190.192:5000/jobs/filterOnLocation', data)
         .then((response) => {
           console.log(response.data, response.status)
           job = response.data.result
@@ -311,7 +311,7 @@ class CompanyJobs extends Component {
       }
       axios
         .post(
-          'http://52.87.242.30:5000/jobs/filterOnJobTitleOrCompanyName',
+          'http://54.91.190.192:5000/jobs/filterOnJobTitleOrCompanyName',
           data,
         )
         .then((response) => {
@@ -384,7 +384,7 @@ class CompanyJobs extends Component {
       const data = { appliedDate, jobId, id, companyId }
       console.log(data)
       axios
-        .post('http://52.87.242.30:5000/jobs/applyJob', data)
+        .post('http://54.91.190.192:5000/jobs/applyJob', data)
         .then((response) => {
           console.log(response.data, response.status)
         })

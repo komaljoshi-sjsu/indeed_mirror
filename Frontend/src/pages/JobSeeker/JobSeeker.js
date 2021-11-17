@@ -113,7 +113,7 @@ class JobSeekerLandingPage extends Component {
 
   async getAllData() {
     let job
-    await axios.get('http://52.87.242.30:5000/jobSeeker/home').then(
+    await axios.get('http://54.91.190.192:5000/jobSeeker/home').then(
       (response) => {
         console.log(response.data, response.status)
         let jobTitles = response.data.map((job) => {
@@ -177,7 +177,7 @@ class JobSeekerLandingPage extends Component {
     )
 
     await axios
-      .get('http://52.87.242.30:5000/jobSeeker/getCompanyReviews')
+      .get('http://54.91.190.192:5000/jobSeeker/getCompanyReviews')
       .then(
         (response) => {
           console.log(response.data, response.status)
@@ -203,27 +203,29 @@ class JobSeekerLandingPage extends Component {
         },
       )
 
-    await axios.get('http://52.87.242.30:5000/jobSeeker/getCompanyRating').then(
-      (response) => {
-        console.log(response.data, response.status)
+    await axios
+      .get('http://54.91.190.192:5000/jobSeeker/getCompanyRating')
+      .then(
+        (response) => {
+          console.log(response.data, response.status)
 
-        this.setState({
-          avgCompanyRating: this.state.avgCompanyRating.concat(response.data),
-        })
-        let companyId = job.companyId
-        let avgrating = this.state.avgCompanyRating.filter(
-          (rating) => rating.companyId === companyId,
-        )
+          this.setState({
+            avgCompanyRating: this.state.avgCompanyRating.concat(response.data),
+          })
+          let companyId = job.companyId
+          let avgrating = this.state.avgCompanyRating.filter(
+            (rating) => rating.companyId === companyId,
+          )
 
-        if (avgrating.length > 1) {
-          avgrating = avgrating[0]
-          this.setState({ rating: avgrating.avgRating })
-        } else this.setState({ rating: 0 })
-      },
-      (error) => {
-        console.log(error)
-      },
-    )
+          if (avgrating.length > 1) {
+            avgrating = avgrating[0]
+            this.setState({ rating: avgrating.avgRating })
+          } else this.setState({ rating: 0 })
+        },
+        (error) => {
+          console.log(error)
+        },
+      )
 
     await this.getPaginatedData()
   }
@@ -231,7 +233,7 @@ class JobSeekerLandingPage extends Component {
   getPaginatedData() {
     let data = { currentPage: this.state.currentPage }
     axios
-      .post('http://52.87.242.30:5000/jobSeeker/paginatedData', data)
+      .post('http://54.91.190.192:5000/jobSeeker/paginatedData', data)
       .then((response) => {
         console.log(response.data, response.status)
 
@@ -282,7 +284,7 @@ class JobSeekerLandingPage extends Component {
       }
       axios
         .post(
-          'http://52.87.242.30:5000/jobSeeker/filterOnLocationAndTitle',
+          'http://54.91.190.192:5000/jobSeeker/filterOnLocationAndTitle',
           data,
         )
         .then((response) => {
@@ -312,7 +314,7 @@ class JobSeekerLandingPage extends Component {
       console.log('only where')
       let data = { currentPage: 1, keyword: this.state.whereVal }
       axios
-        .post('http://52.87.242.30:5000/jobSeeker/filterOnLocation', data)
+        .post('http://54.91.190.192:5000/jobSeeker/filterOnLocation', data)
         .then((response) => {
           console.log(response.data, response.status)
           job = response.data.result
@@ -341,7 +343,7 @@ class JobSeekerLandingPage extends Component {
       let data = { currentPage: 1, keyword: this.state.whatVal }
       axios
         .post(
-          'http://52.87.242.30:5000/jobSeeker/filterOnJobTitleOrCompanyName',
+          'http://54.91.190.192:5000/jobSeeker/filterOnJobTitleOrCompanyName',
           data,
         )
         .then((response) => {
@@ -430,7 +432,7 @@ class JobSeekerLandingPage extends Component {
     let data = { id: this.state.companyId }
     console.log(data)
     await axios
-      .post('http://52.87.242.30:5000/jobSeeker/updateNoOfViews', data)
+      .post('http://54.91.190.192:5000/jobSeeker/updateNoOfViews', data)
       .then((response) => {
         console.log(response.data, response.status)
       })
@@ -452,7 +454,7 @@ class JobSeekerLandingPage extends Component {
       const data = { appliedDate, jobId, id, companyId }
       console.log(data)
       axios
-        .post('http://52.87.242.30:5000/jobSeeker/applyJob', data)
+        .post('http://54.91.190.192:5000/jobSeeker/applyJob', data)
         .then((response) => {
           console.log(response.data, response.status)
         })
@@ -472,7 +474,7 @@ class JobSeekerLandingPage extends Component {
       const userId = userInfo.id
       const data = { companyId, userId }
       await axios
-        .post('http://52.87.242.30:5000/jobSeeker/saveJob', data)
+        .post('http://54.91.190.192:5000/jobSeeker/saveJob', data)
         .then((response) => {
           console.log(response.data, response.status)
         })
