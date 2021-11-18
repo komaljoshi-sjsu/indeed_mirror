@@ -15,7 +15,7 @@ router.post('/addEmployerDetails', function (req, res) {
         }
         else {
             res.status(200).end("Employer Details Added!");
-            //return res.send(results);
+            
         }
     });
 });
