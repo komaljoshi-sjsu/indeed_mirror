@@ -82,5 +82,5 @@
   "headers": {
     "Access-Control-Allow-Origin": "*"
   },
-  "proxy": "http://54.91.190.192:5000"
+  "proxy": "http://localhost:5000"
 }
