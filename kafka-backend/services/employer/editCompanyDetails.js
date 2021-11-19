@@ -1,7 +1,7 @@
 "use strict";
 const conn = require("../../config/mysql_connection");
 var mysql = require("mysql");
-let addCompanyDetails = async (req, callback) => {
+let editCompanyDetails = async (req, callback) => {
     try {
         let addCompany_sql = 'INSERT INTO Company(companyName, website, companySize, about, ceo, companyValues, workCulture, founded, revenue, mission, headquarters,industry,companyDescription,companyType) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
         let compDetails = [req.body.companyName, req.body.website, req.body.companySize, req.body.about, req.body.ceo, req.body.companyValues, req.body.workCulture, req.body.founded, req.body.revenue, req.body.mission, req.body.headquarters,req.body.industry,
@@ -51,6 +51,6 @@ let addCompanyDetails = async (req, callback) => {
         callback('Cannot add company details',err);
     }
 };
-exports.addCompanyDetails = addCompanyDetails;
+exports.editCompanyDetails = editCompanyDetails;
 
   
