@@ -3,6 +3,8 @@ const { addEmployerDetails } = require("./addEmployerDetails");
 const { addCompanyDetails } = require("./addCompanyDetails");
 const { addCompanyIdToEmployer } = require("./addCompanyIdToEmployer");
 const { editEmployerDetails } = require("./editEmployerDetails");
+const { editCompanyDetails } = require("./editCompanyDetails");
+const { getEmployerProfile } = require("./getEmployerProfile");
 
 function handle_request(msg, callback) {
     switch (msg.route) {
@@ -18,7 +20,15 @@ function handle_request(msg, callback) {
         case "editEmployerDetails":    
             editEmployerDetails(msg,callback); 
             break;       
-            
+        case "editCompanyDetails":    
+            editCompanyDetails(msg,callback); 
+            break;   
+        case "getEmployerProfile":    
+            getEmployerProfile(msg,callback); 
+            break;
+        // case "getCompanyDetails":    
+        //     getCompanyDetails(msg,callback); 
+        //     break;   
     }
 }
 
