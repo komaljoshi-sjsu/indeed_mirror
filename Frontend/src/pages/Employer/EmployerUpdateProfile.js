@@ -396,7 +396,7 @@ class EmployerProfile extends Component {
     }
     render() {
        const {successMsg,errorMsg,updated,companyupdated,errors} = this.state;
-
+       console.log(this.state.employerDetails.zipcode)
        var empdetailscol = null;    
        var compdetailscol = null; 
        if(this.state.empdetails || updated){
@@ -514,7 +514,8 @@ class EmployerProfile extends Component {
                 
                  <Row> 
                  &nbsp;&nbsp;&nbsp;<input className="detinput" name="zipcode" 
-                 value={this.state.employerDetails.zipcode}
+                 type="number" value={this.state.employerDetails.zipcode}
+                 
                  onChange={(e) => { this.handleChangeZipcode(e)}}></input>
                  </Row>
                  <br/>
