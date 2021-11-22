@@ -50,7 +50,8 @@ class EmployerProfile extends Component {
           companyupdated:false,
           companyDetails:[],
           companyadded:false,
-          cmpname:''
+          cmpname:'',
+          logo:''
       };
       
     }
@@ -81,7 +82,8 @@ class EmployerProfile extends Component {
                 city:this.state.city,
                 state:this.state.state,
                 country:this.state.country,
-                zipcode:this.state.zipcode
+                zipcode:this.state.zipcode,
+               
             }
             this.sendEmployerAPI(employerData);
             this.setState({
@@ -118,6 +120,7 @@ class EmployerProfile extends Component {
                 workCulture:this.state.workCulture,
                 companyValues:this.state.companyValues,
                 ceo:this.state.ceo,
+                logo:this.state.logo
                
             }
             this.sendCompanyAPI(companyData);
@@ -188,10 +191,11 @@ class EmployerProfile extends Component {
         let compid = '';
         axios.post(`${backendServer}/addCompanyDetails`, data)
             .then(response=> {
-               // console.log(response)
+               console.log(response)
                compid = response.data[0].companyId;
                 const companyname = response.data[0].companyName;
                 this.props.setCompId(compid);
+                 
                     axios.post(`${backendServer}/api/createCompanyMongo`,{compid,companyname})
                     .then(response=> {
                         if(response.status === 200){
@@ -284,7 +288,57 @@ class EmployerProfile extends Component {
         
     } 
    
-   
+    saveFile = (e) => {
+        e.preventDefault();
+        this.setState({file:e.target.files[0]});
+        this.setState({fileName:e.target.files[0].name});
+    };
+    uploadFile = (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        const compid = this.props.company.compid;
+        if(this.state.file !== undefined && this.state.fileName !== undefined){
+          formData.append("file", this.state.file,this.state.fileName);
+          formData.append("compid", compid);
+        }
+        else{
+          alert("No Image inserted");
+          return;
+        }
+
+       this.sendImageAPI(formData);        
+    }
+    sendImageAPI = (data) => {
+       // const {employerDetails} = this.state;
+          axios
+          .post("/api/upload", data)
+          .then((response) => {
+            //console.log(response);
+            if (response.status === 200) {
+              this.setState({logo:response.data.imageLocation})
+               // console.log(response.data.imageLocation);
+               
+                // var data1 = {
+                //   companyId: this.props.company.compid, //companyId,    
+                //   imageLocation: response.data.imageLocation,
+                // };
+
+                // employerDetails.logo = response.data.imageLocation;
+                // this.setState({employerDetails})
+                // axios.post("/api/uploadCompanyProfilePic", data1)
+                //   .then((response1) => {
+                //     //console.log("Response ",response1)
+                //     if (response1.status === 200) {
+                //         alert("Company Image Uploaded")
+                //     }
+                //   })
+                //   .catch((err) => {
+                //     alert("Company Image Upload Failed")
+                //   });
+              }
+          });
+       
+    }
     render() {
        const {updated,empupdated,companyupdated,errors,companyDetails,companyadded} = this.state;
        var empdetailscol = null;    
@@ -565,6 +619,11 @@ class EmployerProfile extends Component {
                         </Row>
                     </Col>
                  </Row>
+                 <br/>
+                 <Row>
+                 <input className="filefolder" type="file" onChange={this.saveFile} />
+                 <button onClick={this.uploadFile}>Upload</button>  
+                 </Row> 
                  <br/>
                  <Row>
                     <Col>    

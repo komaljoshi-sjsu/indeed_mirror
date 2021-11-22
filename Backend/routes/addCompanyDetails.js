@@ -15,7 +15,7 @@ router.post('/addCompanyDetails', function (req, res) {
             return res.send({...results,err:err});
         }
         else {
-            res.status(200).end("Company Details Added!");
+            res.status(200).end(results);
             
         }
     });

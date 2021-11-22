@@ -7,6 +7,8 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const Photo = mongoose.model("Photo");
 const dotenv = require("dotenv");
+var mysql = require("mysql");
+const connection = require("../config/mysql_connection");
 dotenv.config();
 
 const s3 = new aws.S3({
@@ -54,7 +56,7 @@ const uploadImg = multer({
       );
     },
   }),
-  limits: { fileSize: 2000000 }, // 2 MB
+  limits: { fileSize: 8000000 }, // 2 MB
   fileFilter: function (req, file, cb) {
     console.log(file.originalname);
     validateFileType(file, cb);
@@ -105,5 +107,26 @@ router.post("/api/uploadCompanyPhotos", async (req, res) => {
     return res.status(400).json({ error: "error" });
   }
 });
-
+router.post("/api/uploadCompanyProfilePic", async (req, res) => {
+  try {
+    
+    const compid = req.body.companyId;
+    const logo = req.body.imageLocation;
+    let sql1 = "UPDATE Company SET logo = " +mysql.escape(logo)
+     +"WHERE companyId = "+mysql.escape(compid);
+    console.log(sql1);
+    let query = connection.query(sql1, (error, result) => {
+        if (error) {
+          return res.status(400).json({ error: "error" });
+            
+        } else {
+          console.log("uploaded")
+          return res.status(200).json({message:"Company Image Uploaded"});
+           
+        }            
+    });
+  } catch (err) {
+    return res.status(400).json({ error: "error" });
+  }
+});
 module.exports = router;

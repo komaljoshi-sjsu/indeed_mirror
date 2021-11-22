@@ -20,6 +20,7 @@ let editCompanyDetails = async (req, callback) => {
             const headquarters = req.body['headquarters'];
             const companyType = req.body['companyType'];
             const employerId = req.body['employerId'];
+            const logo=req.body['logo'];
             let sql1 = "UPDATE Company SET companyName = " +mysql.escape(companyName)
                     +" ,about =  "+mysql.escape(about)
                     +",ceo = "+mysql.escape(ceo)
@@ -34,6 +35,7 @@ let editCompanyDetails = async (req, callback) => {
                     +",companyDescription = "+mysql.escape(companyDescription)
                     +",industry = "+mysql.escape(industry)
                     +",website = "+mysql.escape(website)
+                    +",logo = "+mysql.escape(logo)
                     +" WHERE companyId = " +mysql.escape(companyId);
             let query = conn.query(sql1, (error, result) => {
                 if (error) {
