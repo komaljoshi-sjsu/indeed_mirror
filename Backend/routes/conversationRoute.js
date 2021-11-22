@@ -15,7 +15,7 @@ router.post("/api/saveConversation", async (req, res) => {
     }
 });
 
-router.get("/api/getConversationById/:companyId", async (req, res) => {
+router.get("/api/getConversationById/:userId", async (req, res) => {
     try {
       const conversation = await Conversation.find({
         members: { $in: [req.params.userId] },
@@ -24,6 +24,6 @@ router.get("/api/getConversationById/:companyId", async (req, res) => {
     } catch (err) {
         res.status(500).send("Error occurred while retrieving conversations");
     }
-  });
+});
 
 module.exports = router;

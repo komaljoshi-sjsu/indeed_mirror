@@ -28,7 +28,7 @@ import CompanyReviews from './pages/JobSeeker/companyReviews'
 import AdminCompany from './pages/Admin/AdminCompany'
 import FindSalByTitle from './pages/JobSeeker/FindSalByTitle'
 import AdminAnalytics from './pages/Admin/AdminAnalytics.js'
-
+import Messenger from './pages/Messenger/Messenger'
 
 //Create a Main Component
 class Main extends Component {
@@ -69,6 +69,7 @@ class Main extends Component {
         {/* <Route path="/findSalByTitle/:id" component={FindSalByTitle} /> */}
         <Route path="/findSalByTitle/:jobTitle" component={FindSalByTitle} />
         <Route path="/adminAnalytics" component={AdminAnalytics} />
+        <Route path="/messenger" component={Messenger} />
       </div>
     )
   }
