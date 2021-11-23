@@ -12,9 +12,12 @@ auth();
 router.get("/api/snapshot/:companyId", (req, res) => {
     try {
         const cid = req.params.companyId;
+        //const cid = 68;
+        console.log("cid :"+ cid)
         Company.find({companyId:cid}).then(result=> {
             console.log(result);
             let cmpny = result[0];
+            console.log("company :"+ cmpny)
             const companyQuery = 'SELECT * FROM Company WHERE companyId=?';
             conn.query(companyQuery,[cid], (error,details)=> {
                 console.log(details);

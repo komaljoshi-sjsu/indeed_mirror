@@ -37,7 +37,8 @@ class EmployerProfile extends Component {
           errorMsg: '',
           show:false,
           update:true,
-          companyupdated:true
+          companyupdated:true,
+          imageLocation:''
       };
     }
     
@@ -343,8 +344,59 @@ class EmployerProfile extends Component {
             companyupdated : false
         })
     }
+    saveFile = (e) => {
+        e.preventDefault();
+        this.setState({file:e.target.files[0]});
+        this.setState({fileName:e.target.files[0].name});
+    };
+    uploadFile = (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        const compid = this.props.company.compid;
+        if(this.state.file !== undefined && this.state.fileName !== undefined){
+          formData.append("file", this.state.file,this.state.fileName);
+          formData.append("compid", compid);
+        }
+        else{
+          alert("No Image inserted");
+          return;
+        }
+
+       this.sendImageAPI(formData);        
+    }
+    sendImageAPI = (data) => {
+        const {employerDetails} = this.state;
+          axios
+          .post("/api/upload", data)
+          .then((response) => {
+            //console.log(response);
+            if (response.status === 200) {
+              
+               // console.log(response.data.imageLocation);
+               
+                var data1 = {
+                  companyId: this.props.company.compid, //companyId,    
+                  imageLocation: response.data.imageLocation,
+                };
+                employerDetails.logo = response.data.imageLocation;
+                this.setState({employerDetails})
+                axios.post("/api/uploadCompanyProfilePic", data1)
+                  .then((response1) => {
+                    //console.log("Response ",response1)
+                    if (response1.status === 200) {
+                        alert("Company Image Uploaded")
+                    }
+                  })
+                  .catch((err) => {
+                    alert("Company Image Upload Failed")
+                  });
+              }
+          });
+       
+    }
     render() {
        const {successMsg,errorMsg,updated,companyupdated,errors} = this.state;
+       console.log(this.state.employerDetails.zipcode)
        var empdetailscol = null;    
        var compdetailscol = null; 
        if(this.state.empdetails || updated){
@@ -462,7 +514,8 @@ class EmployerProfile extends Component {
                 
                  <Row> 
                  &nbsp;&nbsp;&nbsp;<input className="detinput" name="zipcode" 
-                 value={this.state.employerDetails.zipcode}
+                 type="number" value={this.state.employerDetails.zipcode}
+                 
                  onChange={(e) => { this.handleChangeZipcode(e)}}></input>
                  </Row>
                  <br/>
@@ -476,8 +529,14 @@ class EmployerProfile extends Component {
        if(this.state.compdetails || companyupdated ){
         compdetailscol = (
             <div>
-             <label className="dethead1">Company Name : </label><label className="dethead">{this.state.employerDetails.companyName}</label>
-              <br/>
+            <Row>
+                <Col>
+                    <label className="dethead1">Company Name : </label><label className="dethead">{this.state.employerDetails.companyName}</label>
+                </Col>
+                <Col>
+                 <img src={this.state.employerDetails.logo} style={{ maxHeight: '5rem', maxWidth: '10rem' }}/>
+                </Col>
+            </Row>
               <br/>
               <Row>
                 <Col>
@@ -558,6 +617,10 @@ class EmployerProfile extends Component {
                  value={this.state.employerDetails.companyName }
                  onChange={(e) => { this.handleChangeCompanyName(e)}}></input>
                  </Row>
+                 <Row>
+                 <input className="filefolder" type="file" onChange={this.saveFile} />
+                 <button onClick={this.uploadFile}>Upload</button>  
+                 </Row>    
                  <br/>
                  <Row>
                  <label>Website<span style={{color:'red'}}>*</span></label>

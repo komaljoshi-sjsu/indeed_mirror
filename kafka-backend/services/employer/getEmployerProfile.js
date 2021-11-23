@@ -1,27 +1,31 @@
 // get employer profile
+"use strict";
+const conn = require("../../config/mysql_connection");
+var mysql = require("mysql");
+let getEmployerProfile = async (req, callback) => {
+    try {
+        const employerid = req.body.empid;  
+        let sql1 = "SELECT * FROM Employer e JOIN Company c ON e.companyId=c.companyId WHERE id = "+mysql.escape(employerid) ;
+        let query = conn.query(sql1, (error, result) => {
+    
+        if (error) {
+            callback(null,error)
+            }
+       else{
+            callback(null,JSON.stringify(result));
+            //res.status(200).send(JSON.stringify(result));	
+            }
+        });
+  
+    } catch(err) {
+        
+        callback('Cannot get employer',err);
+    }
 
-const express = require("express");
-const router = express.Router();
-const kafka = require('../kafka/client');
-router.post('/getEmployerProfile', function (req, res) {
-   console.log("getEmployerProfile.....")
-    let msg = {};
-    msg.route = "getEmployerProfile";
-    msg.body = req.body;
-    //msg = req.body;
-    kafka.make_request("employer", msg, function (err, results) {
-        if (err) {
-            console.log(err);
-            return res.send({...results,err:err});
-        }
-        else {
-            res.status(200).end(results);
-            
-        }
-    });
-});
+};
+exports.getEmployerProfile = getEmployerProfile;
 
-module.exports = router;
+
 // const express = require("express");
 // const router = express.Router();
 // const connection = require("../config/mysql_connection");

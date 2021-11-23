@@ -32,10 +32,10 @@ class Reviews extends Component {
     componentDidMount() {
         // To-DO : Get selected company id
         
-        console.log("company Info : "+this.props.company);
-        console.log("User Info : "+this.props.userInfo);
         const companyId = this.props.company.compid;
         const jobSeekerId = this.props.userInfo.id;
+        console.log("company id : "+companyId);
+        console.log("User id : "+jobSeekerId);
         let { reviewDetails } = this.state;
         const currentPage = 1;
         reviewDetails = [];
@@ -46,6 +46,7 @@ class Reviews extends Component {
           },
         })
           .then((response) => {
+            console.log("response.data.length"+response.data.length);
             this.setState({
                 //reviewDetails: reviewDetails.concat(response.data),
                 totalPosts: response.data.length,
@@ -210,22 +211,79 @@ class Reviews extends Component {
       }
 
       handleSubmit = (e, reviewId, type) => {
-        const { reviewDetails } = this.state;
-        const index = reviewDetails.findIndex((review) => review.reviewId === reviewId);
-        const reviews = [...reviewDetails];
-        if(type === 'Yes'){
-          const { yesReviewHelpfulCount } = reviews[index];
-          reviews[index].yesReviewHelpfulCount = yesReviewHelpfulCount+1;
-          this.setState({ reviewDetails: reviews });
-        }else{
-          const { noHelpfulCount } = reviews[index];
-          reviews[index].noHelpfulCount = noHelpfulCount+1;
-          this.setState({ reviewDetails: reviews });
+        const { reviewDetails, reviewDetailsRatingSort, reviewDetailsDateSort, reviewDetailsHelpfulSort, rateSortFlag, helpfulSortFlag, dateSortFlag } = this.state;
+        let inputData = '';
+        if(rateSortFlag){
+          const index = reviewDetailsRatingSort.findIndex((review) => review.reviewId === reviewId);
+          const reviews = [...reviewDetailsRatingSort];
+          if(type === 'Yes'){
+            const { yesReviewHelpfulCount } = reviews[index];
+            reviews[index].yesReviewHelpfulCount = yesReviewHelpfulCount+1;
+            this.setState({ reviewDetailsRatingSort: reviews });
+          }else{
+            const { noHelpfulCount } = reviews[index];
+            reviews[index].noHelpfulCount = noHelpfulCount+1;
+            this.setState({ reviewDetailsRatingSort: reviews });
+          }
+          inputData = {
+            reviewId: reviews[index].reviewId,
+            yesReviewHelpfulCount: reviews[index].yesReviewHelpfulCount,
+            noHelpfulCount: reviews[index].noHelpfulCount,
+          }
         }
-        const inputData = {
-          reviewId: reviews[index].reviewId,
-          yesReviewHelpfulCount: reviews[index].yesReviewHelpfulCount,
-          noHelpfulCount: reviews[index].noHelpfulCount,
+        else if(helpfulSortFlag){
+          const index = reviewDetailsHelpfulSort.findIndex((review) => review.reviewId === reviewId);
+          const reviews = [...reviewDetailsHelpfulSort];
+          if(type === 'Yes'){
+            const { yesReviewHelpfulCount } = reviews[index];
+            reviews[index].yesReviewHelpfulCount = yesReviewHelpfulCount+1;
+            this.setState({ reviewDetailsHelpfulSort: reviews });
+          }else{
+            const { noHelpfulCount } = reviews[index];
+            reviews[index].noHelpfulCount = noHelpfulCount+1;
+            this.setState({ reviewDetailsHelpfulSort: reviews });
+          }
+          inputData = {
+            reviewId: reviews[index].reviewId,
+            yesReviewHelpfulCount: reviews[index].yesReviewHelpfulCount,
+            noHelpfulCount: reviews[index].noHelpfulCount,
+          }
+        }
+        else if(dateSortFlag){
+          const index = reviewDetailsDateSort.findIndex((review) => review.reviewId === reviewId);
+          const reviews = [...reviewDetailsDateSort];
+          if(type === 'Yes'){
+            const { yesReviewHelpfulCount } = reviews[index];
+            reviews[index].yesReviewHelpfulCount = yesReviewHelpfulCount+1;
+            this.setState({ reviewDetailsDateSort: reviews });
+          }else{
+            const { noHelpfulCount } = reviews[index];
+            reviews[index].noHelpfulCount = noHelpfulCount+1;
+            this.setState({ reviewDetailsDateSort: reviews });
+          }
+          inputData = {
+            reviewId: reviews[index].reviewId,
+            yesReviewHelpfulCount: reviews[index].yesReviewHelpfulCount,
+            noHelpfulCount: reviews[index].noHelpfulCount,
+          }
+        }
+        else{
+          const index = reviewDetails.findIndex((review) => review.reviewId === reviewId);
+          const reviews = [...reviewDetails];
+          if(type === 'Yes'){
+            const { yesReviewHelpfulCount } = reviews[index];
+            reviews[index].yesReviewHelpfulCount = yesReviewHelpfulCount+1;
+            this.setState({ reviewDetails: reviews });
+          }else{
+            const { noHelpfulCount } = reviews[index];
+            reviews[index].noHelpfulCount = noHelpfulCount+1;
+            this.setState({ reviewDetails: reviews });
+          }
+          inputData = {
+            reviewId: reviews[index].reviewId,
+            yesReviewHelpfulCount: reviews[index].yesReviewHelpfulCount,
+            noHelpfulCount: reviews[index].noHelpfulCount,
+          }
         }
         console.log(inputData);
         axios

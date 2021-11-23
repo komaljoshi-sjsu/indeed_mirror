@@ -120,6 +120,7 @@ router.post("/api/signupJobSeekerMongo", async (req, res) => {
 router.post("/api/createCompanyMongo", async (req, res) => {
   console.log("create mong")
   console.log(req.body)
+  console.log("create mong")
   try {
     const { compid } = req.body;
     const { companyname } = req.body;

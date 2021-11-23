@@ -26,7 +26,7 @@ class Employer extends Component {
       jobPreference:[],
       showprofile:false,
       curPage: 1,
-      pageSize: 4,
+      pageSize: 1,
       status:''
     }
     //this.getCurrentDate()
@@ -104,6 +104,49 @@ handleModalCloseProfile(){
         this.setState({showprofile:true})
         
       }
+    });
+  }
+  download = (url,resumeUrl) => {
+    let keyarr = resumeUrl.split('/');
+    console.log(keyarr)
+    let key = keyarr[keyarr.length-1];
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `${key}`);
+    document.body.appendChild(link);
+    link.click();
+}
+  viewJobSeekerResume = (id) => {
+    const jobSeekerId = {
+      id : id
+    }
+    axios.post(`${backendServer}/getJobSeekerResume`,jobSeekerId).then((response) => {
+      if(response.status === 200){
+        let resumeUrl = response.data;
+        let keyarr = resumeUrl.split('/');
+        let key = keyarr[keyarr.length-1];
+        axios.get(backendServer+'/api/downloadResume/'+key).then(res=>{
+            console.log(res);
+            if(res.status=='200') {
+                this.download(res.data,resumeUrl);
+            } else {
+                // showErrorModal(true);
+                // setErrMsg(res.data);
+            }
+        })
+      }
+      // if(response.status === 200){
+      //   console.log(response.data)
+      //   this.setState({
+      //     applicantProfile: this.state.applicantProfile.concat(response.data[0]),
+      //   });
+      //   this.setState({
+      //     jobPreference: this.state.jobPreference.concat(response.data[1]),
+      //   });
+      //   this.setState({show:false})
+      //   this.setState({showprofile:true})
+        
+      // }
     });
   }
   onPage = (e) => {
@@ -201,7 +244,11 @@ handleModalCloseProfile(){
               
               </Col>
               <Col>
-              <Button variant="link">Resume</Button>
+              <Button variant="link"
+              onClick={() => {
+                this.viewJobSeekerResume(applicant.id);
+              }}
+              >Resume</Button>
               </Col>
               <Col>
              <select name="status" value={applicant.status} onChange={(e) => { this.handleChange(e,applicant.id)}}  >

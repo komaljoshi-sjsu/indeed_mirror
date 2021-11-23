@@ -191,6 +191,7 @@ function Resume(props) {
     }
     function download(url){
         let keyarr = resumeUrl.split('/');
+        console.log(keyarr)
         let key = keyarr[keyarr.length-1];
         const link = document.createElement('a');
         link.href = url;
