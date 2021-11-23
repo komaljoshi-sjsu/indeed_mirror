@@ -78,33 +78,26 @@ router.get("/companyReviewsPaginated", (req, res) => {
 // });
 
 router.get("/companyReviewsRatingSort", (req, res) => {
-
-    console.log("Inside sort");
-    const queryObject = url.parse(req.url,true).query;
-    const adminReviewStatus = 'APPROVED';
-    const pageNumber = queryObject.currentPage;
-    const limit = 5;
-    const offset = (pageNumber - 1) * limit;
-    console.log("pageNumber" +pageNumber);
-    console.log("offset" +offset);
-	let sql = 'SELECT r.*, c.companyName FROM Review r, Company c where r.companyId='+mysql.escape(queryObject.companyId)+ ' and r.companyId = c.companyId and r.isFeatured=1 and r.adminReviewStatus=? ORDER BY rating DESC LIMIT ?,?' ;
-    console.log(sql);
-    connection.query(sql, [adminReviewStatus, offset, limit], (err, results) => {
+    let msg = {};
+    msg.route = "companyReviewsRatingSort";
+    msg.url = req.url;
+    kafka.make_request("jobseeker", msg, function (err, results) {
         if (err) {
             res.writeHead(401,{
                 'Content-Type' : 'application/json'
             });
             res.end("Server error. Please try again later!");
         }
-        else if(results.length > 0){
+        else if (results.status === '200'){
             res.writeHead(200,{
                 'Content-Type' : 'application/json'
             });
             
-            console.log("Review data : ",results);
-            res.end(results);
+            console.log("Review data : ",JSON.stringify(results.data));
+            res.end(JSON.stringify(results.data));
             
-        }else{
+        }
+        else{
             res.writeHead(400,{
                 'Content-Type' : 'application/json'
             });
@@ -114,34 +107,66 @@ router.get("/companyReviewsRatingSort", (req, res) => {
     });	
 });
 
+
+// router.get("/companyReviewsRatingSort", (req, res) => {
+
+//     console.log("Inside sort");
+//     const queryObject = url.parse(req.url,true).query;
+//     const adminReviewStatus = 'APPROVED';
+//     const pageNumber = queryObject.currentPage;
+//     const limit = 5;
+//     const offset = (pageNumber - 1) * limit;
+//     console.log("pageNumber" +pageNumber);
+//     console.log("offset" +offset);
+// 	let sql = 'SELECT r.*, c.companyName FROM Review r, Company c where r.companyId='+mysql.escape(queryObject.companyId)+ ' and r.companyId = c.companyId and r.isFeatured=1 and r.adminReviewStatus=? ORDER BY rating DESC LIMIT ?,?' ;
+//     console.log(sql);
+//     connection.query(sql, [adminReviewStatus, offset, limit], (err, results) => {
+//         if (err) {
+//             res.writeHead(401,{
+//                 'Content-Type' : 'application/json'
+//             });
+//             res.end("Server error. Please try again later!");
+//         }
+//         else if(results.length > 0){
+//             res.writeHead(200,{
+//                 'Content-Type' : 'application/json'
+//             });
+            
+//             console.log("Review data : ",results);
+//             res.end(results);
+            
+//         }else{
+//             res.writeHead(400,{
+//                 'Content-Type' : 'application/json'
+//             });
+//             console.log("No reviews available!");
+//             res.end("No reviews available!!");
+//         }
+//     });	
+// });
+
 router.get("/companyReviewsDateSort", (req, res) => {
 
-    console.log("Inside sort");
-    const queryObject = url.parse(req.url,true).query;
-    const adminReviewStatus = 'APPROVED';
-    const pageNumber = queryObject.currentPage;
-    const limit = 5;
-    const offset = (pageNumber - 1) * limit;
-    console.log("pageNumber" +pageNumber);
-    console.log("offset" +offset);
-	let sql = 'SELECT r.*, c.companyName FROM Review r, Company c where r.companyId='+mysql.escape(queryObject.companyId)+ ' and r.companyId = c.companyId and r.isFeatured=1 and r.adminReviewStatus=? ORDER BY postedDate DESC LIMIT ?,?' ;
-    console.log(sql);
-    connection.query(sql, [adminReviewStatus, offset, limit], (err, results) => {
+    let msg = {};
+    msg.route = "companyReviewsDateSort";
+    msg.url = req.url;
+    kafka.make_request("jobseeker", msg, function (err, results) {
         if (err) {
             res.writeHead(401,{
                 'Content-Type' : 'application/json'
             });
             res.end("Server error. Please try again later!");
         }
-        else if(results.length > 0){
+        else if (results.status === '200'){
             res.writeHead(200,{
                 'Content-Type' : 'application/json'
             });
             
-            console.log("Review data : ",JSON.stringify(results));
-            res.end(JSON.stringify(results));
+            console.log("Review data : ",JSON.stringify(results.data));
+            res.end(JSON.stringify(results.data));
             
-        }else{
+        }
+        else{
             res.writeHead(400,{
                 'Content-Type' : 'application/json'
             });
@@ -201,12 +226,12 @@ router.get("/companyReviews", (req, res) => {
             });
             res.end("Server error. Please try again later!");
         }
-        else if(results.status === 200){
+        else if(results.status === '200'){
             res.writeHead(200,{
                 'Content-Type' : 'application/json'
             });
             
-            console.log("Review data : ",JSON.stringify(results.data));
+            console.log("Review data length: ",JSON.stringify(results.data.length));
             res.end(JSON.stringify(results.data));
             
         }else{
@@ -252,11 +277,11 @@ router.get("/companyReviews", (req, res) => {
 
 router.post("/updateHelpfulCount", (req, res) => {
 
-    console.log(req.body.yesReviewHelpfulCount);
-    let sql = 'UPDATE Review SET yesReviewHelpfulCount = ?, noHelpfulCount = ? WHERE reviewId = ?';
-    let data = [req.body.yesReviewHelpfulCount, req.body.noHelpfulCount, req.body.reviewId];
-    
-    connection.query(sql, data, (err, results) => {
+    let msg = {};
+    msg.route = "updateHelpfulCount";
+    msg.body = req.body;
+
+    kafka.make_request("jobseeker", msg, function (err, results) {
         if (err) {
             res.writeHead(401,{
                 'Content-Type' : 'application/json'
