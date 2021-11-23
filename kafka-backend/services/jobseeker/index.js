@@ -2,6 +2,11 @@
 const { getAllUsrReviews } = require("./getAllUsrReviews");
 const { companyReviews } = require("./companyReviews");
 const { companyReviewsPaginated } = require("./companyReviewsPaginated");
+const { companyReviewsRatingSort } = require("./companyReviewsRatingSort");
+const {companyReviewsDateSort } = require("./companyReviewsDateSort");
+const {companyReviewsHelpfulSort } = require("./companyReviewsHelpfulSort");
+const {updateHelpfulCount } = require("./updateHelpfulCount");
+const {saveReview } = require("./saveReview");
 
 function handle_request(msg, callback) {
     switch (msg.route) {
@@ -14,6 +19,21 @@ function handle_request(msg, callback) {
         case "companyReviewsPaginated":
             companyReviewsPaginated(msg,callback);
             break;
+        case "companyReviewsRatingSort":
+            companyReviewsRatingSort(msg,callback);
+            break;
+        case "companyReviewsDateSort":
+            companyReviewsDateSort(msg,callback);
+            break;  
+        case "companyReviewsHelpfulSort":
+            companyReviewsHelpfulSort(msg,callback);
+            break;   
+        case "updateHelpfulCount":
+            updateHelpfulCount(msg,callback);
+            break; 
+        case "saveReview":
+            saveReview(msg,callback);
+            break;  
     }
 }
 
