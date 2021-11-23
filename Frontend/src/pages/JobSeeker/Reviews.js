@@ -32,10 +32,10 @@ class Reviews extends Component {
     componentDidMount() {
         // To-DO : Get selected company id
         
-        console.log("company Info : "+this.props.company);
-        console.log("User Info : "+this.props.userInfo);
         const companyId = this.props.company.compid;
         const jobSeekerId = this.props.userInfo.id;
+        console.log("company id : "+companyId);
+        console.log("User id : "+jobSeekerId);
         let { reviewDetails } = this.state;
         const currentPage = 1;
         reviewDetails = [];
