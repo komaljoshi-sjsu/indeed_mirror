@@ -1,19 +1,19 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import '../../CSS/Messenger.css'
-import Conversation from './Conversation'
+import { format } from "timeago.js";
 
-const Message = ({own}) => {
+export default function Message({ message, own }) {
 
     return (
         <div className={own ? "message own" : "message"}>
             <div className="messageTop">
-                <p className="messageText">This is a message very long just to text jaghjffa,fniklgh juofuoefg ieug9wg kiugou9weg iuef9pwug iyhwfgiwye</p>
+                <p className="messageText">                   
+                    {message.messageText}
+                </p>
             </div>
             <div className="messageBottom">
-                1 hr ago
+            {format(message.createdAt)}
             </div>
         </div>
     );
 }
-
-export default Message;

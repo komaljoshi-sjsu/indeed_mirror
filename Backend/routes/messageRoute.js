@@ -15,11 +15,13 @@ router.post("/api/addNewMessage", async (req, res) => {
     }
 });
 
-router.get("/api/getConversation/:conversationId", async (req, res) => {
+router.get("/api/getMessages/:conversationId", async (req, res) => {
     try {
+      console.log(req.params.conversationId);
       const messages = await Message.find({
         conversationId: req.params.conversationId,
       });
+      console.log(messages);
       res.status(200).json(messages);
     } catch (err) {
         res.status(500).send("Error occurred while retrieving message by conversation id");
@@ -28,7 +30,7 @@ router.get("/api/getConversation/:conversationId", async (req, res) => {
 
 
 router.get("/api/getAllJobSeekers", async (req, res) => {
-    const query = "select id, name, email from JobSeeker";
+    const query = "select name as label, id as value from JobSeeker";
     conn.query(query, async function (err, rows) {
       if (err) {
         console.log("Error occurred while retreiving job seekers");
@@ -36,8 +38,8 @@ router.get("/api/getAllJobSeekers", async (req, res) => {
           .status(400)
           .send("Error occurred while retreiving job seekers");
       }
-      console.log("Query executed: ", rows[0]);
-      res.status(200).send(rows[0]);
+      console.log("Query executed: ", rows);
+      res.status(200).send(rows);
     });
 });
 

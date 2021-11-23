@@ -60,6 +60,14 @@
     color: white;
 }
 
+.noConversationMsg {
+    position: absolute;
+    top: 10%;
+    font-size: 50px;
+    color: rgb(224, 220, 220);
+    cursor: default;
+  }
+
 .message {
     display: flex;
     flex-direction: column;

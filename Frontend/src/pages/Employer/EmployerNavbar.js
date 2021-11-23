@@ -111,8 +111,15 @@ class EmployerNavbar extends Component {
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link">
+                    <Link to="/messenger"
+                      style={{
+                        textDecoration: 'none',
+                        color: '#474747',
+                      }}
+                    >
                       <h5 style={{ color: 'black' }}><IoMdChatboxes /></h5>
+                      </Link>
                     </a>
                   </li>
                   <li class="nav-item">

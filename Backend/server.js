@@ -27,6 +27,8 @@ app.use(
 require('./models/JobSeeker')
 require('./models/Company')
 require('./models/Photo')
+require('./models/Conversation')
+require('./models/Message')
 
 //Define all the routes
 app.use(require('./routes/loginRoute'))
