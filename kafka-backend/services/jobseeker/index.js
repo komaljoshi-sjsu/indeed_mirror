@@ -5,6 +5,8 @@ const { companyReviewsPaginated } = require("./companyReviewsPaginated");
 const { companyReviewsRatingSort } = require("./companyReviewsRatingSort");
 const {companyReviewsDateSort } = require("./companyReviewsDateSort");
 const {companyReviewsHelpfulSort } = require("./companyReviewsHelpfulSort");
+const {companyReviewsRatingFilter } = require("./companyReviewsRatingFilter");
+const {companyReviewsRatingFilterTotal } = require("./companyReviewsRatingFilterTotal");
 const {updateHelpfulCount } = require("./updateHelpfulCount");
 const {saveReview } = require("./saveReview");
 const {allReviews } = require("./allReviews");
@@ -30,6 +32,12 @@ function handle_request(msg, callback) {
         case "companyReviewsHelpfulSort":
             companyReviewsHelpfulSort(msg,callback);
             break;   
+        case "companyReviewsRatingFilter":
+            companyReviewsRatingFilter(msg,callback);
+            break; 
+        case "companyReviewsRatingFilterTotal":
+            companyReviewsRatingFilterTotal(msg,callback);
+            break; 
         case "updateHelpfulCount":
             updateHelpfulCount(msg,callback);
             break; 

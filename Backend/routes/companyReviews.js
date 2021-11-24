@@ -39,7 +39,7 @@ router.get("/companyReviewsPaginated", (req, res) => {
             console.log("No reviews available!");
             res.end("No reviews available!!");
         }
-    });	
+    }); 
 });
 // router.get("/companyReviewsPaginated", (req, res) => {
 
@@ -50,7 +50,7 @@ router.get("/companyReviewsPaginated", (req, res) => {
 //     const offset = (pageNumber - 1) * limit;
 //     console.log("pageNumber" +pageNumber);
 //     console.log("offset" +offset);
-// 	let sql = 'SELECT r.*, c.companyName FROM Review r, Company c where r.companyId='+mysql.escape(queryObject.companyId)+ ' and r.companyId = c.companyId and r.isFeatured=1 and r.adminReviewStatus=? ORDER BY FIELD(jobSeekerId, ?) DESC LIMIT ?,?' ;
+//  let sql = 'SELECT r.*, c.companyName FROM Review r, Company c where r.companyId='+mysql.escape(queryObject.companyId)+ ' and r.companyId = c.companyId and r.isFeatured=1 and r.adminReviewStatus=? ORDER BY FIELD(jobSeekerId, ?) DESC LIMIT ?,?' ;
 //     console.log(sql);
 //     connection.query(sql, [adminReviewStatus, queryObject.jobSeekerId, offset, limit], (err, results) => {
 //         if (err) {
@@ -74,7 +74,7 @@ router.get("/companyReviewsPaginated", (req, res) => {
 //             console.log("No reviews available!");
 //             res.end("No reviews available!!");
 //         }
-//     });	
+//     });  
 // });
 
 router.get("/companyReviewsRatingSort", (req, res) => {
@@ -104,7 +104,7 @@ router.get("/companyReviewsRatingSort", (req, res) => {
             console.log("No reviews available!");
             res.end("No reviews available!!");
         }
-    });	
+    }); 
 });
 
 
@@ -118,7 +118,7 @@ router.get("/companyReviewsRatingSort", (req, res) => {
 //     const offset = (pageNumber - 1) * limit;
 //     console.log("pageNumber" +pageNumber);
 //     console.log("offset" +offset);
-// 	let sql = 'SELECT r.*, c.companyName FROM Review r, Company c where r.companyId='+mysql.escape(queryObject.companyId)+ ' and r.companyId = c.companyId and r.isFeatured=1 and r.adminReviewStatus=? ORDER BY rating DESC LIMIT ?,?' ;
+//  let sql = 'SELECT r.*, c.companyName FROM Review r, Company c where r.companyId='+mysql.escape(queryObject.companyId)+ ' and r.companyId = c.companyId and r.isFeatured=1 and r.adminReviewStatus=? ORDER BY rating DESC LIMIT ?,?' ;
 //     console.log(sql);
 //     connection.query(sql, [adminReviewStatus, offset, limit], (err, results) => {
 //         if (err) {
@@ -142,7 +142,7 @@ router.get("/companyReviewsRatingSort", (req, res) => {
 //             console.log("No reviews available!");
 //             res.end("No reviews available!!");
 //         }
-//     });	
+//     });  
 // });
 
 router.get("/companyReviewsDateSort", (req, res) => {
@@ -173,44 +173,100 @@ router.get("/companyReviewsDateSort", (req, res) => {
             console.log("No reviews available!");
             res.end("No reviews available!!");
         }
-    });	
+    }); 
 });
 
 router.get("/companyReviewsHelpfulSort", (req, res) => {
 
-    console.log("Inside sort");
-    const queryObject = url.parse(req.url,true).query;
-    const adminReviewStatus = 'APPROVED';
-    const pageNumber = queryObject.currentPage;
-    const limit = 5;
-    const offset = (pageNumber - 1) * limit;
-    console.log("pageNumber" +pageNumber);
-    console.log("offset" +offset);
-	let sql = 'SELECT r.*, c.companyName FROM Review r, Company c where r.companyId='+mysql.escape(queryObject.companyId)+ ' and r.companyId = c.companyId and r.isFeatured=1 and r.adminReviewStatus=? ORDER BY yesReviewHelpfulCount DESC LIMIT ?,?' ;
-    console.log(sql);
-    connection.query(sql, [adminReviewStatus, offset, limit], (err, results) => {
+    let msg = {};
+    msg.route = "companyReviewsHelpfulSort";
+    msg.url = req.url;
+    kafka.make_request("jobseeker", msg, function (err, results) {
         if (err) {
             res.writeHead(401,{
                 'Content-Type' : 'application/json'
             });
             res.end("Server error. Please try again later!");
         }
-        else if(results.length > 0){
+        else if (results.status === '200'){
             res.writeHead(200,{
                 'Content-Type' : 'application/json'
             });
             
-            console.log("Review data : ",JSON.stringify(results));
-            res.end(JSON.stringify(results));
+            console.log("Review data : ",JSON.stringify(results.data));
+            res.end(JSON.stringify(results.data));
             
-        }else{
+        }
+        else{
             res.writeHead(400,{
                 'Content-Type' : 'application/json'
             });
             console.log("No reviews available!");
             res.end("No reviews available!!");
         }
-    });	
+    }); 
+});
+
+router.get("/companyReviewsRatingFilterTotal", (req, res) => {
+
+    let msg = {};
+    msg.route = "companyReviewsRatingFilterTotal";
+    msg.url = req.url;
+    kafka.make_request("jobseeker", msg, function (err, results) {
+        if (err) {
+            res.writeHead(401,{
+                'Content-Type' : 'application/json'
+            });
+            res.end("Server error. Please try again later!");
+        }
+        else if (results.status === '200'){
+            res.writeHead(200,{
+                'Content-Type' : 'application/json'
+            });
+            
+            console.log("Review data : ",JSON.stringify(results.data));
+            res.end(JSON.stringify(results.data));
+            
+        }
+        else{
+            res.writeHead(400,{
+                'Content-Type' : 'application/json'
+            });
+            console.log("No reviews available!");
+            res.end("No reviews available!!");
+        }
+    }); 
+});
+
+router.get("/companyReviewsRatingFilter", (req, res) => {
+
+    let msg = {};
+    msg.route = "companyReviewsRatingFilter";
+    msg.url = req.url;
+    kafka.make_request("jobseeker", msg, function (err, results) {
+        if (err) {
+            res.writeHead(401,{
+                'Content-Type' : 'application/json'
+            });
+            res.end("Server error. Please try again later!");
+        }
+        else if (results.status === '200'){
+            res.writeHead(200,{
+                'Content-Type' : 'application/json'
+            });
+            
+            console.log("Review data : ",JSON.stringify(results.data));
+            res.end(JSON.stringify(results.data));
+            
+        }
+        else{
+            res.writeHead(400,{
+                'Content-Type' : 'application/json'
+            });
+            console.log("No reviews available!");
+            res.end("No reviews available!!");
+        }
+    }); 
 });
 
 router.get("/companyReviews", (req, res) => {
@@ -241,39 +297,8 @@ router.get("/companyReviews", (req, res) => {
             console.log("No reviews available!");
             res.end("No reviews available!!");
         }
-    });	
+    }); 
 });
-
-// router.get("/companyReviews", (req, res) => {
-
-//     const queryObject = url.parse(req.url,true).query;
-//     const adminReviewStatus = 'APPROVED';
-// 	let sql = 'SELECT r.*, c.companyName FROM Review r, Company c where r.companyId='+mysql.escape(queryObject.companyId)+ ' and r.companyId = c.companyId and r.isFeatured=1 and r.adminReviewStatus=?' ;
-//     console.log(sql);
-//     connection.query(sql, [adminReviewStatus], (err, results) => {
-//         if (err) {
-//             res.writeHead(401,{
-//                 'Content-Type' : 'application/json'
-//             });
-//             res.end("Server error. Please try again later!");
-//         }
-//         else if(results.length > 0){
-//             res.writeHead(200,{
-//                 'Content-Type' : 'application/json'
-//             });
-            
-//             console.log("Review data : ",JSON.stringify(results));
-//             res.end(JSON.stringify(results));
-            
-//         }else{
-//             res.writeHead(400,{
-//                 'Content-Type' : 'application/json'
-//             });
-//             console.log("No reviews available!");
-//             res.end("No reviews available!!");
-//         }
-//     });	
-// });
 
 router.post("/updateHelpfulCount", (req, res) => {
 

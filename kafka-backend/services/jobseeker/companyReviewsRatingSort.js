@@ -10,9 +10,19 @@ let companyReviewsRatingSort = async (req, callback) => {
         const offset = (pageNumber - 1) * limit;
         console.log("pageNumber" +pageNumber);
         console.log("offset" +offset);
-        let sql = 'SELECT r.*, c.companyName FROM Review r, Company c where r.companyId='+mysql.escape(queryObject.companyId)+ ' and r.companyId = c.companyId and r.isFeatured=1 and r.adminReviewStatus=? ORDER BY rating DESC LIMIT ?,?' ;
+        const ratingSel = queryObject.ratingSel;
+        console.log(ratingSel);
+        let sql = '';
+        let data = [];
+        if(ratingSel != null && ratingSel !== '' && ratingSel !== undefined){
+            sql = 'SELECT r.*, c.companyName FROM Review r, Company c where r.companyId='+mysql.escape(queryObject.companyId)+ ' and r.companyId = c.companyId and r.isFeatured=1 and r.adminReviewStatus=? and r.rating=? ORDER BY rating DESC LIMIT ?,?' ;
+            data = [adminReviewStatus, ratingSel, offset, limit];
+        }else{
+            sql = 'SELECT r.*, c.companyName FROM Review r, Company c where r.companyId='+mysql.escape(queryObject.companyId)+ ' and r.companyId = c.companyId and r.isFeatured=1 and r.adminReviewStatus=? ORDER BY rating DESC LIMIT ?,?' ;
+            data = [adminReviewStatus, offset, limit];
+        }
         console.log(sql);
-        connection.query(sql, [adminReviewStatus, offset, limit], (err, results) => {
+        connection.query(sql, data, (err, results) => {
             if (err) {
                 callback(err, null);
             }
