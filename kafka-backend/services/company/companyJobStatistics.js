@@ -12,7 +12,8 @@ let companyJobStatistics = async (req, callback) => {
         conn.query(countQuery, [companyId,hired], (error, rows) => {
             if (error) {
                 console.log(error)
-                res.status(400).send("Error occured while retrieving company details");
+                callback(null,error)
+                //res.status(400).send("Error occured while retrieving company details");
             } else{
                 conn.query(countQuery, [companyId,reject], function (err, rows2) {
                   if (err) {
