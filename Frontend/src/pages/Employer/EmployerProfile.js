@@ -615,7 +615,7 @@ class EmployerProfile extends Component {
                         <span style={{color:'red'}}>{errors.companySize}</span>
                         <Row> 
                         &nbsp;&nbsp;&nbsp;<input className="detinput"
-                        name="companySize"
+                        name="companySize" type="number"
                         value={this.state.companySize }
                         onChange={this.handleChange}></input>
                         </Row>

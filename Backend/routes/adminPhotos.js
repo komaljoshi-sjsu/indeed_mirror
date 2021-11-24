@@ -2,62 +2,44 @@ const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
 const Photo = mongoose.model('Photo')
+const kafka = require('../kafka/client');
 //const { checkAuth } = require("../config/passport");
+router.get('/api/getAdminPhotos/', function (req, res) {
+  console.log("getAdminPhotos.....")
+   let msg = {};
+   msg.route = "getAdminPhotos";
+   msg.query = req.query;
+   //msg = req.body;
+   kafka.make_request("admin", msg, function (err, results) {
+       if (err) {
+           console.log(err);
+           return res.status(400).send({...results,err:err});
+       }
+       else {
+           console.log(results)
+           res.status(200).json({ photos: results.photos, count: results.count })
+           
+       }
+   });
+});
+router.post('/api/setPhotoStatus/', function (req, res) {
+  console.log("setPhotoStatus.....")
+   let msg = {};
+   msg.route = "setPhotoStatus";
+   msg.body = req.body;
+   //msg = req.body;
+   kafka.make_request("admin", msg, function (err, results) {
+       if (err) {
+           console.log(err);
+           return res.status(400).send({...results,err:err});
+       }
+       else {
+           console.log(results)
+           res.status(200).json({ photos: results.photos })
+           
+       }
+   });
+});
 
-router.post('/api/setPhotoStatus', async (req, res) => {
-  console.log(req.body)
-  const { _id, photoAdminReviewedStatus } = req.body
-  try {
-    Photo.findByIdAndUpdate(_id, {
-      $set: {
-        photoAdminReviewedStatus: photoAdminReviewedStatus,
-      },
-    })
-      .then((result) => {
-        console.log(result)
-        return res.status(200).json({ photos: result })
-      })
-      .catch((err) => {
-        console.log('Error occured while querying')
-        return res
-          .status(400)
-          .send('Error occurred while retrieving all photos')
-      })
-  } catch {
-    ;(err) => {
-      return res.status(400).json({ error: err })
-    }
-  }
-})
-
-router.get('/api/getAdminPhotos/', async (req, res) => {
-  const query = JSON.parse(req.query.data)
-  const photoAdminReviewedStatus = query.photoAdminReviewedStatus
-  const postsPerPage = 5
-  const currentPage = query.currentPage
-  try {
-    Photo.find({ photoAdminReviewedStatus: photoAdminReviewedStatus })
-      .limit(postsPerPage)
-      .skip(postsPerPage * (currentPage - 1))
-      .then((result) => {
-        Photo.find({ photoAdminReviewedStatus: photoAdminReviewedStatus })
-          .count()
-          .then((r1) => {
-            //console.log(result)
-            return res.status(200).json({ photos: result, count: r1 })
-          })
-      })
-      .catch((err) => {
-        console.log('Error occured while querying')
-        return res
-          .status(400)
-          .send('Error occurred while retrieving all photos')
-      })
-  } catch {
-    ;(err) => {
-      return res.status(400).json({ error: err })
-    }
-  }
-})
 
 module.exports = router

@@ -560,7 +560,7 @@ class EmployerProfile extends Component {
                   
                   </Col>  
                   <Col>
-                  <label className="dethead1">Revenue :</label><label className="dethead">{this.state.employerDetails.revenue}</label>
+                  <label className="dethead1">Revenue (in billion) :</label><label className="dethead">{this.state.employerDetails.revenue}</label>
                  
                   </Col>
               </Row>
@@ -609,9 +609,18 @@ class EmployerProfile extends Component {
        }else if(!this.state.compdetails){
         compdetailscol = (
             <div>
+              
                 <Col>
                 <span style={{color:'red'}}>* </span> <span style={{color:'gray'}}>Required Fields</span>
                 <Row>
+                <Col>
+                    <label className="dethead1">Company Name : </label><label className="dethead">{this.state.employerDetails.companyName}</label>
+                </Col>
+                <Col>
+                 <img src={this.state.employerDetails.logo} style={{ maxHeight: '5rem', maxWidth: '10rem' }}/>
+                </Col>
+                </Row>
+                {/* <Row>
                  <label>Company Name<span style={{color:'red'}}>*</span></label>
                  </Row>
                  <span style={{color:'red'}}>{errors.companyName}</span>
@@ -619,14 +628,14 @@ class EmployerProfile extends Component {
                  &nbsp;&nbsp;&nbsp;<input className="detinput" name="companyName"
                  value={this.state.employerDetails.companyName }
                  onChange={(e) => { this.handleChangeCompanyName(e)}}></input>
-                 </Row>
+                 </Row> */}
                  <br/>
-                 <Row>
+                 {/* <Row>
                  &nbsp;&nbsp;Company Logo: 
                  <input className="filefolder" type="file" onChange={this.saveFile}/>
                  
                  &nbsp;&nbsp;&nbsp;<button onClick={this.uploadFile} style={{width:'100px'}}>Upload</button>  
-                 </Row>    
+                 </Row>     */}
                  <br/>
                  <Row>
                  <label>Website<span style={{color:'red'}}>*</span></label>
@@ -644,7 +653,7 @@ class EmployerProfile extends Component {
                  <span style={{color:'red'}}>{errors.companySize}</span>
                  <Row> 
                  &nbsp;&nbsp;&nbsp;<input className="detinput"
-                 name="companySize"
+                 name="companySize" type="number"
                  value={this.state.employerDetails.companySize }
                  onChange={(e) => { this.handleChangeCompanySize(e)}}></input>
                  </Row>
@@ -683,7 +692,7 @@ class EmployerProfile extends Component {
                  </Row>
                  <br/>
                  <Row>
-                 <label>Revenue<span style={{color:'red'}}>*</span></label>
+                 <label>Revenue (in billion)<span style={{color:'red'}}>*</span></label>
                  </Row>
                  <span style={{color:'red'}}>{errors.revenue}</span>
                  <Row> 

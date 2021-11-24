@@ -58,6 +58,7 @@ const AddSalaryReview = (props) => {
 
 
       axios.get(`${backendServer}/getCompanyDetails`) .then((response) => {
+        
         console.log(response);
         if (response.status === 200) {
           setCompanyDtls(response.data);

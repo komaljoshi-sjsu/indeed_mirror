@@ -1,6 +1,8 @@
 var connection =  new require('./kafka/Connection');
 const jobseeker = require('./services/jobseeker');
 const employer = require('./services/employer');
+const company = require('./services/company');
+const admin = require('./services/admin');
 const conn2 = require('./config/mongo_connection')
 const conn1 = require('./config/mysql_connection')
 
@@ -45,3 +47,5 @@ function handleTopicRequest(topic_name,fname){
 //second argument is a function that will handle this topic request
 handleTopicRequest("jobseeker",jobseeker);
 handleTopicRequest("employer",employer);
+handleTopicRequest("admin",admin);
+handleTopicRequest("company",company);

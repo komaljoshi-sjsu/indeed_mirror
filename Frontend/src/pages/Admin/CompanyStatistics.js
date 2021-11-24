@@ -17,7 +17,7 @@ const CompanyStatistics = (props) => {
   
   const getStatistics = async () =>{
     const statDtls = await axios("/companyJobStatistics", {params:{data:companyId}});
-    //console.log(statDtls)
+    
     setHiredArray(statDtls.data.hired.map(function (el) { return el.count; }));
     setRejectArray(statDtls.data.rejected.map(function (el) { return el.count; }));
     setYearArray(statDtls.data.hired.map(function (el) { return el.year; }));
