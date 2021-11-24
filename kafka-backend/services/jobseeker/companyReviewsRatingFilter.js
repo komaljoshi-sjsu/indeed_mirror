@@ -1,24 +1,23 @@
 const connection = require("../../config/mysql_connection");
 var mysql = require("mysql");
 const url = require('url');
-let companyReviewsHelpfulSort = async (req, callback) => {
+let companyReviewsRatingFilter = async (req, callback) => {
     try {
         const queryObject = url.parse(req.url,true).query;
         const adminReviewStatus = 'APPROVED';
         const pageNumber = queryObject.currentPage;
         const limit = 5;
         const offset = (pageNumber - 1) * limit;
+        const rating = queryObject.ratingSel;
         console.log("pageNumber" +pageNumber);
         console.log("offset" +offset);
-        const ratingSel = queryObject.ratingSel;
-        console.log(ratingSel);
         let sql = '';
         let data = [];
-        if(ratingSel != null && ratingSel !== '' && ratingSel !== undefined){
-            sql = 'SELECT r.*, c.companyName FROM Review r, Company c where r.companyId='+mysql.escape(queryObject.companyId)+ ' and r.companyId = c.companyId and r.isFeatured=1 and r.adminReviewStatus=? and r.rating=? ORDER BY yesReviewHelpfulCount-noHelpfulCount DESC LIMIT ?,?' ;
-            data = [adminReviewStatus, ratingSel, offset, limit];
+        if(rating != null && rating !== '' && rating !== undefined){
+            sql = 'SELECT r.*, c.companyName FROM Review r, Company c where r.companyId='+mysql.escape(queryObject.companyId)+ ' and r.companyId = c.companyId and r.isFeatured=1 and r.adminReviewStatus=? and rating=? LIMIT ?,?' ;
+            data = [adminReviewStatus, rating, offset, limit];
         }else{
-            sql = 'SELECT r.*, c.companyName FROM Review r, Company c where r.companyId='+mysql.escape(queryObject.companyId)+ ' and r.companyId = c.companyId and r.isFeatured=1 and r.adminReviewStatus=? ORDER BY yesReviewHelpfulCount-noHelpfulCount DESC LIMIT ?,?' ;
+            sql = 'SELECT r.*, c.companyName FROM Review r, Company c where r.companyId='+mysql.escape(queryObject.companyId)+ ' and r.companyId = c.companyId and r.isFeatured=1 and r.adminReviewStatus=? LIMIT ?,?' ;
             data = [adminReviewStatus, offset, limit];
         }
         console.log(sql);
@@ -47,7 +46,7 @@ let companyReviewsHelpfulSort = async (req, callback) => {
     }
 
 };
-exports.companyReviewsHelpfulSort = companyReviewsHelpfulSort;
+exports.companyReviewsRatingFilter = companyReviewsRatingFilter;
 
 
 
