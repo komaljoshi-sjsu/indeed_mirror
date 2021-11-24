@@ -199,6 +199,7 @@ class EmployerProfile extends Component {
         this.setState({
             errors: {},
           });
+          console.log("Errors",this.state.errors)
       } 
       handleChangeState = (e) =>{
         const { employerDetails }= this.state;
@@ -261,6 +262,7 @@ class EmployerProfile extends Component {
         
     }
     findFormErrorsEmp = () => {
+      var pattern = new RegExp(/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?0-9]/);
       const {employerDetails,errors} = this.state;
       if(!employerDetails.name || employerDetails.name === '') errors.employerName = 'Employer Name cannot be blank!';
       if(!employerDetails.roleInCompany || employerDetails.roleInCompany === '') errors.roleInCompany = 'Role cannot be blank!';
@@ -269,6 +271,8 @@ class EmployerProfile extends Component {
       if(!employerDetails.state || employerDetails.state === '') errors.state = 'State cannot be blank!';
       if(!employerDetails.country || employerDetails.country === '') errors.country = 'Country cannot be blank!';
       if(!employerDetails.zipcode || employerDetails.zipcode === '') errors.zipcode = 'Zipcode cannot be blank!';  
+      if (pattern.test(employerDetails.state)) errors.state = 'State cannot contain digits and special characters!';
+      if (pattern.test(employerDetails.city)) errors.city = 'City cannot contain digits and special characters!';
       return errors;
     }
     findFormErrorsCompany = () => {
@@ -396,7 +400,6 @@ class EmployerProfile extends Component {
     }
     render() {
        const {successMsg,errorMsg,updated,companyupdated,errors} = this.state;
-       console.log(this.state.employerDetails.zipcode)
        var empdetailscol = null;    
        var compdetailscol = null; 
        if(this.state.empdetails || updated){
@@ -617,9 +620,12 @@ class EmployerProfile extends Component {
                  value={this.state.employerDetails.companyName }
                  onChange={(e) => { this.handleChangeCompanyName(e)}}></input>
                  </Row>
+                 <br/>
                  <Row>
-                 <input className="filefolder" type="file" onChange={this.saveFile} />
-                 <button onClick={this.uploadFile}>Upload</button>  
+                 &nbsp;&nbsp;Company Logo: 
+                 <input className="filefolder" type="file" onChange={this.saveFile}/>
+                 
+                 &nbsp;&nbsp;&nbsp;<button onClick={this.uploadFile} style={{width:'100px'}}>Upload</button>  
                  </Row>    
                  <br/>
                  <Row>

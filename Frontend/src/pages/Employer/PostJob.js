@@ -2,7 +2,7 @@
 import { React, Component} from 'react';
 import axios from 'axios';
 import {
-    Form, Button, Row, Col, Card, Container,
+    Form, Button, Row, Col, Card, Container, FormControl,
   } from 'react-bootstrap';
 import { CountryDropdown } from 'react-country-region-selector';
 import backendServer from '../../webConfig';
@@ -61,20 +61,23 @@ class PostJob extends Component {
 		    history.push("/employer");
       }
       findFormErrors = () => {
+        var pattern = new RegExp(/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?0-9]/);
         const { companyName, jobTitle, industry, city, shortJobDescription, salaryDetails,
             streetAddress, state, zipcode,country, jobMode, jobType, errors } = this.state;
         if (!companyName || companyName === '') errors.companyName = 'Company Name cannot be blank!';
         if (!jobTitle || jobTitle === '') errors.jobTitle = 'Job Title cannot be blank!';
-        if (!industry || industry === '') errors.industry = 'Please select the industry!';
+        if (!industry || industry === '') errors.industry = 'Please select a industry!';
         if (!city || city === '') errors.city = 'City cannot be blank!';
         if (!shortJobDescription || shortJobDescription === '') errors.shortJobDescription = 'Job Description cannot be blank!';
         if (!salaryDetails || salaryDetails === '') errors.salaryDetails = 'Salary Details cannot be blank!';
         if (!streetAddress || streetAddress === '') errors.streetAddress = 'Street Address cannot be blank!';
-        if (!state || state === '') errors.state = 'State cannot be blank!';
+        if (!state || state === '' ) errors.state = 'State cannot be blank!';
         if (!zipcode || zipcode === '') errors.zipcode = 'Zip code cannot be blank!';
-        if (!country || country === '') errors.country = 'Please select the country!';
-        if (!jobMode || jobMode === '') errors.jobMode = 'Please select the Job Mode!';
-        if (!jobType || jobType === '') errors.jobType = 'Please select the Job Type!';
+        if (!country || country === '') errors.country = 'Please select a country!';
+        if (!jobMode || jobMode === '') errors.jobMode = 'Please select a Job Mode!';
+        if (!jobType || jobType === '') errors.jobType = 'Please select a Job Type!';
+        if (pattern.test(state)) errors.state = 'State cannot contain digits and special characters!';
+        if (pattern.test(city)) errors.city = 'City cannot contain digits and special characters!';
         return errors;
       }
     handleSubmit = (e) => {
@@ -151,7 +154,8 @@ class PostJob extends Component {
         const { companyName, jobTitle, industry, city, shortJobDescription, salaryDetails,
             streetAddress, state, zipcode,country, errors,successMsg, errorMsg,
             qualifications, responsibilities, loveJobRole } = this.state;
-            console.log(successMsg)
+            // console.log(successMsg)
+            // console.log(errors)
       return (
         <div>
             
@@ -362,20 +366,20 @@ class PostJob extends Component {
               </Col>
             </Row>
             <Row>
-              <Col><b>Country</b></Col>
+              <Col><b>Country </b></Col>
               </Row>
               <Row>
               <Col>
                 <Form.Group className="mb-3">
-                  <CountryDropdown
+                  <CountryDropdown 
                     value={country}
                     onChange={(val) => this.handleChangeCountry(val)}
                     isInvalid={!!errors.country}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    { errors.country }
-                  </Form.Control.Feedback>
+                  /> 
+                  <br/>
+                   <label style={{color:"red"}}>{errors.country}</label>
                 </Form.Group>
+               
               </Col>
             </Row>
             <Row>

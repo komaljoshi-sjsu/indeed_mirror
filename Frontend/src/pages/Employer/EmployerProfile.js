@@ -193,10 +193,12 @@ class EmployerProfile extends Component {
             .then(response=> {
                console.log(response)
                compid = response.data[0].companyId;
-                const companyname = response.data[0].companyName;
-                this.props.setCompId(compid);
+               const companyname = response.data[0].companyName;
+               const logo = response.data[0].logo;
+               console.log(logo)
+               this.props.setCompId(compid);
                  
-                    axios.post(`${backendServer}/api/createCompanyMongo`,{compid,companyname})
+                    axios.post(`${backendServer}/api/createCompanyMongo`,{compid,companyname,logo})
                     .then(response=> {
                         if(response.status === 200){
                             
@@ -621,8 +623,9 @@ class EmployerProfile extends Component {
                  </Row>
                  <br/>
                  <Row>
+                 &nbsp;&nbsp;Company Logo:    
                  <input className="filefolder" type="file" onChange={this.saveFile} />
-                 <button onClick={this.uploadFile}>Upload</button>  
+                 &nbsp;&nbsp;&nbsp;<button onClick={this.uploadFile} style={{width:'100px'}}>Upload</button>  
                  </Row> 
                  <br/>
                  <Row>

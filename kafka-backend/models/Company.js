@@ -10,6 +10,10 @@ const comSchema = new Schema({
     type: String,
     required: true,
   },
+  logo: {
+    type: String,
+    required: true,
+  },
   avgWorkHappinessScore: {
     type: Number,
   },

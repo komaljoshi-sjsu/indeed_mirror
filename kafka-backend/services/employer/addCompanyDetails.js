@@ -18,7 +18,7 @@ let addCompanyDetails = async (req, callback) => {
                     
                     // res.send(200).json({companyId:companyId})
 					//res.end("Company Added  successfully!");
-                    let sql_companyid = "SELECT companyId,companyName FROM Company WHERE companyId = "+mysql.escape(companyId) ;
+                    let sql_companyid = "SELECT companyId,companyName,logo FROM Company WHERE companyId = "+mysql.escape(companyId) ;
                     let query1 = conn.query(sql_companyid, (error, result_id) => {
                     
                         if (error) {

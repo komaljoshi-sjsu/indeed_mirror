@@ -124,9 +124,11 @@ router.post("/api/createCompanyMongo", async (req, res) => {
   try {
     const { compid } = req.body;
     const { companyname } = req.body;
+    const { logo } = req.body;
     const companyDtls = new Company({
       companyId : compid,
       companyName:companyname,
+      logo:logo,
       avgWorkHappinessScore: 0.00,
       avgLearningScore: 0.00,
       avgAppreciationScore: 0.00,

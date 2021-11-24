@@ -26,7 +26,7 @@ class Employer extends Component {
       jobPreference:[],
       showprofile:false,
       curPage: 1,
-      pageSize: 1,
+      pageSize: 3,
       status:''
     }
     //this.getCurrentDate()
