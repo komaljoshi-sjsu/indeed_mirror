@@ -8,7 +8,9 @@ import backendServer from '../../webConfig';
 import '../../style/button-group.css';
 import { Link } from 'react-router-dom';
 import { AiFillStar } from 'react-icons/ai';
-import JobSeekerNavbar from './JobSeekerNavbar'
+import JobSeekerNavbar from './JobSeekerNavbar';
+import { withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 class Reviews extends Component {
     constructor(props) {
@@ -37,6 +39,13 @@ class Reviews extends Component {
         this.setState({
           [e.target.name]: e.target.value,
         });
+      }
+
+      handleCompanyLink = (e, companyId, companyName)  => {
+        const payload1 = companyName;
+        this.props.companyName(payload1);
+        const payload2 = companyId;
+        this.props.companyId(payload2);
       }
 
       handleSubmit = () => {
@@ -79,15 +88,15 @@ class Reviews extends Component {
                   <ListGroup style={{ width: '50rem', margin: '0.1em', border: 'none' }}>
                     <ListGroup.Item>
                     <Row>
-                      <Col><img src="../../../images/user.png" alt="helo" style={{ maxHeight: '30px', maxWidth: '30px' }} /></Col>
-                      <Col><Link style={{color:'#2457a7', textDecoration: 'none'}} to="/snapshot"><h5>{review.companyName}</h5></Link>
+                      <Col><img src={review.logo} alt="helo" style={{ maxHeight: '80px', maxWidth: '80px' }} /></Col>
+                      <Col><Link style={{color:'#2457a7', textDecoration: 'none'}} to="/snapshot" onClick={(e) => { this.handleCompanyLink(e, review.companyId, review.companyName) }}><h5>{review.companyName}</h5></Link>
                       <Link style={{color:'black', textDecoration: 'none'}} to="/reviews">{review.companyAvgRating}</Link><AiFillStar /></Col>
-                      <Col><Link style={{color:'#2457a7', textDecoration: 'none'}} to="/reviews">Reviews</Link></Col>
+                      <Col><Link style={{color:'#2457a7', textDecoration: 'none'}} to="/reviews" onClick={(e) => { this.handleCompanyLink(e, review.companyId, review.companyName) }}>Reviews</Link></Col>
                       <Col>
-                            <Link style={{color:'#2457a7', textDecoration: 'none'}} to="/findSalaries">Salaries</Link>
+                            <Link style={{color:'#2457a7', textDecoration: 'none'}} to="/findSalaries" onClick={(e) => { this.handleCompanyLink(e, review.companyId, review.companyName) }}>Salaries</Link>
                             </Col>
                             <Col>
-                            <Link style={{color:'#2457a7', textDecoration: 'none'}} to="/findSalaries">Open Jobs</Link>
+                            <Link style={{color:'#2457a7', textDecoration: 'none'}} to="/jobs" onClick={(e) => { this.handleCompanyLink(e, review.companyId, review.companyName) }}>Open Jobs</Link>
                             </Col>
                         </Row>
                     </ListGroup.Item>
@@ -104,11 +113,11 @@ class Reviews extends Component {
             <Card style={{ width: '20rem', margin: '0.1em', border: 'none' }}>
                 <Card.Body>
                     <Row>
-                <Col xs={2}><img src="../../../images/user.png" alt="helo" style={{ maxHeight: '30px', maxWidth: '30px' }} /></Col>
-                <Col xs={5}>
-                <Link style={{color:'black', textDecoration: 'none'}} to="/snapshot"><h5>{review.companyName}</h5></Link>
+                <Col xs={2}><img src={review.logo} alt="helo" style={{ maxHeight: '60px', maxWidth: '80px' }} /></Col>
+                <Col sx={4}/>
+                <Col xs={8}>
+                <Link style={{color:'black', textDecoration: 'none'}} to="/snapshot" onClick={(e) => { this.handleCompanyLink(e, review.companyId, review.companyName) }}><h5>{review.companyName}</h5></Link>
                   </Col>
-                  <Col xs={4}/>
                   </Row>
                     <Row>  
                     <Col xs={5}>
@@ -122,15 +131,15 @@ class Reviews extends Component {
                   />
                   </Col>
                   <Col xs={4}>
-                  <Link style={{textDecoration: 'none'}} to="/reviews"><small>{review.noOfReviews}{' '}reviews</small></Link>
+                  <Link style={{textDecoration: 'none'}} to="/reviews" onClick={(e) => { this.handleCompanyLink(e, review.companyId, review.companyName) }}><small>{review.noOfReviews}{' '}reviews</small></Link>
                   </Col>
                   </Row>
                   <Row>
                       <Col xs={5}>
-                      <Link style={{color:'#7d7d7d', textDecoration: 'none'}} to="/findSalaries">Salaries</Link>
+                      <Link style={{color:'#7d7d7d', textDecoration: 'none'}} to="/findSalaries" onClick={(e) => { this.handleCompanyLink(e, review.companyId, review.companyName) }}>Salaries</Link>
                       </Col>
                       <Col xs={4}>
-                      <Link style={{color:'#7d7d7d', textDecoration: 'none'}} to="/findSalaries">Open Jobs</Link>
+                      <Link style={{color:'#7d7d7d', textDecoration: 'none'}} to="/jobs" onClick={(e) => { this.handleCompanyLink(e, review.companyId, review.companyName) }}>Open Jobs</Link>
                       </Col>
                   </Row>
               </Card.Body>
@@ -187,4 +196,24 @@ class Reviews extends Component {
       );
     }
   }
-  export default Reviews;
+
+  const mapDispatchToProps = (dispatch) => {
+    console.log('dispatching props')
+    return {
+      companyName: (payload) => {
+        dispatch({ type: 'setCompName', payload })
+      },
+      companyId: (payload) => {
+        dispatch({ type: 'setCompId', payload })
+      },
+    }
+  }
+
+  const mapStateToProps = (state) => ({
+    userInfo: state.userInfo,
+  })
+  
+  export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(withRouter(Reviews))
