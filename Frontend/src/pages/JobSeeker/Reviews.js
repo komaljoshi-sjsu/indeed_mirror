@@ -3,7 +3,7 @@ import { React, Component} from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux'
 import {
-    ButtonGroup, Button, Row, Col, Card, Container,
+    ButtonGroup, Button, Row, Col, Card, Container, Form,
   } from 'react-bootstrap';
 import { FaLongArrowAltDown } from 'react-icons/fa';
   import ReactStars from "react-rating-stars-component";
@@ -21,11 +21,16 @@ class Reviews extends Component {
         reviewDetailsRatingSort: [],
         reviewDetailsDateSort: [],
         reviewDetailsHelpfulSort: [],
+        reviewDetailsRatingFilter: [],
         openModal: false,
         rateSortFlag: false,
         dateSortFlag: false,
         helpfulSortFlag: false,
+        filterFlag: false,
         totalPosts: 0,
+        totalPostsFilter : 0,
+        ratingSel: '',
+        noReviewsMsg: ''
       };
     }
     
@@ -61,17 +66,34 @@ class Reviews extends Component {
             },
           })
             .then((response) => {
+              if(response.status === 200){
+                this.setState({
+                    reviewDetails: reviewDetails.concat(response.data),
+                    noReviewsMsg: ''
+                  });
+                }
+            })
+            .catch((error) => {
               this.setState({
-                  reviewDetails: reviewDetails.concat(response.data),
-                });
-            });
+                noReviewsMsg: 'No reviews available',
+              });
+          });
+      }
+
+      handleChange = (e) => {
+        this.setState({
+          [e.target.name]: e.target.value,
+        });
+        if(e.target.value === ''){
+          this.setState({filterFlag: false});
+        }
       }
 
       paginate = (pageNumber) => {
         let currentPage = pageNumber;
         const companyId = this.props.company.compid;
         const jobSeekerId = this.props.userInfo.id;
-        const { rateSortFlag, dateSortFlag, helpfulSortFlag } = this.state;
+        const { rateSortFlag, dateSortFlag, helpfulSortFlag, filterFlag, ratingSel } = this.state;
         if(rateSortFlag){
           let { reviewDetailsRatingSort } = this.state;
           reviewDetailsRatingSort = [];
@@ -85,8 +107,14 @@ class Reviews extends Component {
           .then((response) => {
             this.setState({
               reviewDetailsRatingSort: reviewDetailsRatingSort.concat(response.data),
+              noReviewsMsg: ''
               });
-          });
+          })
+          .catch((error) => {
+            this.setState({
+              noReviewsMsg: 'No reviews available',
+            });
+        });
         }
         else if(dateSortFlag){
           let { reviewDetailsDateSort } = this.state;
@@ -101,8 +129,14 @@ class Reviews extends Component {
           .then((response) => {
             this.setState({
               reviewDetailsDateSort: reviewDetailsDateSort.concat(response.data),
+              noReviewsMsg: ''
               });
-          });
+          })
+          .catch((error) => {
+            this.setState({
+              noReviewsMsg: 'No reviews available',
+            });
+        });
         }else if(helpfulSortFlag){
           let { reviewDetailsHelpfulSort } = this.state;
           reviewDetailsHelpfulSort = [];
@@ -116,8 +150,37 @@ class Reviews extends Component {
           .then((response) => {
             this.setState({
               reviewDetailsHelpfulSort: reviewDetailsHelpfulSort.concat(response.data),
+              noReviewsMsg: ''
               });
-          });
+          })
+          .catch((error) => {
+            this.setState({
+              noReviewsMsg: 'No reviews available',
+            });
+        });
+        }
+        else if(filterFlag){
+          let { reviewDetailsRatingFilter } = this.state;
+          reviewDetailsRatingFilter = [];
+          axios.get(`${backendServer}/companyReviewsRatingFilter`, {
+            params: {
+            companyId,
+            jobSeekerId,
+            currentPage,
+            ratingSel
+          },
+        })
+          .then((response) => {
+            this.setState({
+              reviewDetailsRatingFilter: reviewDetailsRatingFilter.concat(response.data),
+              noReviewsMsg: ''
+              });
+          })
+          .catch((error) => {
+            this.setState({
+              noReviewsMsg: 'No reviews available',
+            });
+        });
         }
         else{
           let { reviewDetails } = this.state;
@@ -132,8 +195,14 @@ class Reviews extends Component {
             .then((response) => {
               this.setState({
                   reviewDetails: reviewDetails.concat(response.data),
+                  noReviewsMsg: ''
                 });
-            });
+            })
+            .catch((error) => {
+              this.setState({
+                noReviewsMsg: 'No reviews available',
+              });
+          });
           }
       }
 
@@ -151,7 +220,7 @@ class Reviews extends Component {
         this.setState({ rateSortFlag: true, dateSortFlag: false, helpfulSortFlag: false });
         const companyId = this.props.company.compid;
         const jobSeekerId = this.props.userInfo.id;
-        let { reviewDetailsRatingSort } = this.state;
+        let { reviewDetailsRatingSort, ratingSel } = this.state;
         const currentPage = 1;
         reviewDetailsRatingSort = [];
         axios.get(`${backendServer}/companyReviewsRatingSort`, {
@@ -159,20 +228,27 @@ class Reviews extends Component {
             companyId,
             jobSeekerId,
             currentPage,
+            ratingSel
           },
         })
           .then((response) => {
             this.setState({
               reviewDetailsRatingSort: reviewDetailsRatingSort.concat(response.data),
+              noReviewsMsg: ''
               });
-          });
+          })
+          .catch((error) => {
+            this.setState({
+              noReviewsMsg: 'No reviews available',
+            });
+        });
       }
 
       dateSort = () => {
         this.setState({ rateSortFlag: false, dateSortFlag: true, helpfulSortFlag: false });
         const companyId = this.props.company.compid;
         const jobSeekerId = this.props.userInfo.id;
-        let { reviewDetailsDateSort } = this.state;
+        let { reviewDetailsDateSort, ratingSel } = this.state;
         const currentPage = 1;
         reviewDetailsDateSort = [];
         axios.get(`${backendServer}/companyReviewsDateSort`, {
@@ -180,20 +256,27 @@ class Reviews extends Component {
             companyId,
             jobSeekerId,
             currentPage,
+            ratingSel
           },
         })
           .then((response) => {
             this.setState({
               reviewDetailsDateSort: reviewDetailsDateSort.concat(response.data),
+              noReviewsMsg: ''
               });
-          });
+          })
+          .catch((error) => {
+            this.setState({
+              noReviewsMsg: 'No reviews available',
+            });
+        });
       }
 
       helpfulSort= () => {
         this.setState({ rateSortFlag: false, dateSortFlag: false, helpfulSortFlag: true });
         const companyId = this.props.company.compid;
         const jobSeekerId = this.props.userInfo.id;
-        let { reviewDetailsHelpfulSort } = this.state;
+        let { reviewDetailsHelpfulSort, ratingSel } = this.state;
         const currentPage = 1;
         reviewDetailsHelpfulSort = [];
         axios.get(`${backendServer}/companyReviewsHelpfulSort`, {
@@ -201,17 +284,71 @@ class Reviews extends Component {
             companyId,
             jobSeekerId,
             currentPage,
+            ratingSel
           },
         })
           .then((response) => {
             this.setState({
               reviewDetailsHelpfulSort: reviewDetailsHelpfulSort.concat(response.data),
+              noReviewsMsg: ''
+              });
+          })
+          .catch((error) => {
+            this.setState({
+              noReviewsMsg: 'No reviews available',
+            });
+        });
+      }
+
+      handleSearch = () => {
+        let { reviewDetailsRatingFilter, ratingSel } = this.state;
+      
+          this.setState({ rateSortFlag: false, dateSortFlag: false, helpfulSortFlag: false, filterFlag: true });
+          const companyId = this.props.company.compid;
+          const jobSeekerId = this.props.userInfo.id;
+          const currentPage = 1;
+          reviewDetailsRatingFilter = [];
+          axios.get(`${backendServer}/companyReviewsRatingFilterTotal`, {
+            params: {
+              companyId,
+              jobSeekerId,
+              ratingSel,
+            },
+          })
+            .then((response) => {
+              this.setState({
+                totalPostsFilter: response.data.length,
+                noReviewsMsg: ''
+                });
+            })
+            .catch((error) => {
+              this.setState({
+                noReviewsMsg: 'No reviews available',
+              });
+          });
+          axios.get(`${backendServer}/companyReviewsRatingFilter`, {
+            params: {
+              companyId,
+              jobSeekerId,
+              ratingSel,
+              currentPage,
+            },
+          })
+            .then((response) => {
+              this.setState({
+                reviewDetailsRatingFilter: reviewDetailsRatingFilter.concat(response.data),
+                noReviewsMsg: ''
+                });
+            })
+            .catch((error) => {
+              this.setState({
+                noReviewsMsg: 'No reviews available',
               });
           });
       }
 
       handleSubmit = (e, reviewId, type) => {
-        const { reviewDetails, reviewDetailsRatingSort, reviewDetailsDateSort, reviewDetailsHelpfulSort, rateSortFlag, helpfulSortFlag, dateSortFlag } = this.state;
+        const { reviewDetails, filterFlag, reviewDetailsRatingFilter,  reviewDetailsRatingSort, reviewDetailsDateSort, reviewDetailsHelpfulSort, rateSortFlag, helpfulSortFlag, dateSortFlag } = this.state;
         let inputData = '';
         if(rateSortFlag){
           const index = reviewDetailsRatingSort.findIndex((review) => review.reviewId === reviewId);
@@ -266,6 +403,23 @@ class Reviews extends Component {
             yesReviewHelpfulCount: reviews[index].yesReviewHelpfulCount,
             noHelpfulCount: reviews[index].noHelpfulCount,
           }
+        }else if(filterFlag){
+          const index = reviewDetailsRatingFilter.findIndex((review) => review.reviewId === reviewId);
+          const reviews = [...reviewDetailsRatingFilter];
+          if(type === 'Yes'){
+            const { yesReviewHelpfulCount } = reviews[index];
+            reviews[index].yesReviewHelpfulCount = yesReviewHelpfulCount+1;
+            this.setState({ reviewDetailsRatingFilter: reviews });
+          }else{
+            const { noHelpfulCount } = reviews[index];
+            reviews[index].noHelpfulCount = noHelpfulCount+1;
+            this.setState({ reviewDetailsRatingFilter: reviews });
+          }
+          inputData = {
+            reviewId: reviews[index].reviewId,
+            yesReviewHelpfulCount: reviews[index].yesReviewHelpfulCount,
+            noHelpfulCount: reviews[index].noHelpfulCount,
+          }
         }
         else{
           const index = reviewDetails.findIndex((review) => review.reviewId === reviewId);
@@ -304,25 +458,27 @@ class Reviews extends Component {
       // To-DO Fetch logged in userid from store
         console.log(this.props.location.flag);
         const jobSeekerId = this.props.userInfo.id;
-        const { reviewDetails, reviewDetailsRatingSort, reviewDetailsDateSort, reviewDetailsHelpfulSort, openModal, dateSortFlag, rateSortFlag, helpfulSortFlag, totalPosts } = this.state;
+        const { reviewDetails, ratingSel, filterFlag, totalPostsFilter, noReviewsMsg, reviewDetailsRatingFilter, reviewDetailsRatingSort, reviewDetailsDateSort, reviewDetailsHelpfulSort, openModal, dateSortFlag, rateSortFlag, helpfulSortFlag, totalPosts } = this.state;
         const loggedInUserReviews =  reviewDetails.filter((review) => review.jobSeekerId === jobSeekerId);
         const otherUserReviews = reviewDetails.filter((review) => review.jobSeekerId !== jobSeekerId);
         const companies = reviewDetails.map(review => review.companyName);
         const companyName = companies[0];
         console.log(reviewDetails);
         let sortedReviews =[];
-        if(rateSortFlag){
+        if((rateSortFlag && filterFlag) || rateSortFlag){
           sortedReviews = reviewDetailsRatingSort;
         }
-        if(dateSortFlag){
+        if((dateSortFlag && filterFlag) || dateSortFlag){
           sortedReviews = reviewDetailsDateSort;
         }
-        if(helpfulSortFlag){
+        if((helpfulSortFlag && filterFlag) || helpfulSortFlag){
           sortedReviews = reviewDetailsHelpfulSort;
+        }
+        if(filterFlag && !rateSortFlag && !dateSortFlag && !helpfulSortFlag){
+          sortedReviews = reviewDetailsRatingFilter;
         }
         const sortedReviewsDisplay = sortedReviews.map((review) => (
           <div>
-            <br />
             <Card style={{ width: '60rem', margin: '0.8em' }}>
               <Card.Body>
                 <Row>
@@ -368,7 +524,6 @@ class Reviews extends Component {
         ));
         const userReviews = loggedInUserReviews.map((review) => (
             <div>
-              <br />
               <Card style={{ width: '60rem', margin: '0.8em' }}>
                 <Card.Body>
                   <Row>
@@ -461,36 +616,77 @@ class Reviews extends Component {
         <div>
           <CompanyTabs></CompanyTabs>
             <br></br>
-            <Container style={{ display: 'flex', justifyContent: 'flex-start' }}>
+            <Container style={{ display: 'flex', justifyContent: 'center' }}>
             
             <Card style={{ width: '60rem', margin: '0.8em', background:'whitesmoke' }}>
             <Card.Title>
               <br />
                <Row>
-                 <Col> <h4>{companyName}{' '} Reviews</h4>
+                 <Col> <h4>{' '}{companyName}{' '} Reviews</h4>
                  </Col>
+                 <Col />
                  <Col>
                  <Button onClick={this.addReview} style={{backgroundColor:'white', color:'#567cbb', border: '1px solid gray'}}><b>Review this company</b></Button>
                  </Col>
                 </Row>
             </Card.Title>
-            <Card.Body> 
-                <b>Sort By</b>{' '} 
+            <Card.Body>
+              <Row>
+              <Col>
+              <b>Search by rating</b>
+              </Col> 
+              <Col>
+              <Form.Group className="mb-3">
+                  <Form.Control as="select" value={ratingSel} name="ratingSel" onChange={this.handleChange}>
+                    <option value="">All</option>
+                    <option value="5">5</option>
+                    <option value="4.5">4.5</option>
+                    <option value="4">4</option>
+                    <option value="3.5">3.5</option>
+                    <option value="3">3</option>
+                    <option value="2.5">2.5</option>
+                    <option value="2">2</option>
+                    <option value="1.5">1.5</option>
+                    <option value="1">1</option>
+                    <option value="0.5">0.5</option>
+                  </Form.Control>
+                </Form.Group>
+                </Col>
+                <Col>
+                <Button variant='light' style={{backgroundColor:'white', color:'#567cbb', border: '1px solid gray'}} onClick={this.handleSearch}><b>Search</b></Button>{' '}
+                </Col>
+                </Row>
+                <Row>
+                  <Col>
+                <b>Sort By</b>{' '} </Col>
+                <Col>
             <ButtonGroup>
                 <Button className={helpfulSortFlag ? 'active' : 'customButton'} variant="light" onClick={this.helpfulSort}>Helpfulness<FaLongArrowAltDown /></Button>
                 <Button className={rateSortFlag ? 'active' : 'customButton'} variant="light" onClick={this.ratingSort}>Rating<FaLongArrowAltDown /></Button>
                 <Button className={dateSortFlag ? 'active' : 'customButton'} variant="light" onClick={this.dateSort}>Date<FaLongArrowAltDown /></Button>
             </ButtonGroup>
+            </Col>
+            <Col />
+            </Row>
               </Card.Body>
               </Card>
               </Container>
+              {noReviewsMsg !== '' && 
               <Container style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-              {(rateSortFlag || dateSortFlag || helpfulSortFlag) && sortedReviewsDisplay}
-              {(!rateSortFlag && !dateSortFlag && !helpfulSortFlag) && userReviews}
-              {(!rateSortFlag && !dateSortFlag && !helpfulSortFlag) && OtherReviews}
+              <Card style={{ width: '60rem', margin: '0.8em' }}>
+                <Card.Title>
+                <Row><Col>{noReviewsMsg}</Col></Row>
+                </Card.Title>
+              </Card>
+              </Container>}
+              <Container style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+              {(rateSortFlag || dateSortFlag || helpfulSortFlag || filterFlag) && noReviewsMsg === '' && sortedReviewsDisplay}
+              {(!rateSortFlag && !dateSortFlag && !helpfulSortFlag && !filterFlag) && noReviewsMsg === '' && userReviews }
+              {(!rateSortFlag && !dateSortFlag && !helpfulSortFlag && !filterFlag) && noReviewsMsg === '' && OtherReviews }
               </Container>
               <Container style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-              <Pagination postsPerPage={5} totalPosts={totalPosts} paginate={this.paginate}/>
+              {!filterFlag && noReviewsMsg === '' && <Pagination postsPerPage={5} totalPosts={totalPosts} paginate={this.paginate}/>}
+              {filterFlag &&  noReviewsMsg === '' && <Pagination postsPerPage={5} totalPosts={totalPostsFilter} paginate={this.paginate}/>}
               </Container>
               { openModal
                   ? (

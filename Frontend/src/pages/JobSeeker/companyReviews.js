@@ -93,7 +93,7 @@ class Reviews extends Component {
                       <Link style={{color:'black', textDecoration: 'none'}} to="/reviews">{review.companyAvgRating}</Link><AiFillStar /></Col>
                       <Col><Link style={{color:'#2457a7', textDecoration: 'none'}} to="/reviews" onClick={(e) => { this.handleCompanyLink(e, review.companyId, review.companyName) }}>Reviews</Link></Col>
                       <Col>
-                            <Link style={{color:'#2457a7', textDecoration: 'none'}} to="/findSalaries" onClick={(e) => { this.handleCompanyLink(e, review.companyId, review.companyName) }}>Salaries</Link>
+                            <Link style={{color:'#2457a7', textDecoration: 'none'}} to="/addSalaryReview" onClick={(e) => { this.handleCompanyLink(e, review.companyId, review.companyName) }}>Salaries</Link>
                             </Col>
                             <Col>
                             <Link style={{color:'#2457a7', textDecoration: 'none'}} to="/jobs" onClick={(e) => { this.handleCompanyLink(e, review.companyId, review.companyName) }}>Open Jobs</Link>
@@ -136,7 +136,7 @@ class Reviews extends Component {
                   </Row>
                   <Row>
                       <Col xs={5}>
-                      <Link style={{color:'#7d7d7d', textDecoration: 'none'}} to="/findSalaries" onClick={(e) => { this.handleCompanyLink(e, review.companyId, review.companyName) }}>Salaries</Link>
+                      <Link style={{color:'#7d7d7d', textDecoration: 'none'}} to="/addSalaryReview" onClick={(e) => { this.handleCompanyLink(e, review.companyId, review.companyName) }}>Salaries</Link>
                       </Col>
                       <Col xs={4}>
                       <Link style={{color:'#7d7d7d', textDecoration: 'none'}} to="/jobs" onClick={(e) => { this.handleCompanyLink(e, review.companyId, review.companyName) }}>Open Jobs</Link>
