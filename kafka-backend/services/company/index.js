@@ -3,6 +3,7 @@ const { getCompanyDetails } = require("./getCompanyDetails");
 const { getCompanyDetailsPaginated } = require("./getCompanyDetailsPaginated");
 const { searchAdminCompany } = require("./searchAdminCompany");
 const { companyJobStatistics } = require("./companyJobStatistics");
+const { getAllReviewsByCompanyId } = require("./getAllReviewsByCompanyId");
 
 function handle_request(msg, callback) {
     switch (msg.route) {
@@ -17,6 +18,9 @@ function handle_request(msg, callback) {
             break; 
         case "companyJobStatistics":    
             companyJobStatistics(msg,callback); 
+            break;  
+        case "getAllReviewsByCompanyId":    
+            getAllReviewsByCompanyId(msg,callback); 
             break;  
     }
     
