@@ -2,7 +2,7 @@ import { Button, Modal, Form } from "react-bootstrap";
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-
+import {useSelector} from 'react-redux';
 const UploadPhotos = (props) => {
   const [show, setShow] = useState(false);
   const [photo, setPhoto] = useState([]);
@@ -12,7 +12,8 @@ const UploadPhotos = (props) => {
   const [companyName, setCompanyName] = useState("");
   const [inputFields, setInputFields] = useState([{ photo: "" }]);
   const [fieldCount, setFieldCount] = useState(1);
-
+  const id = useSelector((state)=>state.userInfo.id);
+  const compid = useSelector((state)=>state.company.compid);
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
 
@@ -46,8 +47,8 @@ const UploadPhotos = (props) => {
             console.log("returned");
             console.log(response.data.imageLocation);
             var data1 = {
-              jobSeekerId: 1, //jobSeekerId,
-              companyId: 1, //companyId,
+              jobSeekerId: id, //jobSeekerId,
+              companyId: compid, //companyId,
               //companyName: companyName,
               imageLocation: response.data.imageLocation,
               photoAdminReviewedStatus: "PENDING_APPROVAL",
