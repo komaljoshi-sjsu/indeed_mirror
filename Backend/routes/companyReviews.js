@@ -244,36 +244,9 @@ router.get("/companyReviews", (req, res) => {
     });	
 });
 
-// router.get("/companyReviews", (req, res) => {
 
-//     const queryObject = url.parse(req.url,true).query;
-//     const adminReviewStatus = 'APPROVED';
-// 	let sql = 'SELECT r.*, c.companyName FROM Review r, Company c where r.companyId='+mysql.escape(queryObject.companyId)+ ' and r.companyId = c.companyId and r.isFeatured=1 and r.adminReviewStatus=?' ;
-//     console.log(sql);
-//     connection.query(sql, [adminReviewStatus], (err, results) => {
-//         if (err) {
-//             res.writeHead(401,{
-//                 'Content-Type' : 'application/json'
-//             });
-//             res.end("Server error. Please try again later!");
-//         }
-//         else if(results.length > 0){
-//             res.writeHead(200,{
-//                 'Content-Type' : 'application/json'
-//             });
+
             
-//             console.log("Review data : ",JSON.stringify(results));
-//             res.end(JSON.stringify(results));
-            
-//         }else{
-//             res.writeHead(400,{
-//                 'Content-Type' : 'application/json'
-//             });
-//             console.log("No reviews available!");
-//             res.end("No reviews available!!");
-//         }
-//     });	
-// });
 
 router.post("/updateHelpfulCount", (req, res) => {
 

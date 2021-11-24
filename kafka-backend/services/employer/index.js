@@ -8,6 +8,7 @@ const { getEmployerProfile } = require("./getEmployerProfile");
 const { allCompanyReviewsPaginated } = require("./allCompanyReviewsPaginated");
 const { allCompanyReviews } = require("./allCompanyReviews");
 const { updateFeaturedReviews } = require("./updateFeaturedReviews");
+const { getApplicantsName } = require("./getApplicantsName");
 
 function handle_request(msg, callback) {
     switch (msg.route) {
@@ -29,9 +30,7 @@ function handle_request(msg, callback) {
         case "getEmployerProfile":    
             getEmployerProfile(msg,callback); 
             break;
-        // case "getCompanyDetails":    
-        //     getCompanyDetails(msg,callback); 
-        //     break;   
+           
         case "allCompanyReviewsPaginated":    
             allCompanyReviewsPaginated(msg,callback); 
             break;
@@ -40,6 +39,9 @@ function handle_request(msg, callback) {
             break;
         case "updateFeaturedReviews":    
             updateFeaturedReviews(msg,callback); 
+            break;
+        case "getApplicantsName":    
+            getApplicantsName(msg,callback); 
             break;
     }
 }
