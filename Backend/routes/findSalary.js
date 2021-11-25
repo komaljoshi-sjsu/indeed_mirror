@@ -20,16 +20,17 @@ router.get('/findSalaries', (req, res) => {
 })
 
 
-router.get('/findSalByTitle', (req, res) => {
+router.get('/findSalByTitle/:jobTitles', (req, res) => {
   var count = 0;
   let data1=[];
 let cmpnyId=[];
 var subquery1Result = [], subquery2Result;
-const query ="select companyId,avg(salaryDetails) as salaryDetails,jobId,jobTitle,companyName,city,state,zip,industry from Job where lower(jobTitle) like lower(?) group by jobTitle,companyId  order by salaryDetails  DESC limit 5 ;";
+// const query ="select logo,Job.companyId,avg(salaryDetails) as salaryDetails,Job.jobId,Job.jobTitle,Job.companyName,Job.city,Job.state,Job.zip,Job.industry from Job,Company where Job.companyId=Company.companyId lower(jobTitle) like lower(?) group by jobTitle,companyId  order by salaryDetails  DESC limit 5 ;";
+const query ="select logo,Job.companyId,avg(salaryDetails) as salaryDetails,Job.jobId,Job.jobTitle,Job.companyName,Job.city,Job.state,Job.zip,Job.industry from Job,Company where Job.companyId=Company.companyId and lower(jobTitle) like lower(?) group by jobTitle,companyId  order by salaryDetails  DESC limit 5 ;";
 const subquery1 ='select round(avg(Review.rating),2) as rating,count(Review.reviewId) as revCnt, companyId from Review where Review.companyId =?;';
 const subquery2='select count(SalaryReview.companyId) as salRevCnt, companyId from SalaryReview where SalaryReview.companyId =? ;'; 
 try {
-  const jobTitle = req.params.jobTitle;
+  const jobTitle = req.params.jobTitles;
   console.log(jobTitle);
   conn.query(query,[jobTitle],function (err, results) {
     if (err) {
@@ -67,11 +68,12 @@ try {
               var filteredSubq1Res = subquery1Result.filter(obj => {
                 return obj.companyId === subquery2Result.companyId;
               });
-              console.log("filteredSubq1Res:",filteredSubq1Res);
-              data1.push({"companyId":dataObj.companyId,"salaryDetails":dataObj.salaryDetails,"jobId":dataObj.jobId,"jobTitle":dataObj.jobTitle,"companyName":dataObj.companyName,"city":dataObj.city,"state":dataObj.state,"zip":dataObj.zip,"industry":dataObj.industry,"rating":filteredSubq1Res[0].rating,"revCnt":filteredSubq1Res[0].revCnt, "salRevCnt":subquery2Result.salRevCnt});
+              // console.log("filteredSubq1Res:",filteredSubq1Res);
+              data1.push({"logo":dataObj.logo,"companyId":dataObj.companyId,"salaryDetails":dataObj.salaryDetails,"jobId":dataObj.jobId,"jobTitle":dataObj.jobTitle,"companyName":dataObj.companyName,"city":dataObj.city,"state":dataObj.state,"zip":dataObj.zip,"industry":dataObj.industry,"rating":filteredSubq1Res[0].rating,"revCnt":filteredSubq1Res[0].revCnt, "salRevCnt":subquery2Result.salRevCnt});
               // console.log(data1);
               count++;
               if(count === results.length) {
+                // console.log(data1);
                 res.status(200).send(data1);
                 }
               }               
