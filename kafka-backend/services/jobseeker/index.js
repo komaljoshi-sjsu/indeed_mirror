@@ -11,6 +11,8 @@ const {updateHelpfulCount } = require("./updateHelpfulCount");
 const {saveReview } = require("./saveReview");
 const {allReviews } = require("./allReviews");
 const {searchReview } = require("./searchReview");
+const {reviewsByProfile } = require("./reviewsByProfile");
+const {reviewsByProfilePaginated } = require("./reviewsByProfilePaginated");
 
 function handle_request(msg, callback) {
     switch (msg.route) {
@@ -50,6 +52,12 @@ function handle_request(msg, callback) {
         case "searchReview":
             searchReview(msg,callback);
             break; 
+        case "reviewsByProfile":
+            reviewsByProfile(msg,callback);
+            break;
+        case "reviewsByProfilePaginated":
+            reviewsByProfilePaginated(msg,callback);
+            break;
     }
 }
 
