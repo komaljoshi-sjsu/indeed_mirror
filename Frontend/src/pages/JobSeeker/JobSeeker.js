@@ -12,6 +12,7 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { useSelector } from 'react-redux'
 import JobSeekerNavbar from './JobSeekerNavbar'
+import JobSeekerLoggedInNavbar from './JobSeekerLoggedInNavbar'
 import Pagination from './../JobSeeker/Pagination'
 
 // const useStyles = makeStyles((theme) => ({
@@ -75,6 +76,7 @@ class JobSeekerLandingPage extends Component {
       loveJobRole: '',
       currentPage: 1,
       totalPosts: 0,
+      isLoggedIn: false,
     }
     this.getCurrentDate()
   }
@@ -108,7 +110,19 @@ class JobSeekerLandingPage extends Component {
   }
 
   componentDidMount() {
+    this.checkLoggedInStatus()
     this.getAllData()
+  }
+
+  checkLoggedInStatus() {
+    const userInfo = this.props.userInfo
+    console.log(userInfo)
+    if (userInfo.email !== '' && userInfo.accountType === 'JobSeeker') {
+      console.log('JobSeeker is signed in')
+      this.setState({
+        isLoggedIn: true,
+      })
+    }
   }
 
   async getAllData() {
@@ -168,6 +182,9 @@ class JobSeekerLandingPage extends Component {
           jobType: job.jobMode,
           salary: job.salaryDetails,
           location: job.city,
+          responsibilities: job.responsibilities,
+          qualifications: job.qualifications,
+          loveJobRole: job.loveJobRole,
           totalPosts: response.data.length,
         })
       },
@@ -300,6 +317,9 @@ class JobSeekerLandingPage extends Component {
               jobType: job[0].jobMode,
               salary: job[0].salaryDetails,
               location: job[0].city,
+              responsibilities: job[0].responsibilities,
+              qualifications: job[0].qualifications,
+              loveJobRole: job[0].loveJobRole,
             })
           }
         })
@@ -328,6 +348,9 @@ class JobSeekerLandingPage extends Component {
               jobType: job[0].jobMode,
               salary: job[0].salaryDetails,
               location: job[0].city,
+              responsibilities: job[0].responsibilities,
+              qualifications: job[0].qualifications,
+              loveJobRole: job[0].loveJobRole,
             })
           }
         })
@@ -363,6 +386,9 @@ class JobSeekerLandingPage extends Component {
               jobType: job[0].jobMode,
               salary: job[0].salaryDetails,
               location: job[0].city,
+              responsibilities: job[0].responsibilities,
+              qualifications: job[0].qualifications,
+              loveJobRole: job[0].loveJobRole,
             })
           }
         })
@@ -492,7 +518,11 @@ class JobSeekerLandingPage extends Component {
   render() {
     return (
       <div>
-        <JobSeekerNavbar />
+        {this.state.isLoggedIn ? (
+          <JobSeekerLoggedInNavbar />
+        ) : (
+          <JobSeekerNavbar />
+        )}
         <div id="Second" class="row searchNav">
           <div class="row">
             <div class="col-2"></div>
@@ -725,26 +755,34 @@ class JobSeekerLandingPage extends Component {
                   <br />
                   <h5 class="card-title">Job details</h5>
                   <br />
-                  <h6>Job Type:</h6>
+                  <h6 style={{ fontWeight: 'bold' }}>Job Type:</h6>
                   <h6>{this.state.jobType}</h6> <br />
-                  <h6>Salary:</h6>
+                  <h6 style={{ fontWeight: 'bold' }}>Salary:</h6>
                   <h6>${this.state.salary}</h6>
                   <br />
                   <hr />
                   <h5 class="card-title">Full Job Description</h5>
                   <br />
-                  <h6>Location:</h6>
+                  <h6 style={{ fontWeight: 'bold' }}>Location:</h6>
                   <h6>{this.state.location}</h6>
                   <br />
-                  <h6>Job Description:</h6>
+                  <h6 style={{ fontWeight: 'bold' }}>What you will do:</h6>
+                  <h6 style={{ whiteSpace: 'pre-wrap', color: '#262626' }}>
+                    {this.state.responsibilities}
+                  </h6>
                   <br />
-                  <h6>What you will do:</h6>
-                  <h6>{this.state.responsibilities}</h6>
+                  <h6 style={{ fontWeight: 'bold' }}>What you will need:</h6>
+                  <h6 style={{ whiteSpace: 'pre-wrap', color: '#262626' }}>
+                    {this.state.qualifications}
+                  </h6>{' '}
                   <br />
-                  <h6>What you will need:</h6>
-                  <h6>{this.state.qualifications}</h6> <br />
-                  <h6>Why You’ll love working:</h6>
-                  <h6>{this.state.loveJobRole}</h6> <br />
+                  <h6 style={{ fontWeight: 'bold' }}>
+                    Why You’ll love working:
+                  </h6>
+                  <h6 style={{ whiteSpace: 'pre-wrap', color: '#262626' }}>
+                    {this.state.loveJobRole}
+                  </h6>{' '}
+                  <br />
                 </div>
               </div>
             </div>
