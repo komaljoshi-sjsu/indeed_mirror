@@ -3,6 +3,7 @@ const jobseeker = require('./services/jobseeker');
 const employer = require('./services/employer');
 const company = require('./services/company');
 const admin = require('./services/admin');
+const user = require('./services/user');
 const conn2 = require('./config/mongo_connection')
 const conn1 = require('./config/mysql_connection')
 
@@ -49,3 +50,4 @@ handleTopicRequest("jobseeker",jobseeker);
 handleTopicRequest("employer",employer);
 handleTopicRequest("admin",admin);
 handleTopicRequest("company",company);
+handleTopicRequest("user",user);
