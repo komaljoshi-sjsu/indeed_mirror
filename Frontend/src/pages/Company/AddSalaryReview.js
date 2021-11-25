@@ -38,6 +38,7 @@ const AddSalaryReview = (props) => {
   console.log('visible' ,visible);
   const companyId = useSelector((state)=>state.company.compid);
   const jobSeekerId = useSelector((state)=>state.userInfo.id);
+  let jobTitleOption =[];
   
   useEffect(() => {
     console.log("companyid",companyId);
@@ -73,7 +74,17 @@ const AddSalaryReview = (props) => {
         console.log(response);
         if (response.status === 200) {
           setJobDtls(response.data);
-          console.log(response.data);
+          jobDtls.forEach((obj)=>{
+            if(!jobTitleOption.includes(obj.jobTitle))
+            {
+              console.log("options3",obj.jobTitle);
+              jobTitleOption.push(obj.jobTitle);
+              console.log("options",jobTitleOption);
+            }
+            
+          })
+          
+          console.log("JobDtls: ",response.data);
       }
       }).catch((err) => {
         console.log(err);

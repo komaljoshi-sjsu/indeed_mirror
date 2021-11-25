@@ -1,4 +1,5 @@
 'use strict'
+const e = require('express')
 const express = require('express')
 const router = express.Router()
 const conn = require('./../config/mysql_connection')
@@ -19,154 +20,74 @@ router.get('/findSalaries', (req, res) => {
 })
 
 
-// router.get('/findSalByTitle', (req, res) => {
-//   const query ="select companyId,avg(salaryDetails) as salaryDetails,jobId,jobTitle,companyName,city,state,zip,industry from Job where lower(jobTitle) like lower('S%')  group by jobTitle order by salaryDetails  DESC limit 5 ;";
-//   const subquery1 ='select round(avg(Review.rating),2) as rating,count(Review.reviewId) as revCnt from Review where Review.companyId=?;';
-//   const subquery2='select count(SalaryReview.companyId) as salRevCnt from SalaryReview where SalaryReview.companyId=?;';
-  
-//   try {
-//     var finalResult = [];
-//     var reviewData;
-//     var salaryReviewData;
-//     conn.query(query, function (err, results) {
-//       if (results.length <= 0) {
-//         console.log('Not found')
-//         res.status(400).send('Job details not found')
-//       }
-//       if (err) {
-//         console.log('error')
-//          res.status(400).send('Error ocurred')
-//       }
-//       if(results.length > 0) {
-//         (async (results) => {results.forEach(dataObj => {
-//           // conn.query(subquery1,[1],  function (err, rows1) {
-//         let partialResult = await getReviewData(subquery1, dataObj.companyId, function(err,data){
-//               if (err) {
-//                   // error handling code goes here
-//                   console.log("ERROR : ",err);            
-//               } else {            
-//                   // code to execute on data retrieval
-//                   console.log("result from db is : ",data);
-//                   reviewData = data[0];
-//                   getSalaryReviewData(subquery2, dataObj.companyId, function(err,data2){
-//                     if (err) {
-//                         // error handling code goes here
-//                         console.log("ERROR : ",err);            
-//                     } else {            
-//                         // code to execute on data retrieval
-//                         console.log("result from db is : ",data2);
-//                         salaryReviewData = data2[0];
-//                         return Object.assign({},...dataObj,...reviewData,...salaryReviewData);
-//                         // console.log("inside", finalResult, "time: ", Date.now());
-//                     }
-//                   });
-//               }
-//             });
-//             finalResult.push(partialResult);
-//             // finalResult.push(Object.assign({},...results,...rows1,...rows2));
-//             console.log("finalresult",finalResult, "time: ", Date.now());
-//           // conn.query(subquery1,[dataObj.companyId],  async function (err, rows1) {
-//           //   if (err) {
-//           //     console.log('error')
-//           //     // res.status(400).send('Error ocurred')
-//           //   }  
-//           //   // conn.query(subquery2,[1],  function (err, rows2) {
-//           // conn.query(subquery2,[dataObj.companyId],  function (err, rows2) {
-//           //     if (err) {
-//           //       console.log('error')
-//           //     //  res.status(400).send('Error ocurred')
-//           //     }
-//           //     // console.log("object",Object.assign(...results,...rows1,...rows2));
-//           //     finalResult.push(Object.assign({},...results,...rows1,...rows2));
-//           //     console.log("finalresult",finalResult, "time: ", Date.now());
-//           //   })  
-//           // })
-//           // console.log("finalresult",finalResult);
-//         });})();
-//         console.log(finalResult, "time: ", Date.now());
-//         return res.status(200).send(finalResult);
-//       }
-//     })
-//   } catch (error) {
-//     console.log('ERROR!' + error)
-//     return res.status(400).send('Error while fetching details')
-//   }
-// })
-
-// function getReviewData(query, companyId, callback) {
-//   conn.query(query,[companyId], function (err, rows1) {
-//     if (err) {
-//       callback(err, null);
-//       // res.status(400).send('Error ocurred')
-//     } else {
-//     callback(null, rows1);
-//     }  
-//   })
-// }
-
-// function getSalaryReviewData(query, companyId) {
-//   conn.query(query,[companyId],  function (err, rows2) {
-//     if (err) {
-//       console.log('error')
-//     }
-//     // console.log("object",Object.assign(...results,...rows1,...rows2));
-//     // finalResult.push(Object.assign({},...results,...rows1,...rows2));
-//     // console.log("finalresult",finalResult, "time: ", Date.now());
-
-//     return rows2;
-//   }) 
-// }
-
-
-
-
-router.get('/findSalByTitle', (req, res) => {
-    var finalResult = [];
-  const query ="select companyId,avg(salaryDetails) as salaryDetails,jobId,jobTitle,companyName,city,state,zip,industry from Job where lower(jobTitle) like lower('S%')  group by jobTitle order by salaryDetails  DESC limit 5 ;";
-  const subquery1 ='select round(avg(Review.rating),2) as rating,count(Review.reviewId) as revCnt from Review where Review.companyId=?;';
-  const subquery2='select count(SalaryReview.companyId) as salRevCnt from SalaryReview where SalaryReview.companyId=?;'; 
-  // try {
-    // conn.query(query, async (err, results)=> {
-      // if (results.length <= 0) {
-      //   console.log('Not found')
-      //   res.status(400).send('Job details not found')
-      // }
-  try {
-    conn.query('select companyId,avg(salaryDetails) as salaryDetails,jobId,jobTitle,companyName,city,state,zip,industry from Job where lower(jobTitle) like lower("S%")  group by jobTitle order by salaryDetails  DESC limit 5 ;', async function (err, results) {
-      if (err) {
-        console.log('error')
-         res.status(400).send('Error ocurred')
-      }
-      if(results.length > 0) {
-        // await results.forEach(dataObj => {
-          // conn.query(subquery1,[dataObj.companyId],  async function(err, rows1) {
-            conn.query(subquery1,[results[0].companyId],  async function(err, rows1) {
+router.get('/findSalByTitle/:jobTitles', (req, res) => {
+  var count = 0;
+  let data1=[];
+let cmpnyId=[];
+var subquery1Result = [], subquery2Result;
+// const query ="select logo,Job.companyId,avg(salaryDetails) as salaryDetails,Job.jobId,Job.jobTitle,Job.companyName,Job.city,Job.state,Job.zip,Job.industry from Job,Company where Job.companyId=Company.companyId lower(jobTitle) like lower(?) group by jobTitle,companyId  order by salaryDetails  DESC limit 5 ;";
+const query ="select logo,Job.companyId,avg(salaryDetails) as salaryDetails,Job.jobId,Job.jobTitle,Job.companyName,Job.city,Job.state,Job.zip,Job.industry from Job,Company where Job.companyId=Company.companyId and lower(jobTitle) like lower(?) group by jobTitle,companyId  order by salaryDetails  DESC limit 5 ;";
+const subquery1 ='select round(avg(Review.rating),2) as rating,count(Review.reviewId) as revCnt, companyId from Review where Review.companyId =?;';
+const subquery2='select count(SalaryReview.companyId) as salRevCnt, companyId from SalaryReview where SalaryReview.companyId =? ;'; 
+try {
+  const jobTitle = req.params.jobTitles;
+  console.log(jobTitle);
+  conn.query(query,[jobTitle],function (err, results) {
+    if (err) {
+      console.log('error')
+       res.status(400).send('Error ocurred')
+    }
+    else {
+      // console.log(results);
+       results.forEach(dataObj => {
+        // conn.query(subquery1,[dataObj.companyId],  async function(err, rows1) {
+          cmpnyId.push(dataObj.companyId);
+          conn.query(subquery1,[dataObj.companyId], function(err, results1) {
             if (err) {
               console.log('error')
               // res.status(400).send('Error ocurred')
-            }  
-            // conn.query(subquery2,[1],  function (err, rows2) {
-            //  conn.query(subquery2,[dataObj.companyId],  async function (err, rows2) {
-              conn.query(subquery2,[results[0].companyId],  async function (err, rows2) {
+            }
+            else {  
+            // console.log(results1);
+            if(results1[0].companyId !== null) {
+            subquery1Result.push(results1[0]);
+            }
+            else {
+              subquery1Result.push({ salRevCnt: 0, rating: 0, companyId: dataObj.companyId })
+            }
+            // console.log("subquery1Result: ",subquery1Result);
+            conn.query(subquery2,[dataObj.companyId], function (err, results2) {
               if (err) {
                 console.log('error')
               //  res.status(400).send('Error ocurred')
               }
-              // await finalResult.push(Object.assign({},...results,...rows1,...rows2));
-              console.log("finalresultone",finalResult);
-              return res.status(200).send([Object.assign({},...results,...rows1,...rows2)]);
-
-            }) 
-          })
-        // });
-        console.log("finalresult",finalResult);
-        // return res.status(200).send(finalResult);
-      }
-    })
-  } catch (error) {
-    console.log('ERROR!' + error)
-    return res.status(400).send('Error while fetching details')
-  }
+              else {
+              // console.log(results2);
+              subquery2Result = {salRevCnt: results2[0].salRevCnt, companyId: dataObj.companyId };
+              // console.log("subquery2Result:",subquery2Result);
+              var filteredSubq1Res = subquery1Result.filter(obj => {
+                return obj.companyId === subquery2Result.companyId;
+              });
+              // console.log("filteredSubq1Res:",filteredSubq1Res);
+              data1.push({"logo":dataObj.logo,"companyId":dataObj.companyId,"salaryDetails":dataObj.salaryDetails,"jobId":dataObj.jobId,"jobTitle":dataObj.jobTitle,"companyName":dataObj.companyName,"city":dataObj.city,"state":dataObj.state,"zip":dataObj.zip,"industry":dataObj.industry,"rating":filteredSubq1Res[0].rating,"revCnt":filteredSubq1Res[0].revCnt, "salRevCnt":subquery2Result.salRevCnt});
+              // console.log(data1);
+              count++;
+              if(count === results.length) {
+                // console.log(data1);
+                res.status(200).send(data1);
+                }
+              }               
+            });
+            }
+          });
+        });
+    }
+  })
+} catch (error) {
+  console.log('ERROR!' + error)
+  return res.status(400).send('Error while fetching details')
+}
 })
+
 
 module.exports = router
