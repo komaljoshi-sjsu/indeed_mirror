@@ -66,6 +66,7 @@ app.use(require("./routes/getAllReviews"))
 app.use(require("./routes/conversationRoute"))
 app.use(require("./routes/messageRoute"))
 app.use(require("./routes/testRoute"))
+app.use(require("./routes/reviewsByProfile"))
 // app.use(require("./routes/findSalary/:id"))
 //Define all the routes
 //app.use('/postNewJob', postNewJob)

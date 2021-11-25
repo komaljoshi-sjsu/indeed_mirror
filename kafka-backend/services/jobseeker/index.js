@@ -13,6 +13,8 @@ const { updateHelpfulCount } = require('./updateHelpfulCount')
 const { saveReview } = require('./saveReview')
 const { allReviews } = require('./allReviews')
 const { searchReview } = require('./searchReview')
+const { reviewsByProfile } = require('./reviewsByProfile')
+const { reviewsByProfilePaginated } = require('./reviewsByProfilePaginated')
 const { jsApplyJob } = require('./jsApplyJob')
 const {
   jsFilterOnJobTitleOrCompanyName,
@@ -63,6 +65,12 @@ function handle_request(msg, callback) {
       break
     case 'searchReview':
       searchReview(msg, callback)
+      break
+    case 'reviewsByProfile':
+      reviewsByProfile(msg, callback)
+      break
+    case 'reviewsByProfilePaginated':
+      reviewsByProfilePaginated(msg, callback)
       break
     case 'applyJob':
       jsApplyJob(msg, callback)
