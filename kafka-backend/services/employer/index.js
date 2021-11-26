@@ -9,6 +9,7 @@ const { allCompanyReviewsPaginated } = require("./allCompanyReviewsPaginated");
 const { allCompanyReviews } = require("./allCompanyReviews");
 const { updateFeaturedReviews } = require("./updateFeaturedReviews");
 const { getApplicantsName } = require("./getApplicantsName");
+const {getEmpChartOne, getEmpChartTwo } = require("./getEmployerAnalytics")
 
 function handle_request(msg, callback) {
     switch (msg.route) {
@@ -42,6 +43,12 @@ function handle_request(msg, callback) {
             break;
         case "getApplicantsName":    
             getApplicantsName(msg,callback); 
+            break;
+        case "getEmpChartOne":    
+            getEmpChartOne(msg,callback); 
+            break;
+        case "getEmpChartTwo":    
+            getEmpChartTwo(msg,callback); 
             break;
     }
 }
