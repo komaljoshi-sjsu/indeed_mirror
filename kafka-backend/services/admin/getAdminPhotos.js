@@ -1,13 +1,15 @@
 // get company details for admin page 
 "use strict";
-const conn = require("../../config/mysql_connection");
-var mysql = require("mysql");
+// const conn = require("../../config/mysql_connection");
+// var mysql = require("mysql");
 require('../../models/Photo');
 const mongoose = require("mongoose");
 const Photo = mongoose.model("Photo");
+
 let getAdminPhotos = async (req, callback) => {
     try {
         let response = {}
+        let error = {}
         const query = JSON.parse(req.query.data)
         const photoAdminReviewedStatus = query.photoAdminReviewedStatus
         const postsPerPage = 5
