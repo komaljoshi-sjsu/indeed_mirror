@@ -74,7 +74,7 @@ function Login(props) {
                 if(decoded.resumeUrl!=null && decoded.resumeUrl.trim().length>0)
                     setResumeUrl(decoded.resumeUrl);
                 setPhone(user.jobSeekerContact);
-                redirectValFn(<Redirect to="/resume"/>);
+                redirectValFn(<Redirect to="/landingPage"/>);
             } else if(accountType=='Employer')  {
                 if(user.companyId==null) {
                     redirectValFn(<Redirect to="/employerprofile"/>);

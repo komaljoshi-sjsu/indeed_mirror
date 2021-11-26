@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const Photo = mongoose.model('Photo')
 const kafka = require('../kafka/client');
 //const { checkAuth } = require("../config/passport");
+
 router.get('/api/getAdminPhotos/', function (req, res) {
   console.log("getAdminPhotos.....")
    let msg = {};
@@ -22,6 +23,7 @@ router.get('/api/getAdminPhotos/', function (req, res) {
        }
    });
 });
+
 router.post('/api/setPhotoStatus/', function (req, res) {
   console.log("setPhotoStatus.....")
    let msg = {};

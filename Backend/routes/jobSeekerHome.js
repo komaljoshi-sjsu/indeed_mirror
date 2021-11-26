@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 const { json } = require('body-parser')
 const Company = mongoose.model('Company')
 const JobSeeker = mongoose.model('JobSeeker')
+const kafka = require('../kafka/client');
 
 router.get('/jobSeeker/home', (req, res) => {
   conn.query('select * from Job;', async function (err, results) {
