@@ -111,7 +111,7 @@ const signupJobSeekerMongo =  async (req, callback) => {
 };
 
 
-const createCompanyMongo = async (req, res) => {
+const createCompanyMongo = async (req, callback) => {
   console.log(req)
   try {
     const { compid } = req;
