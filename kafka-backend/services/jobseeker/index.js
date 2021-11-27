@@ -27,6 +27,8 @@ const { jsHome } = require('./jsHome')
 const { jsPaginatedData } = require('./jsPaginatedData')
 const { jsSaveJob } = require('./jsSaveJob')
 const { jsUpdateNoOfViews } = require('./jsUpdateNoOfViews')
+const { findSalDisplay,
+    findSalByTitleDisplay } =require('./findSalaryDisplay')
 
 function handle_request(msg, callback) {
   switch (msg.route) {
@@ -101,6 +103,12 @@ function handle_request(msg, callback) {
       break
     case 'updateNoOfViews':
       jsUpdateNoOfViews(msg, callback)
+      break
+    case 'findSalDisplay':
+      findSalDisplay(msg, callback)
+      break
+    case 'findSalByTitleDisplay':
+      findSalByTitleDisplay(msg, callback)
       break
   }
 }

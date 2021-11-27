@@ -331,7 +331,7 @@ class FindSalByTitle extends Component {
     {/* render details */}
 
 <div className="App">
-<h5 class="card-title">Top companies for Front Desk Agents in United States</h5>
+<h5 class="card-title">Top companies for the role {this.state.jobs.jobTitle}</h5>
 <div class="row">
             <div class="col-2"></div>
             <div class="col-7">
