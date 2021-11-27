@@ -8,7 +8,7 @@ import backendServer from '../../webConfig';
 import '../../style/button-group.css';
 import { Link } from 'react-router-dom';
 import { AiFillStar } from 'react-icons/ai';
-import JobSeekerNavbar from './JobSeekerNavbar';
+import JobSeekerLoggedInNavbar from './JobSeekerLoggedInNavbar';
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 
@@ -148,7 +148,7 @@ class Reviews extends Component {
         ));
       return (
         <div>
-          <JobSeekerNavbar />
+          <JobSeekerLoggedInNavbar />
             <br></br>
             <Container style={{ width: '70rem', display:'flex', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start' }}>
             
