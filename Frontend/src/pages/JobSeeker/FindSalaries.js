@@ -12,7 +12,9 @@ import backgroundImg from '../../CSS/findSalary.png'
 import Card from "react-bootstrap/Card";
 import backendServer from '../../webConfig';
 import '../../CSS/FindSalary.css'
-
+import JobSeekerLoggedInNavbar from './JobSeekerLoggedInNavbar'
+import { withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 class FindSalaries extends Component {
   constructor(props) {
@@ -32,11 +34,24 @@ class FindSalaries extends Component {
       jobType: '',
       salary: '',
       location: '',
+      isLoggedIn: false,
     }
   }
 
 
+  checkLoggedInStatus() {
+    const userInfo = this.props.userInfo
+    console.log(userInfo)
+    if (userInfo.email !== '' && userInfo.accountType === 'JobSeeker') {
+      console.log('JobSeeker is signed in')
+      this.setState({
+        isLoggedIn: true,
+      })
+    }
+  }
+
   componentDidMount() {
+    this.checkLoggedInStatus()
     axios.get(`${backendServer}/findSalaries`).then(
       (response) => {
         console.log(response.data, response.status)
@@ -197,7 +212,11 @@ class FindSalaries extends Component {
     return (
       <div>
         <div style={{ backgroundImage: `url(${backgroundImg})`,objectFit:'contain'}}>
+        {this.state.isLoggedIn ? (
+          <JobSeekerLoggedInNavbar />
+        ) : (
           <JobSeekerNavbar />
+        )}
           <div id="Second" class="row searchNav" >
           <div class="row">
             <div class="col-1"></div>
@@ -354,12 +373,15 @@ class FindSalaries extends Component {
      </div>    
 </div> 
 
-
-
-
-
     )
   }
 }
 
-export default FindSalaries
+const mapStateToProps = (state) => ({
+  userInfo: state.userInfo,
+})
+// export default FindSalaries
+export default connect(
+  mapStateToProps
+)(withRouter(FindSalaries))
+

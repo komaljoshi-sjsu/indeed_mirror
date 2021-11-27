@@ -4,6 +4,9 @@ const { getCompanyDetailsPaginated } = require("./getCompanyDetailsPaginated");
 const { searchAdminCompany } = require("./searchAdminCompany");
 const { companyJobStatistics } = require("./companyJobStatistics");
 const { getAllReviewsByCompanyId } = require("./getAllReviewsByCompanyId");
+const {   getSalaryReview,
+    addSalaryReview } =require("./addSalaryReview");
+
 
 function handle_request(msg, callback) {
     switch (msg.route) {
@@ -21,6 +24,12 @@ function handle_request(msg, callback) {
             break;  
         case "getAllReviewsByCompanyId":    
             getAllReviewsByCompanyId(msg,callback); 
+            break; 
+        case "getSalaryReview":    
+            getSalaryReview(msg,callback); 
+            break; 
+        case "addSalaryReview":    
+            addSalaryReview(msg,callback); 
             break;  
     }
     
