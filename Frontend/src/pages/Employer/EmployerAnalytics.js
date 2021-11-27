@@ -4,6 +4,7 @@ import axios from "axios";
 import backendServer from '../../webConfig';
 import EmployerNavbar from './EmployerNavbar'
 import {useSelector} from 'react-redux';
+import {Container,Row,Col} from 'react-bootstrap'
 
 
 const ReportEmployer = () => {
@@ -148,9 +149,12 @@ const ReportEmployer = () => {
   return (
     <div>        
        <EmployerNavbar/>
-    <div className="App">
-      <h1>JOB POSTED IN A YEAR</h1>
-      <div>
+       <Container style={{width:"100%"}}>
+      <br/><br/>
+      <Row >
+        <Col style={{width:"50%"}}>
+        <h3 style={{marginLeft:"20%"}}>JOB POSTED IN A YEAR</h3>
+        <br/>
         <Bar
           data={chartOneData}
           options={{
@@ -179,11 +183,10 @@ const ReportEmployer = () => {
             }
           }}
         />
-      </div>
-      <br />
-      <br />
-      <h1>APPLICATIONS DETAILS</h1>
-      <div>
+        </Col>
+      <Col style={{width:"50%"}}>
+      <h3 style={{marginLeft:"20%"}}>APPLICATIONS DETAILS</h3>
+      <br/>
         <Bar
           data={chartTwoData}
           options={{
@@ -212,8 +215,9 @@ const ReportEmployer = () => {
             }
           }}
         />
-      </div>
-    </div>
+      </Col>
+      </Row>
+      </Container>
     </div>
   );
 };

@@ -3,6 +3,7 @@ import { Bar, Line } from "react-chartjs-2";
 import axios from "axios";
 import backendServer from '../../webConfig';
 import AdminNavbar from './AdminNavbar'
+import {Container,Row,Col} from 'react-bootstrap'
 
 const AdminAnalytics = () => {
   const [chartOneData, setChartOneData] = useState({
@@ -20,7 +21,36 @@ const AdminAnalytics = () => {
         data: []
       }]
   });
+  const [chartThreeData, setChartThreeData] = useState({
+    labels: [],
+    datasets: [
+      {
+        data: []
+      }]
+  });
+  const [chartFourData, setChartFourData] = useState({
+    labels: [],
+    datasets: [
+      {
+        data: []
+      }]
+  });
+  const [chartFiveData, setChartFiveData] = useState({
+    labels: [],
+    datasets: [
+      {
+        data: []
+      }]
+  });
+  const [chartSixData, setChartSixData] = useState({
+    labels: [],
+    datasets: [
+      {
+        data: []
+      }]
+  });
   
+  // The number of reviews per day.
   const barChartOne = async () => {
     let revCnt = [];
     let datePosted = [];
@@ -36,11 +66,13 @@ const AdminAnalytics = () => {
           labels: datePosted,
           datasets: [
             {
-              label: "review posted",
+              label: "Review posted",
               data: revCnt,
-              backgroundColor: ["Orange"],
+              backgroundColor: ["#a3d2fd"],
               borderWidth: 4,
-              barThickness:100
+              borderColor: "#0062b1",
+              fill: true,
+              barThickness:50
             }]
         });
       })
@@ -50,7 +82,74 @@ const AdminAnalytics = () => {
     // console.log(jobCnt, empName);
   };
 
+  // Top 5 most reviewed companies.
   const barChartTwo = async () => {
+    let revCnt = [];
+    let companyName = [];
+   await axios
+      .get(`${backendServer}/mostRevComp`)
+      .then(res => {
+        // console.log(res);
+        for (const dataObj of res.data) {
+            revCnt.push(parseInt(dataObj.noOfReviews));
+            companyName.push(dataObj.companyName);
+        }
+        setChartTwoData({
+          labels: companyName,
+          datasets: [
+            {
+              label: "Top reviewed Companies",
+              data: revCnt,
+              backgroundColor: ["#f9ea9f"],
+              borderWidth: 4,
+              borderColor: "#c45100",
+              fill: true,
+              barThickness:50
+            }]
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    // console.log(jobCnt, empName);
+  };
+
+
+//  Top 5 companies based on average rating.
+  const barChartThree = async () => {
+    let avgRating = [];
+    let companyName = [];
+   await axios
+      .get(`${backendServer}/topAvgRatingComp`)
+      .then(res => {
+        // console.log(res);
+        for (const dataObj of res.data) {
+          avgRating.push(parseInt(dataObj.companyAvgRating));
+            companyName.push(dataObj.companyName);
+        }
+        setChartThreeData({
+          labels: companyName,
+          datasets: [
+            {
+              label: "Top rated Companies",
+              data: avgRating,
+              backgroundColor: ["#f88db2"],
+              borderWidth: 4,
+              borderColor: "#ca1299",
+              fill: false,
+              barThickness:50
+            }]
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    // console.log(jobCnt, empName);
+  };
+
+
+// Top 5 job seekers based on total accepted reviews made.
+  const barChartFour = async () => {
     let revCnt = [];
     let name = [];
    await axios
@@ -61,15 +160,17 @@ const AdminAnalytics = () => {
             revCnt.push(parseInt(dataObj.revId));
             name.push(dataObj.name);
         }
-        setChartTwoData({
+        setChartFourData({
           labels: name,
           datasets: [
             {
-              label: "review posted",
+              label: "Top jobseekers",
               data: revCnt,
-              backgroundColor: ["Orange"],
+              backgroundColor: ["#a3d2fd"],
               borderWidth: 4,
-              barThickness:100
+              borderColor: "#0062b1",
+              fill: true,
+              barThickness:50
             }]
         });
       })
@@ -78,17 +179,89 @@ const AdminAnalytics = () => {
       });
   }
 
+  // Top 10 CEOs based on rating.
+  const barChartFive = async () => {
+    let ceoRating = [];
+    let name = [];
+   await axios
+      .get(`${backendServer}/ceoRating`)
+      .then(res => {
+        console.log(res.data);
+        for (const dataObj of res.data) {
+          ceoRating.push(parseInt(dataObj.rating));
+            name.push(dataObj.ceo);
+        }
+        setChartFiveData({
+          labels: name,
+          datasets: [
+            {
+              label: "Top jobseekers",
+              data: ceoRating,
+              backgroundColor: ["#f9ea9f"],
+              borderWidth: 4,
+              borderColor: "#c45100",
+              fill: true,
+              barThickness:50
+            }]
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+
+// Top 10 companies based on views per day.
+const barChartSix = async () => {
+  let revCnt = [];
+  let name = [];
+ await axios
+    .get(`${backendServer}/countPerDay`)
+    .then(res => {
+      // console.log(res);
+      for (const dataObj of res.data) {
+          revCnt.push(parseInt(dataObj.viewCount));
+          name.push(dataObj.companyName);
+      }
+      setChartSixData({
+        labels: name,
+        datasets: [
+          {
+            label: "Top jobseekers",
+            data: revCnt,
+            backgroundColor: ["#f88db2"],
+            borderWidth: 4,
+            borderColor: "#ca1299",
+            fill: true,
+            barThickness:50
+          }]
+      });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
+
+
+
   useEffect(() => {
     barChartOne();
     barChartTwo();
+    barChartThree();
+    barChartFour();
+    barChartFive();
+    barChartSix();
   }, []);
 
   return (
     <div>        
        <AdminNavbar/>
-    <div className="App">
-      <h1>REVIEW POSTED PER DAY</h1>
-      <div>
+    <Container style={{width:"100%"}}>
+      <br/><br/>
+      <Row >
+     {/* Chart 1 */}
+      <Col style={{width:"50%"}}>
+      <h4>Review Posted Per Day</h4>
         <Bar
           data={chartOneData}
           options={{
@@ -100,7 +273,7 @@ const AdminAnalytics = () => {
                   ticks: {
                     autoSkip: true,
                     maxTicksLimit: 10,
-                    beginAtZero: true
+                    beginAtZero: false
                   },
                   gridLines: {
                     display: false
@@ -117,11 +290,10 @@ const AdminAnalytics = () => {
             }
           }}
         />
-      </div>
-      <br />
-      <br />
-      <h1>Top 5 job seekers based on total accepted reviews</h1>
-      <div>
+      </Col>
+      {/* Chart 2 */}
+      <Col style={{width:"50%"}}>
+      <h4 >Top 5 companies based on average rating</h4>
         <Line
           data={chartTwoData}
           options={{
@@ -150,8 +322,143 @@ const AdminAnalytics = () => {
             }
           }}
         />
-      </div>
-    </div>
+         </Col>
+         </Row>
+        <br/>
+      <Row>
+      {/* Chart 3 */}
+      <Col style={{width:"50%"}}>
+      <h4 >Top 5 most Reviewed Companies</h4>
+        <Bar
+          data={chartThreeData}
+          options={{
+            responsive: true,
+            title: { text: "POSTED JOBS", display: true },
+            scales: {
+              yAxes: [
+                {
+                  ticks: {
+                    autoSkip: true,
+                    maxTicksLimit: 500,
+                    beginAtZero: true
+                  },
+                  gridLines: {
+                    display: false
+                  }
+                }
+              ],
+              xAxes: [
+                {
+                  gridLines: {
+                    display: false
+                  }
+                }
+              ]
+            }
+          }}
+        />
+         </Col>
+         {/* Chart 4 */}
+        <Col style={{width:"50%"}}>
+      <h4>Top 5 job seekers based on total accepted reviews</h4>
+        <Line
+          data={chartFourData}
+          options={{
+            responsive: true,
+            title: { text: "POSTED JOBS", display: true },
+            scales: {
+              yAxes: [
+                {
+                  ticks: {
+                    autoSkip: true,
+                    maxTicksLimit: 500,
+                    beginAtZero: true
+                  },
+                  gridLines: {
+                    display: false
+                  }
+                }
+              ],
+              xAxes: [
+                {
+                  gridLines: {
+                    display: false
+                  }
+                }
+              ]
+            }
+          }}
+        />
+        </Col>
+        </Row>
+        <br />
+       <Row>
+          {/* Chart 5 */}
+      <Col style={{width:"50%"}}>
+      <h4 >Top 10 CEOs based on rating</h4>
+        <Bar
+          data={chartFiveData}
+          options={{
+            responsive: true,
+            title: { text: "POSTED JOBS", display: true },
+            scales: {
+              yAxes: [
+                {
+                  ticks: {
+                    autoSkip: true,
+                    maxTicksLimit: 500,
+                    beginAtZero: true
+                  },
+                  gridLines: {
+                    display: false
+                  }
+                }
+              ],
+              xAxes: [
+                {
+                  gridLines: {
+                    display: false
+                  }
+                }
+              ]
+            }
+          }}
+        />
+         </Col>
+         {/* Chart 6 */}
+        <Col style={{width:"50%"}}>
+      <h4>Top 10 companies based on views per day</h4>
+        <Line
+          data={chartSixData}
+          options={{
+            responsive: true,
+            title: { text: "POSTED JOBS", display: true },
+            scales: {
+              yAxes: [
+                {
+                  ticks: {
+                    autoSkip: true,
+                    maxTicksLimit: 500,
+                    beginAtZero: true
+                  },
+                  gridLines: {
+                    display: false
+                  }
+                }
+              ],
+              xAxes: [
+                {
+                  gridLines: {
+                    display: false
+                  }
+                }
+              ]
+            }
+          }}
+        />
+        </Col>
+        </Row>
+        </Container>
     </div>
   );
 };

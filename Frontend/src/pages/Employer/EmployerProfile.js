@@ -137,6 +137,7 @@ class EmployerProfile extends Component {
         
     }
     findFormErrorsEmp = () => {
+      var pattern = new RegExp(/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?0-9]/);
       const {errors} = this.state;
       if(!this.state.employerName || this.state.employerName === '') errors.employerName = 'Employer Name cannot be blank!';
       if(!this.state.roleInCompany || this.state.roleInCompany === '') errors.roleInCompany = 'Role cannot be blank!';
@@ -144,7 +145,10 @@ class EmployerProfile extends Component {
       if(!this.state.city || this.state.city === '') errors.city = 'City cannot be blank!';
       if(!this.state.state || this.state.state === '') errors.state = 'State cannot be blank!';
       if(!this.state.country || this.state.country === '') errors.country = 'Country cannot be blank!';
-      if(!this.state.zipcode || this.state.zipcode === '') errors.zipcode = 'Zipcode cannot be blank!';  
+      if (!this.state.zipcode || this.state.zipcode === '' || this.state.zipcode < 0) errors.zipcode = 'Zip code cannot be blank or negative!';
+      if (!(this.state.zipcode.length === 5) ) errors.zipcode = 'Zip code should be 5 digits!';  
+      if (pattern.test(this.state.state)) errors.state = 'State cannot contain digits and special characters!';
+      if (pattern.test(this.state.city)) errors.city = 'City cannot contain digits and special characters!';
       return errors;
     }
     findFormErrorsCompany = () => {
@@ -154,8 +158,8 @@ class EmployerProfile extends Component {
         if(!this.state.about || this.state.about === '') errors.about = 'Role cannot be blank!';
         if(!this.state.ceo || this.state.ceo === '') errors.ceo = 'CEO Name cannot be blank!';
         if(!this.state.founded || this.state.founded === '') errors.founded = 'Founded details cannot be blank!';
-        if(!this.state.companySize || this.state.companySize === '') errors.companySize = 'Company Size cannot be blank!';
-        if(!this.state.revenue || this.state.revenue === '') errors.revenue = 'Revenue cannot be blank!';
+        if(!this.state.companySize || this.state.companySize === '' ||this.state.companySize<0 ) errors.companySize = 'Company Size cannot be blank or negative!';
+        if(!this.state.revenue || this.state.revenue === '' || this.state.revenue<0) errors.revenue = 'Revenue cannot be blank or negative!';
         if(!this.state.industry || this.state.industry === '') errors.industry = 'Industry cannot be blank!'; 
         if(!this.state.companyDescription || this.state.companyDescription === '') errors.companyDescription = 'Company Description cannot be blank!';  
         if(!this.state.mission || this.state.mission === '') errors.mission = 'Mission & Vision cannot be blank!';  
@@ -473,7 +477,7 @@ class EmployerProfile extends Component {
                         
                         <Row> 
                         &nbsp;&nbsp;&nbsp;<input className="detinput" name="zipcode" 
-                        value={this.state.zipcode}
+                        value={this.state.zipcode} type="number"
                         onChange={this.handleChange}></input>
                         </Row>
                       </Col>  
@@ -670,12 +674,12 @@ class EmployerProfile extends Component {
                     </Col>  
                     <Col>  
                         <Row>
-                        <label>Revenue<span style={{color:'red'}}>*</span></label>
+                        <label>Revenue (in billion) <span style={{color:'red'}}>*</span></label>
                         </Row>
                         <span style={{color:'red'}}>{errors.revenue}</span>
                         <Row> 
                         &nbsp;&nbsp;&nbsp;<input className="detinput"
-                        name="revenue"
+                        name="revenue" type="number"
                         value={this.state.revenue }
                         onChange={this.handleChange}></input>
                         </Row>

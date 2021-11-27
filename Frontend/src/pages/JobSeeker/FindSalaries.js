@@ -337,6 +337,7 @@ class FindSalaries extends Component {
             style={{marginTop:'1.5rem',marginInline:'1.5rem',width:'250px'}}>
                 <div class="card-body">
                     <h5 class="card-title" 
+                    style={{"&hover":"pointer"}}
                     onClick={() => {
                           window.location = `/findSalByTitle/${job.jobTitle}`;
                         }}>{job.jobTitle} </h5>
