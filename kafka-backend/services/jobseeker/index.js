@@ -27,8 +27,19 @@ const { jsHome } = require("./jsHome");
 const { jsPaginatedData } = require("./jsPaginatedData");
 const { jsSaveJob } = require("./jsSaveJob");
 const { jsUpdateNoOfViews } = require("./jsUpdateNoOfViews");
-const { saveConversation, getConversationById, getJobSeekerById, getEmployerById } = require("./conversationRoute");
-const { addNewMessage, getMessagesByConversationId, getAllJobSeekers } = require("./messageRoute");
+const {
+  saveConversation,
+  getConversationById,
+  getJobSeekerById,
+  getEmployerById,
+} = require("./conversationRoute");
+const {
+  addNewMessage,
+  getMessagesByConversationId,
+  getAllJobSeekers,
+} = require("./messageRoute");
+const { uploadCompanyPhotos } = require("./uploadCompanyPhotos");
+const { getAllPhotos } = require("./getAllPhotos");
 
 function handle_request(msg, callback) {
   switch (msg.route) {
@@ -116,14 +127,20 @@ function handle_request(msg, callback) {
     case "getEmployerById":
       getEmployerById(msg, callback);
       break;
-      case "addNewMessage":
-        addNewMessage(msg, callback);
+    case "addNewMessage":
+      addNewMessage(msg, callback);
       break;
     case "getMessagesByConversationId":
       getMessagesByConversationId(msg, callback);
       break;
     case "getAllJobSeekers":
       getAllJobSeekers(msg, callback);
+      break;
+    case "uploadCompanyPhotos":
+      uploadCompanyPhotos(msg, callback);
+      break;
+    case "getAllPhotos":
+      getAllPhotos(msg, callback);
       break;
   }
 }

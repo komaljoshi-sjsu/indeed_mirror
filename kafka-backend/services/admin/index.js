@@ -18,8 +18,7 @@ function handle_request(msg, callback) {
         case "setReviewStatus":    
             setReviewStatus(msg,callback); 
             break; 
-    }
-    
+    }    
 }
 
 exports.handle_request = handle_request;

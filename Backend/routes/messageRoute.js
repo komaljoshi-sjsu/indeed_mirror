@@ -21,7 +21,7 @@ router.post("/api/addNewMessage", async (req, res) => {
 router.get("/api/getMessages/:conversationId", async (req, res) => {
   let msg = {};
   msg.route = "getMessagesByConversationId";
-  msg.params = req.params.conversationId;
+  msg.conversationId = req.params.conversationId;
   kafka.make_request("jobseeker", msg, function (err, results) {
     if (err) {
       console.log(err);
@@ -43,7 +43,7 @@ router.get("/api/getAllJobSeekers", async (req, res) => {
       console.log(err);
       return res.status(err.status).send(err.message);
     } else {
-      console.log("printing get all job sekers" + results.details);
+      console.log("printing get all job sekers" + JSON.stringify(results.details));
       return res.status(results.status).send(results.details);
     }
   });

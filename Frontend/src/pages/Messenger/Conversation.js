@@ -31,6 +31,7 @@ export default function Conversation({conversation, currentUser, role}) {
         } else {
             getEmployer();
         }      
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentUser, conversation]);
 
     return(        

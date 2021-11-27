@@ -47,7 +47,7 @@ router.post("/api/login", (req, res) => {
                         console.log("error");
                         res.status(400).send("Error ocurred");
                     }
-                    if (results.length <= 0) {
+                    if (results && results.length <= 0) {
                         console.log("Not found");
                         res.status(400).send("JobSeeker not registered");
                     }
@@ -81,7 +81,7 @@ router.post("/api/login", (req, res) => {
                     if (err) {
                         res.status(400).send("Error ocurred");
                     }
-                    if (results.length <= 0) {
+                    if (results && results.length <= 0) {
                         res.status(400).send("Employer not registered");
                     }
                     const compRes = await bcrypt.compare(password, results[0].password);
