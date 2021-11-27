@@ -294,7 +294,7 @@ const barChartSix = async () => {
       {/* Chart 2 */}
       <Col style={{width:"50%"}}>
       <h4 >Top 5 companies based on average rating</h4>
-        <Bar
+        <Line
           data={chartTwoData}
           options={{
             responsive: true,
@@ -361,7 +361,7 @@ const barChartSix = async () => {
          {/* Chart 4 */}
         <Col style={{width:"50%"}}>
       <h4>Top 5 job seekers based on total accepted reviews</h4>
-        <Bar
+        <Line
           data={chartFourData}
           options={{
             responsive: true,
@@ -428,7 +428,7 @@ const barChartSix = async () => {
          {/* Chart 6 */}
         <Col style={{width:"50%"}}>
       <h4>Top 10 companies based on views per day</h4>
-        <Bar
+        <Line
           data={chartSixData}
           options={{
             responsive: true,
