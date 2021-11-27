@@ -17,13 +17,16 @@ function auth() {
         new JwtStrategy(opts, (jwt_payload, callback) => {
            
             const accountType = jwt_payload.accountType
-            console.log("jwt_payload" + jwt_payload);
+            console.log("accountType" + jwt_payload.accountType);
             if("JobSeeker" === accountType) {
+                console.log("id" + jwt_payload.id);
                 findJobSeekerById(jwt_payload.id, (err, results) => {
                     if (err) {
+                        console.log("err: "+err);
                         return callback(err, false);
                     }
                     if (results) {
+                        console.log("results");
                         callback(null, results[0]);
                     }
                     else {

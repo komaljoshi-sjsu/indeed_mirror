@@ -9,8 +9,9 @@ const mysql = require('mysql');
 const http = require('http');
 const url = require('url');
 const kafka = require('../kafka/client');
+const { checkAuth } = require("../config/passport");
 
-router.get("/companyReviewsPaginated", (req, res) => {
+router.get("/companyReviewsPaginated", checkAuth, (req, res) => {
 
     let msg = {};
     msg.route = "companyReviewsPaginated";
@@ -77,7 +78,7 @@ router.get("/companyReviewsPaginated", (req, res) => {
 //     });  
 // });
 
-router.get("/companyReviewsRatingSort", (req, res) => {
+router.get("/companyReviewsRatingSort", checkAuth, (req, res) => {
     let msg = {};
     msg.route = "companyReviewsRatingSort";
     msg.url = req.url;
@@ -145,7 +146,7 @@ router.get("/companyReviewsRatingSort", (req, res) => {
 //     });  
 // });
 
-router.get("/companyReviewsDateSort", (req, res) => {
+router.get("/companyReviewsDateSort", checkAuth, (req, res) => {
 
     let msg = {};
     msg.route = "companyReviewsDateSort";
@@ -176,7 +177,7 @@ router.get("/companyReviewsDateSort", (req, res) => {
     }); 
 });
 
-router.get("/companyReviewsHelpfulSort", (req, res) => {
+router.get("/companyReviewsHelpfulSort", checkAuth, (req, res) => {
 
     let msg = {};
     msg.route = "companyReviewsHelpfulSort";
@@ -207,7 +208,7 @@ router.get("/companyReviewsHelpfulSort", (req, res) => {
     }); 
 });
 
-router.get("/companyReviewsRatingFilterTotal", (req, res) => {
+router.get("/companyReviewsRatingFilterTotal", checkAuth, (req, res) => {
 
     let msg = {};
     msg.route = "companyReviewsRatingFilterTotal";
@@ -238,7 +239,7 @@ router.get("/companyReviewsRatingFilterTotal", (req, res) => {
     }); 
 });
 
-router.get("/companyReviewsRatingFilter", (req, res) => {
+router.get("/companyReviewsRatingFilter", checkAuth, (req, res) => {
 
     let msg = {};
     msg.route = "companyReviewsRatingFilter";
@@ -269,7 +270,7 @@ router.get("/companyReviewsRatingFilter", (req, res) => {
     }); 
 });
 
-router.get("/companyReviews", (req, res) => {
+router.get("/companyReviews", checkAuth, (req, res) => {
 
     let msg = {};
     msg.route = "companyReviews";
@@ -300,7 +301,7 @@ router.get("/companyReviews", (req, res) => {
     }); 
 });
 
-router.post("/updateHelpfulCount", (req, res) => {
+router.post("/updateHelpfulCount", checkAuth, (req, res) => {
 
     let msg = {};
     msg.route = "updateHelpfulCount";
@@ -322,7 +323,7 @@ router.post("/updateHelpfulCount", (req, res) => {
     });
 });
 
-router.post("/saveReview", (req, res) => {
+router.post("/saveReview", checkAuth, (req, res) => {
 
     console.log(req.body);
     let sql = 'INSERT INTO Review(reviewTitle, reviewerRole, city, state, postedDate, rating, workHappinessScore, learningScore, appraisalScore, reviewComments, pros, cons, ceoApprovalRating, howToPrepare, noHelpfulCount, yesReviewHelpfulCount, isFeatured, adminReviewStatus, jobSeekerId, companyId ) VALUES (?,?,?,?,now(),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ';

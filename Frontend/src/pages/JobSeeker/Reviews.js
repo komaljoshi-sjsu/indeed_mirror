@@ -44,6 +44,7 @@ class Reviews extends Component {
         let { reviewDetails } = this.state;
         const currentPage = 1;
         reviewDetails = [];
+        axios.defaults.headers.common['authorization'] = this.props.userInfo.token;
         axios.get(`${backendServer}/companyReviews`, {
           params: {
             companyId,
@@ -57,7 +58,7 @@ class Reviews extends Component {
                 totalPosts: response.data.length,
               });
           });
-
+          axios.defaults.headers.common['authorization'] = this.props.userInfo.token;
           axios.get(`${backendServer}/companyReviewsPaginated`, {
             params: {
               companyId,
@@ -94,6 +95,7 @@ class Reviews extends Component {
         const companyId = this.props.company.compid;
         const jobSeekerId = this.props.userInfo.id;
         const { rateSortFlag, dateSortFlag, helpfulSortFlag, filterFlag, ratingSel } = this.state;
+        axios.defaults.headers.common['authorization'] = this.props.userInfo.token;
         if(rateSortFlag){
           let { reviewDetailsRatingSort } = this.state;
           reviewDetailsRatingSort = [];
@@ -223,6 +225,7 @@ class Reviews extends Component {
         let { reviewDetailsRatingSort, ratingSel } = this.state;
         const currentPage = 1;
         reviewDetailsRatingSort = [];
+        axios.defaults.headers.common['authorization'] = this.props.userInfo.token;
         axios.get(`${backendServer}/companyReviewsRatingSort`, {
           params: {
             companyId,
@@ -251,6 +254,7 @@ class Reviews extends Component {
         let { reviewDetailsDateSort, ratingSel } = this.state;
         const currentPage = 1;
         reviewDetailsDateSort = [];
+        axios.defaults.headers.common['authorization'] = this.props.userInfo.token;
         axios.get(`${backendServer}/companyReviewsDateSort`, {
           params: {
             companyId,
@@ -279,6 +283,7 @@ class Reviews extends Component {
         let { reviewDetailsHelpfulSort, ratingSel } = this.state;
         const currentPage = 1;
         reviewDetailsHelpfulSort = [];
+        axios.defaults.headers.common['authorization'] = this.props.userInfo.token;
         axios.get(`${backendServer}/companyReviewsHelpfulSort`, {
           params: {
             companyId,
@@ -308,6 +313,7 @@ class Reviews extends Component {
           const jobSeekerId = this.props.userInfo.id;
           const currentPage = 1;
           reviewDetailsRatingFilter = [];
+          axios.defaults.headers.common['authorization'] = this.props.userInfo.token;
           axios.get(`${backendServer}/companyReviewsRatingFilterTotal`, {
             params: {
               companyId,
@@ -440,6 +446,7 @@ class Reviews extends Component {
           }
         }
         console.log(inputData);
+        axios.defaults.headers.common['authorization'] = this.props.userInfo.token;
         axios
           .post(`${backendServer}/updateHelpfulCount`, inputData)
           .then((response) => {
