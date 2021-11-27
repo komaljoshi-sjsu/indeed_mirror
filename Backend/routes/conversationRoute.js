@@ -1,58 +1,61 @@
 const express = require("express");
 const router = express.Router();
-const mongoose = require('mongoose');
-const Conversation = mongoose.model('Conversation')
-const conn = require("./../config/mysql_connection");
+var kafka = require("../kafka/client");
+//const { checkAuth } = require("../config/passport");
 
 router.post("/api/saveConversation", async (req, res) => {
-    const newConversation = new Conversation({
-        members: [req.body.senderId, req.body.receiverId],
-    });
-    try {
-        const savedConversation = await newConversation.save();
-        res.status(200).json(savedConversation);
-    } catch (err) {
-        res.status(500).send("Error occurred while saving conversation");
+  let msg = {};
+  msg.route = "saveConversation";
+  msg.body = req.body;
+  kafka.make_request("jobseeker", msg, function (err, results) {
+    if (err) {
+      console.log(err);
+      return res.status(err.status).send(err.message);
+    } else {
+      return res.status(results.status).json(results.savedConversation);
     }
+  });
 });
 
 router.get("/api/getConversationById/:userId", async (req, res) => {
-    try {
-      const conversation = await Conversation.find({
-        members: { $in: [Number(req.params.userId)] },
-      });
-      console.log(conversation);
-      res.status(200).json(conversation);
-    } catch (err) {
-        res.status(500).send("Error occurred while retrieving conversations");
+  let msg = {};
+  msg.route = "getConversationById";
+  msg.userId = req.params.userId;
+  kafka.make_request("jobseeker", msg, function (err, results) {
+    if (err) {
+      console.log(err);
+      return res.status(err.status).send(err.message);
+    } else {
+      return res.status(results.status).json(results.details);
     }
+  });
 });
 
 router.get("/api/getJobSeekerById/:jobSeekerId", async (req, res) => {
-  const query = "select id, name from JobSeeker where id = ?";
-  conn.query(query, [req.params.jobSeekerId], async function (err, rows) {
+  let msg = {};
+  msg.route = "getJobSeekerById";
+  msg.jobSeekerId = req.params.jobSeekerId;
+  kafka.make_request("jobseeker", msg, function (err, results) {
     if (err) {
-      console.log("Error occurred while retreiving job seekers");
-      res
-        .status(400)
-        .send("Error occurred while retreiving job seekers");
+      console.log(err);
+      return res.status(err.status).send(err.message);
+    } else {
+      return res.status(results.status).send(results.details);
     }
-    console.log("Query executed: ", rows);
-    res.status(200).send(rows[0]);
   });
 });
 
 router.get("/api/getEmployerById/:employerId", async (req, res) => {
-  const query = "select id, name from Employer where id = ?";
-  conn.query(query, [req.params.employerId], async function (err, rows) {
+  let msg = {};
+  msg.route = "getEmployerById";
+  msg.employerId = req.params.employerId;
+  kafka.make_request("jobseeker", msg, function (err, results) {
     if (err) {
-      console.log("Error occurred while retreiving employers");
-      res
-        .status(400)
-        .send("Error occurred while retreiving employers");
+      console.log(err);
+      return res.status(err.status).send(err.message);
+    } else {
+      return res.status(results.status).send(results.details);
     }
-    console.log("Query executed: ", rows);
-    res.status(200).send(rows[0]);
   });
 });
 

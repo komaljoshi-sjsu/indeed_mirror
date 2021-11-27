@@ -8,9 +8,13 @@ conn1.mysqlCon
 // Connect to MongoDB
 conn2()
 
-require('./models/Company')
+//Define all the models
+
 require('./models/JobSeeker')
+require('./models/Company')
 require('./models/Photo')
+require('./models/Conversation')
+require('./models/Message')
 
 const jobseeker = require('./services/jobseeker')
 const employer = require('./services/employer')
@@ -39,6 +43,7 @@ function handleTopicRequest(topic_name, fname) {
           partition: 0,
         },
       ]
+      console.log('sending response' + JSON.stringify(payloads))
       producer.send(payloads, function (err, data) {
         console.log(data)
       })

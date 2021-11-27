@@ -64,15 +64,17 @@ class PostJob extends Component {
         var pattern = new RegExp(/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?0-9]/);
         const { companyName, jobTitle, industry, city, shortJobDescription, salaryDetails,
             streetAddress, state, zipcode,country, jobMode, jobType, errors } = this.state;
+            console.log(zipcode.length)
         if (!companyName || companyName === '') errors.companyName = 'Company Name cannot be blank!';
         if (!jobTitle || jobTitle === '') errors.jobTitle = 'Job Title cannot be blank!';
         if (!industry || industry === '') errors.industry = 'Please select a industry!';
         if (!city || city === '') errors.city = 'City cannot be blank!';
         if (!shortJobDescription || shortJobDescription === '') errors.shortJobDescription = 'Job Description cannot be blank!';
-        if (!salaryDetails || salaryDetails === '') errors.salaryDetails = 'Salary Details cannot be blank!';
+        if (!salaryDetails || salaryDetails === '' || salaryDetails < 0) errors.salaryDetails = 'Salary Details cannot be blank or negative!';
         if (!streetAddress || streetAddress === '') errors.streetAddress = 'Street Address cannot be blank!';
         if (!state || state === '' ) errors.state = 'State cannot be blank!';
-        if (!zipcode || zipcode === '') errors.zipcode = 'Zip code cannot be blank!';
+        if (!zipcode || zipcode === '' || zipcode < 0) errors.zipcode = 'Zip code cannot be blank or negative!';
+        if (!(zipcode.length === 5) ) errors.zipcode = 'Zip code should be 5 digits!';
         if (!country || country === '') errors.country = 'Please select a country!';
         if (!jobMode || jobMode === '') errors.jobMode = 'Please select a Job Mode!';
         if (!jobType || jobType === '') errors.jobType = 'Please select a Job Type!';
@@ -306,7 +308,7 @@ class PostJob extends Component {
               <Row>
               <Col>
                 <Form.Group className="mb-3">
-                  <Form.Control name="salaryDetails" type="text" className="mr-sm-2" onChange={this.handleChange} placeholder="Enter Salary Details" value={salaryDetails} isInvalid={!!errors.salaryDetails}/>
+                  <Form.Control name="salaryDetails" type="number" className="mr-sm-2" onChange={this.handleChange} placeholder="Enter Salary Details" value={salaryDetails} isInvalid={!!errors.salaryDetails}/>
                   <Form.Control.Feedback type="invalid">
                     { errors.salaryDetails }
                   </Form.Control.Feedback>

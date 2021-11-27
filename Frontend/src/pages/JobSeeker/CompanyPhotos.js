@@ -1,22 +1,21 @@
-import React, { useEffect } from 'react'
-import { useState } from 'react'
-import { Row, Col, Container } from 'react-bootstrap'
-import UploadPhotos from './UploadPhotos'
-import Pagination from './Pagination'
-import axios from 'axios'
-import { SRLWrapper } from 'simple-react-lightbox'
-import SimpleReactLightbox from 'simple-react-lightbox'
-import './../../CSS/CompanyPhoto.css'
-import CompanyTabs from '../Company/CompanyTabs'
+import React, { useEffect } from "react";
+import { useState } from "react";
+import { Row, Col, Container } from "react-bootstrap";
+import UploadPhotos from "./UploadPhotos";
+import Pagination from "./Pagination";
+import axios from "axios";
+import { SRLWrapper } from "simple-react-lightbox";
+import SimpleReactLightbox from "simple-react-lightbox";
+import "./../../CSS/CompanyPhoto.css";
+import CompanyTabs from "../Company/CompanyTabs";
+import { useSelector } from "react-redux";
 
 const CompanyPhotos = (props) => {
-  //const [imagesForGrid, setImagesForGrid] = useState([]);
-  const [images, setImages] = useState([])
-  const [jobSeekerId, setJobSeekerId] = useState(Number)
-  const [companyId, setCompanyId] = useState(1)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [totalPosts, setTotalPosts] = useState(0)
-  const [jsPhotoCount, setJsPhotoCount] = useState(0)
+  const [images, setImages] = useState([]);
+  const compid = useSelector((state) => state.company.compid);
+  const [companyId, setCompanyId] = useState(compid);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPosts, setTotalPosts] = useState(0);
 
   const options = {
     buttons: {
@@ -25,56 +24,56 @@ const CompanyPhotos = (props) => {
       showFullscreenButton: false,
       showThumbnailsButton: false,
     },
-  }
+  };
 
   const getCompanyPhotos = async () => {
-    if (jobSeekerId) {
-      const data1 = {
-        jobSeekerId: jobSeekerId,
-        companyId: companyId,
-        photoAdminReviewedStatus: 'PENDING_APPROVAL',
-        currentPage: currentPage,
-      }
-      const jobSeekerPhotos = await axios('api/getJobSeekerPhotos', {
-        params: { data: data1 },
-      })
-      setImages(jobSeekerPhotos.data.photos)
-      setJsPhotoCount(jobSeekerPhotos.data.count)
-      const data2 = {
-        companyId: companyId,
-        photoAdminReviewedStatus: 'APPROVED',
-        currentPage: currentPage,
-      }
-      const allPhotos = await axios('/api/getAllPhotos', {
-        params: { data: data2 },
-      })
-      //setImages([...images,allPhotos.data.photos])
-      // console.log(typeof(images))
-      // console.log(images)
-      //console.log(allPhotos.data.photos);
-    } else {
-      const data1 = {
-        companyId: companyId,
-        photoAdminReviewedStatus: 'APPROVED',
-        currentPage: currentPage,
-      }
-      const allPhotos = await axios('/api/getAllPhotos', {
-        params: { data: data1 },
-      })
-      setImages(allPhotos.data.photos)
-      setTotalPosts(allPhotos.data.count)
-      console.log(allPhotos.data.photos)
-    }
-  }
+    // if (jobSeekerId) {
+    //   const data1 = {
+    //     jobSeekerId: jobSeekerId,
+    //     companyId: companyId,
+    //     photoAdminReviewedStatus: 'PENDING_APPROVAL',
+    //     currentPage: currentPage,
+    //   }
+    //   const jobSeekerPhotos = await axios('api/getJobSeekerPhotos', {
+    //     params: { data: data1 },
+    //   })
+    //   setImages(jobSeekerPhotos.data.photos)
+    //   setJsPhotoCount(jobSeekerPhotos.data.count)
+    //   const data2 = {
+    //     companyId: companyId,
+    //     photoAdminReviewedStatus: 'APPROVED',
+    //     currentPage: currentPage,
+    //   }
+    //   const allPhotos = await axios('/api/getAllPhotos', {
+    //     params: { data: data2 },
+    //   })
+    //   //setImages([...images,allPhotos.data.photos])
+    //   // console.log(typeof(images))
+    //   // console.log(images)
+    //   //console.log(allPhotos.data.photos);
+    // } else {
+    const data1 = {
+      companyId: companyId,
+      photoAdminReviewedStatus: "APPROVED",
+      currentPage: currentPage,
+    };
+    const allPhotos = await axios("/api/getAllPhotos", {
+      params: { data: data1 },
+    });
+    setImages(allPhotos.data.photos);
+    setTotalPosts(allPhotos.data.count);
+    console.log("allphotos" + allPhotos.data.photos);
+  };
 
   useEffect(() => {
-    getCompanyPhotos()
-  }, [currentPage])
+    getCompanyPhotos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]);
 
   const paginate = (pageNumber) => {
-    setCurrentPage(pageNumber)
-    getCompanyPhotos()
-  }
+    setCurrentPage(pageNumber);
+    getCompanyPhotos();
+  };
 
   return (
     <div>
@@ -113,7 +112,7 @@ const CompanyPhotos = (props) => {
         </Row>
       </Container>
     </div>
-  )
-}
+  );
+};
 
-export default CompanyPhotos
+export default CompanyPhotos;

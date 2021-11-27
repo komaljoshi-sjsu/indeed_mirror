@@ -270,7 +270,9 @@ class EmployerProfile extends Component {
       if(!employerDetails.city || employerDetails.city === '') errors.city = 'City cannot be blank!';
       if(!employerDetails.state || employerDetails.state === '') errors.state = 'State cannot be blank!';
       if(!employerDetails.country || employerDetails.country === '') errors.country = 'Country cannot be blank!';
-      if(!employerDetails.zipcode || employerDetails.zipcode === '') errors.zipcode = 'Zipcode cannot be blank!';  
+      //if(!employerDetails.zipcode || employerDetails.zipcode === '') errors.zipcode = 'Zipcode cannot be blank!';
+      if (!employerDetails.zipcode || employerDetails.zipcode === '' || employerDetails.zipcode < 0) errors.zipcode = 'Zip code cannot be blank or negative!';
+      if (!(employerDetails.zipcode.length === 5) ) errors.zipcode = 'Zip code should be 5 digits!';  
       if (pattern.test(employerDetails.state)) errors.state = 'State cannot contain digits and special characters!';
       if (pattern.test(employerDetails.city)) errors.city = 'City cannot contain digits and special characters!';
       return errors;
@@ -282,8 +284,8 @@ class EmployerProfile extends Component {
         if(!employerDetails.about || employerDetails.about === '') errors.about = 'Role cannot be blank!';
         if(!employerDetails.ceo || employerDetails.ceo === '') errors.ceo = 'CEO Name cannot be blank!';
         if(!employerDetails.founded || employerDetails.founded === '') errors.founded = 'Founded details cannot be blank!';
-        if(!employerDetails.companySize || employerDetails.companySize === '') errors.companySize = 'Company Size cannot be blank!';
-        if(!employerDetails.revenue || employerDetails.revenue === '') errors.revenue = 'Revenue cannot be blank!';
+        if(!employerDetails.companySize || employerDetails.companySize === '' || employerDetails.companySize<0) errors.companySize = 'Company Size cannot be blank or negative!';
+        if(!employerDetails.revenue || employerDetails.revenue === ''|| employerDetails.revenue<0) errors.revenue = 'Revenue cannot be blank or negative!';
         if(!employerDetails.industry || employerDetails.industry === '') errors.industry = 'Industry cannot be blank!'; 
         if(!employerDetails.companyDescription || employerDetails.companyDescription === '') errors.companyDescription = 'Company Description cannot be blank!';  
         if(!employerDetails.mission || employerDetails.mission === '') errors.mission = 'Mission & Vision cannot be blank!';  
@@ -697,7 +699,7 @@ class EmployerProfile extends Component {
                  <span style={{color:'red'}}>{errors.revenue}</span>
                  <Row> 
                  &nbsp;&nbsp;&nbsp;<input className="detinput"
-                 name="revenue"
+                 name="revenue" type="number"
                  value={this.state.employerDetails.revenue }
                  onChange={(e) => { this.handleChangeRevenue(e)}}></input>
                  </Row>
