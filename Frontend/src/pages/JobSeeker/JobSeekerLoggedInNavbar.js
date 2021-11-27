@@ -204,7 +204,7 @@ class JobSeekerLoggedInNavbar extends Component {
                       </a>
                       <a class="dropdown-item ditems">
                         <Link
-                          to="/"
+                          to="/profileReviews"
                           style={{
                             textDecoration: 'none',
                             color: '#474747',

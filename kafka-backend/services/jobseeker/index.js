@@ -40,6 +40,8 @@ const {
 } = require("./messageRoute");
 const { uploadCompanyPhotos } = require("./uploadCompanyPhotos");
 const { getAllPhotos } = require("./getAllPhotos");
+const { findSalDisplay,
+  findSalByTitleDisplay } = require('./findSalaryDisplay')
 
 function handle_request(msg, callback) {
   switch (msg.route) {
@@ -115,6 +117,12 @@ function handle_request(msg, callback) {
     case "updateNoOfViews":
       jsUpdateNoOfViews(msg, callback);
       break;
+    case 'findSalDisplay':
+      findSalDisplay(msg, callback)
+      break;
+    case 'findSalByTitleDisplay':
+      findSalByTitleDisplay(msg, callback)
+      break
     case "saveConversation":
       saveConversation(msg, callback);
       break;

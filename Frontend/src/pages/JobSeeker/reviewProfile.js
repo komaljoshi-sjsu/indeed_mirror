@@ -10,7 +10,7 @@ import {
 import backendServer from '../../webConfig';
 import '../../style/button-group.css';
 import Pagination from "./../JobSeeker/Pagination";
-import JobSeekerNavbar from './JobSeekerNavbar';
+import JobSeekerLoggedInNavbar from './JobSeekerLoggedInNavbar';
 import { withRouter } from 'react-router-dom';
 
 class ReviewProfile extends Component {
@@ -26,7 +26,7 @@ class ReviewProfile extends Component {
     componentDidMount() {
         // To-DO : Get selected company id
     
-        const jobSeekerId = 37;
+        const jobSeekerId = this.props.userInfo.id;
         console.log("User id : "+jobSeekerId);
         let { reviewDetails } = this.state;
         const currentPage = 1;
@@ -143,7 +143,7 @@ class ReviewProfile extends Component {
           ));
       return (
         <div>
-            <JobSeekerNavbar />
+            <JobSeekerLoggedInNavbar />
               {noReviewsMsg !== '' && 
               <Container style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               <Card style={{ width: '60rem', margin: '0.8em' }}>
@@ -153,6 +153,8 @@ class ReviewProfile extends Component {
               </Card>
               </Container>}
               <Container style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+              <br/>
+              <h4>My reviews</h4>
               { noReviewsMsg === '' && userReviews}
               </Container>
               <Container style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
