@@ -516,6 +516,7 @@ class JobSeekerLandingPage extends Component {
   }
 
   render() {
+    console.log(this.state.isLoggedIn);
     return (
       <div>
         {this.state.isLoggedIn ? (

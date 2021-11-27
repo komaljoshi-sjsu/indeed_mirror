@@ -84,7 +84,7 @@ const CompanyStatistics = (props) => {
           height={null}
           options={options}
         />}
-        {(hiredArray.length <= 0 || rejectArray.length <= 0) && <p>No data found</p>}
+        {(hiredArray.length <= 0 && rejectArray.length <= 0) && <p>No data found</p>}
         </Modal.Body>
       </Modal>
     </div>

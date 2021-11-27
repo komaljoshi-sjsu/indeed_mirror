@@ -13,7 +13,6 @@ import CompanyStatistics from "./CompanyStatistics";
 const AdminCompany = (props) => {
 
   const [search, setSearch] = useState("");
-  const [searchString, setSearchString] = useState("");
   const [companyId, setCompanyId] = useState(Number);
   const [companyDtls, setCompanyDtls] = useState([]);
   const [reviews, setReviews] = useState([]);
@@ -24,10 +23,12 @@ const AdminCompany = (props) => {
 
   useEffect(() => {
     getCompanyDetails();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentCompanyPage]);
 
   useEffect(() => {
     getReviews();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [companyId, currentReviewPage]);
 
   const getCompanyDetails = async () => {

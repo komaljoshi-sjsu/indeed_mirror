@@ -43,7 +43,6 @@ function handle_request(msg, callback) {
             getChartSix(msg,callback);
             break;
     }
-    
 }
 
 exports.handle_request = handle_request;

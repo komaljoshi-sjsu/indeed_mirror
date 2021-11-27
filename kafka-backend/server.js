@@ -11,6 +11,13 @@ conn1.mysqlCon
 // Connect to MongoDB
 conn2()
 
+//Define all the models
+
+require('./models/JobSeeker')
+require('./models/Company')
+require('./models/Photo')
+require('./models/Conversation')
+require('./models/Message')
 
 function handleTopicRequest(topic_name,fname){
     //var topic_name = 'root_topic';
@@ -33,6 +40,7 @@ function handleTopicRequest(topic_name,fname){
                     partition : 0
                 }
             ];
+            console.log("sending response" + JSON.stringify(payloads));
             producer.send(payloads, function(err, data){
                 console.log(data);
             });
