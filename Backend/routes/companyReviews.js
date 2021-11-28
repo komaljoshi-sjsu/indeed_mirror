@@ -9,8 +9,9 @@ const mysql = require('mysql');
 const http = require('http');
 const url = require('url');
 const kafka = require('../kafka/client');
+const { checkAuth } = require("../config/passport");
 
-router.get("/companyReviewsPaginated", (req, res) => {
+router.get("/companyReviewsPaginated", checkAuth, (req, res) => {
 
     let msg = {};
     msg.route = "companyReviewsPaginated";
@@ -77,7 +78,7 @@ router.get("/companyReviewsPaginated", (req, res) => {
 //     });  
 // });
 
-router.get("/companyReviewsRatingSort", (req, res) => {
+router.get("/companyReviewsRatingSort", checkAuth, (req, res) => {
     let msg = {};
     msg.route = "companyReviewsRatingSort";
     msg.url = req.url;
@@ -145,7 +146,7 @@ router.get("/companyReviewsRatingSort", (req, res) => {
 //     });  
 // });
 
-router.get("/companyReviewsDateSort", (req, res) => {
+router.get("/companyReviewsDateSort", checkAuth, (req, res) => {
 
     let msg = {};
     msg.route = "companyReviewsDateSort";
@@ -176,7 +177,7 @@ router.get("/companyReviewsDateSort", (req, res) => {
     }); 
 });
 
-router.get("/companyReviewsHelpfulSort", (req, res) => {
+router.get("/companyReviewsHelpfulSort", checkAuth, (req, res) => {
 
     let msg = {};
     msg.route = "companyReviewsHelpfulSort";
@@ -207,7 +208,7 @@ router.get("/companyReviewsHelpfulSort", (req, res) => {
     }); 
 });
 
-router.get("/companyReviewsRatingFilterTotal", (req, res) => {
+router.get("/companyReviewsRatingFilterTotal", checkAuth, (req, res) => {
 
     let msg = {};
     msg.route = "companyReviewsRatingFilterTotal";
@@ -238,7 +239,7 @@ router.get("/companyReviewsRatingFilterTotal", (req, res) => {
     }); 
 });
 
-router.get("/companyReviewsRatingFilter", (req, res) => {
+router.get("/companyReviewsRatingFilter", checkAuth, (req, res) => {
 
     let msg = {};
     msg.route = "companyReviewsRatingFilter";
@@ -269,7 +270,7 @@ router.get("/companyReviewsRatingFilter", (req, res) => {
     }); 
 });
 
-router.get("/companyReviews", (req, res) => {
+router.get("/companyReviews", checkAuth, (req, res) => {
 
     let msg = {};
     msg.route = "companyReviews";
@@ -300,7 +301,7 @@ router.get("/companyReviews", (req, res) => {
     }); 
 });
 
-router.post("/updateHelpfulCount", (req, res) => {
+router.post("/updateHelpfulCount", checkAuth, (req, res) => {
 
     let msg = {};
     msg.route = "updateHelpfulCount";
@@ -322,58 +323,25 @@ router.post("/updateHelpfulCount", (req, res) => {
     });
 });
 
-router.post("/saveReview", (req, res) => {
+router.post("/saveReview", checkAuth, (req, res) => {
 
-    console.log(req.body);
-    let sql = 'INSERT INTO Review(reviewTitle, reviewerRole, city, state, postedDate, rating, workHappinessScore, learningScore, appraisalScore, reviewComments, pros, cons, ceoApprovalRating, howToPrepare, noHelpfulCount, yesReviewHelpfulCount, isFeatured, adminReviewStatus, jobSeekerId, companyId ) VALUES (?,?,?,?,now(),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ';
-    let data = [req.body.reviewTitle, req.body.reviewerRole, req.body.city, req.body.state, req.body.rating, req.body.workHappinessScore, req.body.learningScore, req.body.appreciationScore, req.body.reviewComments, req.body.pros, req.body.cons, req.body.ceoApprovalRating, req.body.howToPrepare, 0, 0, 0,'PENDING_APPROVAL', req.body.jobSeekerId, req.body.companyId];
-    
-    connection.query(sql, data, (err, results) => {
+    let msg = {};
+    msg.route = "saveReview";
+    msg.body = req.body;
+
+    kafka.make_request("jobseeker", msg, function (err, results) {
         if (err) {
-            console.log(err);
             res.writeHead(401,{
                 'Content-Type' : 'application/json'
             });
             res.end("Server error. Please try again later!");
         }
         else{
-            let sql = 'select round(avg(Rating),1) as avgRating, round(avg(workHappinessScore),1) as avgWHScore, round(avg(learningScore),1) as avgLScore, round(avg(appraisalScore),1) as avgAppScore, round(avg(ceoApprovalRating),1) as avgCeoScore, count(Rating) as totalReviews from Review where companyId=?';
-            connection.query(sql, [req.body.companyId], (err, results) => {
-                if (err) {
-                    console.log(err);
-                }
-                else if(results.length > 0){
-                    console.log('update');
-                    console.log(results[0].avgWHScore);
-                    Company.updateOne({
-                        companyId: req.body.companyId
-                    }, {
-                        $set: {
-                            avgWorkHappinessScore: results[0].avgWHScore,
-                            avgLearningScore: results[0].avgLScore,
-                            avgAppreciationScore: results[0].avgAppScore,
-                            noOfReviews: results[0].totalReviews,
-                            companyAvgRating: results[0].avgRating,
-                            ceoAvgRating: results[0].avgCeoScore
-                        },
-                    },{ upsert: true }, (error, data) => {
-                
-                        if (error) {
-                            console.log(error);
-                        }else{
-                            console.log('true');
-                        }
-                    });
-                }else{
-                    console.log("no data");
-                }
-                console.log('Mongo DB success');
-                res.writeHead(200,{
-                      'Content-Type' : 'application/json'
-                });
-                res.end("Review saved successfully");
-                });       
-            }         
+            res.writeHead(200,{
+                'Content-Type' : 'application/json'
+            });
+            res.end("Review added successfully");
+        }
     });
 });
 

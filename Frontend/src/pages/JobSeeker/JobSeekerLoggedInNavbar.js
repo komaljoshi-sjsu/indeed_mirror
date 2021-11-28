@@ -13,7 +13,7 @@ import {
 } from 'react-icons/bs'
 import { IoMdPerson, IoMdSettings, IoMdHelpCircle } from 'react-icons/io'
 import { ImProfile } from 'react-icons/im'
-import { MdFavorite, MdReviews, MdEmail } from 'react-icons/md'
+import { MdFavorite, MdReviews, MdEmail, MdPhoto } from 'react-icons/md'
 import logo from '../../images/Indeed_logo.png'
 import '../../CSS/JobSeekerNavbar.css'
 
@@ -204,7 +204,7 @@ class JobSeekerLoggedInNavbar extends Component {
                       </a>
                       <a class="dropdown-item ditems">
                         <Link
-                          to="/"
+                          to="/profileReviews"
                           style={{
                             textDecoration: 'none',
                             color: '#474747',
@@ -217,6 +217,20 @@ class JobSeekerLoggedInNavbar extends Component {
                         </Link>
                       </a>
                       <a class="dropdown-item ditems">
+                        <Link
+                          to="/myPhotos"
+                          style={{
+                            textDecoration: 'none',
+                            color: '#474747'                            
+                          }}
+                        >
+                          <MdPhoto
+                            style={{ width: '40px', height: '25px' }}
+                          />
+                          <span className="spandrop">My Photos</span>{' '}
+                        </Link>
+                      </a>
+                      {/* <a class="dropdown-item ditems">
                         <MdEmail style={{ width: '40px', height: '25px' }} />
                         <span className="spandrop">Email preferences</span>
                       </a>
@@ -235,7 +249,7 @@ class JobSeekerLoggedInNavbar extends Component {
                           style={{ width: '40px', height: '25px' }}
                         />
                         <span className="spandrop">Help Center</span>
-                      </a>
+                      </a> */}
                       <div class="dropdown-divider ditems"></div>
                       <a class="dropdown-item">
                         <span className="signoutdrop">Sign Out</span>

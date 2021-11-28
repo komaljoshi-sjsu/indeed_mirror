@@ -1,6 +1,10 @@
 const connection = require("../../config/mysql_connection");
 var mysql = require("mysql");
 const url = require('url');
+require('../../models/Company');
+
+const mongoose = require("mongoose");
+const Company = mongoose.model("Company");
 let saveReview = async (req, callback) => {
     try {
         console.log(req.body);

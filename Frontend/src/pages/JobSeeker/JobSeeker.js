@@ -8,6 +8,7 @@ import { RatingView } from 'react-simple-star-rating'
 import { makeStyles } from '@material-ui/styles'
 import Autocomplete from '@mui/material/Autocomplete'
 import axios from 'axios'
+import ReactPaginate from 'react-paginate'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { useSelector } from 'react-redux'
@@ -74,8 +75,11 @@ class JobSeekerLandingPage extends Component {
       responsibilities: '',
       qualifications: '',
       loveJobRole: '',
+      applied: false,
+      saved: false,
       currentPage: 1,
       totalPosts: 0,
+      pageCount: 0,
       isLoggedIn: false,
     }
     this.getCurrentDate()
@@ -168,6 +172,10 @@ class JobSeekerLandingPage extends Component {
 
         job = response.data[0]
 
+        const pageCount = Math.ceil(response.data.length / 5)
+        console.log(
+          'Total data =' + response.data.length + ' Page count = ' + pageCount,
+        )
         this.setState({
           allJobs: this.state.allJobs.concat(response.data),
           whatSearch: whatSearch,
@@ -186,6 +194,7 @@ class JobSeekerLandingPage extends Component {
           qualifications: job.qualifications,
           loveJobRole: job.loveJobRole,
           totalPosts: response.data.length,
+          pageCount: pageCount,
         })
       },
       (error) => {
@@ -203,11 +212,11 @@ class JobSeekerLandingPage extends Component {
           ),
         })
         let companyId = job.companyId
-        let reviews = this.state.noOfCompanyReviews.filter(
+        let reviews = response.data.filter(
           (reviews) => reviews.companyId === companyId,
         )
 
-        if (reviews.length > 1) {
+        if (reviews.length > 0) {
           reviews = reviews[0]
 
           this.setState({ reviewCount: reviews.NoOfReviews })
@@ -226,11 +235,11 @@ class JobSeekerLandingPage extends Component {
           avgCompanyRating: this.state.avgCompanyRating.concat(response.data),
         })
         let companyId = job.companyId
-        let avgrating = this.state.avgCompanyRating.filter(
+        let avgrating = response.data.filter(
           (rating) => rating.companyId === companyId,
         )
 
-        if (avgrating.length > 1) {
+        if (avgrating.length > 0) {
           avgrating = avgrating[0]
           this.setState({ rating: avgrating.avgRating })
         } else this.setState({ rating: 0 })
@@ -240,10 +249,16 @@ class JobSeekerLandingPage extends Component {
       },
     )
 
+    await this.getAppliedStatus(job.jobId)
+
+    await this.getSavedJobStatus(job.jobId)
+
     await this.getPaginatedData()
   }
 
   getPaginatedData() {
+    console.log('Getting paginated data')
+    console.log(this.state.currentPage)
     let data = { currentPage: this.state.currentPage }
     axios
       .post('http://localhost:5000/jobSeeker/paginatedData', data)
@@ -254,6 +269,108 @@ class JobSeekerLandingPage extends Component {
           jobs: response.data,
         })
       })
+  }
+
+  getAppliedStatus(jobId) {
+    const userInfo = this.props.userInfo
+    const companyId = this.state.companyId
+    const appliedDate = this.getCurrentDate()
+    console.log(
+      'Checking applied status with company id ' +
+        companyId +
+        ' and jobid ' +
+        jobId,
+    )
+    if (userInfo.email !== '' && userInfo.accountType === 'JobSeeker') {
+      console.log('User has signed in')
+      const id = userInfo.id
+      //console.log(id)
+      const data = { appliedDate, jobId, id, companyId }
+      //console.log(data)
+      console.log(
+        'Checking applied status for userid ' +
+          userInfo.id +
+          ' with company id ' +
+          companyId +
+          ' and jobid ' +
+          jobId,
+      )
+      axios
+        .post('http://localhost:5000/jobSeeker/checkAppliedStatus', data)
+        .then((response) => {
+          console.log(response.data, response.status)
+          if (response.status === 200) {
+            console.log('User has already applies to job')
+            this.setState({
+              applied: true,
+            })
+          } else {
+            this.setState({
+              applied: false,
+            })
+          }
+        })
+    } else {
+      this.setState({
+        applied: false,
+      })
+    }
+  }
+
+  getSavedJobStatus(jobId) {
+    const userInfo = this.props.userInfo
+    if (userInfo.email !== '' && userInfo.accountType === 'JobSeeker') {
+      console.log(
+        'Checking saved status for userid ' +
+          userInfo.id +
+          ' and jobid ' +
+          jobId,
+      )
+      const userId = userInfo.id
+      const {
+        companyId,
+        city,
+        state,
+        zip,
+        jobType,
+        salary,
+        location,
+        roleName,
+        companyName,
+      } = this.state
+      const data = {
+        companyId,
+        city,
+        state,
+        zip,
+        jobType,
+        salary,
+        location,
+        roleName,
+        companyName,
+        jobId,
+        userId,
+      }
+      axios
+        .post('http://localhost:5000/jobSeeker/checkSavedStatus', data)
+        .then((response) => {
+          console.log(response.data, response.status)
+          if (response.status === 200) {
+            console.log('User has already saved this job')
+            this.setState({
+              saved: true,
+            })
+          } else {
+            this.setState({
+              saved: false,
+            })
+          }
+        })
+    } else {
+      this.setState({
+        saved: false,
+      })
+    }
   }
 
   handleWhatVal = (evt, value) => {
@@ -301,12 +418,16 @@ class JobSeekerLandingPage extends Component {
           console.log(response.data, response.status)
           job = response.data.result
           totalCount = response.data.count[0].count
-
+          const pageCount = Math.ceil(totalCount / 5)
+          console.log(
+            'Total data =' + totalCount + ' Page count = ' + pageCount,
+          )
           if (job.length > 0) {
             console.log('setting jobs')
             this.setState({
               jobs: job,
               totalPosts: totalCount,
+              pageCount: pageCount,
               roleName: job[0].jobTitle,
               companyName: job[0].companyName,
               companyId: job[0].companyId,
@@ -332,12 +453,16 @@ class JobSeekerLandingPage extends Component {
           console.log(response.data, response.status)
           job = response.data.result
           totalCount = response.data.count[0].count
-
+          const pageCount = Math.ceil(totalCount / 5)
+          console.log(
+            'Total data =' + totalCount + ' Page count = ' + pageCount,
+          )
           if (job.length > 0) {
             console.log('setting jobs')
             this.setState({
               jobs: job,
               totalPosts: totalCount,
+              pageCount: pageCount,
               roleName: job[0].jobTitle,
               companyName: job[0].companyName,
               companyId: job[0].companyId,
@@ -370,12 +495,16 @@ class JobSeekerLandingPage extends Component {
           )
           job = response.data.result
           totalCount = response.data.count[0].count
-
+          const pageCount = Math.ceil(totalCount / 5)
+          console.log(
+            'Total data =' + totalCount + ' Page count = ' + pageCount,
+          )
           if (job.length > 0) {
             console.log('setting jobs')
             this.setState({
               jobs: job,
               totalPosts: totalCount,
+              pageCount: pageCount,
               roleName: job[0].jobTitle,
               companyName: job[0].companyName,
               companyId: job[0].companyId,
@@ -403,40 +532,52 @@ class JobSeekerLandingPage extends Component {
     console.log(job.jobTitle)
     console.log(job.companyId)
     let companyId = job.companyId
+    console.log(
+      'No oof company reviews: ' +
+        this.state.noOfCompanyReviews.length +
+        ' ratings: ' +
+        this.state.avgCompanyRating.length,
+    )
     let reviews = this.state.noOfCompanyReviews.filter(
       (reviews) => reviews.companyId === companyId,
     )
-    if (reviews.length > 1) {
-      reviews = reviews[0]
 
+    console.log(reviews.length + ' for company id ' + companyId)
+    if (reviews.length > 0) {
+      reviews = reviews[0]
+      console.log(reviews.NoOfReviews)
       this.setState({ reviewCount: reviews.NoOfReviews })
     } else this.setState({ reviewCount: 0 })
     let avgrating = this.state.avgCompanyRating.filter(
       (rating) => rating.companyId === companyId,
     )
-    if (avgrating.length > 1) {
+    if (avgrating.length > 0) {
       avgrating = avgrating[0]
+      console.log(avgrating.avgRating)
       this.setState({ rating: avgrating.avgRating })
     } else this.setState({ rating: 0 })
 
-    console.log(reviews.NoOfReviews)
-    console.log(avgrating.avgRating)
-
-    this.setState({
-      roleName: job.jobTitle,
-      companyName: job.companyName,
-      companyId: job.companyId,
-      jobId: job.jobId,
-      city: job.city,
-      state: job.state,
-      zip: job.zip,
-      jobType: job.jobMode,
-      salary: job.salaryDetails,
-      location: job.city,
-      responsibilities: job.responsibilities,
-      qualifications: job.qualifications,
-      loveJobRole: job.loveJobRole,
-    })
+    this.setState(
+      {
+        roleName: job.jobTitle,
+        companyName: job.companyName,
+        companyId: job.companyId,
+        jobId: job.jobId,
+        city: job.city,
+        state: job.state,
+        zip: job.zip,
+        jobType: job.jobMode,
+        salary: job.salaryDetails,
+        location: job.city,
+        responsibilities: job.responsibilities,
+        qualifications: job.qualifications,
+        loveJobRole: job.loveJobRole,
+      },
+      () => {
+        this.getAppliedStatus(job.jobId)
+        this.getSavedJobStatus(job.jobId)
+      },
+    )
   }
 
   async handleCompanyLink() {
@@ -476,6 +617,9 @@ class JobSeekerLandingPage extends Component {
         .post('http://localhost:5000/jobSeeker/applyJob', data)
         .then((response) => {
           console.log(response.data, response.status)
+          this.setState({
+            applied: true,
+          })
         })
     } else {
       console.log("User didn't sign in")
@@ -486,16 +630,43 @@ class JobSeekerLandingPage extends Component {
   async handleSaveJob(evt) {
     console.log(evt.currentTarget.id)
     const companyId = evt.currentTarget.id
+    const jobId = this.state.jobId
     const userInfo = this.props.userInfo
+    const {
+      city,
+      state,
+      zip,
+      jobType,
+      salary,
+      location,
+      roleName,
+      companyName,
+    } = this.state
+
     console.log(userInfo)
     if (userInfo.email !== '' && userInfo.accountType === 'JobSeeker') {
       console.log('User has signed in')
       const userId = userInfo.id
-      const data = { companyId, userId }
+      const data = {
+        companyId,
+        city,
+        state,
+        zip,
+        jobType,
+        salary,
+        location,
+        roleName,
+        companyName,
+        jobId,
+        userId,
+      }
       await axios
         .post('http://localhost:5000/jobSeeker/saveJob', data)
         .then((response) => {
           console.log(response.data, response.status)
+          this.setState({
+            saved: true,
+          })
         })
     } else {
       console.log("User didn't sign in")
@@ -503,11 +674,25 @@ class JobSeekerLandingPage extends Component {
     }
   }
 
-  paginate = (pageNumber) => {
-    console.log(pageNumber)
+  // paginate = (pageNumber) => {
+  //   console.log(pageNumber)
+  //   this.setState(
+  //     {
+  //       currentPage: pageNumber,
+  //     },
+  //     () => {
+  //       this.getPaginatedData()
+  //     },
+  //   )
+  // }
+
+  handlePageClick = (event) => {
+    // const newOffset = (event.selected * 2) % this.state.totalCount
+    console.log(`User requested page number ${event.selected + 1}`)
+    //setItemOffset(newOffset);
     this.setState(
       {
-        currentPage: pageNumber,
+        currentPage: event.selected + 1,
       },
       () => {
         this.getPaginatedData()
@@ -542,9 +727,14 @@ class JobSeekerLandingPage extends Component {
                     <Autocomplete
                       id="free-solo-demo"
                       freeSolo
-                      sx={{ width: 180, borderBottom: 'none' }}
+                      sx={{
+                        width: 180,
+                        borderBottom: 'none',
+                        borderWidth: '0 0 0 0',
+                      }}
                       value={this.state.whatVal}
                       onChange={this.handleWhatVal.bind(this)}
+                      onInputChange={this.handleWhatVal.bind(this)}
                       options={this.state.whatSearch.map((option) => option)}
                       getOptionLabel={(option) => option}
                       renderInput={(params) => (
@@ -585,7 +775,8 @@ class JobSeekerLandingPage extends Component {
                       freeSolo
                       sx={{ width: 180, borderBottom: 'none' }}
                       value={this.state.whereVal}
-                      onChange={this.handleWhereVal}
+                      onChange={this.handleWhereVal.bind(this)}
+                      onInputChange={this.handleWhereVal.bind(this)}
                       options={this.state.whereSearch.map((option) => option)}
                       getOptionLabel={(option) => option}
                       renderInput={(params) => (
@@ -729,26 +920,54 @@ class JobSeekerLandingPage extends Component {
                   <br />
                   <br />
                   <div class="btn-group" role="group" aria-label="Third group">
-                    <button
-                      type="button"
-                      class="btn applybtn"
-                      onClick={this.handleApply.bind(this)}
-                      id={this.state.jobId}
-                    >
-                      <h5 style={{ marginTop: '4px', color: 'white' }}>
-                        Apply On Company Site
-                      </h5>
-                    </button>
+                    {this.state.applied ? (
+                      <button
+                        type="button"
+                        class="btn applybtn"
+                        id={this.state.jobId}
+                        disabled
+                      >
+                        <h5 style={{ marginTop: '4px', color: 'white' }}>
+                          Applied to Company
+                        </h5>
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        class="btn applybtn"
+                        onClick={this.handleApply.bind(this)}
+                        id={this.state.jobId}
+                      >
+                        <h5 style={{ marginTop: '4px', color: 'white' }}>
+                          Apply On Company Site
+                        </h5>
+                      </button>
+                    )}
                   </div>
                   <div class="btn-group" role="group" aria-label="Third group">
-                    <button
-                      type="button"
-                      class="btn savebtn"
-                      id={this.state.companyId}
-                      onClick={this.handleSaveJob.bind(this)}
-                    >
-                      <h5 style={{ marginTop: '4px', color: 'white' }}>Save</h5>
-                    </button>
+                    {this.state.saved ? (
+                      <button
+                        type="button"
+                        class="btn savebtn"
+                        id={this.state.companyId}
+                        disabled
+                      >
+                        <h5 style={{ marginTop: '4px', color: 'white' }}>
+                          Saved
+                        </h5>
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        class="btn savebtn"
+                        id={this.state.companyId}
+                        onClick={this.handleSaveJob.bind(this)}
+                      >
+                        <h5 style={{ marginTop: '4px', color: 'white' }}>
+                          Save
+                        </h5>
+                      </button>
+                    )}
                   </div>
                   <br />
                   <br />
@@ -790,11 +1009,32 @@ class JobSeekerLandingPage extends Component {
             <div class="col-1"></div>
           </div>
         </div>
-        <Pagination
+        {/* <Pagination
           postsPerPage={5}
           totalPosts={this.state.totalPosts}
           paginate={this.paginate}
-        />
+        /> */}
+        <div style={{ marginLeft: '50%' }}>
+          <ReactPaginate
+            nextLabel="next >"
+            onPageChange={this.handlePageClick.bind(this)}
+            pageRangeDisplayed={5}
+            pageCount={this.state.pageCount}
+            previousLabel="< previous"
+            pageClassName="page-item"
+            pageLinkClassName="page-link"
+            previousClassName="page-item"
+            previousLinkClassName="page-link"
+            nextClassName="page-item"
+            nextLinkClassName="page-link"
+            breakLabel="..."
+            breakClassName="page-item"
+            breakLinkClassName="page-link"
+            containerClassName="pagination"
+            activeClassName="active"
+            renderOnZeroPageCount={null}
+          />
+        </div>
       </div>
     )
   }

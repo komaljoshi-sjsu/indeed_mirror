@@ -15,6 +15,9 @@ import '../../CSS/FindSalary.css'
 import ReactStars from "react-rating-stars-component";
 import {  Row, Col} from 'react-bootstrap';
 import { Link,useParams  } from 'react-router-dom';
+import JobSeekerLoggedInNavbar from './JobSeekerLoggedInNavbar'
+import { withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 class FindSalByTitle extends Component {
   constructor(props) {
@@ -36,12 +39,14 @@ class FindSalByTitle extends Component {
       location: '',
       rating:'',
       revCnt: '',
-      salRevCnt:''
+      salRevCnt:'',
+      isLoggedIn: false,
     }
   }
 
 
   componentDidMount() {
+    this.checkLoggedInStatus()
     let job;
     const jobTitles  = this.props.match.params.jobTitle;
     // console.log(jobTitles);
@@ -110,6 +115,16 @@ class FindSalByTitle extends Component {
     )
   }
 
+  checkLoggedInStatus() {
+    const userInfo = this.props.userInfo
+    console.log(userInfo)
+    if (userInfo.email !== '' && userInfo.accountType === 'JobSeeker') {
+      console.log('JobSeeker is signed in')
+      this.setState({
+        isLoggedIn: true,
+      })
+    }
+  }
 
   handleWhatVal = (evt, value) => {
     // console.log(evt.target.value)
@@ -185,6 +200,14 @@ class FindSalByTitle extends Component {
       })
   }
 
+  
+  handleCompanyLink = (e, companyId, companyName)  => {
+    const payload1 = companyName;
+    this.props.companyName(payload1);
+    const payload2 = companyId;
+    this.props.companyId(payload2);
+  }
+
   handleCardClick = (evt) => {
     console.log(evt.currentTarget.id)
     let jobTitle = parseInt(evt.currentTarget.id)
@@ -207,7 +230,11 @@ class FindSalByTitle extends Component {
   render() {
     return (
       <div>
+     {this.state.isLoggedIn ? (
+          <JobSeekerLoggedInNavbar />
+        ) : (
           <JobSeekerNavbar />
+        )}
           <div id="Second" class="row searchNav" >
           <div class="row">
             <div class="col-1"></div>
@@ -331,7 +358,7 @@ class FindSalByTitle extends Component {
     {/* render details */}
 
 <div className="App">
-<h5 class="card-title">Top companies for Front Desk Agents in United States</h5>
+<h5 class="card-title">Top companies for the role {this.state.jobs.jobTitle}</h5>
 <div class="row">
             <div class="col-2"></div>
             <div class="col-7">
@@ -344,7 +371,7 @@ class FindSalByTitle extends Component {
                   <Row >
                 <Col xs={3}><img src={job.logo} alt="helo" style={{ maxHeight: '120px', maxWidth: '120px' }} /></Col>
                 <Col xs={5}>
-                <Link style={{color:'black', textDecoration: 'none'}} to="/snapshot"><h2 style={{textAlign:"left"}}>{job.companyName}</h2></Link>
+                <Link style={{color:'black', textDecoration: 'none'}} to="/snapshot" onClick={(e) => { this.handleCompanyLink(e, job.companyId, job.companyName) }}><h2 style={{textAlign:"left"}}>{job.companyName}</h2></Link>
                 <Col >
                 <Row xs={2} style={{marginLeft:"2px"}}>{job.rating}
                 <ReactStars
@@ -360,12 +387,12 @@ class FindSalByTitle extends Component {
                 </Col>
                   </Col>
                   <Col xs={3} style={{textAlign:"right"}}>
-                <Link style={{color:'black', textDecoration: 'none'}} to="/findSalaries"><h5>${job.salaryDetails} per year</h5></Link>
+                <Link style={{color:'black', textDecoration: 'none'}} to="/findSalaries" onClick={(e) => { this.handleCompanyLink(e, job.companyId, job.companyName) }}><h5>${job.salaryDetails} per year</h5></Link>
                  <Col xs={12} style={{textAlign:"right"}}>
-                   <Link style={{textDecoration: 'none'}} to="/reviews"><small>{job.revCnt}{' '}reviews</small></Link>
+                   <Link style={{textDecoration: 'none'}} to="/reviews" onClick={(e) => { this.handleCompanyLink(e, job.companyId, job.companyName) }}><small>{job.revCnt}{' '}reviews</small></Link>
                   </Col>
                   <Col xs={12} style={{textAlign:"right"}}>
-                  <Link style={{textDecoration: 'none'}} to="/reviews"><small>{job.salRevCnt}{' '}salaries{' '}reported</small></Link>
+                  <Link style={{textDecoration: 'none'}} to="/reviews" onClick={(e) => { this.handleCompanyLink(e, job.companyId, job.companyName) }}><small>{job.salRevCnt}{' '}salaries{' '}reported</small></Link>
                   </Col>
                  </Col>
                   </Row>
@@ -387,4 +414,26 @@ class FindSalByTitle extends Component {
  }
 }
 
-export default FindSalByTitle;
+// export default FindSalByTitle;
+
+const mapDispatchToProps = (dispatch) => {
+  console.log('dispatching props')
+  return {
+    companyName: (payload) => {
+      dispatch({ type: 'setCompName', payload })
+    },
+    companyId: (payload) => {
+      dispatch({ type: 'setCompId', payload })
+    },
+  }
+}
+
+
+const mapStateToProps = (state) => ({
+  userInfo: state.userInfo,
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withRouter(FindSalByTitle))

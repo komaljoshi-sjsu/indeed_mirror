@@ -1,19 +1,18 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { Row, Col, Container } from "react-bootstrap";
-import UploadPhotos from "./UploadPhotos";
 import Pagination from "./Pagination";
 import axios from "axios";
 import { SRLWrapper } from "simple-react-lightbox";
 import SimpleReactLightbox from "simple-react-lightbox";
 import "./../../CSS/CompanyPhoto.css";
-import CompanyTabs from "../Company/CompanyTabs";
 import { useSelector } from "react-redux";
+import JobSeekerLoggedInNavbar from "../JobSeeker/JobSeekerLoggedInNavbar";
 
-const CompanyPhotos = (props) => {
+const MyPhotos = (props) => {
   const [images, setImages] = useState([]);
-  const compid = useSelector((state) => state.company.compid);
-  const [companyId, setCompanyId] = useState(compid);
+  const id = useSelector((state) => state.userInfo.id);
+  const [jobSeekerId, setJobSeekerId] = useState(37);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPosts, setTotalPosts] = useState(0);
 
@@ -26,71 +25,40 @@ const CompanyPhotos = (props) => {
     },
   };
 
-  const getCompanyPhotos = async () => {
-    // if (jobSeekerId) {
-    //   const data1 = {
-    //     jobSeekerId: jobSeekerId,
-    //     companyId: companyId,
-    //     photoAdminReviewedStatus: 'PENDING_APPROVAL',
-    //     currentPage: currentPage,
-    //   }
-    //   const jobSeekerPhotos = await axios('api/getJobSeekerPhotos', {
-    //     params: { data: data1 },
-    //   })
-    //   setImages(jobSeekerPhotos.data.photos)
-    //   setJsPhotoCount(jobSeekerPhotos.data.count)
-    //   const data2 = {
-    //     companyId: companyId,
-    //     photoAdminReviewedStatus: 'APPROVED',
-    //     currentPage: currentPage,
-    //   }
-    //   const allPhotos = await axios('/api/getAllPhotos', {
-    //     params: { data: data2 },
-    //   })
-    //   //setImages([...images,allPhotos.data.photos])
-    //   // console.log(typeof(images))
-    //   // console.log(images)
-    //   //console.log(allPhotos.data.photos);
-    // } else {
+  const getJobSeekerPhotos = async () => {
     const data1 = {
-      companyId: companyId,
-      photoAdminReviewedStatus: "APPROVED",
+      jobSeekerId: jobSeekerId,
       currentPage: currentPage,
     };
-    const allPhotos = await axios("/api/getAllPhotos", {
+    const jobSeekerPhotos = await axios("/api/getJobSeekerPhotos", {
       params: { data: data1 },
     });
-    setImages(allPhotos.data.photos);
-    setTotalPosts(allPhotos.data.count);
-    console.log("allphotos" + allPhotos.data.photos);
+    setImages(jobSeekerPhotos.data.photos);
+    setTotalPosts(jobSeekerPhotos.data.count);
+    console.log("allphotos" + JSON.stringify(jobSeekerPhotos.data.photos));
   };
 
   useEffect(() => {
-    getCompanyPhotos();
+    getJobSeekerPhotos();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
-    getCompanyPhotos();
+    getJobSeekerPhotos();
   };
 
   return (
     <div>
-      <CompanyTabs />
+      <JobSeekerLoggedInNavbar />
       <Container>
-        <Row>
-          <Col xs="6">
-            <UploadPhotos />
-          </Col>
-        </Row>
         <Row>
           <Col xs="6">
             <SimpleReactLightbox>
               <SRLWrapper options={options}>
-                <div className="container1">
+                <div className="container2">
                   {images.map((image) => (
-                    <div key={image.id} className="image-card">
+                    <div key={image.id} className="image-card1">
                       <a href={image.imageLocation}>
                         <img
                           className="image"
@@ -98,6 +66,26 @@ const CompanyPhotos = (props) => {
                           alt=""
                         />
                       </a>
+                      <div>{image.companyName}</div>
+                      {image.photoAdminReviewedStatus === "APPROVED" && (
+                        <span style={{ color: "green" }}>
+                          {" "}
+                          {image.photoAdminReviewedStatus}
+                        </span>
+                      )}
+                      {image.photoAdminReviewedStatus ===
+                        "PENDING_APPROVAL" && (
+                        <span style={{ color: "orange" }}>
+                          {" "}
+                          {image.photoAdminReviewedStatus}
+                        </span>
+                      )}
+                      {image.photoAdminReviewedStatus === "REJECTED" && (
+                        <span style={{ color: "red" }}>
+                          {" "}
+                          {image.photoAdminReviewedStatus}
+                        </span>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -115,4 +103,4 @@ const CompanyPhotos = (props) => {
   );
 };
 
-export default CompanyPhotos;
+export default MyPhotos;

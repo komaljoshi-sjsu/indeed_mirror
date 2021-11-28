@@ -21,6 +21,7 @@ const AdminReview = (props) => {
 
   useEffect(() => {
     getAdminReviews();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
   const handleStatus = (e) => {

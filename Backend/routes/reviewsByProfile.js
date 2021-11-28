@@ -1,4 +1,5 @@
 //job seeker API for viewing company reviews
+const { checkAuth } = require("../config/passport");
 const express = require("express");
 const router = express.Router();
 const connection = require("../config/mysql_connection");
@@ -10,7 +11,7 @@ const http = require('http');
 const url = require('url');
 const kafka = require('../kafka/client');
 
-router.get("/reviewsByProfilePaginated", (req, res) => {
+router.get("/reviewsByProfilePaginated", checkAuth, (req, res) => {
 
     let msg = {};
     msg.route = "reviewsByProfilePaginated";
@@ -42,7 +43,7 @@ router.get("/reviewsByProfilePaginated", (req, res) => {
     }); 
 });
 
-router.get("/reviewsByProfile", (req, res) => {
+router.get("/reviewsByProfile", checkAuth, (req, res) => {
 
     let msg = {};
     msg.route = "reviewsByProfile";

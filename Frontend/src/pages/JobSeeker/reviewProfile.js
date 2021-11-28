@@ -10,7 +10,7 @@ import {
 import backendServer from '../../webConfig';
 import '../../style/button-group.css';
 import Pagination from "./../JobSeeker/Pagination";
-import JobSeekerNavbar from './JobSeekerNavbar';
+import JobSeekerLoggedInNavbar from './JobSeekerLoggedInNavbar';
 import { withRouter } from 'react-router-dom';
 
 class ReviewProfile extends Component {
@@ -26,11 +26,12 @@ class ReviewProfile extends Component {
     componentDidMount() {
         // To-DO : Get selected company id
     
-        const jobSeekerId = 37;
+        const jobSeekerId = this.props.userInfo.id;
         console.log("User id : "+jobSeekerId);
         let { reviewDetails } = this.state;
         const currentPage = 1;
         reviewDetails = [];
+        axios.defaults.headers.common['authorization'] = this.props.userInfo.token;
         axios.get(`${backendServer}/reviewsByProfile`, {
           params: {
             jobSeekerId,
@@ -121,7 +122,10 @@ class ReviewProfile extends Component {
                   </Col>
                   <Col xs={8}>
                   <Card.Title>
-                  <Link style={{color:'#2457a7', textDecoration: 'none'}} to="/reviews" onClick={(e) => { this.handleCompanyLink(e, review.companyId, review.companyName) }}><b>{review.reviewTitle}</b></Link>
+                  <Link style={{color:'#2457a7', textDecoration: 'none'}} to="/reviews" onClick={(e) => { this.handleCompanyLink(e, review.companyId, review.companyName) }}><b>{review.reviewTitle}</b>
+                  </Link>
+                  {review.adminReviewStatus === 'APPROVED' && <span style={{color:"green"}}>{' '}[Admin approved]</span>}
+                  {review.adminReviewStatus === 'PENDING_APPROVAL' && <span style={{color:"orange"}}>{' '}[Admin approval pending]</span>}
                   </Card.Title>
                   <Card.Text>
                     <small>{review.reviewerRole}{' - '}{review.city}{', '}{review.state}{' - '}{new Date(review.postedDate).toDateString()}</small>
@@ -143,7 +147,7 @@ class ReviewProfile extends Component {
           ));
       return (
         <div>
-            <JobSeekerNavbar />
+            <JobSeekerLoggedInNavbar />
               {noReviewsMsg !== '' && 
               <Container style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               <Card style={{ width: '60rem', margin: '0.8em' }}>
@@ -153,6 +157,8 @@ class ReviewProfile extends Component {
               </Card>
               </Container>}
               <Container style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+              <br/>
+              <h4>My reviews</h4>
               { noReviewsMsg === '' && userReviews}
               </Container>
               <Container style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>

@@ -4,11 +4,11 @@ const multerS3 = require("multer-s3");
 const multer = require("multer");
 const path = require("path");
 const router = express.Router();
-const mongoose = require("mongoose");
-const Photo = mongoose.model("Photo");
 const dotenv = require("dotenv");
 var mysql = require("mysql");
 const connection = require("../config/mysql_connection");
+const { response } = require("express");
+var kafka = require("../kafka/client");
 dotenv.config();
 
 const s3 = new aws.S3({
@@ -33,7 +33,7 @@ router.post("/api/upload", (req, res) => {
         if (isEmpty(imageName) || isEmpty(imageLocation)) {
           return res.status(400).send("Image data doesn't exist");
         } else {
-          console.log("Image loc from backend" + imageLocation)
+          console.log("Image loc from backend" + imageLocation);
           return res.status(200).json({ imageLocation: imageLocation });
         }
       }
@@ -78,55 +78,46 @@ function validateFileType(file, cb) {
 }
 
 function isEmpty(value) {
-  return value === undefined || value == null || value.length <= 0 ? true : false;
+  return value === undefined || value == null || value.length <= 0
+    ? true
+    : false;
 }
 
 router.post("/api/uploadCompanyPhotos", async (req, res) => {
-  try {
-    const { jobSeekerId, companyId, imageLocation, photoAdminReviewedStatus } =
-      req.body;
-      console.log(req.body);
-    const photoDtls = new Photo({
-      jobSeekerId,
-      companyId,
-      imageLocation,
-      photoAdminReviewedStatus,
-    });
-    photoDtls
-      .save()
-      .then((result) => {
-        console.log(photoDtls)
-        return res.status(200).json({ photoDtls: result });
-      })
-      .catch((err) => {
-        return res
-          .status(400)
-          .json({ error: "Error while inserting photo details" + err });
-      });
-  } catch (err) {
-    return res.status(400).json({ error: "error" });
-  }
+  let msg = {};
+  msg.route = "uploadCompanyPhotos";
+  msg.body = req.body;
+  kafka.make_request("jobseeker", msg, function (err, results) {
+    if (err) {
+      console.log(err);
+      return res.status(err.status).send(err.message);
+    } else {
+      return res.status(results.status).json({ photoDtls: response.photoDtls });
+    }
+  });
 });
+
 router.post("/api/uploadCompanyProfilePic", async (req, res) => {
   try {
-    
     const compid = req.body.companyId;
     const logo = req.body.imageLocation;
-    let sql1 = "UPDATE Company SET logo = " +mysql.escape(logo)
-     +"WHERE companyId = "+mysql.escape(compid);
+    let sql1 =
+      "UPDATE Company SET logo = " +
+      mysql.escape(logo) +
+      "WHERE companyId = " +
+      mysql.escape(compid);
     console.log(sql1);
     let query = connection.query(sql1, (error, result) => {
-        if (error) {
-          return res.status(400).json({ error: "error" });
-            
-        } else {
-          console.log("uploaded")
-          return res.status(200).json({message:"Company Image Uploaded"});
-           
-        }            
+      if (error) {
+        return res.status(400).json({ error: "error" });
+      } else {
+        console.log("uploaded");
+        return res.status(200).json({ message: "Company Image Uploaded" });
+      }
     });
   } catch (err) {
     return res.status(400).json({ error: "error" });
   }
 });
+
 module.exports = router;

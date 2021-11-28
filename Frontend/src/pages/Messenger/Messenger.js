@@ -10,17 +10,17 @@ import JobSeekerLoggedInNavbar from '../JobSeeker/JobSeekerLoggedInNavbar'
 import EmployerNavbar from '../Employer/EmployerNavbar'
 
 const Messenger = (props) => {
-  const [currentChat, setCurrentChat] = useState(null);
+  const [currentChat, setCurrentChat] = useState();
   const [conversations, setConversations] = useState([]);
   const [messages, setMessages] = useState([]);
   const id = useSelector((state) => state.userInfo.id);
   const accountType = useSelector((state) => state.userInfo.accountType);
-  const [userId, setUserId] = useState(parseInt(id)); // add id from store
+  const [userId, setUserId] = useState(21); // add id from store
   const [newMessage, setNewMessage] = useState("");
   const [jobSeekers, setJobSeekers] = useState([]);
-  const [isEmployer, setIsEmployer] = useState(false);
   const [newConversation, setNewConversation] = useState();
-  const [role, setRole] = useState(accountType); // add role from store
+  const [role, setRole] = useState("Employer"); // add role from store
+  const [isEmployer, setIsEmployer] = useState("Employer" === role ? true : false); // add boolean flag
   const scrollRef = useRef();
 
   //past conv
@@ -31,13 +31,13 @@ const Messenger = (props) => {
         const convResponse = await axios.get(
           "/api/getConversationById/" + userId
         );
-        let removeArr = [];
+        let removeArr = [];      
+        // eslint-disable-next-line array-callback-return
         convResponse.data.map((item) => {
           removeArr.push(item.members[1]);
         });
 
         const myArray = res.data.filter((el) => !removeArr.includes(el.value));
-        console.log("filtered" + JSON.stringify(convResponse.data));
         setConversations(convResponse.data);
         setJobSeekers(myArray);
       } catch (err) {
@@ -57,7 +57,8 @@ const Messenger = (props) => {
         console.log(err);
       }
     };
-    getMessages();
+    if(currentChat) 
+      getMessages();
   }, [currentChat]);
 
   //handle send for existing and new conversations
@@ -146,7 +147,7 @@ const Messenger = (props) => {
                         message={msg}
                         own={Number(msg.sender) === userId}
                       />
-                    </div>
+                     </div>
                   ))}
                 </div>
                 <div className="chatBoxBottom">
