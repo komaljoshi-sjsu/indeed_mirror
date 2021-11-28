@@ -3,17 +3,20 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import {useSelector} from 'react-redux';
+
 const UploadPhotos = (props) => {
   const [show, setShow] = useState(false);
   const [photo, setPhoto] = useState([]);
   const [photoName, setPhotoName] = useState([]);
-  const [jobSeekerId, setJobSeekerId] = useState(Number);
-  const [companyId, setCompanyId] = useState(Number);
-  const [companyName, setCompanyName] = useState("");
-  const [inputFields, setInputFields] = useState([{ photo: "" }]);
-  const [fieldCount, setFieldCount] = useState(1);
   const id = useSelector((state)=>state.userInfo.id);
   const compid = useSelector((state)=>state.company.compid);
+  const compName = useSelector((state)=>state.company.compName);
+  const [jobSeekerId, setJobSeekerId] = useState(id);
+  const [companyId, setCompanyId] = useState(compid);
+  const [companyName, setCompanyName] = useState(compName);
+  const [inputFields, setInputFields] = useState([{ photo: "" }]);
+  const [fieldCount, setFieldCount] = useState(1);
+  
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
 
@@ -47,9 +50,9 @@ const UploadPhotos = (props) => {
             console.log("returned");
             console.log(response.data.imageLocation);
             var data1 = {
-              jobSeekerId: id, //jobSeekerId,
-              companyId: compid, //companyId,
-              //companyName: companyName,
+              jobSeekerId: jobSeekerId,
+              companyId: companyId,
+              companyName: companyName,
               imageLocation: response.data.imageLocation,
               photoAdminReviewedStatus: "PENDING_APPROVAL",
             };

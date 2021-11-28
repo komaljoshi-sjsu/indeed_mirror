@@ -33,10 +33,19 @@ class ReviewModal extends Component {
   }
 
   findFormErrors = () => {
-    const { reviewTitle, reviewComments, errors } = this.state;
+    const { rating, reviewTitle, workHappinessScore, learningScore, appreciationScore, reviewComments, pros, cons, ceoApprovalRating, reviewerRole, city, state, errors } = this.state;
     if (!reviewTitle || reviewTitle === '') errors.reviewTitle = 'Review title cannot be blank!';
     if (!reviewComments || reviewComments === '') errors.reviewComments = 'Review cannot be blank!';
-   
+    if (!rating || rating === 0) errors.rating = ' Please select rating!';
+    if (!workHappinessScore || workHappinessScore === 0) errors.workHappinessScore = ' Please select work happiness score!';
+    if (!learningScore || learningScore === 0) errors.learningScore = ' Please select learning score!';
+    if (!appreciationScore || appreciationScore === 0) errors.appreciationScore = ' Please select appreciation score!';
+    if (!pros || pros === '') errors.pros = 'Review pros cannot be blank!';
+    if (!cons || cons === '') errors.cons = 'Review cons cannot be blank!';
+    if (!ceoApprovalRating || ceoApprovalRating === 0) errors.ceoApprovalRating = 'Please select CEO approval rating!';
+    if (!reviewerRole || reviewerRole === '') errors.reviewerRole = 'Reviewer role cannot be blank!';
+    if (!city || city === '') errors.city = 'City cannot be blank!';
+    if (!state || state === '') errors.state = 'State cons be blank!';
     return errors;
   }
 
@@ -51,22 +60,37 @@ class ReviewModal extends Component {
 
   onStarClick = (rating) => {
       this.setState({rating: rating});
+      this.setState({
+        errors: {},
+      });
   }
 
   onStarClickCEORating = (rating) => {
     this.setState({ceoApprovalRating: rating});
+    this.setState({
+      errors: {},
+    });
   }
   
   onLearningScoreChange = (e) => {
     this.setState({learningScore: e.target.value});
+    this.setState({
+      errors: {},
+    });
   }
 
   onWorkHappinessScoreChange = (e) => {
     this.setState({workHappinessScore: e.target.value});
+    this.setState({
+      errors: {},
+    });
   }
 
   onAppreciationScoreChange = (e) => {
     this.setState({appreciationScore: e.target.value});
+    this.setState({
+      errors: {},
+    });
   }
 
   closeModal = () => {
@@ -145,6 +169,7 @@ class ReviewModal extends Component {
     const { addReview, closeModal} = this.props;
     const { openModal, redirectFlag, errors, rating, workHappinessScore, appreciationScore, learningScore, reviewTitle, reviewComments, pros, cons, ceoApprovalRating, howToPrepare, reviewerRole, city, state } = this.state;
     let redirectVar = null;
+    console.log("rating: "+rating)
     if (redirectFlag) {
       redirectVar = <Redirect to={{pathname: "/reviews", flag:true}} />;
     }
@@ -169,6 +194,7 @@ class ReviewModal extends Component {
                       onChange={this.onStarClick}
                       isRequired={true}
                     />
+                    <span style={{color: "#de404d"}}> { errors.rating }</span>
                 </Form.Group>
               </Col>
               </Row>
@@ -182,6 +208,7 @@ class ReviewModal extends Component {
                     max={100}
                     onChange={this.onWorkHappinessScoreChange}
                   />
+                  <span style={{color: "#de404d"}}> { errors.workHappinessScore }</span>
                   </Form.Group>
               </Col>
               </Row>
@@ -195,6 +222,7 @@ class ReviewModal extends Component {
                     max={100}
                     onChange={this.onLearningScoreChange}
                   />
+                  <span style={{color: "#de404d"}}> { errors.learningScore }</span>
                   </Form.Group>
               </Col>
               </Row>
@@ -208,6 +236,7 @@ class ReviewModal extends Component {
                     max={100}
                     onChange={this.onAppreciationScoreChange}
                   />
+                  <span style={{color: "#de404d"}}> { errors.appreciationScore }</span>
                   </Form.Group>
               </Col>
               </Row>
@@ -223,6 +252,7 @@ class ReviewModal extends Component {
                       activeColor="#9d2b6b"
                       onChange={this.onStarClickCEORating}
                     />
+                    <span style={{color: "#de404d"}}> { errors.ceoApprovalRating }</span>
                 </Form.Group>
                     </Col>
                     </Row>

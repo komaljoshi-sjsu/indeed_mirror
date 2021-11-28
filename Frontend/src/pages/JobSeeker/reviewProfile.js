@@ -31,6 +31,7 @@ class ReviewProfile extends Component {
         let { reviewDetails } = this.state;
         const currentPage = 1;
         reviewDetails = [];
+        axios.defaults.headers.common['authorization'] = this.props.userInfo.token;
         axios.get(`${backendServer}/reviewsByProfile`, {
           params: {
             jobSeekerId,
@@ -121,7 +122,10 @@ class ReviewProfile extends Component {
                   </Col>
                   <Col xs={8}>
                   <Card.Title>
-                  <Link style={{color:'#2457a7', textDecoration: 'none'}} to="/reviews" onClick={(e) => { this.handleCompanyLink(e, review.companyId, review.companyName) }}><b>{review.reviewTitle}</b></Link>
+                  <Link style={{color:'#2457a7', textDecoration: 'none'}} to="/reviews" onClick={(e) => { this.handleCompanyLink(e, review.companyId, review.companyName) }}><b>{review.reviewTitle}</b>
+                  </Link>
+                  {review.adminReviewStatus === 'APPROVED' && <span style={{color:"green"}}>{' '}[Admin approved]</span>}
+                  {review.adminReviewStatus === 'PENDING_APPROVAL' && <span style={{color:"orange"}}>{' '}[Admin approval pending]</span>}
                   </Card.Title>
                   <Card.Text>
                     <small>{review.reviewerRole}{' - '}{review.city}{', '}{review.state}{' - '}{new Date(review.postedDate).toDateString()}</small>

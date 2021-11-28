@@ -28,8 +28,22 @@ const { jsHome } = require('./jsHome')
 const { jsPaginatedData } = require('./jsPaginatedData')
 const { jsSaveJob } = require('./jsSaveJob')
 const { jsUpdateNoOfViews } = require('./jsUpdateNoOfViews')
-const { findSalDisplay,
-    findSalByTitleDisplay } =require('./findSalaryDisplay')
+const { jsCheckAppliedStatus } = require('./jsCheckAppliedStatus')
+const { jsCheckSavedStatus } = require('./jsCheckSavedStatus')
+const {
+  saveConversation,
+  getConversationById,
+  getJobSeekerById,
+  getEmployerById,
+} = require('./conversationRoute')
+const {
+  addNewMessage,
+  getMessagesByConversationId,
+  getAllJobSeekers,
+} = require('./messageRoute')
+const { uploadCompanyPhotos } = require('./uploadCompanyPhotos')
+const { getAllPhotos } = require('./getAllPhotos')
+const { findSalDisplay, findSalByTitleDisplay } = require('./findSalaryDisplay')
 
 function handle_request(msg, callback) {
   switch (msg.route) {
@@ -108,11 +122,45 @@ function handle_request(msg, callback) {
     case 'updateNoOfViews':
       jsUpdateNoOfViews(msg, callback)
       break
+    case 'checkSavedStatus':
+      jsCheckSavedStatus(msg, callback)
+      break
+    case 'checkAppliedStatus':
+      jsCheckAppliedStatus(msg, callback)
+      break
+
     case 'findSalDisplay':
       findSalDisplay(msg, callback)
       break
     case 'findSalByTitleDisplay':
       findSalByTitleDisplay(msg, callback)
+      break
+    case 'saveConversation':
+      saveConversation(msg, callback)
+      break
+    case 'getConversationById':
+      getConversationById(msg, callback)
+      break
+    case 'getJobSeekerById':
+      getJobSeekerById(msg, callback)
+      break
+    case 'getEmployerById':
+      getEmployerById(msg, callback)
+      break
+    case 'addNewMessage':
+      addNewMessage(msg, callback)
+      break
+    case 'getMessagesByConversationId':
+      getMessagesByConversationId(msg, callback)
+      break
+    case 'getAllJobSeekers':
+      getAllJobSeekers(msg, callback)
+      break
+    case 'uploadCompanyPhotos':
+      uploadCompanyPhotos(msg, callback)
+      break
+    case 'getAllPhotos':
+      getAllPhotos(msg, callback)
       break
   }
 }

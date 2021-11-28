@@ -1,7 +1,6 @@
 "use strict";
 const conn = require("../../config/mysql_connection");
 var mysql = require("mysql");
-require('../../models/Photo');
 
 let getEmpChartOne = async (req, callback) => {
    try {
