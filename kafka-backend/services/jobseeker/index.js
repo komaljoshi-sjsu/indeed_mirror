@@ -1,5 +1,6 @@
 'use strict'
 const { getAllUsrReviews } = require('./getAllUsrReviews')
+const { appliedjobs } = require('./appliedjobs')
 const { companyReviews } = require('./companyReviews')
 const { companyReviewsPaginated } = require('./companyReviewsPaginated')
 const { companyReviewsRatingSort } = require('./companyReviewsRatingSort')
@@ -32,6 +33,9 @@ const { findSalDisplay,
 
 function handle_request(msg, callback) {
   switch (msg.route) {
+    case "appliedjobs":
+        appliedjobs(msg,callback);
+        break;
     case 'getAllUsrReviews':
       getAllUsrReviews(msg, callback)
       break
