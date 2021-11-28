@@ -5,9 +5,9 @@ let reviewsByProfile = async (req, callback) => {
     try {
         const queryObject = url.parse(req.url,true).query;
         const adminReviewStatus = 'APPROVED';
-        let sql = 'SELECT r.*, c.companyName FROM Review r, Company c where r.jobSeekerId='+mysql.escape(queryObject.jobSeekerId)+ ' and r.companyId = c.companyId and r.isFeatured=1 and r.adminReviewStatus=?' ;
+        let sql = 'SELECT r.*, c.companyName FROM Review r, Company c where r.jobSeekerId='+mysql.escape(queryObject.jobSeekerId)+ ' and r.companyId = c.companyId' ;
         console.log(sql);
-        connection.query(sql, [adminReviewStatus], (err, results) => {
+        connection.query(sql, (err, results) => {
             if (err) {
                 callback(err, null);
             }

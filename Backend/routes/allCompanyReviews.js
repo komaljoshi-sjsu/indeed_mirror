@@ -71,25 +71,4 @@ router.post("/searchReview", (req, res) => {
     });
 });
 
-router.post("/updateFeaturedReview", (req, res) => {
-    
-    let sql = 'UPDATE Review SET isFeatured = 1 WHERE reviewId = ?';
-    let data = [req.body.reviewId];
-    
-    connection.query(sql, data, (err, results) => {
-        if (err) {
-            res.writeHead(401,{
-                'Content-Type' : 'application/json'
-            });
-            res.end("Server error. Please try again later!");
-        }
-        else{
-            res.writeHead(200,{
-                'Content-Type' : 'application/json'
-            });
-            res.end("Featured review updated successfully");
-        }
-    });
-});
-
 module.exports = router;

@@ -8,9 +8,9 @@ let reviewsByProfilePaginated = async (req, callback) => {
         const pageNumber = queryObject.currentPage;
         const limit = 5;
         const offset = (pageNumber - 1) * limit;
-        let sql = 'SELECT r.*, c.companyName FROM Review r, Company c where r.jobSeekerId='+mysql.escape(queryObject.jobSeekerId)+ ' and r.companyId = c.companyId and r.isFeatured=1 and r.adminReviewStatus=? LIMIT ?,?' ;
+        let sql = 'SELECT r.*, c.companyName FROM Review r, Company c where r.jobSeekerId='+mysql.escape(queryObject.jobSeekerId)+ ' and r.companyId = c.companyId LIMIT ?,?' ;
         console.log(sql);
-        connection.query(sql, [adminReviewStatus, offset, limit], (err, results) => {
+        connection.query(sql, [offset, limit], (err, results) => {
             if (err) {
                 callback(err, null);
             }
