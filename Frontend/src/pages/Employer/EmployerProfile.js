@@ -57,6 +57,7 @@ class EmployerProfile extends Component {
     }
     
       componentDidMount() {
+        axios.defaults.headers.common['authorization'] = this.props.userInfo.token;
         axios.get(`${backendServer}/getCompanyDetails`).then((response) => {
             //console.log(response.data);
             this.setState({
@@ -172,6 +173,7 @@ class EmployerProfile extends Component {
       }
     sendEmployerAPI = (data) => {
         console.log("add emp")
+        axios.defaults.headers.common['authorization'] = this.props.userInfo.token;
         axios.post(`${backendServer}/addEmployerDetails`, data)
             .then(response=> {
                 console.log(response.data)
@@ -193,6 +195,7 @@ class EmployerProfile extends Component {
         
         console.log(data)
         let compid = '';
+        axios.defaults.headers.common['authorization'] = this.props.userInfo.token;
         axios.post(`${backendServer}/addCompanyDetails`, data)
             .then(response=> {
                console.log(response)
@@ -227,6 +230,7 @@ class EmployerProfile extends Component {
            employerId:this.props.userInfo.id,
            companyid : data
         }
+        axios.defaults.headers.common['authorization'] = this.props.userInfo.token;
         axios.post(`${backendServer}/addCompanyIdToEmployer`, id)
             .then(response=> {
                 if (response.status === 200) {

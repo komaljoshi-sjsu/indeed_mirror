@@ -3,7 +3,8 @@
 const express = require("express");
 const router = express.Router();
 const kafka = require('../kafka/client');
-router.post('/getEmployerProfile', function (req, res) {
+const { checkAuth } = require("../config/passport");
+router.post('/getEmployerProfile',checkAuth, function (req, res) {
    console.log("getEmployerProfile.....")
     let msg = {};
     msg.route = "getEmployerProfile";
