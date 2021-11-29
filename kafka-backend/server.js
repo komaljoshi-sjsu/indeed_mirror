@@ -1,5 +1,4 @@
-var connection = new require('./kafka/Connection')
-
+var connection =  new require('./kafka/Connection');
 const conn2 = require('./config/mongo_connection')
 const conn1 = require('./config/mysql_connection')
 
@@ -16,10 +15,11 @@ require('./models/Photo')
 require('./models/Conversation')
 require('./models/Message')
 
-const jobseeker = require('./services/jobseeker')
-const employer = require('./services/employer')
-const company = require('./services/company')
-const admin = require('./services/admin')
+const jobseeker = require('./services/jobseeker');
+const employer = require('./services/employer');
+const company = require('./services/company');
+const admin = require('./services/admin');
+const user = require('./services/user');
 
 function handleTopicRequest(topic_name, fname) {
   //var topic_name = 'root_topic';
@@ -55,7 +55,8 @@ function handleTopicRequest(topic_name, fname) {
 // Add your TOPICs here
 //first argument is topic name
 //second argument is a function that will handle this topic request
-handleTopicRequest('jobseeker', jobseeker)
-handleTopicRequest('employer', employer)
-handleTopicRequest('admin', admin)
-handleTopicRequest('company', company)
+handleTopicRequest("jobseeker",jobseeker);
+handleTopicRequest("employer",employer);
+handleTopicRequest("admin",admin);
+handleTopicRequest("company",company);
+handleTopicRequest("user",user);

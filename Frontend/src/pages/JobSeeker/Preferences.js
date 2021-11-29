@@ -11,6 +11,7 @@ import axios from 'axios';
 import backendServer from '../../webConfig.js';
 import {bindActionCreators} from 'redux';
 import {prefActionCreator} from '../../reduxutils/actions';
+import JobSeekerLoggedInNavbar from './JobSeekerLoggedInNavbar';
 
 function Preferences(props) {
     const dispatch = useDispatch();
@@ -250,7 +251,7 @@ function Preferences(props) {
     return (
         <div>
             {redirectTo}
-            <JobSeekerNavbar></JobSeekerNavbar>
+            <JobSeekerLoggedInNavbar/>
             <Modal show={modal} onHide={()=> showModal(false)}>
                 <Modal.Header>
                     <Modal.Title>{heading}</Modal.Title>

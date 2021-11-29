@@ -1,15 +1,16 @@
 "use strict";
 const express = require("express");
 const router = express.Router();
-var kafka = require("../kafka/client");
 const conn = require("./../config/mysql_connection");
+const kafka = require('../kafka/client');
+const JobSeeker = require('../models/JobSeeker');
 
-router.get("/api/snapshot/:companyId", (req, res) => {
+router.get("/api/savedjobs/:userId", async (req, res) => {
     let msg = {};
     //msg.re = req.params.customerId;
-    msg.route = "snapshot";
-    msg.companyId = req.body.companyId;
-    kafka.make_request("company", msg, function (err, results) {
+    msg.route = "savedjobs";
+    msg.jobSeekerId = req.params.userId;
+    kafka.make_request("jobseeker", msg, function (err, results) {
         console.log("inside kafka");
         if (err) {
             console.log("inside error");
@@ -21,12 +22,12 @@ router.get("/api/snapshot/:companyId", (req, res) => {
     });
 });
 
-router.get("/api/featuredReviews/:companyId", (req, res) => {
+router.get("/api/appliedjobs/:userId", (req, res) => {
     let msg = {};
     //msg.re = req.params.customerId;
-    msg.route = "featuredReviews";
-    msg.companyId = req.body.companyId;
-    kafka.make_request("company", msg, function (err, results) {
+    msg.route = "appliedjobs";
+    msg.userId = req.params.userId;
+    kafka.make_request("jobseeker", msg, function (err, results) {
         console.log("inside kafka");
         if (err) {
             console.log("inside error");

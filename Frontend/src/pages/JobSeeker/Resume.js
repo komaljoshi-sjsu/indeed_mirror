@@ -12,6 +12,7 @@ import {bindActionCreators} from 'redux';
 import axios from 'axios';
 import ErrorMsg from '../Error/ErrorMsg';
 import SuccessMsg from '../Success/SuccessMsg';
+import JobSeekerLoggedInNavbar from './JobSeekerLoggedInNavbar';
 
 function Resume(props) {
     const dispatch = useDispatch();
@@ -204,7 +205,7 @@ function Resume(props) {
             {redirectTo}
             <ErrorMsg err={errMsg}></ErrorMsg>
             <SuccessMsg msg={errMsg}></SuccessMsg>
-            <JobSeekerNavbar></JobSeekerNavbar>
+            <JobSeekerLoggedInNavbar/>
             <div className="container-fullwidth" style={{marginTop:'5%',marginRight:'auto',marginLeft:'auto',width:'50%'}}>
                 <div className="row" hidden={hideDiv}>
                     <h3 style={{color:'darkgray'}}><b>Your Name</b></h3>

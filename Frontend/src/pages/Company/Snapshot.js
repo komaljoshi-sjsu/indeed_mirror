@@ -7,7 +7,7 @@ import Card from "react-bootstrap/Card";
 import './css/snapshot.css';
 import {useSelector, useDispatch} from 'react-redux';
 import {bindActionCreators} from 'redux';
-
+import backendServer from '../../webConfig'
 import {companyActionCreator} from '../../reduxutils/actions.js';
 
 function Snapshot(props) {
@@ -43,40 +43,40 @@ function Snapshot(props) {
     const setFeaturedReviews = bindActionCreators(companyActionCreator.setFeaturedReviews,dispatch);
     const setIndustry = bindActionCreators(companyActionCreator.setIndustry,dispatch);
     useEffect(()=> {
-        axios.get('http://localhost:5000/api/snapshot/'+companyid)
+        axios.get(backendServer+'/api/snapshot/'+companyid)
         .then(res => {
             console.log('snapshot',res);
-            if(res.status == 200) {
-                setWHScore(res.data.whScore);
-                setApScore(res.data.apScore);
-                setLScore(res.data.lScore);
-                setCeo(res.data.ceo);
-                setFounded(res.data.founded);
-                setRevenue(res.data.revenue);
-                setSize(res.data.size);
-                setAbout(res.data.about);
-                setDescription(res.data.companyDescription);
-                setMission(res.data.mission);
-                setNoOfReviews(res.data.noOfReviews);
-                setCulture(res.data.workCulture);
-                setValues(res.data.companyValues);
-                setIndustry(res.data.industry);
-                setAbout(res.data.about);
+            if(res.data.code == '200') {
+                setWHScore(res.data.details.whScore);
+                setApScore(res.data.details.apScore);
+                setLScore(res.data.details.lScore);
+                setCeo(res.data.details.ceo);
+                setFounded(res.data.details.founded);
+                setRevenue(res.data.details.revenue);
+                setSize(res.data.details.size);
+                setAbout(res.data.details.about);
+                setDescription(res.data.details.companyDescription);
+                setMission(res.data.details.mission);
+                setNoOfReviews(res.data.details.noOfReviews);
+                setCulture(res.data.details.workCulture);
+                setValues(res.data.details.companyValues);
+                setIndustry(res.data.details.industry);
+                setAbout(res.data.details.about);
             } else {
-                alert(res.data);
+                alert(res.data.msg);
             }
         }).catch(err => {
             alert('Failed to get company details. Please check console');
             console.log(err);
         });
 
-        axios.get('http://localhost:5000/api/featuredReviews/'+companyid)
+        axios.get(backendServer+'/api/featuredReviews/'+companyid)
         .then(res => {
             console.log('Featured reviews',res);
-            if(res.status == 200) {
-                setFeaturedReviews(res.data);
+            if(res.data.code == '200') {
+                setFeaturedReviews(res.data.row);
             } else {
-                alert(res.data);
+                alert(res.data.msg);
             }
         }).catch(err => {
             alert('Failed to get company featured reviews. Please check console.');
