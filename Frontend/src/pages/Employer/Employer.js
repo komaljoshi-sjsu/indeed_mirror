@@ -162,6 +162,7 @@ handleModalCloseProfile(){
      compid : this.props.company.compid,
      jobId : val
    }
+   axios.defaults.headers.common['authorization'] = this.props.userInfo.token;
     axios.post(`${backendServer}/getApplicantsName`,JobId).then((response) => {
       if(response.status === 200){
         console.log(response.data)
