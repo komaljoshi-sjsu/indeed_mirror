@@ -149,7 +149,7 @@ class PostJob extends Component {
             .catch((err) => {
               this.setState({ errorMsg: "Internal Server Error!" });
             });
-
+ 
         }
     }
   
