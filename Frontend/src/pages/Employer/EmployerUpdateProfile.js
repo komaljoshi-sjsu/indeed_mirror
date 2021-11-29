@@ -788,8 +788,6 @@ class EmployerProfile extends Component {
             </div>
         )
     }     
-
-    
       return (
         <div>
              <EmployerNavbar/>
