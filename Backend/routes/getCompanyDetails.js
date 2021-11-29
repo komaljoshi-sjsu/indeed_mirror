@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const kafka = require('../kafka/client');
+//const { checkAuth } = require("../config/passport");
 
 router.get('/getCompanyDetails', function (req, res) {
     let msg = {};
