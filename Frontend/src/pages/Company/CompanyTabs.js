@@ -3,21 +3,118 @@
 import React, { Component } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
+import axios from 'axios'
+import { RatingView } from 'react-simple-star-rating'
 import CompanyImage from '../../images/companyImage.png'
 import companyLogo from '../../images/company-logo.jpeg'
 import JobSeekerNavbar from '../JobSeeker/JobSeekerNavbar'
+import JobSeekerLoggedInNavbar from '../JobSeeker/JobSeekerLoggedInNavbar'
+import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 
 class CompanyTabs extends Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      isLoggedIn: false,
+      companyName: '',
+      companyId: 0,
+      reviewCount: 0,
+      rating: 0,
+      CompanyImageURL: '',
+    }
+  }
+
+  componentDidMount() {
+    let companyName = this.props.companyInfo.compName
+    let companyId = this.props.companyInfo.compid
+    this.setState(
+      {
+        companyName: companyName,
+        companyId: companyId,
+      },
+      () => {
+        this.getAllData()
+      },
+    )
+    this.checkLoggedInStatus()
+  }
+
+  checkLoggedInStatus() {
+    const userInfo = this.props.userInfo
+    console.log(userInfo)
+    if (userInfo.email !== '' && userInfo.accountType === 'JobSeeker') {
+      console.log('JobSeeker is signed in')
+      this.setState({
+        isLoggedIn: true,
+      })
+    }
+  }
+
+  async getAllData() {
+    await axios.get('http://localhost:5000/jobSeeker/getCompanyReviews').then(
+      (response) => {
+        console.log(response.data, response.status)
+
+        let companyId = this.state.companyId
+        let reviews = response.data.filter(
+          (reviews) => reviews.companyId === companyId,
+        )
+
+        if (reviews.length > 0) {
+          reviews = reviews[0]
+
+          this.setState({ reviewCount: reviews.NoOfReviews })
+        } else this.setState({ reviewCount: 0 })
+      },
+      (error) => {
+        console.log(error)
+      },
+    )
+
+    await axios.get('http://localhost:5000/jobSeeker/getCompanyRating').then(
+      (response) => {
+        console.log(response.data, response.status)
+
+        let companyId = this.state.companyId
+        let avgrating = response.data.filter(
+          (rating) => rating.companyId === companyId,
+        )
+
+        if (avgrating.length > 0) {
+          avgrating = avgrating[0]
+          this.setState({ rating: avgrating.avgRating })
+        } else this.setState({ rating: 0 })
+      },
+      (error) => {
+        console.log(error)
+      },
+    )
+
+    let data = { companyId: this.state.companyId }
+    console.log('Image........ ' + data)
+    await axios.post('http://localhost:5000/jobs/getCompanyImage', data).then(
+      (response) => {
+        console.log('Image response ............')
+        console.log(response.data, response.status)
+        this.setState({
+          CompanyImageURL: response.data.logo,
+        })
+      },
+      (error) => {
+        console.log(error)
+      },
+    )
   }
 
   render() {
     return (
       <div>
-        <JobSeekerNavbar />
+        {this.state.isLoggedIn ? (
+          <JobSeekerLoggedInNavbar />
+        ) : (
+          <JobSeekerNavbar />
+        )}
         <div class="container-fluid">
           <img src={CompanyImage} alt="" width="100%" height="200" />
         </div>
@@ -25,12 +122,18 @@ class CompanyTabs extends Component {
           <div class="row">
             <div class="col-4"></div>
             <div class="col-2">
-              <img src={companyLogo} alt="" width="170" height="100" />
+              <img
+                src={this.state.CompanyImageURL}
+                alt=""
+                width="170"
+                height="100"
+              />
             </div>
             <div class="col-6">
-              <h4>Company Name</h4>
-              <h5>Number of reviews</h5>
-              <h5>Rating</h5>
+              <h4 style={{ color: '#003399' }}>{this.state.companyName}</h4>
+              <RatingView ratingValue={this.state.rating} />
+              <br />
+              <h6 class="card-title">{this.state.reviewCount} reviews</h6>
             </div>
             <hr></hr>
             <div class="row">
@@ -136,4 +239,9 @@ class CompanyTabs extends Component {
   }
 }
 
-export default withRouter(CompanyTabs)
+const mapStateToProps = (state) => ({
+  companyInfo: state.company,
+  userInfo: state.userInfo,
+})
+
+export default connect(mapStateToProps)(withRouter(CompanyTabs))

@@ -43,6 +43,17 @@ const {
 const { uploadCompanyPhotos } = require('./uploadCompanyPhotos')
 const { getAllPhotos } = require('./getAllPhotos')
 const { findSalDisplay, findSalByTitleDisplay } = require('./findSalaryDisplay')
+const { jobsApplyJob } = require('./jobsApplyJob')
+const { jobsCompanyJobs } = require('./jobsCompanyJobs')
+const {
+  jobsFilterOnJobTitleOrCompanyName,
+} = require('./jobsFilterOnJobTitleOrCompanyName')
+const { jobsFilterOnLocation } = require('./jobsFilterOnLocation')
+const {
+  jobsFilterOnLocationAndTitle,
+} = require('./jobsFilterOnLocationAndTitle')
+const { jobsGetCompanyImage } = require('./jobsGetCompanyImage')
+const { jobsPaginatedData } = require('./jobsPaginatedData')
 
 function handle_request(msg, callback) {
   switch (msg.route) {
@@ -158,7 +169,31 @@ function handle_request(msg, callback) {
     case 'getAllPhotos':
       getAllPhotos(msg, callback)
       break
+
+    case 'companyJobs':
+      jobsCompanyJobs(msg, callback)
+      break
+    case 'jobsApplyJob':
+      jobsApplyJob(msg, callback)
+      break
+
+    case 'jobsFilterOnJobTitleOrCompanyName':
+      jobsFilterOnJobTitleOrCompanyName(msg, callback)
+      break
+    case 'jobsFilterOnLocation':
+      jobsFilterOnLocation(msg, callback)
+      break
+
+    case 'jobsFilterOnLocationAndTitle':
+      jobsFilterOnLocationAndTitle(msg, callback)
+      break
+    case 'getCompanyImage':
+      jobsGetCompanyImage(msg, callback)
+      break
+
+    case 'jobsPaginatedData':
+      jobsPaginatedData(msg, callback)
+      break
   }
 }
-
 exports.handle_request = handle_request
