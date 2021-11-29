@@ -1,7 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import {useState, useEffect} from 'react';
 import {Redirect} from 'react-router';
-import JobSeekerNavbar from './JobSeekerNavbar';
 import axios from 'axios';
 import { Link } from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux';

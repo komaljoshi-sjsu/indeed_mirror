@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { userActionCreator } from '../../reduxutils/actions.js'
 import ErrorMsg from '../Error/ErrorMsg'
+import JobSeekerLoggedInNavbar from './JobSeekerLoggedInNavbar';
 
 function AppliedJobs(props) {
     const dispatch = useDispatch()
@@ -38,22 +39,20 @@ function AppliedJobs(props) {
     return (
         <div>
             <ErrorMsg err={errMsg}></ErrorMsg>
-            <JobSeekerNavbar />
+            <JobSeekerLoggedInNavbar />
             <div class="container-fluid">
                 <div class="row">
                     <MyJobs></MyJobs>
                 </div>
                 <div style={{marginLeft:'20%',marginRight:'20%'}}>
                         {jobs.map(job=>  {
-                                    if(job!=null)
-                                        job = job[0];
                                     return (
                                     <div className="row border-bottom" style={{padding:'20px 20px 20px 20px'}}>
-                                        <div className="row" style={{float:'right'}}>
+                                        {/* <div className="row" style={{float:'right'}}>
                                             <h5><b>{job.status}</b></h5>
-                                        </div>
+                                        </div> */}
                                         <div className="row">
-                                            <h5><b>{job.jobTitle}</b></h5>
+                                            <h5><b>{job.jobTitle} <span style={{float:'right'}}>{job.status}</span></b></h5>
                                         </div>
                                         <div className="row">
                                             {job.companyName}
@@ -62,7 +61,7 @@ function AppliedJobs(props) {
                                             {job.jobMode}
                                         </div>
                                         <div className="row">
-                                            {job.streetAdress},{job.state}
+                                            {job.streetAddress},{job.state}
                                         </div>
                                     </div>)
                         })}

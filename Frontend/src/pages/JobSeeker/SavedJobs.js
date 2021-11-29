@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { userActionCreator } from '../../reduxutils/actions.js'
 import ErrorMsg from '../Error/ErrorMsg'
+import JobSeekerLoggedInNavbar from './JobSeekerLoggedInNavbar';
 
 function SavedJobs(props) {
     const dispatch = useDispatch()
@@ -66,7 +67,7 @@ function SavedJobs(props) {
 
         <div>
             <ErrorMsg err={errMsg}></ErrorMsg>
-            <JobSeekerNavbar />
+            <JobSeekerLoggedInNavbar />
             <div class="container-fluid">
                 <div class="row">
                     <MyJobs></MyJobs>

@@ -7,7 +7,7 @@ let appliedjobs = async (req, callback) => {
   }
   try {
     let userId = req.userId;
-    let sql = "SELECT ap.status, j.jobTitle, j.companyName, j.streetAdress, j.state, j.country, j.jobMode from AppliedJobs ap INNER JOIN Jobs j WHERE ap.jobSeekerId=?";
+    let sql = "SELECT ap.status, j.jobTitle, j.companyName, j.streetAddress, j.state, j.country, j.jobMode from AppliedJobs ap INNER JOIN Job j WHERE ap.id=?";
     conn.query(sql,[userId],
       async function (err, results) {
         if (err) {
