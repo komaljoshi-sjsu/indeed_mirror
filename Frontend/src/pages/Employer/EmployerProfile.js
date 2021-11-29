@@ -10,6 +10,7 @@ import {useDispatch} from 'react-redux';
 import EmployerNavbar from './EmployerNavbar'
 import { connect } from "react-redux";
 import {bindActionCreators} from 'redux';
+import '../../CSS/EmployerLanding.css'
 import PropTypes from "prop-types";
 import logo from '../../images/employers.png'
 import {setCompId} from '../../reduxutils/actioncreators/companyaction';
@@ -326,25 +327,8 @@ class EmployerProfile extends Component {
             //console.log(response);
             if (response.status === 200) {
               this.setState({logo:response.data.imageLocation})
-               // console.log(response.data.imageLocation);
                
-                // var data1 = {
-                //   companyId: this.props.company.compid, //companyId,    
-                //   imageLocation: response.data.imageLocation,
-                // };
-
-                // employerDetails.logo = response.data.imageLocation;
-                // this.setState({employerDetails})
-                // axios.post("/api/uploadCompanyProfilePic", data1)
-                //   .then((response1) => {
-                //     //console.log("Response ",response1)
-                //     if (response1.status === 200) {
-                //         alert("Company Image Uploaded")
-                //     }
-                //   })
-                //   .catch((err) => {
-                //     alert("Company Image Upload Failed")
-                //   });
+                
               }
           });
        
@@ -395,7 +379,7 @@ class EmployerProfile extends Component {
            
        }else if(!empupdated){
         empdetailscol = (
-            <div>
+            <div className="">
                 <Col>
                 <span style={{color:'red'}}>* </span> <span style={{color:'gray'}}>Required Fields</span>
                 <Row>
@@ -403,7 +387,7 @@ class EmployerProfile extends Component {
                  </Row>
                  <span style={{color:'red'}}>{errors.employerName}</span>
                  <Row> 
-                 &nbsp;&nbsp;&nbsp;<input className="detinput1" name="employerName" 
+                 &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="employerName" 
                  value={this.state.employerName}
                  onChange={this.handleChange}></input>
                  </Row>
@@ -415,7 +399,7 @@ class EmployerProfile extends Component {
                         </Row>
                         <span style={{color:'red'}}>{errors.roleInCompany}</span>    
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<input className="detinput" name="roleInCompany" 
+                        &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="roleInCompany" 
                         value={this.state.roleInCompany}
                         onChange={this.handleChange}></input>
                         </Row>
@@ -426,7 +410,7 @@ class EmployerProfile extends Component {
                         </Row>
                         <span style={{color:'red'}}>{errors.address}</span>
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<input className="detinput" name="address"
+                        &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="address"
                         value={this.state.address}
                         onChange={this.handleChange}></input>
                         </Row>
@@ -440,7 +424,7 @@ class EmployerProfile extends Component {
                         </Row>
                         <span style={{color:'red'}}>{errors.city}</span>
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<input className="detinput" name="city"
+                        &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="city"
                         value={this.state.city}
                         onChange={this.handleChange}></input>
                         </Row>
@@ -452,7 +436,7 @@ class EmployerProfile extends Component {
                         <span style={{color:'red'}}>{errors.state}</span>
                         
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<input className="detinput" name="state" 
+                        &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="state" 
                         value={this.state.state}
                         onChange={this.handleChange}></input>
                         </Row>
@@ -467,12 +451,13 @@ class EmployerProfile extends Component {
                         <span style={{color:'red'}}>{errors.country}</span>
                         
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<CountryDropdown className="detinput"
+                        &nbsp;&nbsp;&nbsp;<CountryDropdown style={{width:'80%'}}
                             value={this.state.country}
                             onChange={(val) => this.handleChangeCountry(val)}      
                         />
                         </Row>
                      </Col>
+                     
                      <Col>
                         <Row>
                         <label>zipcode<span style={{color:'red'}}>*</span></label>
@@ -480,7 +465,7 @@ class EmployerProfile extends Component {
                         <span style={{color:'red'}}> {errors.zipcode}</span>
                         
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<input className="detinput" name="zipcode" 
+                        &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="zipcode" 
                         value={this.state.zipcode} type="number"
                         onChange={this.handleChange}></input>
                         </Row>
@@ -497,7 +482,7 @@ class EmployerProfile extends Component {
    
        if(companyupdated){
         compdetailscol = (
-            <div>
+            <div className="">
              <label className="dethead1">Company Name : </label><label className="dethead">{this.state.companyName}</label>
               <br/>
               <br/>
@@ -589,7 +574,7 @@ class EmployerProfile extends Component {
        )
     }  if(companyadded){
         compdetailscol = (
-            <div>
+            <div className="container">
                 <Col>
                   
                 <span style={{color:'red'}}>* </span> <span style={{color:'gray'}}>Required Fields</span>
@@ -600,7 +585,7 @@ class EmployerProfile extends Component {
                         </Row>
                         <span style={{color:'red'}}>{errors.companyName}</span>
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<input className="detinput" name="companyName"
+                        &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="companyName"
                         value={this.state.companyName }
                         onChange={this.handleChangeCompanyName}></input>
                         </Row>
@@ -611,7 +596,7 @@ class EmployerProfile extends Component {
                         </Row>
                         <span style={{color:'red'}}>{errors.website}</span>
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<input className="detinput" name="website"
+                        &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="website"
                         value={this.state.website }
                         onChange={this.handleChange}></input>
                         </Row>
@@ -622,7 +607,7 @@ class EmployerProfile extends Component {
                         </Row>
                         <span style={{color:'red'}}>{errors.companySize}</span>
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<input className="detinput"
+                        &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}}
                         name="companySize" type="number"
                         value={this.state.companySize }
                         onChange={this.handleChange}></input>
@@ -643,7 +628,7 @@ class EmployerProfile extends Component {
                         </Row>
                         <span style={{color:'red'}}>{errors.about}</span>
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<textarea className="detinput"
+                        &nbsp;&nbsp;&nbsp;<textarea style={{width:'80%'}}
                         name="about"
                         value={this.state.about }
                         onChange={this.handleChange}></textarea>
@@ -655,7 +640,7 @@ class EmployerProfile extends Component {
                         </Row>
                         <span style={{color:'red'}}>{errors.companyDescription}</span>
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<textarea className="detinput"
+                        &nbsp;&nbsp;&nbsp;<textarea style={{width:'80%'}}
                         name="companyDescription"
                         value={this.state.companyDescription }
                         onChange={this.handleChange}></textarea>
@@ -670,7 +655,7 @@ class EmployerProfile extends Component {
                         </Row>
                         <span style={{color:'red'}}>{errors.companyType}</span>
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<input className="detinput"
+                        &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}}
                         name="companyType"
                         value={this.state.companyType }
                         onChange={this.handleChange}></input>
@@ -682,7 +667,7 @@ class EmployerProfile extends Component {
                         </Row>
                         <span style={{color:'red'}}>{errors.revenue}</span>
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<input className="detinput"
+                        &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}}
                         name="revenue" type="number"
                         value={this.state.revenue }
                         onChange={this.handleChange}></input>
@@ -694,7 +679,7 @@ class EmployerProfile extends Component {
                         </Row>
                         <span style={{color:'red'}}>{errors.headquarters}</span>
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<input className="detinput"
+                        &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}}
                         name="headquarters"
                         value={this.state.headquarters }
                         onChange={this.handleChange}></input>
@@ -709,7 +694,7 @@ class EmployerProfile extends Component {
                         </Row>
                         <span style={{color:'red'}}>{errors.industry}</span>
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<input className="detinput"
+                        &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}}
                         name="industry"
                         value={this.state.industry }
                         onChange={this.handleChange}></input>
@@ -729,7 +714,7 @@ class EmployerProfile extends Component {
                         </Row>
                         <span style={{color:'red'}}>{errors.ceo}</span>
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<input className="detinput"
+                        &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}}
                         name="ceo"
                         value={this.state.ceo }
                         onChange={this.handleChange}></input>
@@ -744,7 +729,7 @@ class EmployerProfile extends Component {
                         </Row>
                         <span style={{color:'red'}}>{errors.founded}</span>
                         <Row>
-                        &nbsp;&nbsp;&nbsp;<textarea className="detinput"
+                        &nbsp;&nbsp;&nbsp;<textarea style={{width:'80%'}}
                         name="founded"
                         value={this.state.founded }
                         onChange={this.handleChange}></textarea>
@@ -756,7 +741,7 @@ class EmployerProfile extends Component {
                         </Row>
                         <span style={{color:'red'}}>{errors.mission}</span>
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<textarea className="detinput"
+                        &nbsp;&nbsp;&nbsp;<textarea style={{width:'80%'}}
                         name="mission"
                         value={this.state.mission }
                         onChange={this.handleChange}></textarea>
@@ -771,7 +756,7 @@ class EmployerProfile extends Component {
                         </Row>
                         <span style={{color:'red'}}>{errors.workCulture}</span>
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<textarea className="detinput"
+                        &nbsp;&nbsp;&nbsp;<textarea style={{width:'80%'}}
                         name="workCulture"
                         value={this.state.workCulture }
                         onChange={this.handleChange}></textarea>
@@ -783,7 +768,7 @@ class EmployerProfile extends Component {
                         </Row>
                         <span style={{color:'red'}}>{errors.companyValues}</span>
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<textarea className="detinput"
+                        &nbsp;&nbsp;&nbsp;<textarea style={{width:'80%'}}
                         name="companyValues"
                         value={this.state.companyValues }
                         onChange={this.handleChange}></textarea>

@@ -454,7 +454,7 @@ class EmployerProfile extends Component {
                  </Row>
                  <span style={{color:'red'}}>{errors.employerName}</span>
                  <Row> 
-                 &nbsp;&nbsp;&nbsp;<input className="detinput" name="name" 
+                 &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="name" 
                  value={this.state.employerDetails.name}
                  onChange={(e) => { this.handleChangeEmpName(e)}}></input>
                  </Row>
@@ -465,7 +465,7 @@ class EmployerProfile extends Component {
                  <span style={{color:'red'}}>{errors.roleInCompany}</span>
                  
                  <Row> 
-                 &nbsp;&nbsp;&nbsp;<input className="detinput" name="roleInCompany" 
+                 &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="roleInCompany" 
                  value={this.state.employerDetails.roleInCompany}
                  onChange={(e) => { this.handleChangeRole(e)}}></input>
                  </Row>
@@ -475,7 +475,7 @@ class EmployerProfile extends Component {
                  </Row>
                  <span style={{color:'red'}}>{errors.address}</span>
                  <Row> 
-                 &nbsp;&nbsp;&nbsp;<input className="detinput" name="address"
+                 &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="address"
                   value={this.state.employerDetails.address}
                   onChange={(e) => { this.handleChangeAddress(e)}}></input>
                  </Row>
@@ -486,7 +486,7 @@ class EmployerProfile extends Component {
                  <span style={{color:'red'}}>{errors.city}</span>
                  
                  <Row> 
-                 &nbsp;&nbsp;&nbsp;<input className="detinput" name="city"
+                 &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="city"
                   value={this.state.employerDetails.city}
                   onChange={(e) => { this.handleChangeCity(e)}}></input>
                  </Row>
@@ -497,7 +497,7 @@ class EmployerProfile extends Component {
                  <span style={{color:'red'}}>{errors.state}</span>
                  
                  <Row> 
-                 &nbsp;&nbsp;&nbsp;<input className="detinput" name="state" 
+                 &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="state" 
                  value={this.state.employerDetails.state}
                  onChange={(e) => { this.handleChangeState(e)}}></input>
                  </Row>
@@ -509,7 +509,7 @@ class EmployerProfile extends Component {
                  <span style={{color:'red'}}>{errors.country}</span>
                  
                  <Row> 
-                 &nbsp;&nbsp;&nbsp;<CountryDropdown className="detinput"
+                 &nbsp;&nbsp;&nbsp;<CountryDropdown style={{width:'50%'}}
                     value={this.state.employerDetails.country}
                     onChange={(val) => { this.handleChangeCountry(val)}}       
                   />
@@ -521,7 +521,7 @@ class EmployerProfile extends Component {
                  <span style={{color:'red'}}> {errors.zipcode}</span>
                 
                  <Row> 
-                 &nbsp;&nbsp;&nbsp;<input className="detinput" name="zipcode" 
+                 &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="zipcode" 
                  type="number" value={this.state.employerDetails.zipcode}
                  
                  onChange={(e) => { this.handleChangeZipcode(e)}}></input>
@@ -647,7 +647,7 @@ class EmployerProfile extends Component {
                  </Row>
                  <span style={{color:'red'}}>{errors.roleInCompany}</span>
                  <Row> 
-                 &nbsp;&nbsp;&nbsp;<input className="detinput" name="website"
+                 &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="website"
                  value={this.state.employerDetails.website }
                  onChange={(e) => { this.handleChangeWebsite(e)}}></input>
                  </Row>
@@ -657,7 +657,7 @@ class EmployerProfile extends Component {
                  </Row>
                  <span style={{color:'red'}}>{errors.companySize}</span>
                  <Row> 
-                 &nbsp;&nbsp;&nbsp;<input className="detinput"
+                 &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}}
                  name="companySize" type="number"
                  value={this.state.employerDetails.companySize }
                  onChange={(e) => { this.handleChangeCompanySize(e)}}></input>
@@ -668,7 +668,7 @@ class EmployerProfile extends Component {
                  </Row>
                  <span style={{color:'red'}}>{errors.about}</span>
                  <Row> 
-                 &nbsp;&nbsp;&nbsp;<textarea className="detinput"
+                 &nbsp;&nbsp;&nbsp;<textarea style={{width:'50%'}}
                  name="about"
                  value={this.state.employerDetails.about }
                  onChange={(e) => { this.handleChangeAbout(e)}}></textarea>
@@ -679,7 +679,7 @@ class EmployerProfile extends Component {
                  </Row>
                  <span style={{color:'red'}}>{errors.companyType}</span>
                  <Row> 
-                 &nbsp;&nbsp;&nbsp;<input className="detinput"
+                 &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}}
                  name="companyType"
                  value={this.state.employerDetails.companyType }
                  onChange={(e) => { this.handleChangeCompanyType(e)}}></input>
@@ -690,7 +690,7 @@ class EmployerProfile extends Component {
                  </Row>
                  <span style={{color:'red'}}>{errors.companyDescription}</span>
                  <Row> 
-                 &nbsp;&nbsp;&nbsp;<textarea className="detinput"
+                 &nbsp;&nbsp;&nbsp;<textarea style={{width:'50%'}}
                  name="companyDescription"
                  value={this.state.employerDetails.companyDescription }
                  onChange={(e) => { this.handleChangeDescription(e)}}></textarea>
@@ -701,7 +701,7 @@ class EmployerProfile extends Component {
                  </Row>
                  <span style={{color:'red'}}>{errors.revenue}</span>
                  <Row> 
-                 &nbsp;&nbsp;&nbsp;<input className="detinput"
+                 &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}}
                  name="revenue" type="number"
                  value={this.state.employerDetails.revenue }
                  onChange={(e) => { this.handleChangeRevenue(e)}}></input>
@@ -712,7 +712,7 @@ class EmployerProfile extends Component {
                  </Row>
                  <span style={{color:'red'}}>{errors.headquarters}</span>
                  <Row> 
-                 &nbsp;&nbsp;&nbsp;<input className="detinput"
+                 &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}}
                  name="headquarters"
                  value={this.state.employerDetails.headquarters }
                  onChange={(e) => { this.handleChangeHeadquarters(e)}}></input>
@@ -723,7 +723,7 @@ class EmployerProfile extends Component {
                  </Row>
                  <span style={{color:'red'}}>{errors.industry}</span>
                  <Row> 
-                 &nbsp;&nbsp;&nbsp;<input className="detinput"
+                 &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}}
                  name="industry"
                  value={this.state.employerDetails.industry }
                  onChange={(e) => { this.handleChangeIndustry(e)}}></input>
@@ -734,7 +734,7 @@ class EmployerProfile extends Component {
                  </Row>
                  <span style={{color:'red'}}>{errors.founded}</span>
                  <Row>
-                 &nbsp;&nbsp;&nbsp;<textarea className="detinput"
+                 &nbsp;&nbsp;&nbsp;<textarea style={{width:'50%'}}
                  name="founded"
                  value={this.state.employerDetails.founded }
                  onChange={(e) => { this.handleChangeFounded(e)}}></textarea>
@@ -745,7 +745,7 @@ class EmployerProfile extends Component {
                  </Row>
                  <span style={{color:'red'}}>{errors.mission}</span>
                  <Row> 
-                 &nbsp;&nbsp;&nbsp;<textarea className="detinput"
+                 &nbsp;&nbsp;&nbsp;<textarea style={{width:'50%'}}
                  name="mission"
                  value={this.state.employerDetails.mission }
                  onChange={(e) => { this.handleChangeMission(e)}}></textarea>
@@ -756,7 +756,7 @@ class EmployerProfile extends Component {
                  </Row>
                  <span style={{color:'red'}}>{errors.workCulture}</span>
                  <Row> 
-                 &nbsp;&nbsp;&nbsp;<textarea className="detinput"
+                 &nbsp;&nbsp;&nbsp;<textarea style={{width:'50%'}}
                  name="workCulture"
                  value={this.state.employerDetails.workCulture }
                  onChange={(e) => { this.handleChangeWorkculture(e)}}></textarea>
@@ -767,7 +767,7 @@ class EmployerProfile extends Component {
                  </Row>
                  <span style={{color:'red'}}>{errors.companyValues}</span>
                  <Row> 
-                 &nbsp;&nbsp;&nbsp;<textarea className="detinput"
+                 &nbsp;&nbsp;&nbsp;<textarea style={{width:'50%'}}
                  name="companyValues"
                  value={this.state.employerDetails.companyValues }
                  onChange={(e) => { this.handleChangeCompanyValues(e)}}></textarea>
@@ -778,7 +778,7 @@ class EmployerProfile extends Component {
                  </Row>
                  <span style={{color:'red'}}>{errors.ceo}</span>
                  <Row> 
-                 &nbsp;&nbsp;&nbsp;<input className="detinput"
+                 &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}}
                  name="ceo"
                  value={this.state.employerDetails.ceo }
                  onChange={(e) => { this.handleChangeCeo(e)}}></input>

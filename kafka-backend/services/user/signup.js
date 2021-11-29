@@ -43,7 +43,8 @@ const signup = (req, callback) => {
                         console.log('Error while registering jobseeker:',err)
                       callback("Unknown error occured",{msg:"Unknown error occured",code:'203'});
                     } else {
-                      callback(null,rows[0]);
+                      // callback(null,rows[0]);
+                      callback(null,{code:'200',row:rows[0]});
                     }
                   })
                 }
@@ -70,7 +71,8 @@ const signup = (req, callback) => {
               insertQuery,
               [name, emailId, hashPwd, accountType],
               function (err, rows) {
-                callback(null,"Employer registered successfully" + rows);
+                callback(null,{code:'200',row:rows[0]});
+               // callback(null,"Employer registered successfully" + rows);
               }
             );
           }
@@ -98,7 +100,7 @@ const signupJobSeekerMongo =  async (req, callback) => {
       .save()
       .then((result) => {
         console.log(jobSeekerDtls)
-        callback(null,{ jobSeekerDtls: result });
+        callback(null,{ jobSeekerDtls: result , code:"200"});
       })
       .catch((err) => {
           console.log(err);

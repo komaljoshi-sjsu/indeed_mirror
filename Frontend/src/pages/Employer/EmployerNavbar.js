@@ -5,7 +5,7 @@ import logo from '../../images/indeedemployers_logo.png'
 import { IoMdHelpCircle, IoMdChatboxes } from 'react-icons/io';
 import { BsFillBellFill, BsPersonFill } from 'react-icons/bs';
 import { Link } from 'react-router-dom'
-import 'bootstrap/dist/css/bootstrap.min.css'
+
 import { IoMdPerson, IoMdSettings } from 'react-icons/io'
 import { ImProfile } from 'react-icons/im'
 import { MdFavorite, MdReviews, MdEmail, MdPhoto } from 'react-icons/md'

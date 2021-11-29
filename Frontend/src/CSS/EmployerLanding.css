@@ -35,10 +35,16 @@
     gap: 900px;
   }
   .container{
-    display: flex;
+    /* width: 100%;
+	margin:auto;
+	display: grid;
+	
+    gap: 90px; */
+    /* display: flex;
     flex-direction: column;
     width: 50%;
     margin: 0 auto;
+    padding-left: 30rem; */
   }
 .noRightborder
 {
@@ -63,18 +69,7 @@
     justify-content: center;
 }
 
-.whatSearch
-{
-    width: 500px;  
-}
-.statusbtn{
-    width:80px;
-    height: 30px;
-   
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    
-}
+
 .btns{
     flex-direction: column;
 }
@@ -101,7 +96,7 @@
     color: red;
 }
 .detinput{
-    width: 90%;
+    width: 0%;
 }
 .detinput1{
     width: 50%;
@@ -177,7 +172,7 @@ hr {
     border-top: 1px solid rgba(0, 0, 0, 0.1);
   }
 
-::placeholder{
+.placeholder{
     font-size: small;
 }
 
