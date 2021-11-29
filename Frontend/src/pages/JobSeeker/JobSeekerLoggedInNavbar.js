@@ -190,7 +190,7 @@ class JobSeekerLoggedInNavbar extends Component {
                       </a>
                       <a class="dropdown-item ditems">
                         <Link
-                          to="/"
+                          to="/savedjobs"
                           style={{
                             textDecoration: 'none',
                             color: '#474747',

@@ -30,6 +30,7 @@ const { jsSaveJob } = require('./jsSaveJob')
 const { jsUpdateNoOfViews } = require('./jsUpdateNoOfViews')
 const { jsCheckAppliedStatus } = require('./jsCheckAppliedStatus')
 const { jsCheckSavedStatus } = require('./jsCheckSavedStatus')
+const {savedjobs} = require('./savedjobs')
 const {
   saveConversation,
   getConversationById,
@@ -47,6 +48,9 @@ const { findSalDisplay, findSalByTitleDisplay } = require('./findSalaryDisplay')
 
 function handle_request(msg, callback) {
   switch (msg.route) {
+    case "savedjobs":
+        savedjobs(msg,callback);
+        break;
     case "appliedjobs":
         appliedjobs(msg,callback);
         break;

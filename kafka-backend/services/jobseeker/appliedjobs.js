@@ -1,6 +1,6 @@
 const conn = require('../../config/mysql_connection')
 
-let jsApplyJob = async (req, callback) => {
+let appliedjobs = async (req, callback) => {
   var respData = {
       code: '200',
       msg: 'success'
@@ -11,6 +11,7 @@ let jsApplyJob = async (req, callback) => {
     conn.query(sql,[userId],
       async function (err, results) {
         if (err) {
+            console.log(err);
             respData.code  = '203';
             respData.msg  = 'Cannot fetch applied jobs data';
             return callback('Cannot fetch applied jobs', respData)
@@ -24,10 +25,11 @@ let jsApplyJob = async (req, callback) => {
       },
     )
   } catch (err) {
+    console.log(err);
     respData.code  = '203';
     respData.msg  = 'Cannot fetch applied jobs data';
     callback('Cannot fetch applied jobs', respData)
   }
 }
 
-exports.jsApplyJob = jsApplyJob
+exports.appliedjobs = appliedjobs

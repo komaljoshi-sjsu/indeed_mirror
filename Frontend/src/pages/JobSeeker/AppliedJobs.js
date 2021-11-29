@@ -12,7 +12,7 @@ import { bindActionCreators } from 'redux'
 import { userActionCreator } from '../../reduxutils/actions.js'
 import ErrorMsg from '../Error/ErrorMsg'
 
-function SavedJobs(props) {
+function AppliedJobs(props) {
     const dispatch = useDispatch()
     const userid = useSelector((state)=>state.userInfo.id);
     const[errMsg,setErrMsg] = useState('');
@@ -20,11 +20,11 @@ function SavedJobs(props) {
     const showErrorModal = bindActionCreators(userActionCreator.showErrorModal,dispatch);
     useEffect(()=> {
         console.log('user id is ',userid);
-        axios.get(backendServer+'/api/savedjobs/'+userid)
+        axios.get(backendServer+'/api/appliedjobs/'+userid)
         .then(res => {
-            console.log('saved job results',res);
+            console.log('applied job results',res);
             if(res.data.code == '200') {
-                setJobs(res.data.row.savedJobs);
+                setJobs(res.data.row);
             } else {
                 setErrMsg(res.data.msg);
                 showErrorModal(true);
@@ -36,34 +36,6 @@ function SavedJobs(props) {
         }); 
     },[]);
     return (
-        // <div>
-        //     <ErrorMsg err={errMsg}></ErrorMsg>
-        //     <JobSeekerNavbar></JobSeekerNavbar><br></br>
-        //     <div>
-        //         <MyJobs></MyJobs>
-        //         {jobs.map(job=>  {
-        //             if(job!=null)
-        //                 job = job[0];
-        //             return (
-        //             <div >
-        //                 <div className="row">
-        //                     <b>{job.roleName}</b>
-        //                 </div>
-        //                 <div className="row">
-        //                     {job.jobType}
-        //                 </div>
-        //                 <div className="row">
-        //                     {job.companyName}
-        //                 </div>
-        //                 <div className="row">
-        //                     {job.location},{job.state} - {job.country}
-        //                 </div>
-        //             </div>)
-        //         })}
-        //     </div>
-        // </div>
-
-
         <div>
             <ErrorMsg err={errMsg}></ErrorMsg>
             <JobSeekerNavbar />
@@ -77,17 +49,20 @@ function SavedJobs(props) {
                                         job = job[0];
                                     return (
                                     <div className="row border-bottom" style={{padding:'20px 20px 20px 20px'}}>
+                                        <div className="row" style={{float:'right'}}>
+                                            <h5><b>{job.status}</b></h5>
+                                        </div>
                                         <div className="row">
-                                            <h5><b>{job.roleName}</b></h5>
+                                            <h5><b>{job.jobTitle}</b></h5>
                                         </div>
                                         <div className="row">
                                             {job.companyName}
                                         </div>
                                         <div className="row">
-                                            {job.jobType}
+                                            {job.jobMode}
                                         </div>
                                         <div className="row">
-                                            {job.location},{job.state}
+                                            {job.streetAdress},{job.state}
                                         </div>
                                     </div>)
                         })}
@@ -97,4 +72,4 @@ function SavedJobs(props) {
     )
 }
 
-export default SavedJobs;
+export default AppliedJobs;

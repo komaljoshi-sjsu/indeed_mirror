@@ -13,7 +13,6 @@ function MyJobs(props) {
     const dispatch = useDispatch();
     return (
         <div>
-            <JobSeekerNavbar></JobSeekerNavbar>
             <div className="container-fullwidth" style={{marginLeft:'20%',marginRight:'20%'}}>
                 <div className="row">
                     <h2><b>My Jobs</b></h2>
@@ -28,7 +27,7 @@ function MyJobs(props) {
                                     <li class="nav-item">
                                         <a class="nav-link active">
                                             <Link
-                                            to="/landingPage"
+                                            to="/savedjobs"
                                             style={{
                                                 textDecoration: 'none',
                                                 color: '#474747',
@@ -41,7 +40,7 @@ function MyJobs(props) {
                                     <li class="nav-item">
                                         <a class="nav-link">
                                             <Link
-                                            to="/allReviews"
+                                            to="/appliedjobs"
                                             style={{
                                                 textDecoration: 'none',
                                                 color: '#474747',
