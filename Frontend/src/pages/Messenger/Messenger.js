@@ -15,11 +15,11 @@ const Messenger = (props) => {
   const [messages, setMessages] = useState([]);
   const id = useSelector((state) => state.userInfo.id);
   const accountType = useSelector((state) => state.userInfo.accountType);
-  const [userId, setUserId] = useState(21); // add id from store
+  const [userId, setUserId] = useState(id); // add id from store
   const [newMessage, setNewMessage] = useState("");
   const [jobSeekers, setJobSeekers] = useState([]);
   const [newConversation, setNewConversation] = useState();
-  const [role, setRole] = useState("Employer"); // add role from store
+  const [role, setRole] = useState(accountType); // add role from store
   const [isEmployer, setIsEmployer] = useState("Employer" === role ? true : false); // add boolean flag
   const scrollRef = useRef();
 

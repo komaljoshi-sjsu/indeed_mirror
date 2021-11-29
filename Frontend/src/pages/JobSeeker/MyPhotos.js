@@ -12,7 +12,7 @@ import JobSeekerLoggedInNavbar from "../JobSeeker/JobSeekerLoggedInNavbar";
 const MyPhotos = (props) => {
   const [images, setImages] = useState([]);
   const id = useSelector((state) => state.userInfo.id);
-  const [jobSeekerId, setJobSeekerId] = useState(37);
+  const [jobSeekerId, setJobSeekerId] = useState(id);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPosts, setTotalPosts] = useState(0);
 
