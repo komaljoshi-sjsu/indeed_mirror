@@ -54,6 +54,7 @@ const {
 } = require('./jobsFilterOnLocationAndTitle')
 const { jobsGetCompanyImage } = require('./jobsGetCompanyImage')
 const { jobsPaginatedData } = require('./jobsPaginatedData')
+const { getJobSeekerPhotos } = require('./getJobSeekerPhotos')
 
 function handle_request(msg, callback) {
   switch (msg.route) {
@@ -194,6 +195,11 @@ function handle_request(msg, callback) {
     case 'jobsPaginatedData':
       jobsPaginatedData(msg, callback)
       break
+
+    case 'getJobSeekerPhotos':
+      getJobSeekerPhotos(msg, callback)
+      break
   }
 }
+
 exports.handle_request = handle_request

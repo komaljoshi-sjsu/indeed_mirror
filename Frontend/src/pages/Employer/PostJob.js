@@ -118,6 +118,7 @@ class PostJob extends Component {
 
             };
            // console.log(inputData);
+           axios.defaults.headers.common['authorization'] = this.props.userInfo.token;
             axios
             .post(`${backendServer}/postNewJob`, inputData)
             .then((response) => {

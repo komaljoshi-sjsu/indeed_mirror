@@ -5,7 +5,11 @@ import logo from '../../images/indeedemployers_logo.png'
 import { IoMdHelpCircle, IoMdChatboxes } from 'react-icons/io';
 import { BsFillBellFill, BsPersonFill } from 'react-icons/bs';
 import { Link } from 'react-router-dom'
-
+import 'bootstrap/dist/css/bootstrap.min.css'
+import { IoMdPerson, IoMdSettings } from 'react-icons/io'
+import { ImProfile } from 'react-icons/im'
+import { MdFavorite, MdReviews, MdEmail, MdPhoto } from 'react-icons/md'
+import '../../CSS/EmployerNavbar.css'
 class EmployerNavbar extends Component {
   constructor(props) {
     super(props)
@@ -122,7 +126,7 @@ class EmployerNavbar extends Component {
                       </Link>
                     </a>
                   </li>
-                  <li class="nav-item">
+                  {/* <li class="nav-item">
                     <a class="nav-link">
                       <Link to="/employerUpdateProfile"
                         style={{
@@ -134,6 +138,41 @@ class EmployerNavbar extends Component {
                       </Link>
 
                     </a>
+                  </li> */}
+                  <li class="nav-item dropdown" >
+                    <a class="nav-link" data-bs-toggle="dropdown" >
+                      <h5
+                        style={{
+                          color: 'black',
+                          marginLeft: '5px',
+                          marginRight: '5px',
+                        }}
+                      >
+                        <IoMdPerson />
+                      </h5>
+                    </a>
+                    <div class="dropdown-menu dmenu">
+                      <div class="dropemail">{this.state.userEmail}</div>
+
+                      <a class="dropdown-item ditems">
+                        <Link
+                          to="/employerUpdateProfile"
+                          style={{
+                            textDecoration: 'none',
+                            color: '#474747',
+                          }}
+                        >
+                          <ImProfile
+                            style={{ width: '40px', height: '25px' }}
+                          />
+                          <span >Profile</span>
+                        </Link>
+                      </a>
+                      <div class="dropdown-divider ditems"></div>
+                      <a class="dropdown-item">
+                        <span className="signoutdrop">Sign Out</span>
+                      </a>
+                    </div>
                   </li>
                 </ul>
               </form>

@@ -9,6 +9,7 @@ var mysql = require("mysql");
 const connection = require("../config/mysql_connection");
 const { response } = require("express");
 var kafka = require("../kafka/client");
+//const { checkAuth } = require("../config/passport");
 dotenv.config();
 
 const s3 = new aws.S3({

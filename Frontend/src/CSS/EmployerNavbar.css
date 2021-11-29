@@ -2,3 +2,12 @@ li:hover {
     color: #003399;
     border-bottom: 3px solid #003399;
   }
+ .dropdown1 {
+    width: 100px !important;
+    
+}
+/*.dropdown{
+  align-items: center;
+  width: 100px !important;
+ 
+} */
