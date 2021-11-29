@@ -15,7 +15,7 @@ let getApplicantsName = async (req, callback) => {
         let job_query = conn.query(get_job, (error, result) => {
 
             if (error) {
-                callback(null,error)
+                callback(error,null)
             }  
                 else{
                     callback(null,JSON.stringify(result));

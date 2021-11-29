@@ -23,7 +23,7 @@ let addEmployerDetails = async (req, callback) => {
         //console.log(sql1);
         let query = conn.query(sql1, (error, result) => {
             if (error) {
-                callback(null,error)
+                callback(error,null)
               
             } else {
                 callback(null,"Success");
