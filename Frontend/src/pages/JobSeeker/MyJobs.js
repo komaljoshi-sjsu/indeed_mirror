@@ -3,8 +3,7 @@ import {useState, useEffect} from 'react';
 import {Redirect} from 'react-router';
 import JobSeekerNavbar from './JobSeekerNavbar';
 import axios from 'axios';
-import Card from "react-bootstrap/Card";
-import './css/snapshot.css';
+import { Link } from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux';
 import {bindActionCreators} from 'redux';
 

@@ -5,13 +5,12 @@ import JobSeekerNavbar from './JobSeekerNavbar';
 import MyJobs from './MyJobs';
 import axios from 'axios';
 import Card from "react-bootstrap/Card";
-import './css/snapshot.css';
-import {backendServer} from '../../webConfig';
+import backendServer from '../../webConfig';
 import {useSelector} from 'react-redux';
 import { userActionCreator } from '../../reduxutils/actions.js'
 
 function SavedJobs(props) {
-    const companyid = useSelector((id)=>state.userActionCreator.id);
+    const userid = useSelector((state)=>state.userActionCreator.id);
     const [jobs,setJobs] = useState([]);
     useEffect(()=> {
         axios.get(backendServer+'/api/savedjobs/'+userid)

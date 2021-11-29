@@ -1,9 +1,4 @@
 var connection =  new require('./kafka/Connection');
-const jobseeker = require('./services/jobseeker');
-const employer = require('./services/employer');
-const company = require('./services/company');
-const admin = require('./services/admin');
-const user = require('./services/user');
 const conn2 = require('./config/mongo_connection')
 const conn1 = require('./config/mysql_connection')
 
@@ -20,10 +15,11 @@ require('./models/Photo')
 require('./models/Conversation')
 require('./models/Message')
 
-const jobseeker = require('./services/jobseeker')
-const employer = require('./services/employer')
-const company = require('./services/company')
-const admin = require('./services/admin')
+const jobseeker = require('./services/jobseeker');
+const employer = require('./services/employer');
+const company = require('./services/company');
+const admin = require('./services/admin');
+const user = require('./services/user');
 
 function handleTopicRequest(topic_name, fname) {
   //var topic_name = 'root_topic';
