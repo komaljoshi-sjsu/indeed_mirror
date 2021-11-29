@@ -7,6 +7,7 @@ import CompanyImage from '../../images/companyImage.png'
 import companyLogo from '../../images/company-logo.jpeg'
 import JobSeekerNavbar from '../JobSeeker/JobSeekerNavbar'
 import { Link, withRouter } from 'react-router-dom'
+import JobSeekerLoggedInNavbar from '../JobSeeker/JobSeekerLoggedInNavbar'
 
 class CompanyTabs extends Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class CompanyTabs extends Component {
   render() {
     return (
       <div>
-        <JobSeekerNavbar />
+        <JobSeekerLoggedInNavbar />
         <div class="container-fluid">
           <img src={CompanyImage} alt="" width="100%" height="200" />
         </div>

@@ -8,7 +8,7 @@ router.get("/api/snapshot/:companyId", (req, res) => {
     let msg = {};
     //msg.re = req.params.customerId;
     msg.route = "snapshot";
-    msg.companyId = req.body.companyId;
+    msg.companyId = req.params.companyId;
     kafka.make_request("company", msg, function (err, results) {
         console.log("inside kafka");
         if (err) {
@@ -25,7 +25,7 @@ router.get("/api/featuredReviews/:companyId", (req, res) => {
     let msg = {};
     //msg.re = req.params.customerId;
     msg.route = "featuredReviews";
-    msg.companyId = req.body.companyId;
+    msg.companyId = req.params.companyId;
     kafka.make_request("company", msg, function (err, results) {
         console.log("inside kafka");
         if (err) {
