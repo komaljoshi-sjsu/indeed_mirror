@@ -16,7 +16,8 @@ router.get("/api/snapshot/:companyId", (req, res) => {
         // If value for key is available in Redis
         if (data) {
             // send data as output
-            console.log("from redis");
+            console.log("snapshot key in redis: "+key);
+            console.log("snapshot data from redis: "+data);
             return res.send(data);
         }
         // If value for given key is not available in Redis
