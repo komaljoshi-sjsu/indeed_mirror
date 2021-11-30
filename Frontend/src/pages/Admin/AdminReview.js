@@ -5,15 +5,19 @@ import { Card, Button } from "react-bootstrap";
 import Pagination from "./../JobSeeker/Pagination";
 import { toast } from "react-toastify";
 import AdminNavbar from "./AdminNavbar";
+import { useSelector } from "react-redux";
+import backendServer from "../../webConfig";
 
 const AdminReview = (props) => {
   const [reviews, setReviews] = useState([]);
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPosts, setTotalPosts] = useState(0)
+  const token = useSelector((state) => state.userInfo.token);
 
   const getAdminReviews = async () => {
     const data1 = {reviewAdminReviewedStatus:"PENDING_APPROVAL",currentPage:currentPage}
-    const pendingReviews = await axios("/api/getAdminReviews", {params: {data:data1 }});
+    axios.defaults.headers.common['authorization'] = token;
+    const pendingReviews = await axios(`${backendServer}/api/getAdminReviews`, {params: {data:data1 }});
     //console.log(pendingPhotos.data.photos)
     setReviews(pendingReviews.data.reviews)
     setTotalPosts(pendingReviews.data.count)
@@ -29,8 +33,8 @@ const AdminReview = (props) => {
     const index = e.target.getAttribute("index")
     const rev = reviews[index]
     rev.adminReviewStatus = e.target.value;
-    console.log(rev)
-    axios.post("/api/setReviewStatus",rev)
+    axios.defaults.headers.common['authorization'] = token;
+    axios.post(`${backendServer}/api/setReviewStatus`,rev)
     .then((response)=>{
       if (response.status===200){
         getAdminReviews();

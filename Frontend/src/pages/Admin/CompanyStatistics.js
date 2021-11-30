@@ -3,6 +3,7 @@ import { Button, Modal } from "react-bootstrap";
 import { useState } from "react";
 import axios from "axios";
 import { Bar} from "react-chartjs-2";
+import { useSelector } from "react-redux";
 
 const CompanyStatistics = (props) => {
   const [show, setShow] = useState(false);
@@ -10,12 +11,14 @@ const CompanyStatistics = (props) => {
   const [yearArray, setYearArray] = useState([]);
   const [hiredArray, setHiredArray] = useState([]);
   const [rejectArray, setRejectArray] = useState([]);
+  const token = useSelector((state) => state.userInfo.token);
 
   useEffect(() => {
     getStatistics();
   }, [show]);
   
   const getStatistics = async () =>{
+    axios.defaults.headers.common['authorization'] = token;
     const statDtls = await axios("/companyJobStatistics", {params:{data:companyId}});
     
     setHiredArray(statDtls.data.hired.map(function (el) { return el.count; }));
