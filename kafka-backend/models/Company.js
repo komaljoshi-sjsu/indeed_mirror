@@ -12,7 +12,7 @@ const comSchema = new Schema({
   },
   logo: {
     type: String,
-    required: true,
+    required: false,
   },
   avgWorkHappinessScore: {
     type: Number,
