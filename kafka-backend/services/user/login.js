@@ -81,13 +81,25 @@ const login  = (req, callback) => {
                         return callback("Employer not registered",{msg:"Employer not registered",code:'203'});
                     }
                     const compRes = await bcrypt.compare(password, results[0].password);
-                    const payload = { id: results[0].id, accountType: results[0].accountType, user: results[0] };
                     if (compRes) {
-                        const token = jwt.sign(payload, secret, {
-                            expiresIn: 1008000,
-                        });
-                        console.log("JWT " + token);
-                        callback(null, "JWT " + token);
+                        if(results[0].companyId!=null) {
+                            conn.query("select companyName from Company where companyId=?",[parseInt(results[0].companyId)], (err,cmp)=> {
+                                if(err) {
+                                    console.log('Cannot file company with id '+results[0].companyId,err)
+                                    return callback("Cannot file company",{msg:"Cannot file company",code:'203'});
+                                } else {
+                                    results = results[0];
+                                    results.companyName = cmp[0].companyName;
+                                    const payload = { id: results.id, accountType: results.accountType, user: results };
+                                    const token = jwt.sign(payload, secret, {
+                                        expiresIn: 1008000,
+                                    });
+                                    console.log("JWT " + token);
+                                    callback(null, "JWT " + token);
+                                }
+                            })
+                        }
+                        
                     } else {
                         console.log("incorrect");
                         callback("Password Incorrect",{msg:"Password incorrect",code:'203'});
@@ -97,8 +109,8 @@ const login  = (req, callback) => {
         }
     }
     catch (error) {
-        console.log("ERROR!!!!!" +error);
-        callback("Error while logging in","Error while login");
+        console.log("ERROR!!!!!" ,error);
+        callback("Error while logging in",{msg:"Failed to login, please refer console",code:'203'});
     }
 };
 

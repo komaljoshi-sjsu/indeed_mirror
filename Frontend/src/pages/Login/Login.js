@@ -82,7 +82,7 @@ function Login(props) {
                 }
                 else {
                     setCompId(user.companyId);
-                    //setCompName(user.compName);
+                    setCompName(user.companyName);
                     redirectValFn(<Redirect to="/employer"/>);
                 }
             } else if(accountType=='Admin')  {
