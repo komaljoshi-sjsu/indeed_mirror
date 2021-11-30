@@ -7,6 +7,7 @@ const { json } = require('body-parser')
 const Company = mongoose.model('Company')
 const JobSeeker = mongoose.model('JobSeeker')
 const kafka = require('../kafka/client')
+const { checkAuth } = require('../config/passport')
 
 router.get('/jobSeeker/home', (req, res) => {
   // conn.query('select * from Job;', async function (err, results) {
@@ -322,7 +323,7 @@ router.post('/jobSeeker/updateNoOfViews', (req, res) => {
   })
 })
 
-router.post('/jobSeeker/saveJob', (req, res) => {
+router.post('/jobSeeker/saveJob', checkAuth, (req, res) => {
   // let {
   //   companyId,
   //   city,
@@ -383,7 +384,7 @@ router.post('/jobSeeker/saveJob', (req, res) => {
   })
 })
 
-router.post('/jobSeeker/checkSavedStatus', (req, res) => {
+router.post('/jobSeeker/checkSavedStatus', checkAuth, (req, res) => {
   // let { companyId, jobId, userId } = req.body
   // companyId = parseInt(companyId)
   // console.log(JSON.stringify(req.body))
@@ -427,7 +428,7 @@ router.post('/jobSeeker/checkSavedStatus', (req, res) => {
   })
 })
 
-router.post('/jobSeeker/applyJob', (req, res) => {
+router.post('/jobSeeker/applyJob', checkAuth, (req, res) => {
   // let { appliedDate, jobId, id, companyId } = req.body
   // console.log(req.body)
   // conn.query(
@@ -459,7 +460,7 @@ router.post('/jobSeeker/applyJob', (req, res) => {
   })
 })
 
-router.post('/jobSeeker/checkAppliedStatus', (req, res) => {
+router.post('/jobSeeker/checkAppliedStatus', checkAuth, (req, res) => {
   // let { appliedDate, jobId, id, companyId } = req.body
   // console.log(req.body)
   // conn.query(

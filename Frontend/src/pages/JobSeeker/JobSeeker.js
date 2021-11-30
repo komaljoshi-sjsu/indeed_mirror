@@ -296,6 +296,7 @@ class JobSeekerLandingPage extends Component {
           ' and jobid ' +
           jobId,
       )
+      axios.defaults.headers.common['authorization'] = this.props.userInfo.token
       axios
         .post('http://localhost:5000/jobSeeker/checkAppliedStatus', data)
         .then((response) => {
@@ -352,6 +353,7 @@ class JobSeekerLandingPage extends Component {
         jobId,
         userId,
       }
+      axios.defaults.headers.common['authorization'] = this.props.userInfo.token
       axios
         .post('http://localhost:5000/jobSeeker/checkSavedStatus', data)
         .then((response) => {
@@ -614,6 +616,7 @@ class JobSeekerLandingPage extends Component {
       console.log(id)
       const data = { appliedDate, jobId, id, companyId }
       console.log(data)
+      axios.defaults.headers.common['authorization'] = this.props.userInfo.token
       axios
         .post('http://localhost:5000/jobSeeker/applyJob', data)
         .then((response) => {
@@ -661,6 +664,7 @@ class JobSeekerLandingPage extends Component {
         jobId,
         userId,
       }
+      axios.defaults.headers.common['authorization'] = this.props.userInfo.token
       await axios
         .post('http://localhost:5000/jobSeeker/saveJob', data)
         .then((response) => {
@@ -702,7 +706,7 @@ class JobSeekerLandingPage extends Component {
   }
 
   render() {
-    console.log(this.state.isLoggedIn);
+    console.log(this.state.isLoggedIn)
     return (
       <div>
         {this.state.isLoggedIn ? (

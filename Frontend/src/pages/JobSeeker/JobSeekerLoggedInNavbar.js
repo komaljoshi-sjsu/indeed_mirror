@@ -208,7 +208,7 @@ class JobSeekerLoggedInNavbar extends Component {
                           <MdFavorite
                             style={{ width: '40px', height: '25px' }}
                           />
-                          <span className="spandrop">My Jobs</span>{' '}
+                          <span className="spandrop">My Jobs</span>
                         </Link>
                       </a>
                       <a class="dropdown-item ditems">
@@ -222,7 +222,7 @@ class JobSeekerLoggedInNavbar extends Component {
                           <MdReviews
                             style={{ width: '40px', height: '25px' }}
                           />
-                          <span className="spandrop">My Reviews</span>{' '}
+                          <span className="spandrop">My Reviews</span>
                         </Link>
                       </a>
                       <a class="dropdown-item ditems">
@@ -230,13 +230,12 @@ class JobSeekerLoggedInNavbar extends Component {
                           to="/myPhotos"
                           style={{
                             textDecoration: 'none',
-                            color: '#474747'                            
+                            color: '#474747',
+                            outline: 'none',
                           }}
                         >
-                          <MdPhoto
-                            style={{ width: '40px', height: '25px' }}
-                          />
-                          <span className="spandrop">My Photos</span>{' '}
+                          <MdPhoto style={{ width: '40px', height: '25px' }} />
+                          <span className="spandrop">My Photos</span>
                         </Link>
                       </a>
                       {/* <a class="dropdown-item ditems">

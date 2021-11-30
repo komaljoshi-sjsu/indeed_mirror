@@ -5,6 +5,7 @@ import TextField from '@mui/material/TextField'
 import { makeStyles } from '@material-ui/styles'
 import Autocomplete from '@mui/material/Autocomplete'
 import axios from 'axios'
+import ReactPaginate from 'react-paginate'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import CompanyTabs from './CompanyTabs'
@@ -38,8 +39,11 @@ class CompanyJobs extends Component {
       responsibilities: '',
       qualifications: '',
       loveJobRole: '',
+      applied: false,
+      saved: false,
       currentPage: 1,
       totalPosts: 0,
+      pageCount: 0,
     }
     this.getCurrentDate()
   }
@@ -102,14 +106,15 @@ class CompanyJobs extends Component {
         console.log('Job Titles: ')
         console.log(jobTitles)
 
-        let companyNames = response.data.map((job) => {
-          return job.companyName
-        })
+        // let companyNames = response.data.map((job) => {
+        //   return job.companyName
+        // })
 
-        console.log('Company Names: ')
-        console.log(companyNames)
+        // console.log('Company Names: ')
+        // console.log(companyNames)
 
-        let whatSearch = jobTitles.concat(companyNames)
+        let whatSearch = jobTitles
+        // .concat(companyNames)
 
         whatSearch = whatSearch.filter(
           (job, index, self) => index === self.findIndex((j) => j === job),
@@ -132,7 +137,10 @@ class CompanyJobs extends Component {
         )
 
         job = response.data[0]
-
+        const pageCount = Math.ceil(response.data.length / 5)
+        console.log(
+          'Total data =' + response.data.length + ' Page count = ' + pageCount,
+        )
         this.setState({
           allJobs: this.state.allJobs.concat(response.data),
           whatSearch: whatSearch,
@@ -147,7 +155,11 @@ class CompanyJobs extends Component {
           jobType: job.jobMode,
           salary: job.salaryDetails,
           location: job.city,
+          responsibilities: job.responsibilities,
+          qualifications: job.qualifications,
+          loveJobRole: job.loveJobRole,
           totalPosts: response.data.length,
+          pageCount: pageCount,
         })
       },
       (error) => {
@@ -156,6 +168,8 @@ class CompanyJobs extends Component {
     )
 
     await this.calculateDaysSincePosted()
+
+    await this.getAppliedStatus(job.jobId)
   }
 
   getPaginatedData() {
@@ -201,8 +215,56 @@ class CompanyJobs extends Component {
       today.getDate(),
     )
     const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay))
+    console.log('Posted difference days')
     console.log(diffDays)
     return diffDays
+  }
+
+  getAppliedStatus(jobId) {
+    const userInfo = this.props.userInfo
+    const companyId = this.state.companyId
+    const appliedDate = this.getCurrentDate()
+    console.log(
+      'Checking applied status with company id ' +
+        companyId +
+        ' and jobid ' +
+        jobId,
+    )
+    if (userInfo.email !== '' && userInfo.accountType === 'JobSeeker') {
+      console.log('User has signed in')
+      const id = userInfo.id
+      //console.log(id)
+      const data = { appliedDate, jobId, id, companyId }
+      //console.log(data)
+      console.log(
+        'Checking applied status for userid ' +
+          userInfo.id +
+          ' with company id ' +
+          companyId +
+          ' and jobid ' +
+          jobId,
+      )
+      axios.defaults.headers.common['authorization'] = this.props.userInfo.token
+      axios
+        .post('http://localhost:5000/jobSeeker/checkAppliedStatus', data)
+        .then((response) => {
+          console.log(response.data, response.status)
+          if (response.status === 200) {
+            console.log('User has already applies to job')
+            this.setState({
+              applied: true,
+            })
+          } else {
+            this.setState({
+              applied: false,
+            })
+          }
+        })
+    } else {
+      this.setState({
+        applied: false,
+      })
+    }
   }
 
   handleWhatVal = (evt, value) => {
@@ -232,7 +294,7 @@ class CompanyJobs extends Component {
       })
   }
 
-  handleFindJobs() {
+  async handleFindJobs() {
     console.log('In find')
     console.log(this.state.whereVal, this.state.whatVal)
     let job = []
@@ -245,18 +307,22 @@ class CompanyJobs extends Component {
         whatkeyword: this.state.whatVal,
         companyName: this.state.companyName,
       }
-      axios
+      await axios
         .post('http://localhost:5000/jobs/filterOnLocationAndTitle', data)
         .then((response) => {
           console.log(response.data, response.status)
           job = response.data.result
           totalCount = response.data.count[0].count
-
+          const pageCount = Math.ceil(totalCount / 5)
+          console.log(
+            'Total data =' + totalCount + ' Page count = ' + pageCount,
+          )
           if (job.length > 0) {
             console.log('setting jobs')
             this.setState({
               jobs: job,
               totalPosts: totalCount,
+              pageCount: pageCount,
               roleName: job[0].jobTitle,
               companyName: job[0].companyName,
               companyId: job[0].companyId,
@@ -267,6 +333,9 @@ class CompanyJobs extends Component {
               jobType: job[0].jobMode,
               salary: job[0].salaryDetails,
               location: job[0].city,
+              responsibilities: job[0].responsibilities,
+              qualifications: job[0].qualifications,
+              loveJobRole: job[0].loveJobRole,
             })
           }
         })
@@ -277,18 +346,22 @@ class CompanyJobs extends Component {
         keyword: this.state.whereVal,
         companyName: this.state.companyName,
       }
-      axios
+      await axios
         .post('http://localhost:5000/jobs/filterOnLocation', data)
         .then((response) => {
           console.log(response.data, response.status)
           job = response.data.result
           totalCount = response.data.count[0].count
-
+          const pageCount = Math.ceil(totalCount / 5)
+          console.log(
+            'Total data =' + totalCount + ' Page count = ' + pageCount,
+          )
           if (job.length > 0) {
             console.log('setting jobs')
             this.setState({
               jobs: job,
               totalPosts: totalCount,
+              pageCount: pageCount,
               roleName: job[0].jobTitle,
               companyName: job[0].companyName,
               companyId: job[0].companyId,
@@ -299,6 +372,9 @@ class CompanyJobs extends Component {
               jobType: job[0].jobMode,
               salary: job[0].salaryDetails,
               location: job[0].city,
+              responsibilities: job[0].responsibilities,
+              qualifications: job[0].qualifications,
+              loveJobRole: job[0].loveJobRole,
             })
           }
         })
@@ -309,7 +385,7 @@ class CompanyJobs extends Component {
         keyword: this.state.whatVal,
         companyName: this.state.companyName,
       }
-      axios
+      await axios
         .post('http://localhost:5000/jobs/filterOnJobTitleOrCompanyName', data)
         .then((response) => {
           console.log(
@@ -319,12 +395,16 @@ class CompanyJobs extends Component {
           )
           job = response.data.result
           totalCount = response.data.count[0].count
-
+          const pageCount = Math.ceil(totalCount / 5)
+          console.log(
+            'Total data =' + totalCount + ' Page count = ' + pageCount,
+          )
           if (job.length > 0) {
             console.log('setting jobs')
             this.setState({
               jobs: job,
               totalPosts: totalCount,
+              pageCount: pageCount,
               roleName: job[0].jobTitle,
               companyName: job[0].companyName,
               companyId: job[0].companyId,
@@ -335,10 +415,15 @@ class CompanyJobs extends Component {
               jobType: job[0].jobMode,
               salary: job[0].salaryDetails,
               location: job[0].city,
+              responsibilities: job[0].responsibilities,
+              qualifications: job[0].qualifications,
+              loveJobRole: job[0].loveJobRole,
             })
           }
         })
     }
+
+    await this.calculateDaysSincePosted()
   }
 
   handleCardClick = (evt) => {
@@ -350,21 +435,26 @@ class CompanyJobs extends Component {
     console.log(job.companyId)
     let companyId = job.companyId
 
-    this.setState({
-      roleName: job.jobTitle,
-      companyName: job.companyName,
-      companyId: job.companyId,
-      jobId: job.jobId,
-      city: job.city,
-      state: job.state,
-      zip: job.zip,
-      jobType: job.jobMode,
-      salary: job.salaryDetails,
-      location: job.city,
-      responsibilities: job.responsibilities,
-      qualifications: job.qualifications,
-      loveJobRole: job.loveJobRole,
-    })
+    this.setState(
+      {
+        roleName: job.jobTitle,
+        companyName: job.companyName,
+        companyId: job.companyId,
+        jobId: job.jobId,
+        city: job.city,
+        state: job.state,
+        zip: job.zip,
+        jobType: job.jobMode,
+        salary: job.salaryDetails,
+        location: job.city,
+        responsibilities: job.responsibilities,
+        qualifications: job.qualifications,
+        loveJobRole: job.loveJobRole,
+      },
+      () => {
+        this.getAppliedStatus(job.jobId)
+      },
+    )
   }
 
   handleApply(evt) {
@@ -380,10 +470,14 @@ class CompanyJobs extends Component {
       console.log(id)
       const data = { appliedDate, jobId, id, companyId }
       console.log(data)
+      axios.defaults.headers.common['authorization'] = this.props.userInfo.token
       axios
         .post('http://localhost:5000/jobs/applyJob', data)
         .then((response) => {
           console.log(response.data, response.status)
+          this.setState({
+            applied: true,
+          })
         })
     } else {
       console.log("User didn't sign in")
@@ -391,11 +485,24 @@ class CompanyJobs extends Component {
     }
   }
 
-  paginate = (pageNumber) => {
-    console.log(pageNumber)
+  // paginate = (pageNumber) => {
+  //   console.log(pageNumber)
+  //   this.setState(
+  //     {
+  //       currentPage: pageNumber,
+  //     },
+  //     () => {
+  //       this.getPaginatedData()
+  //     },
+  //   )
+  // }
+  handlePageClick = (event) => {
+    // const newOffset = (event.selected * 2) % this.state.totalCount
+    console.log(`User requested page number ${event.selected + 1}`)
+    //setItemOffset(newOffset);
     this.setState(
       {
-        currentPage: pageNumber,
+        currentPage: event.selected + 1,
       },
       () => {
         this.getPaginatedData()
@@ -556,42 +663,63 @@ class CompanyJobs extends Component {
                       role="group"
                       aria-label="Third group"
                     >
-                      <button
-                        type="button"
-                        class="btn applybtn"
-                        onClick={this.handleApply.bind(this)}
-                        id={this.state.jobId}
-                      >
-                        <h5 style={{ marginTop: '4px', color: 'white' }}>
-                          Apply On Company Site
-                        </h5>
-                      </button>
+                      {this.state.applied ? (
+                        <button
+                          type="button"
+                          class="btn applybtn"
+                          id={this.state.jobId}
+                          disabled
+                        >
+                          <h5 style={{ marginTop: '4px', color: 'white' }}>
+                            Applied to Company
+                          </h5>
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          class="btn applybtn"
+                          onClick={this.handleApply.bind(this)}
+                          id={this.state.jobId}
+                        >
+                          <h5 style={{ marginTop: '4px', color: 'white' }}>
+                            Apply On Company Site
+                          </h5>
+                        </button>
+                      )}
                     </div>
                     <br />
                     <hr />
                     <br />
                     <h5 class="card-title">Job details</h5>
                     <br />
-                    <h6>Job Type:</h6>
+                    <h6 style={{ fontWeight: 'bold' }}>Job Type:</h6>
                     <h6>{this.state.jobType}</h6> <br />
-                    <h6>Salary:</h6>
+                    <h6 style={{ fontWeight: 'bold' }}>Salary:</h6>
                     <h6>${this.state.salary}</h6>
                     <br />
                     <hr />
                     <h5 class="card-title">Full Job Description</h5>
                     <br />
-                    <h6>Location:</h6>
+                    <h6 style={{ fontWeight: 'bold' }}>Location:</h6>
                     <h6>{this.state.location}</h6>
                     <br />
-                    <h6>Job Description:</h6>
+                    <h6 style={{ fontWeight: 'bold' }}>What you will do:</h6>
+                    <h6 style={{ whiteSpace: 'pre-wrap', color: '#262626' }}>
+                      {this.state.responsibilities}
+                    </h6>
                     <br />
-                    <h6>What you will do:</h6>
-                    <h6>{this.state.responsibilities}</h6>
+                    <h6 style={{ fontWeight: 'bold' }}>What you will need:</h6>
+                    <h6 style={{ whiteSpace: 'pre-wrap', color: '#262626' }}>
+                      {this.state.qualifications}
+                    </h6>
                     <br />
-                    <h6>What you will need:</h6>
-                    <h6>{this.state.qualifications}</h6> <br />
-                    <h6>Why You’ll love working:</h6>
-                    <h6>{this.state.loveJobRole}</h6> <br />
+                    <h6 style={{ fontWeight: 'bold' }}>
+                      Why You’ll love working:
+                    </h6>
+                    <h6 style={{ whiteSpace: 'pre-wrap', color: '#262626' }}>
+                      {this.state.loveJobRole}
+                    </h6>
+                    <br />
                   </div>
                 </div>
               </div>
@@ -599,11 +727,32 @@ class CompanyJobs extends Component {
             </div>
           </div>
         </div>
-        <Pagination
+        {/* <Pagination
           postsPerPage={5}
           totalPosts={this.state.totalPosts}
           paginate={this.paginate}
-        />
+        /> */}{' '}
+        <div style={{ marginLeft: '50%' }}>
+          <ReactPaginate
+            nextLabel="next >"
+            onPageChange={this.handlePageClick.bind(this)}
+            pageRangeDisplayed={5}
+            pageCount={this.state.pageCount}
+            previousLabel="< previous"
+            pageClassName="page-item"
+            pageLinkClassName="page-link"
+            previousClassName="page-item"
+            previousLinkClassName="page-link"
+            nextClassName="page-item"
+            nextLinkClassName="page-link"
+            breakLabel="..."
+            breakClassName="page-item"
+            breakLinkClassName="page-link"
+            containerClassName="pagination"
+            activeClassName="active"
+            renderOnZeroPageCount={null}
+          />
+        </div>
       </div>
     )
   }
