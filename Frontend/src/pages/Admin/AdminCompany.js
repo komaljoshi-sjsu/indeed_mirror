@@ -10,6 +10,7 @@ import Pagination from "./../JobSeeker/Pagination";
 import CompanyStatistics from "./CompanyStatistics";
 import { useSelector } from "react-redux";
 import { withRouter } from 'react-router-dom'
+import backendServer from "../../webConfig";
 
 const AdminCompany = (props) => {
 
@@ -36,7 +37,7 @@ const AdminCompany = (props) => {
   const getCompanyDetails = async () => {
     const data1 = { currentPage: currentCompanyPage }
     axios.defaults.headers.common['authorization'] = token;
-    const companyDetails = await axios("/getCompanyDetailsPaginated/", { params: { data: data1 } });
+    const companyDetails = await axios(backendServer+ '/getCompanyDetailsPaginated/', { params: { data: data1 } });
     setCompanyDtls(companyDetails.data.companyDtls)
     setTotalCompanyPosts(companyDetails.data.count)
     setCompanyId(companyDetails.data.companyDtls[0].companyId)
@@ -53,7 +54,7 @@ const AdminCompany = (props) => {
     console.log("searching")
     const searchTerm = searchString.trim().toLowerCase()
     axios.defaults.headers.common['authorization'] = token;
-    const searchResult = await axios("/searchAdminCompany", {params: {data:searchTerm}});
+    const searchResult = await axios(backendServer+'/searchAdminCompany', {params: {data:searchTerm}});
     if (searchResult.data.companyDtls.length>0){
       setCompanyDtls(searchResult.data.companyDtls)
       setCompanyId(searchResult.data.companyDtls[0].companyId)
@@ -79,7 +80,7 @@ const AdminCompany = (props) => {
   const getReviews = async () => {
     const data1 = { companyId: companyId, currentPage: currentReviewPage }
     axios.defaults.headers.common['authorization'] = token;
-    const companyReviews = await axios("/api/getAllReviewsByCompanyId/", { params: { data: data1 } });
+    const companyReviews = await axios(backendServer+'/api/getAllReviewsByCompanyId/', { params: { data: data1 } });
     console.log(companyReviews.data.reviews);
     setReviews(companyReviews.data.reviews)
     setTotalReviewPosts(companyReviews.data.count)
