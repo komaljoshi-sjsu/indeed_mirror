@@ -5,11 +5,14 @@ import logo from '../../images/indeedemployers_logo.png'
 import { IoMdHelpCircle, IoMdChatboxes } from 'react-icons/io';
 import { BsFillBellFill, BsPersonFill } from 'react-icons/bs';
 import { Link } from 'react-router-dom'
-import 'bootstrap/dist/css/bootstrap.min.css'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import { IoMdPerson, IoMdSettings } from 'react-icons/io'
 import { ImProfile } from 'react-icons/im'
-import { MdFavorite, MdReviews, MdEmail, MdPhoto } from 'react-icons/md'
+
 import '../../CSS/EmployerNavbar.css'
+import {logout} from '../../reduxutils/actioncreators/useraction';
+
 class EmployerNavbar extends Component {
   constructor(props) {
     super(props)
@@ -26,6 +29,13 @@ class EmployerNavbar extends Component {
         collection[i].classList.remove('active')
       }
     }
+  }
+  logoutAction =  (e) => {
+    e.preventDefault();
+    this.props.logout(true);
+    // const {history} = this.props;
+    // history.push('/landingPage');
+    window.location.href='/landingPage';
   }
 
   render() {
@@ -169,7 +179,7 @@ class EmployerNavbar extends Component {
                         </Link>
                       </a>
                       <div class="dropdown-divider ditems"></div>
-                      <a class="dropdown-item">
+                      <a class="dropdown-item" onClick={this.logoutAction}>
                         <span className="signoutdrop">Sign Out</span>
                       </a>
                     </div>
@@ -184,4 +194,14 @@ class EmployerNavbar extends Component {
   }
 }
 
-export default EmployerNavbar
+function mapDispatchToProps(dispatch) {
+  return {
+      logout: val => dispatch(logout(val))
+  };
+}
+const mapStateToProps = (state) => ({
+  userInfo: state.userInfo,
+})
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(EmployerNavbar))
