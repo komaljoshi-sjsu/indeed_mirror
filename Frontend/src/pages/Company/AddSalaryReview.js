@@ -22,6 +22,9 @@ const AddSalaryReview = (props) => {
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
   const handleVisible = () => setVisible(true);
+  const token = useSelector((state) => state.userInfo.token);
+
+
   const handleCloseVisible = () => {
     // console.log("func called");
     setVisible(false);
@@ -42,6 +45,7 @@ const AddSalaryReview = (props) => {
   
   useEffect(() => {
     console.log("companyid",companyId);
+    axios.defaults.headers.common["authorization"] = token;
     axios.get(`${backendServer}/jobSeeker/getSalaryReview`,{
       params: {
         companyId : companyId

@@ -9,6 +9,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Pagination from "./../JobSeeker/Pagination";
 import CompanyStatistics from "./CompanyStatistics";
 import { useSelector } from "react-redux";
+import { withRouter } from 'react-router-dom'
 
 const AdminCompany = (props) => {
 
@@ -166,4 +167,4 @@ const AdminCompany = (props) => {
   );
 }
 
-export default AdminCompany;
+export default withRouter(AdminCompany);

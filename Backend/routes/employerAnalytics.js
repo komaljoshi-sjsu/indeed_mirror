@@ -2,9 +2,9 @@
 const express = require('express')
 const router = express.Router()
 const kafka = require('../kafka/client');
-//const { checkAuth } = require("../config/passport");
+const { checkAuth } = require("../config/passport");
 
-router.get('/jobPosted', (req, res) => {
+router.get('/jobPosted', checkAuth,(req, res) => {
     console.log("Employer Analytics Chart One.....")
    let chrt = {};
    chrt.route = "getEmpChartOne";
@@ -22,7 +22,7 @@ router.get('/jobPosted', (req, res) => {
    });
 });
 
-router.get('/applicantsDetail', (req, res) => {
+router.get('/applicantsDetail', checkAuth, (req, res) => {
     console.log("Employer Analytics Chart Two.....")
    let chrt = {};
    chrt.route = "getEmpChartTwo";

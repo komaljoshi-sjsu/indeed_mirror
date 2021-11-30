@@ -7,6 +7,8 @@ import backendServer from '../../webConfig';
 import '../../CSS/EmployerLanding.css'
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { withRouter } from 'react-router';
+
 // import {companyActionCreator} from '../../reduxutils/actions.js';
 // import { setId} from "../../actions/loginActions";
 class Employer extends Component {
@@ -502,7 +504,7 @@ const mapStateToProps = (state) => ({
   company: state.company
 })
 
-export default connect(mapStateToProps)(Employer);
+export default connect(mapStateToProps)(withRouter(Employer));
 
 
 // Employer.propTypes = {

@@ -2,8 +2,9 @@
 const express = require('express')
 const router = express.Router()
 const kafka = require('../kafka/client');
+const { checkAuth } = require('../config/passport')
 
-router.get('/jobSeeker/getSalaryReview', (req, res) => {
+router.get('/jobSeeker/getSalaryReview', checkAuth,(req, res) => {
     console.log("Get Salary Review.....")
     let chrt = {};
     chrt.route = "getSalaryReview";
@@ -20,7 +21,7 @@ router.get('/jobSeeker/getSalaryReview', (req, res) => {
     });
 });
 
-router.post('/jobSeeker/postSalaryReview', (req, res) => {
+router.post('/jobSeeker/postSalaryReview',checkAuth, (req, res) => {
     console.log("Add Salary Review.....")
     let chrt = {};
     chrt.route = "addSalaryReview";
