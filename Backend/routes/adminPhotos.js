@@ -1,9 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const kafka = require('../kafka/client');
-//const { checkAuth } = require("../config/passport");
+const { checkAuth } = require("../config/passport");
 
-router.get('/api/getAdminPhotos/', function (req, res) {
+router.get('/api/getAdminPhotos/', checkAuth, function (req, res) {
    let msg = {};
    msg.route = "getAdminPhotos";
    msg.query = req.query;
@@ -13,13 +13,13 @@ router.get('/api/getAdminPhotos/', function (req, res) {
            return res.status(err.status).send({...results, err:err});
        }
        else {
-           console.log(results)
+           console.log("results" + JSON.stringify(results))
            res.status(results.status).json({ photos: results.photos, count: results.count })           
        }
    });
 });
 
-router.post('/api/setPhotoStatus/', function (req, res) {
+router.post('/api/setPhotoStatus/', checkAuth, function (req, res) {
    let msg = {};
    msg.route = "setPhotoStatus";
    msg.body = req.body;

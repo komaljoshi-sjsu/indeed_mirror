@@ -5,7 +5,6 @@ import Button from 'react-bootstrap/Button';
 import { Redirect } from 'react-router';
 import axios from 'axios';
 import backendServer from '../../webConfig';
-import JobSeekerNavbar from '../JobSeeker/JobSeekerNavbar';
 import logo from '../../images/Indeed_logo.png';
 import { bindActionCreators } from 'redux';
 import ErrorMsg from '../Error/ErrorMsg';
@@ -48,7 +47,7 @@ function Signup(props) {
                     axios.post("/api/signupJobSeekerMongo", {
                         jobSeekerId: res.data.id,
                         resumeUrl: " ",
-                        jobPreference: [],
+                        jobPreference: {},
                         savedJobs: []
                     }).then((response1) => {
                         if (response1.data.code != '203') {

@@ -20,6 +20,7 @@ let getAdminPhotos = async (req, callback) => {
           .then((r1) => {
             response.photos = result;
             response.count = r1;
+            response.status = 200;
             callback(null, response);
           });
       })

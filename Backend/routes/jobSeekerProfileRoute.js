@@ -1,10 +1,9 @@
 "use strict";
 const express = require("express");
 const router = express.Router();
-const conn = require("./../config/mysql_connection");
-const { auth } = require("../config/passport");
+const { checkAuth } = require("../config/passport");
 const JobSeeker = require('../models/JobSeeker');
-auth();
+const kafka = require('../kafka/client')
 
 const aws = require("aws-sdk");
 const multerS3 = require("multer-s3");
@@ -19,92 +18,41 @@ const s3 = new aws.S3({
   Bucket: "273indeed",
 });
 
-router.post("/api/updateJobSeekerProfile", (req, res) => {
-    try {
-        const cid = req.body.id;
-        const data = req.body.data;
-        let queryKeys = '';
-        let queryVal = [];
-        let respData = {
-            msg: 'success',
-            code: '200'
+router.post("/api/updateJobSeekerProfile",checkAuth, (req, res) => {
+    let msg = {};
+    msg.route = "updateJobSeekerProfile";
+    msg.id = req.body.id;
+    msg.data = req.body.data;
+    kafka.make_request("jobseeker", msg, function (err, results) {
+        console.log("inside kafka");
+        if (err) {
+            console.log("inside error");
+            return res.send({...results,err:err});
         }
-        for(let key in data) {
-            if(queryKeys.length == 0) {
-                queryKeys = key+'=?';
-            } else {
-                queryKeys += ','+key+'=?';;
-            }
-
-            queryVal.push(data[key]);
+        else {
+            return res.send(results);
         }
-        if(queryKeys.length == 0) {
-            respData.code = '203';
-            respData.msg = 'No data came from the client';
-            return res.send(respData);
-        }
-        queryVal.push(cid);
-        const queryStr = 'UPDATE JobSeeker SET '+queryKeys+' WHERE id=?';
-        console.log(queryStr);
-        conn.query(queryStr,queryVal,(err,result)=> {
-            if(err) {
-                console.log(err);
-                respData.code = '203';
-                respData.msg = 'Failed to update profile for the job seeker.';
-                respData.err = err;
-                return res.send(respData);
-            } else {
-                return res.send(respData);
-            }
-        })
-        
-    }
-    catch (error) {
-        console.log("ERROR while updating job seeker",error);
-        respData.code = '203';
-        respData.msg = 'Failed to update profile for the job seeker.';
-        respData.err = err;
-        return res.send(respData);
-    }
+    });
 });
 
-router.post("/api/setJobPreferences", (req, res) => {
-    try {
-        const jid = req.body.id;
-        const data = req.body.data;
-        let respData = {
-            msg: 'success',
-            code: '200'
+router.post("/api/setJobPreferences",checkAuth, (req, res) => {
+    let msg = {};
+    msg.route = "setJobPreferences";
+    msg.id = req.body.id;
+    msg.data = req.body.data;
+    kafka.make_request("jobseeker", msg, function (err, results) {
+        console.log("inside kafka");
+        if (err) {
+            console.log("inside error");
+            return res.send({...results,err:err});
         }
-        const prefKeys = ['Job Title','Job Types','Work Schedules','Pay','Relocation','Remote'];
-        let updateKey = '';
-        for(let key in data) {
-            updateKey = key;
-            if(!prefKeys.includes(key)) {
-                respData.code = '400';
-                respData.msg = 'Invalid job preference "'+key+'" sent from client';
-                return res.send(respData);
-            }
+        else {
+            return res.send(results);
         }
-        let upJson = {};
-        upJson['jobPreference.'+updateKey] = data[updateKey];
-        JobSeeker.findOneAndUpdate({jobSeekerId:jid},{$set: upJson}).then(result=> {
-            return res.send(respData);
-        }).catch(err=> {
-            respData.err = err;
-            respData.code = '400';
-            respData.msg = 'Failed to update job preference. Please refer console for more details';
-            return res.send(respData);
-        })
-        
-    }
-    catch (error) {
-        console.log("ERROR!!!!!",error);
-        return res.status(400).send("Failed to update jobseeker preference");
-    }
+    });
 });
 
-router.post("/api/uploadResume/:id", (req, res) => {
+router.post("/api/uploadResume/:id",checkAuth, (req, res) => {
     console.log("key" + s3.accessKeyId);
     console.log("secretAccessKey" + s3.secretAccessKey);
     let respData = {
@@ -148,7 +96,7 @@ router.post("/api/uploadResume/:id", (req, res) => {
     });
 });
 
-router.get("/api/downloadResume/:key", async(req, res) => {
+router.get("/api/downloadResume/:key", checkAuth, async(req, res) => {
     try {
         // const { Body } = await s3.getObject({
         //     Key: key,
@@ -168,7 +116,7 @@ router.get("/api/downloadResume/:key", async(req, res) => {
     }
 })
 
-router.delete("/api/deleteResume/:key/:id", async(req, res) => {
+router.delete("/api/deleteResume/:key/:id", checkAuth, async(req, res) => {
     try {
         const key = req.params.key;
         const id = req.params.id;
@@ -201,7 +149,6 @@ const uploadResume = multer({
       acl: "public-read",
       key: function (req, file, cb) {
         file.originalname = 'resume_'+req.params.id;
-        console.log('id is:',req.body.id);
         cb(
           null,
           path.basename(file.originalname, path.extname(file.originalname))

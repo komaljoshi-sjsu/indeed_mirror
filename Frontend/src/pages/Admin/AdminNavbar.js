@@ -52,11 +52,6 @@ class AdminNavbar extends Component {
                 class="navbar-nav me-auto mb-2 mb-lg-0"
                 style={{ marginTop: '15px' }}
               >
-                {/* <li class="nav-item">
-                  <a class="nav-link" aria-current="page" href="#">
-                    <h5>Dashboard</h5>
-                  </a>
-                </li> */}
                 <li class="nav-item">
                   <a class="nav-link" href="/adminCompany">
                     <h5>Companies</h5>
