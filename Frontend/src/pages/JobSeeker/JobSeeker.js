@@ -15,6 +15,7 @@ import { useSelector } from 'react-redux'
 import JobSeekerNavbar from './JobSeekerNavbar'
 import JobSeekerLoggedInNavbar from './JobSeekerLoggedInNavbar'
 import Pagination from './../JobSeeker/Pagination'
+import { Link } from 'react-router-dom'
 
 // const useStyles = makeStyles((theme) => ({
 //   root: {
@@ -822,7 +823,7 @@ class JobSeekerLandingPage extends Component {
             <div class="col-4">
               <h5>
                 <span class="hoverUnderline" style={{ color: '#003399' }}>
-                  Post your resume
+               {this.state.isLoggedIn ? (<Link to="/resume"> Post your resume </Link>):("Post your resume")}
                 </span>
                 &nbsp;- It only takes a few seconds
               </h5>

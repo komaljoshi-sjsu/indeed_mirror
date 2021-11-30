@@ -41,6 +41,7 @@ function Resume(props) {
     const setPhone = bindActionCreators(userActionCreator.setPhone,dispatch);
     const setResumeUrl = bindActionCreators(userActionCreator.setResumeUrl,dispatch);
     //const[showContactDiv, setShowContactDiv] = useState(true);
+    
 
     useEffect(()=> {
         if(resumeUrl!=null && resumeUrl.length>0) {
