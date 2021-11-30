@@ -18,6 +18,7 @@ let setReviewStatus = async (req, callback) => {
         error.data = err;
         callback(error, null);
       }
+      response.status = 200;
       response.reviews = rows;
       callback(null, response);
     });

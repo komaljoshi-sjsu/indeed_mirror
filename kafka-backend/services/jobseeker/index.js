@@ -1,4 +1,6 @@
 'use strict'
+const {updateJobSeekerProfile} = require('./updateJobSeekerProfile')
+const {setJobPreferences} =  require('./setJobPreferences')
 const { getAllUsrReviews } = require('./getAllUsrReviews')
 const { appliedjobs } = require('./appliedjobs')
 const { companyReviews } = require('./companyReviews')
@@ -52,6 +54,12 @@ const { getJobSeekerPhotos } = require("./getJobSeekerPhotos");
 
 function handle_request(msg, callback) {
   switch (msg.route) {
+    case "setJobPreferences":
+        setJobPreferences(msg,callback);
+        break;
+    case "updateJobSeekerProfile":
+        updateJobSeekerProfile(msg,callback);
+        break;
     case "savedjobs":
         savedjobs(msg,callback);
         break;

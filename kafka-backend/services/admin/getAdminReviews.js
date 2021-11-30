@@ -29,6 +29,7 @@ let getAdminReviews = async (req, callback) => {
             error.message="Error occured while querying for admin reviews"
             callback(error, null);
           }
+          response.status = 200;
           response.reviews = rows;
           response.count = rows2[0].total;
           callback(null, response);

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import '../../CSS/Conversation.css'
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 export default function Conversation({conversation, currentUser, role}) {
 
     const [jobSeeker, setJobSeeker ] = useState();
+    const token = useSelector((state) => state.userInfo.token);
 
     useEffect(() => {
         console.log(role);
@@ -12,6 +14,7 @@ export default function Conversation({conversation, currentUser, role}) {
         console.log("receiverId" +receiverId);
         const getJobSeeker = async () => {
             try {
+                axios.defaults.headers.common['authorization'] = token;
                 const response = await axios.get("/api/getJobSeekerById/" +receiverId);               
                 setJobSeeker(response.data);
             } catch (err) {
@@ -20,6 +23,7 @@ export default function Conversation({conversation, currentUser, role}) {
         };
         const getEmployer = async () => {
             try {
+                axios.defaults.headers.common['authorization'] = token;
                 const response = await axios.get("/api/getEmployerById/" +receiverId);               
                 setJobSeeker(response.data);
             } catch (err) {
@@ -35,8 +39,8 @@ export default function Conversation({conversation, currentUser, role}) {
     }, [currentUser, conversation]);
 
     return(        
-        <div className="conversation">
-            {jobSeeker?.name && <span className="conversationName">{jobSeeker?.name}</span>}
-        </div>
+        <>{jobSeeker?.name && <div className="conversation a ">
+            <span className="conversationName">{jobSeeker?.name}</span>
+        </div>}</>
     );
 }

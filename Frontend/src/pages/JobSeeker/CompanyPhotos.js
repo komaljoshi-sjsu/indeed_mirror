@@ -16,6 +16,7 @@ const CompanyPhotos = (props) => {
   const [companyId, setCompanyId] = useState(compid);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPosts, setTotalPosts] = useState(0);
+  const token = useSelector((state) => state.userInfo.token);
 
   const options = {
     buttons: {
@@ -27,36 +28,12 @@ const CompanyPhotos = (props) => {
   };
 
   const getCompanyPhotos = async () => {
-    // if (jobSeekerId) {
-    //   const data1 = {
-    //     jobSeekerId: jobSeekerId,
-    //     companyId: companyId,
-    //     photoAdminReviewedStatus: 'PENDING_APPROVAL',
-    //     currentPage: currentPage,
-    //   }
-    //   const jobSeekerPhotos = await axios('api/getJobSeekerPhotos', {
-    //     params: { data: data1 },
-    //   })
-    //   setImages(jobSeekerPhotos.data.photos)
-    //   setJsPhotoCount(jobSeekerPhotos.data.count)
-    //   const data2 = {
-    //     companyId: companyId,
-    //     photoAdminReviewedStatus: 'APPROVED',
-    //     currentPage: currentPage,
-    //   }
-    //   const allPhotos = await axios('/api/getAllPhotos', {
-    //     params: { data: data2 },
-    //   })
-    //   //setImages([...images,allPhotos.data.photos])
-    //   // console.log(typeof(images))
-    //   // console.log(images)
-    //   //console.log(allPhotos.data.photos);
-    // } else {
     const data1 = {
       companyId: companyId,
       photoAdminReviewedStatus: "APPROVED",
       currentPage: currentPage,
     };
+    axios.defaults.headers.common["authorization"] = token;
     const allPhotos = await axios("/api/getAllPhotos", {
       params: { data: data1 },
     });

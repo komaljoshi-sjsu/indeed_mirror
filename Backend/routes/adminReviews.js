@@ -2,9 +2,9 @@
 const express = require("express");
 const router = express.Router();
 const kafka = require('../kafka/client');
-//const { checkAuth } = require("../config/passport");
+const { checkAuth } = require("../config/passport");
 
-router.get('/api/getAdminReviews', function (req, res) {
+router.get('/api/getAdminReviews', checkAuth, function (req, res) {
    let msg = {};
    msg.route = "getAdminReviews";
    msg.query = req.query;
@@ -19,7 +19,7 @@ router.get('/api/getAdminReviews', function (req, res) {
    });
 });
 
-router.post('/api/setReviewStatus', function (req, res) {
+router.post('/api/setReviewStatus', checkAuth, function (req, res) {
    let msg = {};
    msg.route = "setReviewStatus";
    msg.body = req.body;
