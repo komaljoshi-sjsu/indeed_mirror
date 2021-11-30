@@ -9,7 +9,7 @@ var mysql = require("mysql");
 const connection = require("../config/mysql_connection");
 const { response } = require("express");
 var kafka = require("../kafka/client");
-//const { checkAuth } = require("../config/passport");
+const { checkAuth } = require("../config/passport");
 dotenv.config();
 
 const s3 = new aws.S3({
@@ -84,7 +84,7 @@ function isEmpty(value) {
     : false;
 }
 
-router.post("/api/uploadCompanyPhotos", async (req, res) => {
+router.post("/api/uploadCompanyPhotos", checkAuth, async (req, res) => {
   let msg = {};
   msg.route = "uploadCompanyPhotos";
   msg.body = req.body;
