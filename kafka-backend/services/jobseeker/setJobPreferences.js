@@ -17,13 +17,21 @@ const setJobPreferences= (req, callback)=> {
                 respData.code = '400';
                 respData.msg = 'Invalid job preference "'+key+'" sent from client';
                 return callback(respData.msg,res.send(respData));
-            }
+            } 
+            // else {
+            //     let upArr = updateKey.split(' ');
+            //     if(upArr.length  ==  2) {
+            //         updateKey = upArr[0]+upArr[1];
+            //     }
+            // }
         }
         let upJson = {};
         upJson['jobPreference.'+updateKey] = data[updateKey];
+        console.log('updating:',upJson)
         JobSeeker.findOneAndUpdate({jobSeekerId:jid},{$set: upJson}).then(result=> {
             return callback(null,respData);
         }).catch(err=> {
+            console.log(err);
             respData.err = err;
             respData.code = '400';
             respData.msg = 'Failed to update job preference. Please refer console for more details';

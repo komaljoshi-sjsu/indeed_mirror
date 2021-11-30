@@ -27,6 +27,7 @@ function Login(props) {
     const setToken = bindActionCreators(userActionCreator.setToken,dispatch);
     const showErrorModal = bindActionCreators(userActionCreator.showErrorModal,dispatch);
     const setCompId = bindActionCreators(companyActionCreator.setCompId,dispatch);
+    const setCompName = bindActionCreators(companyActionCreator.setCompName,dispatch);
     //const setCompanyId = bindActionCreators(userActionCreator.setCompanyId,dispatch);
 
   let redirectToSignUp = (e) => {
@@ -81,6 +82,7 @@ function Login(props) {
                 }
                 else {
                     setCompId(user.companyId);
+                    //setCompName(user.compName);
                     redirectValFn(<Redirect to="/employer"/>);
                 }
             } else if(accountType=='Admin')  {

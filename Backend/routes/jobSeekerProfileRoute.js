@@ -1,8 +1,9 @@
 "use strict";
 const express = require("express");
 const router = express.Router();
-const conn = require("./../config/mysql_connection");
+const { checkAuth } = require("../config/passport");
 const JobSeeker = require('../models/JobSeeker');
+const kafka = require('../kafka/client')
 
 const aws = require("aws-sdk");
 const multerS3 = require("multer-s3");
@@ -17,7 +18,7 @@ const s3 = new aws.S3({
   Bucket: "273indeed",
 });
 
-router.post("/api/updateJobSeekerProfile", (req, res) => {
+router.post("/api/updateJobSeekerProfile",checkAuth, (req, res) => {
     let msg = {};
     msg.route = "updateJobSeekerProfile";
     msg.id = req.body.id;
@@ -34,7 +35,7 @@ router.post("/api/updateJobSeekerProfile", (req, res) => {
     });
 });
 
-router.post("/api/setJobPreferences", (req, res) => {
+router.post("/api/setJobPreferences",checkAuth, (req, res) => {
     let msg = {};
     msg.route = "setJobPreferences";
     msg.id = req.body.id;
@@ -51,7 +52,7 @@ router.post("/api/setJobPreferences", (req, res) => {
     });
 });
 
-router.post("/api/uploadResume/:id", (req, res) => {
+router.post("/api/uploadResume/:id",checkAuth, (req, res) => {
     console.log("key" + s3.accessKeyId);
     console.log("secretAccessKey" + s3.secretAccessKey);
     let respData = {
@@ -95,7 +96,7 @@ router.post("/api/uploadResume/:id", (req, res) => {
     });
 });
 
-router.get("/api/downloadResume/:key", async(req, res) => {
+router.get("/api/downloadResume/:key", checkAuth, async(req, res) => {
     try {
         // const { Body } = await s3.getObject({
         //     Key: key,
@@ -115,7 +116,7 @@ router.get("/api/downloadResume/:key", async(req, res) => {
     }
 })
 
-router.delete("/api/deleteResume/:key/:id", async(req, res) => {
+router.delete("/api/deleteResume/:key/:id", checkAuth, async(req, res) => {
     try {
         const key = req.params.key;
         const id = req.params.id;

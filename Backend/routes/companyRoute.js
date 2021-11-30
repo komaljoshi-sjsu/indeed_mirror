@@ -2,9 +2,9 @@
 const express = require("express");
 const router = express.Router();
 var kafka = require("../kafka/client");
-const conn = require("./../config/mysql_connection");
+const { checkAuth } = require("../config/passport");
 
-router.get("/api/snapshot/:companyId", (req, res) => {
+router.get("/api/snapshot/:companyId", checkAuth, (req, res) => {
     let msg = {};
     //msg.re = req.params.customerId;
     msg.route = "snapshot";
@@ -21,7 +21,7 @@ router.get("/api/snapshot/:companyId", (req, res) => {
     });
 });
 
-router.get("/api/featuredReviews/:companyId", (req, res) => {
+router.get("/api/featuredReviews/:companyId",  checkAuth, (req, res) => {
     let msg = {};
     //msg.re = req.params.customerId;
     msg.route = "featuredReviews";

@@ -47,7 +47,7 @@ function Signup(props) {
                     axios.post("/api/signupJobSeekerMongo", {
                         jobSeekerId: res.data.id,
                         resumeUrl: " ",
-                        jobPreference: [],
+                        jobPreference: {},
                         savedJobs: []
                     }).then((response1) => {
                         if (response1.data.code != '203') {
