@@ -10,6 +10,7 @@ const http = require('http');
 const url = require('url');
 const kafka = require('../kafka/client');
 const { checkAuth } = require("../config/passport");
+const redisClient = require("../config/redisClient");
 
 router.get("/companyReviewsPaginated", checkAuth, (req, res) => {
 
@@ -337,6 +338,8 @@ router.post("/saveReview", checkAuth, (req, res) => {
             res.end("Server error. Please try again later!");
         }
         else{
+            const key = "/api/snapshot/"+req.body.companyId;
+            redisClient.del(key);
             res.writeHead(200,{
                 'Content-Type' : 'application/json'
             });

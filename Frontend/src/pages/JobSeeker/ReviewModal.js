@@ -131,6 +131,7 @@ class ReviewModal extends Component {
 
         };
         console.log(inputData);
+        axios.defaults.headers.common['authorization'] = this.props.token;
         axios
         .post(`${backendServer}/saveReview`, inputData)
         .then((response) => {
