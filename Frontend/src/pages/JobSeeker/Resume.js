@@ -148,15 +148,16 @@ function Resume(props) {
                 setNoResume(false);
                 hideResumeUpdate();
             } else {
+                console.log('Error while uploading file',res.data);
                 showErrorModal(true);
-                setErrMsg(res.data.msg);
+                setErrMsg('Failed to upload file. Please refer browser console for more details');
                 setNoResume(true);
             }
         })
     }
     let handleResumeReplace= (e) => {
         e.preventDefault();
-        handleResumeDelete(e);
+        //handleResumeDelete(e);
         uploadResume();
        
     }
