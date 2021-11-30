@@ -13,7 +13,7 @@ let jobsFilterOnLocationAndTitle = async (req, callback) => {
     const postsPerPage = 5
     const currentPage = req.body.currentPage
     conn.query(
-      'select * from Job where (city = ? or state = ? or zip = ? or jobTitle = ?) and companyName = ? limit ?,?',
+      'select * from Job where (city = ? or state = ? or zip = ?) and jobTitle = ? and companyName = ? limit ?,?',
       [
         city,
         state,
@@ -25,7 +25,7 @@ let jobsFilterOnLocationAndTitle = async (req, callback) => {
       ],
       async function (err, results) {
         await conn.query(
-          'select count(*) as count from Job where (city = ? or state = ? or zip = ? or jobTitle = ?) and companyName = ?',
+          'select count(*) as count from Job where (city = ? or state = ? or zip = ? ) and jobTitle = ? and companyName = ?',
           [city, state, zip, jobTitle, companyName],
           (err2, count) => {
             if (count && count.length <= 0) {

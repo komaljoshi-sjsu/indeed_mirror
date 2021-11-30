@@ -106,14 +106,15 @@ class CompanyJobs extends Component {
         console.log('Job Titles: ')
         console.log(jobTitles)
 
-        let companyNames = response.data.map((job) => {
-          return job.companyName
-        })
+        // let companyNames = response.data.map((job) => {
+        //   return job.companyName
+        // })
 
-        console.log('Company Names: ')
-        console.log(companyNames)
+        // console.log('Company Names: ')
+        // console.log(companyNames)
 
-        let whatSearch = jobTitles.concat(companyNames)
+        let whatSearch = jobTitles
+        // .concat(companyNames)
 
         whatSearch = whatSearch.filter(
           (job, index, self) => index === self.findIndex((j) => j === job),
@@ -243,6 +244,7 @@ class CompanyJobs extends Component {
           ' and jobid ' +
           jobId,
       )
+      axios.defaults.headers.common['authorization'] = this.props.userInfo.token
       axios
         .post('http://localhost:5000/jobSeeker/checkAppliedStatus', data)
         .then((response) => {
@@ -468,6 +470,7 @@ class CompanyJobs extends Component {
       console.log(id)
       const data = { appliedDate, jobId, id, companyId }
       console.log(data)
+      axios.defaults.headers.common['authorization'] = this.props.userInfo.token
       axios
         .post('http://localhost:5000/jobs/applyJob', data)
         .then((response) => {

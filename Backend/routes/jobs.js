@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 const { json } = require('body-parser')
 const Company = mongoose.model('Company')
 const kafka = require('../kafka/client')
+const { checkAuth } = require('../config/passport')
 
 router.post('/jobs/companyJobs', (req, res) => {
   // const { companyName } = req.body
@@ -242,7 +243,7 @@ router.post('/jobs/filterOnLocationAndTitle', (req, res) => {
   })
 })
 
-router.post('/jobs/applyJob', (req, res) => {
+router.post('/jobs/applyJob', checkAuth, (req, res) => {
   // let { appliedDate, jobId, id, companyId } = req.body
   // console.log(req.body)
   // conn.query(
