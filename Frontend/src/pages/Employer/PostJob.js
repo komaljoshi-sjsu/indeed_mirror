@@ -7,6 +7,9 @@ import {
 import { CountryDropdown } from 'react-country-region-selector';
 import backendServer from '../../webConfig';
 import { connect } from "react-redux";
+import { withRouter } from 'react-router';
+
+
 class PostJob extends Component {
     constructor(props) {
       super(props);
@@ -414,4 +417,4 @@ class PostJob extends Component {
     company: state.company
   })
   
-  export default connect(mapStateToProps)(PostJob);
+  export default connect(mapStateToProps)(withRouter(PostJob));

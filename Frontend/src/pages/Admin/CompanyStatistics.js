@@ -4,6 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { Bar} from "react-chartjs-2";
 import { useSelector } from "react-redux";
+import { withRouter } from 'react-router-dom'
 
 const CompanyStatistics = (props) => {
   const [show, setShow] = useState(false);
@@ -94,4 +95,4 @@ const CompanyStatistics = (props) => {
   );
 };
 
-export default CompanyStatistics;
+export default withRouter(CompanyStatistics);
