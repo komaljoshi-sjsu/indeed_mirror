@@ -29,6 +29,7 @@ class Reviews extends Component {
         let { reviewDetails } = this.state;
         const currentPage = 1;
         reviewDetails = [];
+        axios.defaults.headers.common['authorization'] = this.props.userInfo.token;
         axios.get(`${backendServer}/allCompanyReviews`, {
           params: {
             companyId,
@@ -59,6 +60,7 @@ class Reviews extends Component {
         const companyId = this.props.company.compid;
         let { reviewDetails } = this.state;
         reviewDetails = [];
+        axios.defaults.headers.common['authorization'] = this.props.userInfo.token;
         axios.get(`${backendServer}/allCompanyReviewsPaginated`, {
           params: {
             companyId,
@@ -83,6 +85,7 @@ class Reviews extends Component {
         reviews[index].isFeatured = 1;
         this.setState({reviewDetails : reviews});
         console.log(inputData);
+        axios.defaults.headers.common['authorization'] = this.props.userInfo.token;
         axios
           .post(`${backendServer}/updateFeaturedReview`, inputData)
           .then((response) => {
