@@ -10,22 +10,22 @@ router.get("/api/snapshot/:companyId", checkAuth, (req, res) => {
     //msg.re = req.params.customerId;
     msg.route = "snapshot";
     msg.companyId = req.params.companyId;
-    const key = "/api/snapshot/"+req.params.companyId;
-    console.log("Key for redis: "+key);
+    const key = "/api/snapshot/" + req.params.companyId;
+    console.log("Key for redis: " + key);
     redisClient.get(key, async (err, data) => {
         // If value for key is available in Redis
         if (data) {
             // send data as output
             console.log("from redis");
             return res.send(data);
-        } 
+        }
         // If value for given key is not available in Redis
         else {
             kafka.make_request("company", msg, function (err, results) {
                 console.log("inside kafka");
                 if (err) {
                     console.log("inside error");
-                    return res.send({...results,err:err});
+                    return res.send({ ...results, err: err });
                 }
                 else {
                     redisClient.setex(key, 36000, JSON.stringify(results));
@@ -36,7 +36,7 @@ router.get("/api/snapshot/:companyId", checkAuth, (req, res) => {
     });
 });
 
-router.get("/api/featuredReviews/:companyId",  checkAuth, (req, res) => {
+router.get("/api/featuredReviews/:companyId", checkAuth, (req, res) => {
     let msg = {};
     //msg.re = req.params.customerId;
     msg.route = "featuredReviews";
@@ -45,7 +45,7 @@ router.get("/api/featuredReviews/:companyId",  checkAuth, (req, res) => {
         console.log("inside kafka");
         if (err) {
             console.log("inside error");
-            return res.send({...results,err:err});
+            return res.send({ ...results, err: err });
         }
         else {
             return res.send(results);

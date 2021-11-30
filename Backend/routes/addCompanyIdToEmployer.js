@@ -1,9 +1,9 @@
 // add company id to employer profile
-
 const express = require("express");
 const router = express.Router();
 const kafka = require('../kafka/client');
 const { checkAuth } = require("../config/passport");
+
 router.post('/addCompanyIdToEmployer',checkAuth,function (req, res) {
    console.log("addCompanyIdToEmployer.....")
     let msg = {};

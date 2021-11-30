@@ -1,7 +1,6 @@
 "use strict";
 const express = require("express");
 const router = express.Router();
-const conn = require("./../config/mysql_connection");
 const { auth } = require("../config/passport");
 const kafka = require('../kafka/client');
 auth();

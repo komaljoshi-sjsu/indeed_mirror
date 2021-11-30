@@ -1,9 +1,9 @@
 //add company profile
-
 const express = require("express");
 const router = express.Router();
 const kafka = require('../kafka/client');
 const { checkAuth } = require("../config/passport");
+
 router.post('/addCompanyDetails', checkAuth,function (req, res) {
    console.log("addCompanyDetails.....")
     let msg = {};

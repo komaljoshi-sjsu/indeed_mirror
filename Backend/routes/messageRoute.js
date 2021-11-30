@@ -1,9 +1,9 @@
-//const { checkAuth } = require("../config/passport");
 const express = require("express");
 const router = express.Router();
 var kafka = require("../kafka/client")
+const { checkAuth } = require("../config/passport");
 
-router.post("/api/addNewMessage", async (req, res) => {
+router.post("/api/addNewMessage", checkAuth, async (req, res) => {
   let msg = {};
   msg.route = "addNewMessage";
   msg.body = req.body;
@@ -18,7 +18,7 @@ router.post("/api/addNewMessage", async (req, res) => {
   });
 });
 
-router.get("/api/getMessages/:conversationId", async (req, res) => {
+router.get("/api/getMessages/:conversationId", checkAuth, async (req, res) => {
   let msg = {};
   msg.route = "getMessagesByConversationId";
   msg.conversationId = req.params.conversationId;
@@ -34,7 +34,7 @@ router.get("/api/getMessages/:conversationId", async (req, res) => {
 });
 
 
-router.get("/api/getAllJobSeekers", async (req, res) => {
+router.get("/api/getAllJobSeekers", checkAuth, async (req, res) => {
   let msg = {};
   msg.route = "getAllJobSeekers";
   console.log("inside getAllJobSeekers");
