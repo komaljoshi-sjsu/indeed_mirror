@@ -700,6 +700,7 @@ class Reviews extends Component {
                     <ReviewModal
                       companyId={this.props.company.compid}
                       jobSeekerId={this.props.userInfo.id}
+                      token={this.props.userInfo.token}
                       closeModal={this.closeModal}
                       addReview={this.addReview}
                     />
