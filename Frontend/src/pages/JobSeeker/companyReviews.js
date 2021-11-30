@@ -11,6 +11,8 @@ import { AiFillStar } from 'react-icons/ai';
 import JobSeekerLoggedInNavbar from './JobSeekerLoggedInNavbar';
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
+import JobSeekerNavbar from './JobSeekerNavbar'
+
 
 class Reviews extends Component {
     constructor(props) {
@@ -22,10 +24,23 @@ class Reviews extends Component {
         location: '',
         searchFlag: false,
         reviewSearchDetails: [],
+        isLoggedIn: false,
       };
     }
     
+    checkLoggedInStatus() {
+      const userInfo = this.props.userInfo
+      console.log(userInfo)
+      if (userInfo.email !== '' && userInfo.accountType === 'JobSeeker') {
+        console.log('JobSeeker is signed in')
+        this.setState({
+          isLoggedIn: true,
+        })
+      }
+    }
+
     componentDidMount() {
+      this.checkLoggedInStatus();
         let { reviewDetails } = this.state;
         axios.get(`${backendServer}/allReviews`)
           .then((response) => {
@@ -148,7 +163,12 @@ class Reviews extends Component {
         ));
       return (
         <div>
+          {/* <JobSeekerLoggedInNavbar /> */}
+          {this.state.isLoggedIn ? (
           <JobSeekerLoggedInNavbar />
+        ) : (
+          <JobSeekerNavbar />
+        )}
             <br></br>
             <Container style={{ width: '70rem', display:'flex', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start' }}>
             

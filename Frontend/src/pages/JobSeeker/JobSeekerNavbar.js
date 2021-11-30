@@ -97,9 +97,12 @@ class JobSeekerNavbar extends Component {
                   style={{ marginTop: '15px' }}
                 >
                   <li class="nav-item">
-                    <a class="nav-link">
+                    <a class="nav-link"  >
                       <Link
-                        to="/resume"
+                        to="/login"
+                        onClick={()=>{
+                          alert('Please login as Jobseeker to upload a resume.');
+                        }}
                         style={{
                           textDecoration: 'none',
                           color: '#474747',
@@ -120,7 +123,11 @@ class JobSeekerNavbar extends Component {
                   <li class="nav-item">
                     <a class="nav-link">
                       <Link
-                        to="/postJob"
+                        // to="/postJob"
+                        onClick={()=>{
+                          alert('Please login as Employer to post a Job.');
+                        }}
+                        to="/login"
                         style={{
                           textDecoration: 'none',
                           color: '#474747',

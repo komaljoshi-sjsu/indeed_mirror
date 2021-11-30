@@ -270,16 +270,22 @@ class JobSeekerLoggedInNavbar extends Component {
                     <h3 style={{ color: 'black' }}>|</h3>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link">
-                      <Link
+                    <a class="nav-link"
+                    onClick={()=>{
+                          alert('Please login as Employer to post a Job.');
+                        }}>
+                      {/* <Link
                         to="/postJob"
                         style={{
                           textDecoration: 'none',
                           color: '#474747',
                         }}
-                      >
-                        <h5>Employers/Post Job</h5>
-                      </Link>
+                      > */}
+                        <h5 style={{
+                          textDecoration: 'none',
+                          color: '#474747',
+                        }}>Employers/Post Job</h5>
+                      {/* </Link> */}
                     </a>
                   </li>
                 </ul>
