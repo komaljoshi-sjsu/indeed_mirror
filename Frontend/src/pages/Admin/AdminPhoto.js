@@ -20,8 +20,9 @@ const AdminPhoto = (props) => {
       photoAdminReviewedStatus: "PENDING_APPROVAL",
       currentPage: currentPage,
     };
+    console.log(token);
     axios.defaults.headers.common['authorization'] = token;
-    const pendingPhotos = await axios(`${backendServer}/api/getAdminPhotos/`, {
+    const pendingPhotos = await axios(backendServer+'/api/getAdminPhotos/', {
       params: { data: data1 },
     });
     console.log(pendingPhotos.data.photos);
@@ -42,7 +43,7 @@ const AdminPhoto = (props) => {
     console.log(img);
     axios.defaults.headers.common['authorization'] = token;
     axios
-      .post("/api/setPhotoStatus", img)
+      .post(backendServer+'/api/setPhotoStatus', img)
       .then((response) => {
         if (response.status === 200) {
           getAdminPhotos();

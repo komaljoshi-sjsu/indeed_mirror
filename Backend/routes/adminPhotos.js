@@ -1,9 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const kafka = require('../kafka/client');
-const { checkAuth } = require("../config/passport");
+//const { checkAuth } = require("../config/passport");
 
-router.get('/api/getAdminPhotos/', checkAuth, function (req, res) {
+router.get('/api/getAdminPhotos/', function (req, res) {
+    console.log("inside backend admin photos")
    let msg = {};
    msg.route = "getAdminPhotos";
    msg.query = req.query;
@@ -19,7 +20,7 @@ router.get('/api/getAdminPhotos/', checkAuth, function (req, res) {
    });
 });
 
-router.post('/api/setPhotoStatus/', checkAuth, function (req, res) {
+router.post('/api/setPhotoStatus/', function (req, res) {
    let msg = {};
    msg.route = "setPhotoStatus";
    msg.body = req.body;
