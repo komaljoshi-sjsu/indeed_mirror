@@ -5,7 +5,7 @@ var kafka = require("../kafka/client");
 const { checkAuth } = require("../config/passport");
 const redisClient = require("../config/redisClient");
 
-router.get("/api/snapshot/:companyId", checkAuth, (req, res) => {
+router.get("/api/snapshot/:companyId", (req, res) => {
     let msg = {};
     //msg.re = req.params.customerId;
     msg.route = "snapshot";
@@ -36,7 +36,7 @@ router.get("/api/snapshot/:companyId", checkAuth, (req, res) => {
     });
 });
 
-router.get("/api/featuredReviews/:companyId", checkAuth, (req, res) => {
+router.get("/api/featuredReviews/:companyId", (req, res) => {
     let msg = {};
     //msg.re = req.params.customerId;
     msg.route = "featuredReviews";

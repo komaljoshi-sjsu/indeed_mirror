@@ -98,6 +98,14 @@ const login  = (req, callback) => {
                                     callback(null, "JWT " + token);
                                 }
                             })
+                        }else{
+                            results = results[0];
+                            const payload = { id: results.id, accountType: results.accountType, user: results };
+                            const token = jwt.sign(payload, secret, {
+                                expiresIn: 1008000,
+                            });
+                            console.log("JWT " + token);
+                            callback(null, "JWT " + token);
                         }
                         
                     } else {

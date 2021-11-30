@@ -29,7 +29,6 @@ const Messenger = (props) => {
   useEffect(() => {
     const getConversations = async () => {
       try {
-        
         axios.defaults.headers.common['authorization'] = token;
         const res = await axios.get("/api/getAllJobSeekers");
         const convResponse = await axios.get(

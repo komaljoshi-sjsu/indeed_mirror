@@ -50,8 +50,8 @@ class Main extends Component {
         <Route path="/login" component={Login} />
         <Route path="/home" component={Home} />
         <Route path="/header" component={Header} />
-        {/* <Route path="/snapshot" component={Snapshot} /> */}
-        {/* <Route path="/whyJoinUs" component={JoinUs} /> */}
+        <Route path="/snapshot" component={Snapshot} /> 
+        <Route path="/whyJoinUs" component={JoinUs} />
         <Route path="/signup" component={Signup} />
         <Route path="/postJob" component={PostJob} />
         <Route path="/employer" component={Employer} />
@@ -65,7 +65,7 @@ class Main extends Component {
         <Route path="/photos" component={UploadPhotos} />
         {/* <Route path="/companyPhotos" component={CompanyPhotos} /> */}
         {/* <Route path="/adminPhotos" component={AdminPhoto} /> */}
-        {/* <Route path="/jobs" component={CompanyJobs} /> */}
+        <Route path="/jobs" component={CompanyJobs} />
         {/* <Route path="/reviews" component={Reviews} /> */}
         {/* <Route path="/featuredReviews" component={FeaturedReview} /> */}
         {/* <Route path="/adminReviews" component={AdminReview} /> */}
@@ -99,12 +99,12 @@ class Main extends Component {
         <EmployerRoute path="/employerAnalytics" component={EmployerAnalytics} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
      
         <CompanyRoute path="/company" component={CompanyTabs} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
-        <CompanyRoute path="/snapshot" component={Snapshot} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
-        <CompanyRoute path="/whyJoinUs" component={JoinUs} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
+        {/* <CompanyRoute path="/snapshot" component={Snapshot} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
+        <CompanyRoute path="/whyJoinUs" component={JoinUs} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/> */}
         <CompanyRoute path="/reviews" component={Reviews} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
         <CompanyRoute path="/addSalaryReview" component={AddSalaryReview} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
         <CompanyRoute path="/companyPhotos" component={CompanyPhotos} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
-        <CompanyRoute path="/jobs" component={CompanyJobs} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
+        {/* <CompanyRoute path="/jobs" component={CompanyJobs} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/> */}
 
         <CompanyRoute path="/preferences" component={Preferences} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
         <CompanyRoute path="/profileReviews" component={ReviewProfile} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>

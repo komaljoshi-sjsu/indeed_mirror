@@ -44,7 +44,7 @@ function Snapshot(props) {
     const setFeaturedReviews = bindActionCreators(companyActionCreator.setFeaturedReviews,dispatch);
     const setIndustry = bindActionCreators(companyActionCreator.setIndustry,dispatch);
     useEffect(()=> {
-        axios.defaults.headers.common['authorization'] = token;
+       // axios.defaults.headers.common['authorization'] = token;
         axios.get(backendServer+'/api/snapshot/'+companyid)
         .then(res => {
             console.log('snapshot',res);
@@ -72,7 +72,7 @@ function Snapshot(props) {
             console.log(err);
         });
 
-        axios.defaults.headers.common['authorization'] = token;
+        //axios.defaults.headers.common['authorization'] = token;
         axios.get(backendServer+'/api/featuredReviews/'+companyid)
         .then(res => {
             console.log('Featured reviews',res);
