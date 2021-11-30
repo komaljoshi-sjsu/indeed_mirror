@@ -62,10 +62,10 @@ class PostJob extends Component {
       }
       findFormErrors = () => {
         var pattern = new RegExp(/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?0-9]/);
-        const { companyName, jobTitle, industry, city, shortJobDescription, salaryDetails,
+        const {  jobTitle, industry, city, shortJobDescription, salaryDetails,
             streetAddress, state, zipcode,country, jobMode, jobType, errors } = this.state;
             console.log(zipcode.length)
-        if (!companyName || companyName === '') errors.companyName = 'Company Name cannot be blank!';
+        
         if (!jobTitle || jobTitle === '') errors.jobTitle = 'Job Title cannot be blank!';
         if (!industry || industry === '') errors.industry = 'Please select a industry!';
         if (!city || city === '') errors.city = 'City cannot be blank!';
@@ -93,7 +93,8 @@ class PostJob extends Component {
             // To-DO : Get logged in company id
             const companyId = this.props.company.compid;
             const employeeId = this.props.userInfo.id;
-            const { companyName, jobTitle, industry, city, shortJobDescription, salaryDetails,
+            const companyName = this.props.company.compName;
+            const {  jobTitle, industry, city, shortJobDescription, salaryDetails,
                 streetAddress, state, zipcode,country, jobMode, jobType,responsibilities,
                 qualifications, loveJobRole} = this.state;
             const inputData = {
@@ -128,7 +129,7 @@ class PostJob extends Component {
                 
                 this.setState({
                   successMsg: response.data,
-                  companyName: '',
+                  
                   jobTitle: '',
                   industry: '',
                   salaryDetails: '',
@@ -154,7 +155,7 @@ class PostJob extends Component {
     }
   
     render() {
-        const { companyName, jobTitle, industry, city, shortJobDescription, salaryDetails,
+        const {  jobTitle, industry, city, shortJobDescription, salaryDetails,
             streetAddress, state, zipcode,country, errors,successMsg, errorMsg,
             qualifications, responsibilities, loveJobRole } = this.state;
             // console.log(successMsg)
@@ -183,9 +184,9 @@ class PostJob extends Component {
               <Col>
                 <Form.Group className="mb-3">
                   <Form.Control name="companyName" type="text" placeholder="Enter your Company Name"
-                  className="mr-sm-2" onChange={this.handleChange} value={companyName} isInvalid={!!errors.companyName} />
+                  className="mr-sm-2" disabled value={this.props.company.compName} isInvalid={!!errors.companyName} />
                   <Form.Control.Feedback type="invalid">
-                    { errors.companyName }
+                   
                   </Form.Control.Feedback>
                 </Form.Group>
               </Col>

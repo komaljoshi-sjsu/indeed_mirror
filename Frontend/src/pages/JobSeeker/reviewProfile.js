@@ -78,6 +78,7 @@ class ReviewProfile extends Component {
         const jobSeekerId = this.props.userInfo.id;
           let { reviewDetails } = this.state;
           reviewDetails = [];
+          axios.defaults.headers.common['authorization'] = this.props.userInfo.token;
           axios.get(`${backendServer}/reviewsByProfilePaginated`, {
             params: {
               jobSeekerId,

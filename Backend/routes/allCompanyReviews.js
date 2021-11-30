@@ -9,8 +9,9 @@ const mysql = require('mysql');
 const http = require('http');
 const url = require('url');
 const kafka = require('../kafka/client');
+const { checkAuth } = require("../config/passport");
 
-router.get("/allReviews", (req, res) => {
+router.get("/allReviews", checkAuth, (req, res) => {
 
     let msg = {};
     msg.route = "allReviews";
@@ -40,7 +41,7 @@ router.get("/allReviews", (req, res) => {
     });	
 });
 
-router.post("/searchReview", (req, res) => {
+router.post("/searchReview", checkAuth, (req, res) => {
 
     let msg = {};
     msg.route = "searchReview";

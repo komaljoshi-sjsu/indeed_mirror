@@ -16,7 +16,8 @@ const UploadPhotos = (props) => {
   const [companyName, setCompanyName] = useState(compName);
   const [inputFields, setInputFields] = useState([{ photo: "" }]);
   const [fieldCount, setFieldCount] = useState(1);
-  
+  const token = useSelector((state) => state.userInfo.token);
+
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
 
@@ -56,6 +57,7 @@ const UploadPhotos = (props) => {
               imageLocation: response.data.imageLocation,
               photoAdminReviewedStatus: "PENDING_APPROVAL",
             };
+            axios.defaults.headers.common["authorization"] = token;
             axios.post("/api/uploadCompanyPhotos", data1)
               .then((response1) => {
                 if (response1.status === 200) {

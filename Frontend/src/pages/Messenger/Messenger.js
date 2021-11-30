@@ -17,16 +17,20 @@ const Messenger = (props) => {
   const accountType = useSelector((state) => state.userInfo.accountType);
   const [userId, setUserId] = useState(id); // add id from store
   const [newMessage, setNewMessage] = useState("");
+  const [flag, setFlag] = useState("");
   const [jobSeekers, setJobSeekers] = useState([]);
   const [newConversation, setNewConversation] = useState();
   const [role, setRole] = useState(accountType); // add role from store
   const [isEmployer, setIsEmployer] = useState("Employer" === role ? true : false); // add boolean flag
   const scrollRef = useRef();
+  const token = useSelector((state) => state.userInfo.token);
 
   //past conv
   useEffect(() => {
     const getConversations = async () => {
       try {
+        
+        axios.defaults.headers.common['authorization'] = token;
         const res = await axios.get("/api/getAllJobSeekers");
         const convResponse = await axios.get(
           "/api/getConversationById/" + userId
@@ -38,6 +42,7 @@ const Messenger = (props) => {
         });
 
         const myArray = res.data.filter((el) => !removeArr.includes(el.value));
+        console.log(convResponse.data)
         setConversations(convResponse.data);
         setJobSeekers(myArray);
       } catch (err) {
@@ -45,12 +50,14 @@ const Messenger = (props) => {
       }
     };
     getConversations();
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [flag]);
 
   //get all messages of selected chat
   useEffect(() => {
     const getMessages = async () => {
       try {
+        axios.defaults.headers.common['authorization'] = token;
         const res = await axios.get("/api/getMessages/" + currentChat._id);
         setMessages(res.data);
       } catch (err) {
@@ -71,6 +78,7 @@ const Messenger = (props) => {
           sender: userId,
           messageText: newMessage,
         };
+        axios.defaults.headers.common['authorization'] = token;
         const res = await axios.post("/api/addNewMessage", message);
         setMessages([...messages, res.data]);
         setNewMessage("");
@@ -83,15 +91,19 @@ const Messenger = (props) => {
           senderId: userId,
           receiverId: newConversation.value,
         };
+        axios.defaults.headers.common['authorization'] = token;
         const res = await axios.post("/api/saveConversation", conversation);
         const message = {
           conversationId: res.data._id,
           sender: userId,
           messageText: newMessage,
         };
+        axios.defaults.headers.common['authorization'] = token;
         const response = await axios.post("/api/addNewMessage", message);
         setMessages([...messages, response.data]);
         setNewMessage("");
+        setNewConversation("")
+        setFlag("a")
       } catch (err) {
         console.log(err);
       }
@@ -120,6 +132,7 @@ const Messenger = (props) => {
                 isClearable={true}
                 placeholder="Search for jobseekers"
                 onChange={setNewConversation}
+                value=""
               />
             )}
             {conversations.map((c) => (

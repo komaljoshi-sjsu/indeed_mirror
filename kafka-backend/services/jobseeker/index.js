@@ -1,5 +1,8 @@
 'use strict'
 const { getAllUsrReviews } = require('./getAllUsrReviews')
+const { updateJobSeekerProfile } = require('./updateJobSeekerProfile')
+const { setJobPreferences } = require('./setJobPreferences')
+const { appliedjobs } = require('./appliedjobs')
 const { companyReviews } = require('./companyReviews')
 const { companyReviewsPaginated } = require('./companyReviewsPaginated')
 const { companyReviewsRatingSort } = require('./companyReviewsRatingSort')
@@ -29,6 +32,7 @@ const { jsSaveJob } = require('./jsSaveJob')
 const { jsUpdateNoOfViews } = require('./jsUpdateNoOfViews')
 const { jsCheckAppliedStatus } = require('./jsCheckAppliedStatus')
 const { jsCheckSavedStatus } = require('./jsCheckSavedStatus')
+const { savedjobs } = require('./savedjobs')
 const {
   saveConversation,
   getConversationById,
@@ -58,6 +62,18 @@ const { getJobSeekerPhotos } = require('./getJobSeekerPhotos')
 
 function handle_request(msg, callback) {
   switch (msg.route) {
+    case 'setJobPreferences':
+      setJobPreferences(msg, callback)
+      break
+    case 'updateJobSeekerProfile':
+      updateJobSeekerProfile(msg, callback)
+      break
+    case 'savedjobs':
+      savedjobs(msg, callback)
+      break
+    case 'appliedjobs':
+      appliedjobs(msg, callback)
+      break
     case 'getAllUsrReviews':
       getAllUsrReviews(msg, callback)
       break

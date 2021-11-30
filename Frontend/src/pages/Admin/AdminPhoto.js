@@ -5,18 +5,23 @@ import { Card, Button } from "react-bootstrap";
 import Pagination from "./../JobSeeker/Pagination";
 import { toast } from "react-toastify";
 import AdminNavbar from "./AdminNavbar";
+import { useSelector } from "react-redux";
+import backendServer from "../../webConfig";
+import { withRouter } from "react-router-dom";
 
 const AdminPhoto = (props) => {
   const [images, setImages] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPosts, setTotalPosts] = useState(0);
-
+  const token = useSelector((state) => state.userInfo.token);
+  
   const getAdminPhotos = async () => {
     const data1 = {
       photoAdminReviewedStatus: "PENDING_APPROVAL",
       currentPage: currentPage,
     };
-    const pendingPhotos = await axios("/api/getAdminPhotos/", {
+    axios.defaults.headers.common['authorization'] = token;
+    const pendingPhotos = await axios(`${backendServer}/api/getAdminPhotos/`, {
       params: { data: data1 },
     });
     console.log(pendingPhotos.data.photos);
@@ -35,6 +40,7 @@ const AdminPhoto = (props) => {
     const img = images[index];
     img.photoAdminReviewedStatus = e.target.value;
     console.log(img);
+    axios.defaults.headers.common['authorization'] = token;
     axios
       .post("/api/setPhotoStatus", img)
       .then((response) => {
@@ -105,4 +111,4 @@ const AdminPhoto = (props) => {
   );
 };
 
-export default AdminPhoto;
+export default withRouter(AdminPhoto);

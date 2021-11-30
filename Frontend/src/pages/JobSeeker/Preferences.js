@@ -11,9 +11,11 @@ import axios from 'axios';
 import backendServer from '../../webConfig.js';
 import {bindActionCreators} from 'redux';
 import {prefActionCreator} from '../../reduxutils/actions';
+import JobSeekerLoggedInNavbar from './JobSeekerLoggedInNavbar';
 
 function Preferences(props) {
     const dispatch = useDispatch();
+    const token = useSelector((state) => state.userInfo.token);
     const id = useSelector((state)=>state.userInfo.id);
     const title = useSelector((state)=>state.jobPref.title);
     const type = useSelector((state)=>state.jobPref.type);
@@ -85,6 +87,7 @@ function Preferences(props) {
                 break;
         }
         console.log('Sending data ', data);
+        axios.defaults.headers.common['authorization'] = token;
         axios.post(backendServer+'/api/setJobPreferences',{
             id: id,
             data: data
@@ -250,7 +253,7 @@ function Preferences(props) {
     return (
         <div>
             {redirectTo}
-            <JobSeekerNavbar></JobSeekerNavbar>
+            <JobSeekerLoggedInNavbar/>
             <Modal show={modal} onHide={()=> showModal(false)}>
                 <Modal.Header>
                     <Modal.Title>{heading}</Modal.Title>

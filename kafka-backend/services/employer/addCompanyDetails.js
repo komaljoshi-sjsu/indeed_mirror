@@ -10,7 +10,7 @@ let addCompanyDetails = async (req, callback) => {
 
         conn.query(addCompany_sql, compDetails, (error, result) => {
 				if (error) {
-					callback(null,error)
+					callback(error,null)
 				} else {
 					
 					console.log("Company Added ")
@@ -22,7 +22,7 @@ let addCompanyDetails = async (req, callback) => {
                     let query1 = conn.query(sql_companyid, (error, result_id) => {
                     
                         if (error) {
-                            callback(null,error)
+                            callback(error,null)
                             }
                         if(result_id){
                             callback(null,JSON.stringify(result_id))
@@ -35,7 +35,7 @@ let addCompanyDetails = async (req, callback) => {
 
                     let query = conn.query(sql1, (error, result) => {
                         if (error) {
-                            callback(null,error)
+                            callback(error,null)
                         } else {
                            // callback(null,"Company ID updated!");
                             

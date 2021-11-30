@@ -5,6 +5,9 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import logo from '../../images/Indeed_logo.png'
 import '../../CSS/JobSeekerNavbar.css'
 
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
+import {logout} from '../../reduxutils/actioncreators/useraction';
 class AdminNavbar extends Component {
   constructor(props) {
     super(props)
@@ -22,7 +25,13 @@ class AdminNavbar extends Component {
         }
     }
   }
-
+  logoutAction =  (e) => {
+    e.preventDefault();
+    this.props.logout(true);
+    // const {history} = this.props;
+    // history.push('/landingPage');
+    window.location.href='/landingPage';
+  }
   render() {
     return (
       <div>
@@ -43,11 +52,6 @@ class AdminNavbar extends Component {
                 class="navbar-nav me-auto mb-2 mb-lg-0"
                 style={{ marginTop: '15px' }}
               >
-                {/* <li class="nav-item">
-                  <a class="nav-link" aria-current="page" href="#">
-                    <h5>Dashboard</h5>
-                  </a>
-                </li> */}
                 <li class="nav-item">
                   <a class="nav-link" href="/adminCompany">
                     <h5>Companies</h5>
@@ -69,6 +73,23 @@ class AdminNavbar extends Component {
                   </a>
                 </li>
               </ul>
+              <form class="d-flex">
+                <ul
+                  class="navbar-nav me-auto mb-2 mb-lg-0"
+                  style={{ marginTop: '15px' }}
+                >
+                  
+                  <li class="nav-item">
+                    <a class="nav-link" onClick={this.logoutAction}>
+                  
+                      <h5 style={{ color: 'blue' }}>Sign Out</h5>
+                     
+                    </a>
+                  </li>
+                 
+                 
+                </ul>
+              </form>
             </div>
           </div>
         </nav>
@@ -77,4 +98,17 @@ class AdminNavbar extends Component {
   }
 }
 
-export default AdminNavbar;
+function mapDispatchToProps(dispatch) {
+  return {
+      logout: val => dispatch(logout(val))
+  };
+}
+const mapStateToProps = (state) => ({
+  userInfo: state.userInfo,
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(AdminNavbar))
+
+
+
+

@@ -9,7 +9,7 @@ let getEmployerProfile = async (req, callback) => {
         let query = conn.query(sql1, (error, result) => {
     
         if (error) {
-            callback(null,error)
+            callback(error,null)
             }
        else{
             callback(null,JSON.stringify(result));

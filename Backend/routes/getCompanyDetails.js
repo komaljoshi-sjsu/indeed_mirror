@@ -19,7 +19,7 @@ router.get('/getCompanyDetails',checkAuth, function (req, res) {
     });
 });
 
-router.get('/getCompanyDetailsPaginated', function (req, res) {
+router.get('/getCompanyDetailsPaginated', checkAuth, function (req, res) {
      let msg = {};
      msg.route = "getCompanyDetailsPaginated";
      msg.query = req.query;
@@ -37,7 +37,7 @@ router.get('/getCompanyDetailsPaginated', function (req, res) {
  });
 
 // search company details using company name for admin page 
-router.get('/searchAdminCompany', function (req, res) {
+router.get('/searchAdminCompany', checkAuth, function (req, res) {
      let msg = {};
      msg.route = "searchAdminCompany";
      msg.query = req.query;
@@ -52,7 +52,7 @@ router.get('/searchAdminCompany', function (req, res) {
      });
  });
 
- router.get('/companyJobStatistics', function (req, res) {
+ router.get('/companyJobStatistics', checkAuth, function (req, res) {
      let msg = {};
      msg.route = "companyJobStatistics";
      msg.query = req.query;

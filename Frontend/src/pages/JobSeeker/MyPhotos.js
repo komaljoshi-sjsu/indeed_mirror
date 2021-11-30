@@ -15,7 +15,8 @@ const MyPhotos = (props) => {
   const [jobSeekerId, setJobSeekerId] = useState(id);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPosts, setTotalPosts] = useState(0);
-
+  const token = useSelector((state) => state.userInfo.token);
+  
   const options = {
     buttons: {
       showAutoplayButton: false,
@@ -30,6 +31,7 @@ const MyPhotos = (props) => {
       jobSeekerId: jobSeekerId,
       currentPage: currentPage,
     };
+    axios.defaults.headers.common['authorization'] = token;
     const jobSeekerPhotos = await axios("/api/getJobSeekerPhotos", {
       params: { data: data1 },
     });

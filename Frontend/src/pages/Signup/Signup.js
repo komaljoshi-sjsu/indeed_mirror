@@ -5,15 +5,20 @@ import Button from 'react-bootstrap/Button';
 import { Redirect } from 'react-router';
 import axios from 'axios';
 import backendServer from '../../webConfig';
-import JobSeekerNavbar from '../JobSeeker/JobSeekerNavbar';
 import logo from '../../images/Indeed_logo.png';
+import { bindActionCreators } from 'redux';
+import ErrorMsg from '../Error/ErrorMsg';
+import { userActionCreator } from '../../reduxutils/actions.js'
+import { useDispatch } from 'react-redux'
 
 function Signup(props) {
-
+    const dispatch = useDispatch()
+    const[errMsg,setErrMsg] = useState('');
     const [redirectVal, redirectValFn] = useState(null);
     let redirectToLogin = () => {
         redirectValFn(<Redirect to="/login" />);
     }
+    const showErrorModal = bindActionCreators(userActionCreator.showErrorModal,dispatch);
 
     let signUp = (e) => {
         e.preventDefault();
@@ -29,8 +34,11 @@ function Signup(props) {
             password: password,
             accountType: accountType
         }).then(res => {
-            if (res.status != 200) {
-                alert(res.data);
+            console.log(res);
+            if (res.data.code != '200') {
+                console.log('error for signing up');
+                setErrMsg(res.data.msg);
+                showErrorModal(true);
             } else {
                 //adding job seeker model in mongoDB after successful signup
                 console.log("signup data" + res.data);
@@ -39,16 +47,17 @@ function Signup(props) {
                     axios.post("/api/signupJobSeekerMongo", {
                         jobSeekerId: res.data.id,
                         resumeUrl: " ",
-                        jobPreference: [],
+                        jobPreference: {},
                         savedJobs: []
                     }).then((response1) => {
-                        if (response1.status === 200) {
+                        if (response1.data.code != '203') {
                             alert('Successfully signed up');
                             redirectToLogin();
                         }
                     })
                         .catch((err) => {
-                            alert("Failed to signup");
+                            setErrMsg('Failed to signup');
+                            showErrorModal(true);
                             console.log(err);
                         });
                 }
@@ -56,13 +65,15 @@ function Signup(props) {
                 redirectToLogin();
             }
         }, error => {
-            alert('Failed to signup. Please refer console for more details.');
+            setErrMsg('Failed to signup. Please refer console for more details.');
+            showErrorModal(true);
             console.log(error);
         })
     }
     return (
         <div className="container-fullwidth" style={{ margin: 'auto', marginTop: '5%', width: '30%' }}>
             {redirectVal}
+            <ErrorMsg err={errMsg}></ErrorMsg>
             <div className="row">
                 <a class="navbar-brand" href="/landingPage">
                     <img

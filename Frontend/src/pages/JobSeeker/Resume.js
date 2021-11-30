@@ -12,6 +12,7 @@ import {bindActionCreators} from 'redux';
 import axios from 'axios';
 import ErrorMsg from '../Error/ErrorMsg';
 import SuccessMsg from '../Success/SuccessMsg';
+import JobSeekerLoggedInNavbar from './JobSeekerLoggedInNavbar';
 
 function Resume(props) {
     const dispatch = useDispatch();
@@ -25,6 +26,7 @@ function Resume(props) {
     const[hideContactDiv, setHideContactDiv] = useState(true);
     const[resumeFileName,setResumeFileName] = useState('');
 
+    const token = useSelector((state) => state.userInfo.token);
     let fullname = useSelector((state)=>state.userInfo.name);
     const id = useSelector((state)=>state.userInfo.id);
     const phone = useSelector((state)=>state.userInfo.phone);
@@ -39,6 +41,7 @@ function Resume(props) {
     const setPhone = bindActionCreators(userActionCreator.setPhone,dispatch);
     const setResumeUrl = bindActionCreators(userActionCreator.setResumeUrl,dispatch);
     //const[showContactDiv, setShowContactDiv] = useState(true);
+    
 
     useEffect(()=> {
         if(resumeUrl!=null && resumeUrl.length>0) {
@@ -94,6 +97,7 @@ function Resume(props) {
         if(email!=emailId)
             data.email = emailId;
         if(Object.keys(data).length>0) {
+            axios.defaults.headers.common['authorization'] = token;
             axios.post(backendServer+'/api/updateJobSeekerProfile',{
                 id: id,
                 data: data
@@ -140,6 +144,7 @@ function Resume(props) {
         console.log('Successfully uploaded ',filename);
         var data = new FormData();
         data.append("file", fileUploaded);
+        axios.defaults.headers.common['authorization'] = token;
         axios.post(backendServer+'/api/uploadResume/'+id,data).then(res=>{
             console.log(res);
             if(res.data.code=='200') {
@@ -147,15 +152,16 @@ function Resume(props) {
                 setNoResume(false);
                 hideResumeUpdate();
             } else {
+                console.log('Error while uploading file',res.data);
                 showErrorModal(true);
-                setErrMsg(res.data.msg);
+                setErrMsg('Failed to upload file. Please refer browser console for more details');
                 setNoResume(true);
             }
         })
     }
     let handleResumeReplace= (e) => {
         e.preventDefault();
-        handleResumeDelete(e);
+        //handleResumeDelete(e);
         uploadResume();
        
     }
@@ -163,6 +169,7 @@ function Resume(props) {
         e.preventDefault();
         let keyarr = resumeUrl.split('/');
         let key = keyarr[keyarr.length-1];
+        axios.defaults.headers.common['authorization'] = token;
         await axios.delete(backendServer+'/api/deleteResume/'+key+'/'+id).then(res=>{
             console.log(res);
             if(res.status=='200') {
@@ -204,7 +211,7 @@ function Resume(props) {
             {redirectTo}
             <ErrorMsg err={errMsg}></ErrorMsg>
             <SuccessMsg msg={errMsg}></SuccessMsg>
-            <JobSeekerNavbar></JobSeekerNavbar>
+            <JobSeekerLoggedInNavbar/>
             <div className="container-fullwidth" style={{marginTop:'5%',marginRight:'auto',marginLeft:'auto',width:'50%'}}>
                 <div className="row" hidden={hideDiv}>
                     <h3 style={{color:'darkgray'}}><b>Your Name</b></h3>
@@ -260,7 +267,7 @@ function Resume(props) {
                             </Form.Group>
                             <Form.Group className="mb-3" >
                                 <Form.Label><b>Phone Number (optional)</b><img src="/images/padlock.png" height='15px' width='15px'/><span style={{color:'darkgray',fontSize:'12px'}}>only provided to employers you apply or respond to.</span></Form.Label>
-                                <Form.Control type="text" name = "phone" defaultValue={phone} pattern="[0-9]{10}" title="Please enter a 10 digit phone number"></Form.Control>
+                                <Form.Control type="text" name = "phone" defaultValue={phone} pattern="[0-9]{10}" title="Please enter a 10 digit phone number" maxLength="10"></Form.Control>
                             </Form.Group>
                             <Button variant="primary"  type="submit">
                             Save 

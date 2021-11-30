@@ -1,73 +1,56 @@
 "use strict";
 const express = require("express");
 const router = express.Router();
-const conn = require("./../config/mysql_connection");
-const { auth } = require("../config/passport");
-const { secret } = require("../config/config");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
-const Company = require('../models/Company');
-auth();
+var kafka = require("../kafka/client");
+const { checkAuth } = require("../config/passport");
+const redisClient = require("../config/redisClient");
 
-router.get("/api/snapshot/:companyId", (req, res) => {
-    try {
-        const cid = req.params.companyId;
-        //const cid = 68;
-        console.log("cid :"+ cid)
-        Company.find({companyId:cid}).then(result=> {
-            console.log(result);
-            let cmpny = result[0];
-            console.log("company :"+ cmpny)
-            const companyQuery = 'SELECT * FROM Company WHERE companyId=?';
-            conn.query(companyQuery,[cid], (error,details)=> {
-                console.log(details);
-                if(error) {
-                    return res.status(400).send('Failed to get company details');
+router.get("/api/snapshot/:companyId", checkAuth, (req, res) => {
+    let msg = {};
+    //msg.re = req.params.customerId;
+    msg.route = "snapshot";
+    msg.companyId = req.params.companyId;
+    const key = "/api/snapshot/"+req.params.companyId;
+    console.log("Key for redis: "+key);
+    redisClient.get(key, async (err, data) => {
+        // If value for key is available in Redis
+        if (data) {
+            // send data as output
+            console.log("from redis");
+            return res.send(data);
+        } 
+        // If value for given key is not available in Redis
+        else {
+            kafka.make_request("company", msg, function (err, results) {
+                console.log("inside kafka");
+                if (err) {
+                    console.log("inside error");
+                    return res.send({...results,err:err});
                 }
                 else {
-                    details = details[0];
-                    details.whScore = cmpny.avgWorkHappinessScore;
-                    details.lScore = cmpny.avgLearningScore;
-                    details.apScore = cmpny.avgAppreciationScore;
-                    details.noOfReviews = cmpny.noOfReviews;
-                    return res.status(200).send(details);
+                    redisClient.setex(key, 36000, JSON.stringify(results));
+                    return res.send(results);
                 }
-            })
-        }).catch(err=> {
-            return res.status(503).send('Failed to get company details');
-        })
-        
-    }
-    catch (error) {
-        console.log("ERROR!!!!!" +error);
-        return res.status(400).send("Failed to get company detail");
-    }
+            });
+        }
+    });
 });
 
-router.get("/api/featuredReviews/:companyId", (req, res) => {
-    try {
-        const cid = req.params.companyId;
-        conn.query('SELECT reviewTitle, reviewerRole, city, state, postedDate, rating, reviewComments, pros, cons FROM Review WHERE companyId=? AND isFeatured=? ORDER BY rating',[cid,true],(err,reviews)=> {
-            if(err) {
-                console.log(err);
-                return res.status(400).send('Failed to fetch featured reviews');
-            } else {
-                if(reviews.length<=5)
-                    return res.status(200).send(reviews);
-                else {
-                    const highest = reviews.slice(0,4);
-                    const lowest = reviews[reviews.length-1];
-                    highest.push(lowest);
-                    return res.status(200).send(highest);
-                }
-            }
-        })
-        
-    }
-    catch (error) {
-        console.log("ERROR!!!!!" +error);
-        return res.status(400).send("Failed to get featured reviews of the company");
-    }
+router.get("/api/featuredReviews/:companyId",  checkAuth, (req, res) => {
+    let msg = {};
+    //msg.re = req.params.customerId;
+    msg.route = "featuredReviews";
+    msg.companyId = req.params.companyId;
+    kafka.make_request("company", msg, function (err, results) {
+        console.log("inside kafka");
+        if (err) {
+            console.log("inside error");
+            return res.send({...results,err:err});
+        }
+        else {
+            return res.send(results);
+        }
+    });
 });
 
 module.exports = router;

@@ -4,12 +4,20 @@ const { getCompanyDetailsPaginated } = require("./getCompanyDetailsPaginated");
 const { searchAdminCompany } = require("./searchAdminCompany");
 const { companyJobStatistics } = require("./companyJobStatistics");
 const { getAllReviewsByCompanyId } = require("./getAllReviewsByCompanyId");
+const {snapshot} = require("./snapshot");
+const {featuredReviews}  = require('./featuredReviews');
 const {   getSalaryReview,
     addSalaryReview } =require("./addSalaryReview");
 
 
 function handle_request(msg, callback) {
     switch (msg.route) {
+        case "featuredReviews":    
+            featuredReviews(msg,callback); 
+            break;
+        case "snapshot":    
+            snapshot(msg,callback); 
+            break;
         case "getCompanyDetails":    
             getCompanyDetails(msg,callback); 
             break;

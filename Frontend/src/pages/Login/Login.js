@@ -27,6 +27,7 @@ function Login(props) {
     const setToken = bindActionCreators(userActionCreator.setToken,dispatch);
     const showErrorModal = bindActionCreators(userActionCreator.showErrorModal,dispatch);
     const setCompId = bindActionCreators(companyActionCreator.setCompId,dispatch);
+    const setCompName = bindActionCreators(companyActionCreator.setCompName,dispatch);
     //const setCompanyId = bindActionCreators(userActionCreator.setCompanyId,dispatch);
 
   let redirectToSignUp = (e) => {
@@ -56,10 +57,10 @@ function Login(props) {
         password:password,
         accountType: accountType
     }).then(res=> {   
-        if(res.status!=200) {
-            setErrMsg(res.data);
-            showErrorModal(true);
-        } else {
+      if(res.data.code=='203') {
+          setErrMsg(res.data.msg);
+          showErrorModal(true);
+      } else {
             alert('Successfully logged in');
             //const jwt_decode = require('jwt-decode');
             setToken(res.data);
@@ -81,6 +82,7 @@ function Login(props) {
                 }
                 else {
                     setCompId(user.companyId);
+                    //setCompName(user.compName);
                     redirectValFn(<Redirect to="/employer"/>);
                 }
             } else if(accountType=='Admin')  {
@@ -89,7 +91,7 @@ function Login(props) {
         }
     },
     (error) => {
-        setErrMsg(error.response.data);
+        setErrMsg('Customer failed to login');
         showErrorModal(true);
         console.log('error is',error)
     },

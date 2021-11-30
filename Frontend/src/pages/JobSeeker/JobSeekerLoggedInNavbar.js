@@ -15,7 +15,8 @@ import { IoMdPerson, IoMdSettings, IoMdHelpCircle } from 'react-icons/io'
 import { ImProfile } from 'react-icons/im'
 import { MdFavorite, MdReviews, MdEmail, MdPhoto } from 'react-icons/md'
 import logo from '../../images/Indeed_logo.png'
-import '../../CSS/JobSeekerNavbar.css'
+import '../../CSS/JobSeekerNavbar.css';
+import {logout} from '../../reduxutils/actioncreators/useraction';
 
 class JobSeekerLoggedInNavbar extends Component {
   constructor(props) {
@@ -42,6 +43,14 @@ class JobSeekerLoggedInNavbar extends Component {
         userEmail: userInfo.email,
       })
     }
+  }
+
+  logoutAction =  (e) => {
+    e.preventDefault();
+    this.props.logout(true);
+    // const {history} = this.props;
+    // history.push('/landingPage');
+    window.location.href='/landingPage';
   }
 
   render() {
@@ -176,7 +185,7 @@ class JobSeekerLoggedInNavbar extends Component {
 
                       <a class="dropdown-item ditems">
                         <Link
-                          to="/"
+                          to="/resume"
                           style={{
                             textDecoration: 'none',
                             color: '#474747',
@@ -190,7 +199,7 @@ class JobSeekerLoggedInNavbar extends Component {
                       </a>
                       <a class="dropdown-item ditems">
                         <Link
-                          to="/"
+                          to="/savedjobs"
                           style={{
                             textDecoration: 'none',
                             color: '#474747',
@@ -250,7 +259,7 @@ class JobSeekerLoggedInNavbar extends Component {
                         <span className="spandrop">Help Center</span>
                       </a> */}
                       <div class="dropdown-divider ditems"></div>
-                      <a class="dropdown-item">
+                      <a class="dropdown-item" onClick={this.logoutAction}>
                         <span className="signoutdrop">Sign Out</span>
                       </a>
                     </div>
@@ -260,16 +269,22 @@ class JobSeekerLoggedInNavbar extends Component {
                     <h3 style={{ color: 'black' }}>|</h3>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link">
-                      <Link
+                    <a class="nav-link"
+                    onClick={()=>{
+                          alert('Please login as Employer to post a Job.');
+                        }}>
+                      {/* <Link
                         to="/postJob"
                         style={{
                           textDecoration: 'none',
                           color: '#474747',
                         }}
-                      >
-                        <h5>Employers/Post Job</h5>
-                      </Link>
+                      > */}
+                        <h5 style={{
+                          textDecoration: 'none',
+                          color: '#474747',
+                        }}>Employers/Post Job</h5>
+                      {/* </Link> */}
                     </a>
                   </li>
                 </ul>
@@ -281,9 +296,15 @@ class JobSeekerLoggedInNavbar extends Component {
     )
   }
 }
+function mapDispatchToProps(dispatch) {
+  return {
+      logout: val => dispatch(logout(val))
+  };
+}
 
+//export default connect(mapStateToProps,mapDispatchToProps)(EmployerProfile);
 const mapStateToProps = (state) => ({
   userInfo: state.userInfo,
 })
 
-export default connect(mapStateToProps)(withRouter(JobSeekerLoggedInNavbar))
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(JobSeekerLoggedInNavbar))

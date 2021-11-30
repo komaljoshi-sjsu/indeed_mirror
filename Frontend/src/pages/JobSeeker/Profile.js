@@ -2,6 +2,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {useSelector} from 'react-redux';
 import JobSeekerNavbar from './JobSeekerNavbar';
+import JobSeekerLoggedInNavbar from './JobSeekerLoggedInNavbar';
 
 function Profile(props) {
 
@@ -11,7 +12,7 @@ function Profile(props) {
     return (
         <div className="container-fullwidth" style={{marginLeft:'20%',marginRight:'20%'}}>
             <div className="row">
-                <JobSeekerNavbar></JobSeekerNavbar>
+                <JobSeekerLoggedInNavbar/>
             </div><br></br>
             <div className="row">
                 
