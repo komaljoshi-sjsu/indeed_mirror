@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import AdminNavbar from "./AdminNavbar";
 import { useSelector } from "react-redux";
 import backendServer from "../../webConfig";
+import { withRouter } from "react-router-dom";
 
 const AdminPhoto = (props) => {
   const [images, setImages] = useState([]);
@@ -110,4 +111,4 @@ const AdminPhoto = (props) => {
   );
 };
 
-export default AdminPhoto;
+export default withRouter(AdminPhoto);

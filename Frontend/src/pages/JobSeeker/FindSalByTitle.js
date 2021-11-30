@@ -392,7 +392,7 @@ class FindSalByTitle extends Component {
                    <Link style={{textDecoration: 'none'}} to="/reviews" onClick={(e) => { this.handleCompanyLink(e, job.companyId, job.companyName) }}><small>{job.revCnt}{' '}reviews</small></Link>
                   </Col>
                   <Col xs={12} style={{textAlign:"right"}}>
-                  <Link style={{textDecoration: 'none'}} to="/reviews" onClick={(e) => { this.handleCompanyLink(e, job.companyId, job.companyName) }}><small>{job.salRevCnt}{' '}salaries{' '}reported</small></Link>
+                  <Link style={{textDecoration: 'none'}} to="/addSalaryReview" onClick={(e) => { this.handleCompanyLink(e, job.companyId, job.companyName) }}><small>{job.salRevCnt}{' '}salaries{' '}reported</small></Link>
                   </Col>
                  </Col>
                   </Row>

@@ -463,7 +463,7 @@ class Reviews extends Component {
 
     render() {
       // To-DO Fetch logged in userid from store
-        console.log(this.props.location.flag);
+        // console.log(this.props.location.flag);
         const jobSeekerId = this.props.userInfo.id;
         const { reviewDetails, ratingSel, filterFlag, totalPostsFilter, noReviewsMsg, reviewDetailsRatingFilter, reviewDetailsRatingSort, reviewDetailsDateSort, reviewDetailsHelpfulSort, openModal, dateSortFlag, rateSortFlag, helpfulSortFlag, totalPosts } = this.state;
         const loggedInUserReviews =  reviewDetails.filter((review) => review.jobSeekerId === jobSeekerId);

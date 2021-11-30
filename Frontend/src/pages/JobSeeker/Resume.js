@@ -13,7 +13,6 @@ import axios from 'axios';
 import ErrorMsg from '../Error/ErrorMsg';
 import SuccessMsg from '../Success/SuccessMsg';
 import JobSeekerLoggedInNavbar from './JobSeekerLoggedInNavbar';
-import { useHistory } from 'react-router-dom';
 
 function Resume(props) {
     const dispatch = useDispatch();
@@ -43,26 +42,8 @@ function Resume(props) {
     const setResumeUrl = bindActionCreators(userActionCreator.setResumeUrl,dispatch);
     //const[showContactDiv, setShowContactDiv] = useState(true);
     
-    const accountType = useSelector((state)=>state.userInfo.accountType);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const history = useHistory();
-
-    let checkLoggedInStatus = () => {
-        if (email !== '' && accountType === 'JobSeeker') {
-          console.log('JobSeeker is signed in')
-          setIsLoggedIn(true);
-          console.log(isLoggedIn);
-        }
-        else {
-            alert ('Please login to post your resume');
-            // setIsLoggedIn(false);
-            // history.push('/');
-        }
-    }
-
 
     useEffect(()=> {
-        checkLoggedInStatus();
         if(resumeUrl!=null && resumeUrl.length>0) {
             let keyarr = resumeUrl.split('/');
             let key = keyarr[keyarr.length-1];
@@ -227,8 +208,6 @@ function Resume(props) {
     }
     return (
         <div>
-            {isLoggedIn ? (
-        <div>
             {redirectTo}
             <ErrorMsg err={errMsg}></ErrorMsg>
             <SuccessMsg msg={errMsg}></SuccessMsg>
@@ -313,14 +292,6 @@ function Resume(props) {
             </div>
             <p></p>
             <p style={{textAlign:'center'}}><b><u style={{color:'blue',cursor:'pointer'}} onClick={hideResumeUpdate} hidden={hideSkip}>Skip for now</u></b></p>
-        </div>
-        )
-         :(
-             <div>
-            alert ("Pst your resy");
-           <Redirect to="/landingPage" />
-           </div>
-        )}
         </div>
     )
 }

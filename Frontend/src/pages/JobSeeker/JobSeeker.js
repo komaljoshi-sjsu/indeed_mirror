@@ -823,7 +823,7 @@ class JobSeekerLandingPage extends Component {
             <div class="col-4">
               <h5>
                 <span class="hoverUnderline" style={{ color: '#003399' }}>
-                <Link to="/resume"> Post your resume </Link>
+               {this.state.isLoggedIn ? (<Link to="/resume"> Post your resume </Link>):("Post your resume")}
                 </span>
                 &nbsp;- It only takes a few seconds
               </h5>
