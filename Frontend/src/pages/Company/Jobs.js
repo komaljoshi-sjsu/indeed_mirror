@@ -44,6 +44,7 @@ class CompanyJobs extends Component {
       currentPage: 1,
       totalPosts: 0,
       pageCount: 0,
+      filterOn: false,
     }
     this.getCurrentDate()
   }
@@ -98,69 +99,73 @@ class CompanyJobs extends Component {
     await axios.post('http://localhost:5000/jobs/companyJobs', data).then(
       (response) => {
         console.log(response.data, response.status)
+        if (response.status === 200 && response.data.length > 0) {
+          let jobTitles = response.data.map((job) => {
+            return job.jobTitle
+          })
 
-        let jobTitles = response.data.map((job) => {
-          return job.jobTitle
-        })
+          console.log('Job Titles: ')
+          console.log(jobTitles)
 
-        console.log('Job Titles: ')
-        console.log(jobTitles)
+          // let companyNames = response.data.map((job) => {
+          //   return job.companyName
+          // })
 
-        // let companyNames = response.data.map((job) => {
-        //   return job.companyName
-        // })
+          // console.log('Company Names: ')
+          // console.log(companyNames)
 
-        // console.log('Company Names: ')
-        // console.log(companyNames)
+          let whatSearch = jobTitles
+          // .concat(companyNames)
 
-        let whatSearch = jobTitles
-        // .concat(companyNames)
+          whatSearch = whatSearch.filter(
+            (job, index, self) => index === self.findIndex((j) => j === job),
+          )
 
-        whatSearch = whatSearch.filter(
-          (job, index, self) => index === self.findIndex((j) => j === job),
-        )
+          let city = response.data.map((job) => {
+            return job.city
+          })
+          let state = response.data.map((job) => {
+            return job.state
+          })
+          let zip = response.data.map((job) => {
+            return job.zip
+          })
+          let whereSearch = city.concat(state, zip)
 
-        let city = response.data.map((job) => {
-          return job.city
-        })
-        let state = response.data.map((job) => {
-          return job.state
-        })
-        let zip = response.data.map((job) => {
-          return job.zip
-        })
-        let whereSearch = city.concat(state, zip)
+          // remove duplicate job titles
+          whereSearch = whereSearch.filter(
+            (job, index, self) => index === self.findIndex((j) => j === job),
+          )
 
-        // remove duplicate job titles
-        whereSearch = whereSearch.filter(
-          (job, index, self) => index === self.findIndex((j) => j === job),
-        )
-
-        job = response.data[0]
-        const pageCount = Math.ceil(response.data.length / 5)
-        console.log(
-          'Total data =' + response.data.length + ' Page count = ' + pageCount,
-        )
-        this.setState({
-          allJobs: this.state.allJobs.concat(response.data),
-          whatSearch: whatSearch,
-          whereSearch: whereSearch,
-          roleName: job.jobTitle,
-          companyName: job.companyName,
-          companyId: job.companyId,
-          jobId: job.jobId,
-          city: job.city,
-          state: job.state,
-          zip: job.zip,
-          jobType: job.jobMode,
-          salary: job.salaryDetails,
-          location: job.city,
-          responsibilities: job.responsibilities,
-          qualifications: job.qualifications,
-          loveJobRole: job.loveJobRole,
-          totalPosts: response.data.length,
-          pageCount: pageCount,
-        })
+          job = response.data[0]
+          const pageCount = Math.ceil(response.data.length / 5)
+          console.log(
+            'Total data =' +
+              response.data.length +
+              ' Page count = ' +
+              pageCount,
+          )
+          this.setState({
+            allJobs: this.state.allJobs.concat(response.data),
+            whatSearch: whatSearch,
+            whereSearch: whereSearch,
+            roleName: job.jobTitle,
+            companyName: job.companyName,
+            companyId: job.companyId,
+            jobId: job.jobId,
+            city: job.city,
+            state: job.state,
+            zip: job.zip,
+            jobType: job.jobMode,
+            salary: job.salaryDetails,
+            location: job.city,
+            responsibilities: job.responsibilities,
+            qualifications: job.qualifications,
+            loveJobRole: job.loveJobRole,
+            totalPosts: response.data.length,
+            pageCount: pageCount,
+          })
+        }
       },
       (error) => {
         console.log(error)
@@ -181,10 +186,11 @@ class CompanyJobs extends Component {
       .post('http://localhost:5000/jobs/paginatedData', data)
       .then((response) => {
         console.log(response.data, response.status)
-
-        this.setState({
-          jobs: response.data,
-        })
+        if (response.status === 200 && response.data.length > 0) {
+          this.setState({
+            jobs: response.data,
+          })
+        }
       })
   }
 
@@ -299,10 +305,19 @@ class CompanyJobs extends Component {
     console.log(this.state.whereVal, this.state.whatVal)
     let job = []
     let totalCount = 0
+    let currentPage = this.state.currentPage
+    //check if filter is on or off
+    if (!this.state.filterOn) {
+      currentPage = 1
+      this.setState({
+        filterOn: true,
+      })
+    }
+
     if (this.state.whereVal.length && this.state.whatVal) {
       console.log('What and where')
       let data = {
-        currentPage: 1,
+        currentPage: currentPage,
         wherekeyword: this.state.whereVal,
         whatkeyword: this.state.whatVal,
         companyName: this.state.companyName,
@@ -311,32 +326,39 @@ class CompanyJobs extends Component {
         .post('http://localhost:5000/jobs/filterOnLocationAndTitle', data)
         .then((response) => {
           console.log(response.data, response.status)
-          job = response.data.result
-          totalCount = response.data.count[0].count
-          const pageCount = Math.ceil(totalCount / 5)
-          console.log(
-            'Total data =' + totalCount + ' Page count = ' + pageCount,
-          )
-          if (job.length > 0) {
-            console.log('setting jobs')
-            this.setState({
-              jobs: job,
-              totalPosts: totalCount,
-              pageCount: pageCount,
-              roleName: job[0].jobTitle,
-              companyName: job[0].companyName,
-              companyId: job[0].companyId,
-              jobId: job[0].jobId,
-              city: job[0].city,
-              state: job.state,
-              zip: job[0].zip,
-              jobType: job[0].jobMode,
-              salary: job[0].salaryDetails,
-              location: job[0].city,
-              responsibilities: job[0].responsibilities,
-              qualifications: job[0].qualifications,
-              loveJobRole: job[0].loveJobRole,
-            })
+          if (response.status === 200 && response.data) {
+            job = response.data.result
+            totalCount = response.data.count[0].count
+            const pageCount = Math.ceil(totalCount / 5)
+            console.log(
+              'Total data =' + totalCount + ' Page count = ' + pageCount,
+            )
+            if (job.length > 0) {
+              console.log('setting jobs')
+              this.setState(
+                {
+                  jobs: job,
+                  totalPosts: totalCount,
+                  pageCount: pageCount,
+                  roleName: job[0].jobTitle,
+                  companyName: job[0].companyName,
+                  companyId: job[0].companyId,
+                  jobId: job[0].jobId,
+                  city: job[0].city,
+                  state: job.state,
+                  zip: job[0].zip,
+                  jobType: job[0].jobMode,
+                  salary: job[0].salaryDetails,
+                  location: job[0].city,
+                  responsibilities: job[0].responsibilities,
+                  qualifications: job[0].qualifications,
+                  loveJobRole: job[0].loveJobRole,
+                },
+                () => {
+                  this.calculateDaysSincePosted()
+                },
+              )
+            }
           }
         })
     } else if (this.state.whereVal.length && !this.state.whatVal) {
@@ -350,32 +372,39 @@ class CompanyJobs extends Component {
         .post('http://localhost:5000/jobs/filterOnLocation', data)
         .then((response) => {
           console.log(response.data, response.status)
-          job = response.data.result
-          totalCount = response.data.count[0].count
-          const pageCount = Math.ceil(totalCount / 5)
-          console.log(
-            'Total data =' + totalCount + ' Page count = ' + pageCount,
-          )
-          if (job.length > 0) {
-            console.log('setting jobs')
-            this.setState({
-              jobs: job,
-              totalPosts: totalCount,
-              pageCount: pageCount,
-              roleName: job[0].jobTitle,
-              companyName: job[0].companyName,
-              companyId: job[0].companyId,
-              jobId: job[0].jobId,
-              city: job[0].city,
-              state: job.state,
-              zip: job[0].zip,
-              jobType: job[0].jobMode,
-              salary: job[0].salaryDetails,
-              location: job[0].city,
-              responsibilities: job[0].responsibilities,
-              qualifications: job[0].qualifications,
-              loveJobRole: job[0].loveJobRole,
-            })
+          if (response.status === 200 && response.data) {
+            job = response.data.result
+            totalCount = response.data.count[0].count
+            const pageCount = Math.ceil(totalCount / 5)
+            console.log(
+              'Total data =' + totalCount + ' Page count = ' + pageCount,
+            )
+            if (job.length > 0) {
+              console.log('setting jobs')
+              this.setState(
+                {
+                  jobs: job,
+                  totalPosts: totalCount,
+                  pageCount: pageCount,
+                  roleName: job[0].jobTitle,
+                  companyName: job[0].companyName,
+                  companyId: job[0].companyId,
+                  jobId: job[0].jobId,
+                  city: job[0].city,
+                  state: job.state,
+                  zip: job[0].zip,
+                  jobType: job[0].jobMode,
+                  salary: job[0].salaryDetails,
+                  location: job[0].city,
+                  responsibilities: job[0].responsibilities,
+                  qualifications: job[0].qualifications,
+                  loveJobRole: job[0].loveJobRole,
+                },
+                () => {
+                  this.calculateDaysSincePosted()
+                },
+              )
+            }
           }
         })
     } else if (!this.state.whereVal.length && this.state.whatVal) {
@@ -388,42 +417,47 @@ class CompanyJobs extends Component {
       await axios
         .post('http://localhost:5000/jobs/filterOnJobTitleOrCompanyName', data)
         .then((response) => {
-          console.log(
-            response.data.result,
-            response.status,
-            response.data.count[0].count,
-          )
-          job = response.data.result
-          totalCount = response.data.count[0].count
-          const pageCount = Math.ceil(totalCount / 5)
-          console.log(
-            'Total data =' + totalCount + ' Page count = ' + pageCount,
-          )
-          if (job.length > 0) {
-            console.log('setting jobs')
-            this.setState({
-              jobs: job,
-              totalPosts: totalCount,
-              pageCount: pageCount,
-              roleName: job[0].jobTitle,
-              companyName: job[0].companyName,
-              companyId: job[0].companyId,
-              jobId: job[0].jobId,
-              city: job[0].city,
-              state: job.state,
-              zip: job[0].zip,
-              jobType: job[0].jobMode,
-              salary: job[0].salaryDetails,
-              location: job[0].city,
-              responsibilities: job[0].responsibilities,
-              qualifications: job[0].qualifications,
-              loveJobRole: job[0].loveJobRole,
-            })
+          if (response.status === 200 && response.data) {
+            console.log(
+              response.data.result,
+              response.status,
+              response.data.count[0].count,
+            )
+            job = response.data.result
+            totalCount = response.data.count[0].count
+            const pageCount = Math.ceil(totalCount / 5)
+            console.log(
+              'Total data =' + totalCount + ' Page count = ' + pageCount,
+            )
+            if (job.length > 0) {
+              console.log('setting jobs')
+              this.setState(
+                {
+                  jobs: job,
+                  totalPosts: totalCount,
+                  pageCount: pageCount,
+                  roleName: job[0].jobTitle,
+                  companyName: job[0].companyName,
+                  companyId: job[0].companyId,
+                  jobId: job[0].jobId,
+                  city: job[0].city,
+                  state: job.state,
+                  zip: job[0].zip,
+                  jobType: job[0].jobMode,
+                  salary: job[0].salaryDetails,
+                  location: job[0].city,
+                  responsibilities: job[0].responsibilities,
+                  qualifications: job[0].qualifications,
+                  loveJobRole: job[0].loveJobRole,
+                },
+                () => {
+                  this.calculateDaysSincePosted()
+                },
+              )
+            }
           }
         })
     }
-
-    await this.calculateDaysSincePosted()
   }
 
   handleCardClick = (evt) => {
@@ -505,7 +539,8 @@ class CompanyJobs extends Component {
         currentPage: event.selected + 1,
       },
       () => {
-        this.getPaginatedData()
+        if (this.state.filterOn) this.handleFindJobs()
+        else this.getPaginatedData()
       },
     )
   }
@@ -532,19 +567,27 @@ class CompanyJobs extends Component {
                     <Autocomplete
                       id="free-solo-demo"
                       freeSolo
-                      sx={{ width: 180, borderBottom: 'none' }}
+                      //sx={{ width: 180, borderBottom: 'none' }}
                       value={this.state.whatVal}
                       onChange={this.handleWhatVal.bind(this)}
                       options={this.state.whatSearch.map((option) => option)}
                       getOptionLabel={(option) => option}
                       renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          sx={{ width: 180, borderBottom: 'none' }}
-                          //class="whatSearch2"
-                          onChange={this.handleWhatVal.bind(this)}
-                          value={this.state.whatVal}
-                        />
+                        // <TextField
+                        //   {...params}
+                        //   sx={{ width: 180, borderBottom: 'none' }}
+                        //   //class="whatSearch2"
+                        //   onChange={this.handleWhatVal.bind(this)}
+                        //   value={this.state.whatVal}
+                        // />
+                        <div ref={params.InputProps.ref}>
+                          <input
+                            type="text"
+                            {...params.inputProps}
+                            // style={{ height: '50px' }}
+                            class="whatSearch2"
+                          />
+                        </div>
                       )}
                     />
                     <button
@@ -573,19 +616,27 @@ class CompanyJobs extends Component {
                     <Autocomplete
                       id="free-solo-demo"
                       freeSolo
-                      sx={{ width: 180, borderBottom: 'none' }}
+                      //sx={{ width: 180, borderBottom: 'none' }}
                       value={this.state.whereVal}
                       onChange={this.handleWhereVal}
                       options={this.state.whereSearch.map((option) => option)}
                       getOptionLabel={(option) => option}
                       renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          sx={{ width: 180, borderBottom: 'none' }}
-                          //class="whatSearch2"
-                          value={this.state.whereVal}
-                          onChange={this.handleWhereVal}
-                        />
+                        // <TextField
+                        //   {...params}
+                        //   sx={{ width: 180, borderBottom: 'none' }}
+                        //   //class="whatSearch2"
+                        //   value={this.state.whereVal}
+                        //   onChange={this.handleWhereVal}
+                        // />
+                        <div ref={params.InputProps.ref}>
+                          <input
+                            type="text"
+                            {...params.inputProps}
+                            // style={{ height: '50px' }}
+                            class="whatSearch2"
+                          />
+                        </div>
                       )}
                     />
                     <button

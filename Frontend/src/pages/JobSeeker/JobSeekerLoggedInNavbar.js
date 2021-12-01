@@ -15,8 +15,8 @@ import { IoMdPerson, IoMdSettings, IoMdHelpCircle } from 'react-icons/io'
 import { ImProfile } from 'react-icons/im'
 import { MdFavorite, MdReviews, MdEmail, MdPhoto } from 'react-icons/md'
 import logo from '../../images/Indeed_logo.png'
-import '../../CSS/JobSeekerNavbar.css';
-import {logout} from '../../reduxutils/actioncreators/useraction';
+import '../../CSS/JobSeekerNavbar.css'
+import { logout } from '../../reduxutils/actioncreators/useraction'
 
 class JobSeekerLoggedInNavbar extends Component {
   constructor(props) {
@@ -45,12 +45,12 @@ class JobSeekerLoggedInNavbar extends Component {
     }
   }
 
-  logoutAction =  (e) => {
-    e.preventDefault();
-    this.props.logout(true);
+  logoutAction = (e) => {
+    e.preventDefault()
+    this.props.logout(true)
     // const {history} = this.props;
     // history.push('/landingPage');
-    window.location.href='/landingPage';
+    window.location.href = '/landingPage'
   }
 
   render() {
@@ -149,22 +149,15 @@ class JobSeekerLoggedInNavbar extends Component {
                   </li>
                   <li class="nav-item">
                     <a class="nav-link">
-                      <Link
+                      <h5
                         style={{
-                          textDecoration: 'none',
-                          color: '#474747',
+                          color: 'black',
+                          marginLeft: '5px',
+                          marginRight: '5px',
                         }}
                       >
-                        <h5
-                          style={{
-                            color: 'black',
-                            marginLeft: '5px',
-                            marginRight: '5px',
-                          }}
-                        >
-                          <BsFillBellFill />
-                        </h5>
-                      </Link>
+                        <BsFillBellFill />
+                      </h5>
                     </a>
                   </li>
 
@@ -269,10 +262,12 @@ class JobSeekerLoggedInNavbar extends Component {
                     <h3 style={{ color: 'black' }}>|</h3>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link"
-                    onClick={()=>{
-                          alert('Please login as Employer to post a Job.');
-                        }}>
+                    <a
+                      class="nav-link"
+                      onClick={() => {
+                        alert('Please login as Employer to post a Job.')
+                      }}
+                    >
                       {/* <Link
                         to="/postJob"
                         style={{
@@ -280,10 +275,14 @@ class JobSeekerLoggedInNavbar extends Component {
                           color: '#474747',
                         }}
                       > */}
-                        <h5 style={{
+                      <h5
+                        style={{
                           textDecoration: 'none',
                           color: '#474747',
-                        }}>Employers/Post Job</h5>
+                        }}
+                      >
+                        Employers/Post Job
+                      </h5>
                       {/* </Link> */}
                     </a>
                   </li>
@@ -298,8 +297,8 @@ class JobSeekerLoggedInNavbar extends Component {
 }
 function mapDispatchToProps(dispatch) {
   return {
-      logout: val => dispatch(logout(val))
-  };
+    logout: (val) => dispatch(logout(val)),
+  }
 }
 
 //export default connect(mapStateToProps,mapDispatchToProps)(EmployerProfile);
@@ -307,4 +306,7 @@ const mapStateToProps = (state) => ({
   userInfo: state.userInfo,
 })
 
-export default connect(mapStateToProps,mapDispatchToProps)(withRouter(JobSeekerLoggedInNavbar))
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withRouter(JobSeekerLoggedInNavbar))
