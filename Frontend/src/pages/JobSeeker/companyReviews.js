@@ -42,7 +42,7 @@ class Reviews extends Component {
     componentDidMount() {
       this.checkLoggedInStatus();
         let { reviewDetails } = this.state;
-        axios.defaults.headers.common['authorization'] = this.props.userInfo.token;
+        // axios.defaults.headers.common['authorization'] = this.props.userInfo.token;
         axios.get(`${backendServer}/allReviews`)
           .then((response) => {
             this.setState({
@@ -73,7 +73,7 @@ class Reviews extends Component {
           location
         }
         console.log(inputData);
-        axios.defaults.headers.common['authorization'] = this.props.userInfo.token;
+        //axios.defaults.headers.common['authorization'] = this.props.userInfo.token;
         axios
           .post(`${backendServer}/searchReview`, inputData)
           .then((response) => {

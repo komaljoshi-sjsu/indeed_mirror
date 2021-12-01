@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 var kafka = require("../kafka/client");
-//const { checkAuth } = require("../config/passport");
+const { checkAuth } = require("../config/passport");
 
-router.post("/api/saveConversation", async (req, res) => {
+router.post("/api/saveConversation", checkAuth, async (req, res) => {
   let msg = {};
   msg.route = "saveConversation";
   msg.body = req.body;
@@ -17,7 +17,7 @@ router.post("/api/saveConversation", async (req, res) => {
   });
 });
 
-router.get("/api/getConversationById/:userId", async (req, res) => {
+router.get("/api/getConversationById/:userId", checkAuth, async (req, res) => {
   let msg = {};
   msg.route = "getConversationById";
   msg.userId = req.params.userId;
@@ -31,7 +31,7 @@ router.get("/api/getConversationById/:userId", async (req, res) => {
   });
 });
 
-router.get("/api/getJobSeekerById/:jobSeekerId", async (req, res) => {
+router.get("/api/getJobSeekerById/:jobSeekerId", checkAuth, async (req, res) => {
   let msg = {};
   msg.route = "getJobSeekerById";
   msg.jobSeekerId = req.params.jobSeekerId;
@@ -45,7 +45,7 @@ router.get("/api/getJobSeekerById/:jobSeekerId", async (req, res) => {
   });
 });
 
-router.get("/api/getEmployerById/:employerId", async (req, res) => {
+router.get("/api/getEmployerById/:employerId", checkAuth, async (req, res) => {
   let msg = {};
   msg.route = "getEmployerById";
   msg.employerId = req.params.employerId;

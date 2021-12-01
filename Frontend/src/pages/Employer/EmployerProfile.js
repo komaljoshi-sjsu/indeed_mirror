@@ -14,7 +14,7 @@ import '../../CSS/EmployerLanding.css'
 import PropTypes from "prop-types";
 import logo from '../../images/employers.png'
 import {setCompId} from '../../reduxutils/actioncreators/companyaction';
-
+import { withRouter } from 'react-router';
 class EmployerProfile extends Component {
     constructor(props) {
       super(props);
@@ -841,7 +841,7 @@ class EmployerProfile extends Component {
     };
   }
 
-export default connect(mapStateToProps,mapDispatchToProps)(EmployerProfile);
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(EmployerProfile));
 
 
 

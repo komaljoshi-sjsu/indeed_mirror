@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 var kafka = require("../kafka/client");
-//const { checkAuth } = require("../config/passport");
+const { checkAuth } = require("../config/passport");
 
-router.get("/api/getAllPhotos/", async (req, res) => {
+router.get("/api/getAllPhotos/", checkAuth, async (req, res) => {
   let msg = {};
   msg.route = "getAllPhotos";
   msg.data = req.query.data;

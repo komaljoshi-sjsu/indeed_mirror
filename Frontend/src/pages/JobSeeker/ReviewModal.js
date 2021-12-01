@@ -95,7 +95,8 @@ class ReviewModal extends Component {
 
   closeModal = () => {
     this.setState({ openModal: false });
-    this.setState({redirectFlag: true});
+    //this.setState({redirectFlag: true});
+    this.props.closeModal();
   }
 
 
@@ -130,7 +131,7 @@ class ReviewModal extends Component {
             postedDate : Date().toLocaleString(),
 
         };
-        console.log(inputData);
+        //console.log(inputData);
         axios.defaults.headers.common['authorization'] = this.props.token;
         axios
         .post(`${backendServer}/saveReview`, inputData)
@@ -155,6 +156,7 @@ class ReviewModal extends Component {
               state: '',
               openModal: true,
             });
+
           } else {
             this.setState({ errorMsg: response.data });
           }
@@ -170,7 +172,6 @@ class ReviewModal extends Component {
     const { addReview, closeModal} = this.props;
     const { openModal, redirectFlag, errors, rating, workHappinessScore, appreciationScore, learningScore, reviewTitle, reviewComments, pros, cons, ceoApprovalRating, howToPrepare, reviewerRole, city, state } = this.state;
     let redirectVar = null;
-    console.log("rating: "+rating)
     if (redirectFlag) {
       redirectVar = <Redirect to={{pathname: "/reviews", flag:true}} />;
     }

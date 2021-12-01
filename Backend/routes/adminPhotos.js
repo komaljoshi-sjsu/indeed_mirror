@@ -4,6 +4,7 @@ const kafka = require('../kafka/client');
 const { checkAuth } = require("../config/passport");
 
 router.get('/api/getAdminPhotos/', checkAuth, function (req, res) {
+    console.log("inside backend admin photos")
    let msg = {};
    msg.route = "getAdminPhotos";
    msg.query = req.query;

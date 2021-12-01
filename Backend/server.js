@@ -69,10 +69,8 @@ app.use(require("./routes/testRoute"))
 app.use(require("./routes/reviewsByProfile"))
 app.use(require("./routes/getJobSeekerPhotos"))
 app.use(require("./routes/myjobs"));
-// app.use(require("./routes/findSalary/:id"))
-//Define all the routes
-//app.use('/postNewJob', postNewJob)
 
 const PORT = process.env.PORT || 5000
+
 //Server code will be running on port 5000
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`))

@@ -8,6 +8,8 @@ import {Container,Row,Col} from 'react-bootstrap'
 
 
 const ReportEmployer = () => {
+  const token = useSelector((state) => state.userInfo.token);
+
   const [chartOneData, setChartOneData] = useState({
     labels: [],
     datasets: [
@@ -36,6 +38,7 @@ const ReportEmployer = () => {
   const barChartOne = async () => {
     let jobCnt = [];
     let jobTitle = [];
+    axios.defaults.headers.common["authorization"] = token;
     console.log("FE employerid: ", employerId);
    await axios
       .get(`${backendServer}/jobPosted`,{
@@ -75,6 +78,7 @@ const ReportEmployer = () => {
     // let compAppliedName = [];
     // let compRejectedName = [];
     // let compAcceptedName = [];
+    axios.defaults.headers.common["authorization"] = token;
    await axios
       .get(`${backendServer}/applicantsDetail`, {
         params: {

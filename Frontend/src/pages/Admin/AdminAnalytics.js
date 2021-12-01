@@ -5,6 +5,7 @@ import backendServer from "../../webConfig";
 import AdminNavbar from "./AdminNavbar";
 import { Container, Row, Col } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import { withRouter } from 'react-router-dom'
 
 const AdminAnalytics = () => {
   const token = useSelector((state) => state.userInfo.token);
@@ -480,4 +481,4 @@ const AdminAnalytics = () => {
   );
 };
 
-export default AdminAnalytics;
+export default withRouter(AdminAnalytics);

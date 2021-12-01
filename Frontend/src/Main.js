@@ -36,7 +36,7 @@ import AppliedJobs from './pages/JobSeeker/AppliedJobs.js'
 import AdminRoute from './ProtectedRoute/AdminRoute.js'
 import EmployerRoute from './ProtectedRoute/EmployerRoute.js'
 import  CompanyRoute from './ProtectedRoute/CompanyRoute'
-
+import MessageRoute from './ProtectedRoute/MessageRoute.js'
 import { connect } from 'react-redux'
 
 //Create a Main Component
@@ -50,11 +50,11 @@ class Main extends Component {
         <Route path="/login" component={Login} />
         <Route path="/home" component={Home} />
         <Route path="/header" component={Header} />
-        {/* <Route path="/snapshot" component={Snapshot} /> */}
-        {/* <Route path="/whyJoinUs" component={JoinUs} /> */}
+        <Route path="/snapshot" component={Snapshot} /> 
+        <Route path="/whyJoinUs" component={JoinUs} />
         <Route path="/signup" component={Signup} />
-        <Route path="/postJob" component={PostJob} />
-        <Route path="/employer" component={Employer} />
+        {/* <Route path="/postJob" component={PostJob} />
+        <Route path="/employer" component={Employer} /> */}
         {/* <Route path="/employerprofile" component={EmployerProfile} /> */}
         {/* <Route
           path="/employerupdateprofile"
@@ -64,8 +64,8 @@ class Main extends Component {
         {/* <Route path="/company" component={CompanyTabs} /> */}
         <Route path="/photos" component={UploadPhotos} />
         {/* <Route path="/companyPhotos" component={CompanyPhotos} /> */}
-        {/* <Route path="/adminPhotos" component={AdminPhoto} /> */}
-        {/* <Route path="/jobs" component={CompanyJobs} /> */}
+        <Route path="/adminPhotos" component={AdminPhoto} />
+        <Route path="/jobs" component={CompanyJobs} />
         {/* <Route path="/reviews" component={Reviews} /> */}
         {/* <Route path="/featuredReviews" component={FeaturedReview} /> */}
         {/* <Route path="/adminReviews" component={AdminReview} /> */}
@@ -79,7 +79,7 @@ class Main extends Component {
         {/* <Route path="/findSalByTitle/:id" component={FindSalByTitle} /> */}
         <Route path="/findSalByTitle/:jobTitle" component={FindSalByTitle} />
         {/* <Route path="/adminAnalytics" component={AdminAnalytics} /> */}
-        <Route path="/messenger" component={Messenger} />
+        {/* <Route path="/messenger" component={Messenger} /> */}
         {/* <Route path="/profileReviews" component={ReviewProfile} />
         <Route path="/myPhotos" component={MyPhotos} />
         <Route path="/savedjobs" component={SavedJobs} />
@@ -87,24 +87,24 @@ class Main extends Component {
 
         {/* Protected paths */}
         <AdminRoute path="/adminCompany" component={AdminCompany} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
-        <AdminRoute path="/adminPhotos" component={AdminPhoto} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
+        {/* <AdminRoute path="/adminPhotos" component={AdminPhoto} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/> */}
         <AdminRoute path="/adminReviews" component={AdminReview} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
         <AdminRoute path="/adminAnalytics" component={AdminAnalytics} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
 
-        {/* <EmployerRoute path="/postJob" component={PostJob} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/> */}
-        {/* <EmployerRoute path="/employer" component={Employer} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/> */}
+        <EmployerRoute path="/postJob" component={PostJob} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
+        <EmployerRoute path="/employer" component={Employer} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
         <EmployerRoute path="/employerprofile" component={EmployerProfile} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
         <EmployerRoute path="/employerupdateprofile" component={EmployerUpdateProfile} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
         <EmployerRoute path="/featuredReviews" component={FeaturedReview} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
         <EmployerRoute path="/employerAnalytics" component={EmployerAnalytics} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
      
         <CompanyRoute path="/company" component={CompanyTabs} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
-        <CompanyRoute path="/snapshot" component={Snapshot} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
-        <CompanyRoute path="/whyJoinUs" component={JoinUs} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
+        {/* <CompanyRoute path="/snapshot" component={Snapshot} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
+        <CompanyRoute path="/whyJoinUs" component={JoinUs} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/> */}
         <CompanyRoute path="/reviews" component={Reviews} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
         <CompanyRoute path="/addSalaryReview" component={AddSalaryReview} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
         <CompanyRoute path="/companyPhotos" component={CompanyPhotos} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
-        <CompanyRoute path="/jobs" component={CompanyJobs} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
+        {/* <CompanyRoute path="/jobs" component={CompanyJobs} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/> */}
 
         <CompanyRoute path="/preferences" component={Preferences} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
         <CompanyRoute path="/profileReviews" component={ReviewProfile} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
@@ -112,6 +112,8 @@ class Main extends Component {
         <CompanyRoute path="/savedjobs" component={SavedJobs} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
         <CompanyRoute path="/appliedjobs" component={AppliedJobs} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
      
+        <MessageRoute path="/messenger" component={Messenger} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/>
+
       </div>
     )
   }

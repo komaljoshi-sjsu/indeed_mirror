@@ -4,6 +4,8 @@ import { useState } from "react";
 import axios from "axios";
 import { Bar} from "react-chartjs-2";
 import { useSelector } from "react-redux";
+import { withRouter } from 'react-router-dom'
+import backendServer from "../../webConfig";
 
 const CompanyStatistics = (props) => {
   const [show, setShow] = useState(false);
@@ -19,7 +21,7 @@ const CompanyStatistics = (props) => {
   
   const getStatistics = async () =>{
     axios.defaults.headers.common['authorization'] = token;
-    const statDtls = await axios("/companyJobStatistics", {params:{data:companyId}});
+    const statDtls = await axios(backendServer+'/companyJobStatistics', {params:{data:companyId}});
     
     setHiredArray(statDtls.data.hired.map(function (el) { return el.count; }));
     setRejectArray(statDtls.data.rejected.map(function (el) { return el.count; }));
@@ -94,4 +96,4 @@ const CompanyStatistics = (props) => {
   );
 };
 
-export default CompanyStatistics;
+export default withRouter(CompanyStatistics);
