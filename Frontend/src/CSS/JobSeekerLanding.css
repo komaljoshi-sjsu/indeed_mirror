@@ -13,6 +13,7 @@
     border-style: solid;
     border-radius: 7px;
     border-width: 1px 1px 1px 0;
+    height: 51px;
 }
 
 .noborder
@@ -39,10 +40,9 @@
 
 .whatSearch2
 {
-    width: 350px;
-    /* height: 50px; */
+    width: 180px;
+    height: 51px;
     border-width: 1px 0 1px 0;
-    width: 500px;
     
 }
 

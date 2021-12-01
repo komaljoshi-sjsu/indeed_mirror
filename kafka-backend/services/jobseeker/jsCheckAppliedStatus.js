@@ -7,7 +7,7 @@ let jsCheckAppliedStatus = async (req, callback) => {
     let { appliedDate, jobId, id, companyId } = req.body
     console.log(req.body)
     conn.query(
-      'select * from AppliedJobs where jobId = ? and id = ? and companyId = ?',
+      'select * from AppliedJobs where jobId = ? and id = ? and companyId = ? and status <> "Rejected"',
       [jobId, id, companyId],
       async function (err, results) {
         if (results && results.length <= 0) {
