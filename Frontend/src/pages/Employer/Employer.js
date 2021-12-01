@@ -118,12 +118,18 @@ handleModalCloseProfile(){
     document.body.appendChild(link);
     link.click();
 }
+
   viewJobSeekerResume = (id) => {
     const jobSeekerId = {
       id : id
     }
     axios.post(`${backendServer}/getJobSeekerResume`,jobSeekerId).then((response) => {
+ 
+      if(response.data === " "){
+        alert("No Resume Added")
+      }
       if(response.status === 200){
+        
         let resumeUrl = response.data;
         let keyarr = resumeUrl.split('/');
         let key = keyarr[keyarr.length-1];

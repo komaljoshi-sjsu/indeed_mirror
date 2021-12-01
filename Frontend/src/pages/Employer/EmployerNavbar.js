@@ -33,9 +33,9 @@ class EmployerNavbar extends Component {
   logoutAction =  (e) => {
     e.preventDefault();
     this.props.logout(true);
-    // const {history} = this.props;
-    // history.push('/landingPage');
-    window.location.href='/landingPage';
+    const {history} = this.props;
+    history.push('/landingPage');
+   // window.location.href='/landingPage';
   }
 
   render() {
