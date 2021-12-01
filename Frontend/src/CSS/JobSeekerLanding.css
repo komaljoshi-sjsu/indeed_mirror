@@ -136,3 +136,9 @@ hr {
     color: #003399;
     cursor: pointer;
 }
+
+.signoutbtn{
+    position: absolute;
+    right: 125px;
+    top: 6px;
+}

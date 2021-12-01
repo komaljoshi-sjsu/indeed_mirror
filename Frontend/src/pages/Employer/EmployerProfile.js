@@ -15,6 +15,8 @@ import PropTypes from "prop-types";
 import logo from '../../images/employers.png'
 import {setCompId} from '../../reduxutils/actioncreators/companyaction';
 import { withRouter } from 'react-router';
+import {logout} from '../../reduxutils/actioncreators/useraction';
+
 class EmployerProfile extends Component {
     constructor(props) {
       super(props);
@@ -319,6 +321,13 @@ class EmployerProfile extends Component {
 
        this.sendImageAPI(formData);        
     }
+    logoutAction =  (e) => {
+        e.preventDefault();
+        this.props.logout(true);
+        const {history} = this.props;
+        history.push('/landingPage');
+        //window.location.href='/landingPage';
+      }
     sendImageAPI = (data) => {
        // const {employerDetails} = this.state;
           axios
@@ -785,6 +794,7 @@ class EmployerProfile extends Component {
     
       return (
         <div>
+            <Button className="signoutbtn" onClick={this.logoutAction} >Sign Out</Button>
              {/* <EmployerNavbar/> */}
              <div className="main-div1">
              <Row>   
@@ -837,7 +847,8 @@ class EmployerProfile extends Component {
   })
   function mapDispatchToProps(dispatch) {
     return {
-        setCompId: compid => dispatch(setCompId(compid))
+        setCompId: compid => dispatch(setCompId(compid)),
+        logout: val => dispatch(logout(val))
     };
   }
 
