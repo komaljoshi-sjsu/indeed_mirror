@@ -41,7 +41,8 @@ const AddSalaryReview = (props) => {
   console.log('visible' ,visible);
   const companyId = useSelector((state)=>state.company.compid);
   const jobSeekerId = useSelector((state)=>state.userInfo.id);
-  let jobTitleOption =[];
+  const [jobTitleOption, setJobTitleOption] =useState([]);
+  const [cityOption, setCityOption] = useState([]);
   
   useEffect(() => {
     console.log("companyid",companyId);
@@ -64,7 +65,7 @@ const AddSalaryReview = (props) => {
 
       axios.get(`${backendServer}/getCompanyDetails`) .then((response) => {
         
-        console.log(response);
+        console.log("getCompanyDetails:",response);
         if (response.status === 200) {
           setCompanyDtls(response.data);
           console.log(response.data);
@@ -78,17 +79,26 @@ const AddSalaryReview = (props) => {
         console.log(response);
         if (response.status === 200) {
           setJobDtls(response.data);
+          let jobTitleOptionArray = [];
+          let cityOptionArray = [];
           jobDtls.forEach((obj)=>{
-            if(!jobTitleOption.includes(obj.jobTitle))
+            console.log("hiknijnjnjm")
+            if(!jobTitleOptionArray.includes(obj.jobTitle))
             {
-              console.log("options3",obj.jobTitle);
-              jobTitleOption.push(obj.jobTitle);
-              console.log("options",jobTitleOption);
+              // console.log("options3",obj.jobTitle);
+              jobTitleOptionArray.push(obj.jobTitle);
+              // console.log("options",jobTitleOption);
             }
-            
+            if(!cityOptionArray.includes(obj.city))
+            {
+              // console.log("options3",obj.jobTitle);
+              cityOptionArray.push(obj.city);
+              // console.log("options",jobTitleOption);
+            }
           })
-          
-          console.log("JobDtls: ",response.data);
+          setJobTitleOption(jobTitleOptionArray);
+          setCityOption(cityOptionArray);
+          console.log("JobDtls: ",jobTitleOption);
       }
       }).catch((err) => {
         console.log(err);
@@ -294,11 +304,11 @@ const AddSalaryReview = (props) => {
                   <Autocomplete
                       id="jobtitle"
                       // options={jobDtls.filter(companyName => nameComp)}
-                      options={jobDtls}
+                      options={jobTitleOption.map((option) => option)}
                       renderInput={params => (
                         <TextField {...params} label="Job Title" variant="outlined" />
                       )}
-                      getOptionLabel={option => option.jobTitle}
+                      getOptionLabel={option => option}
                       style={{ width: 270 }}
                       value={titleJob}
                       name="jobTitle"
@@ -312,26 +322,11 @@ const AddSalaryReview = (props) => {
                   <Form.Label>Where’s your job location?</Form.Label>
                   <Autocomplete
                       id="jobloc"
-                      options={jobDtls}
-                      // renderOption={(props, option) => (
-                      //     <Box
-                      //         component='li'
-                      //         {...props}
-                      //     >
-                      //         {option.name}
-                      //     </Box>
-                      // )}
-                      renderOption={(props, option) => {
-                        return (
-                          <li {...props} key={option.city}>
-                            {option.city}
-                          </li>
-                        );
-                      }}
+                      options={cityOption.map((option) => option)}
                       renderInput={params => (
                         <TextField {...params} label="Job Location" variant="outlined" />
                       )}
-                      getOptionLabel={option => option.city}
+                      getOptionLabel={option => option}
                       style={{ width: 270 }}
                       value={locJob}
                       name="jobLocation"
