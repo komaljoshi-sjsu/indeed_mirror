@@ -51,11 +51,17 @@ const login  = (req, callback) => {
                     const compRes = await bcrypt.compare(password, results[0].password);
                     let payload = { id: results[0].id, accountType: results[0].accountType, user: results[0] };
                     if (compRes) {
-                        JobSeeker.find({jobSeekerId:payload.id},'resumeUrl').then(resume => {
-                            console.log('resume:',resume);
-                            resume  = resume[0];
-                            if(resume!=null)
-                            payload.resumeUrl=resume.resumeUrl;
+                        JobSeeker.find({jobSeekerId:payload.id},'resumeUrl jobPreference').then(jbskr => {
+                            //console.log('resume:',resume);
+                            jbskr  = jbskr[0];
+                            if(jbskr!=null) {
+                                if(jbskr.resumeUrl!=null)
+                                    payload.resumeUrl=jbskr.resumeUrl;
+                                if(jbskr.jobPreference!=null) {
+                                    payload.jobPreference=jbskr.jobPreference;
+                                }
+                            }
+                            
                             const token = jwt.sign(payload, secret, {
                                 expiresIn: 1008000,
                             });

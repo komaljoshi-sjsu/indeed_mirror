@@ -12,11 +12,19 @@ import { userActionCreator } from '../../reduxutils/actions.js'
 import {companyActionCreator} from '../../reduxutils/actions.js';
 import logo from '../../images/Indeed_logo.png'
 import ErrorMsg from '../Error/ErrorMsg'
+import {prefActionCreator} from '../../reduxutils/actions';
 
 function Login(props) {
     const [redirectVal, redirectValFn] = useState(null)
     const dispatch = useDispatch()
     const[errMsg,setErrMsg] = useState('');
+
+    const setTitle = bindActionCreators(prefActionCreator.setTitle,dispatch);
+    const setType = bindActionCreators(prefActionCreator.setType,dispatch);
+    const setPay = bindActionCreators(prefActionCreator.setPay,dispatch);
+    const setSchedule = bindActionCreators(prefActionCreator.setSchedule,dispatch);
+    const setRemote = bindActionCreators(prefActionCreator.setRemote,dispatch);
+    const setRelocation = bindActionCreators(prefActionCreator.setRelocation,dispatch);
 
     const setEmail = bindActionCreators(userActionCreator.setEmail,dispatch);
     const setId = bindActionCreators(userActionCreator.setId,dispatch);
@@ -74,6 +82,33 @@ function Login(props) {
             if(accountType=='JobSeeker')  {
                 if(decoded.resumeUrl!=null && decoded.resumeUrl.trim().length>0)
                     setResumeUrl(decoded.resumeUrl);
+                if(decoded.jobPreference!=null) {
+                  let jobPref = decoded.jobPreference;
+                  for(let header in jobPref) {
+                    if( !jobPref.hasOwnProperty(header) )
+                      continue;
+                    switch(header) {
+                      case 'Job Title':
+                          setTitle(jobPref[header]);
+                          break;
+                      case 'Job Types':
+                          setType(jobPref[header]);
+                          break;
+                      case 'Work Schedules':
+                          setSchedule(jobPref[header]);
+                          break;
+                      case 'Remote':
+                          setRemote(jobPref[header]);
+                          break;
+                      case 'Pay':
+                          setPay(jobPref[header]);
+                          break;
+                      case 'Relocation':
+                          setRelocation(jobPref[header]);
+                          break;
+                    }
+                  }
+                }
                 setPhone(user.jobSeekerContact);
                 redirectValFn(<Redirect to="/landingPage"/>);
             } else if(accountType=='Employer')  {
