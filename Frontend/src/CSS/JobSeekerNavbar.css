@@ -38,3 +38,8 @@ li:hover {
   font-weight: bold;
   margin-left: 50px;
 }
+
+/* nav .navbar-nav li a :active{
+  border-bottom: 3px solid #003399;
+  background-color: white;
+  } */

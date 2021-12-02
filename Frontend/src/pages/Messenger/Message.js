@@ -1,8 +1,9 @@
 import React from 'react'
 import '../../CSS/Messenger.css'
 import { format } from "timeago.js";
+import { withRouter } from 'react-router-dom';
 
-export default function Message({ message, own }) {
+function Message({ message, own }) {
 
     return (
         <div className={own ? "message own" : "message"}>
@@ -17,3 +18,4 @@ export default function Message({ message, own }) {
         </div>
     );
 }
+export default withRouter(Message);

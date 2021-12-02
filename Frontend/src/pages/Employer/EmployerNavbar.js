@@ -61,7 +61,7 @@ class EmployerNavbar extends Component {
 
                 <li class="nav-item">
 
-                  <a class="nav-link active" aria-current="page" href="/Employer">
+                  <a class="nav-link active" aria-current="page" href="#">
                     <Link to="/employer"
                       style={{
                         textDecoration: 'none',
