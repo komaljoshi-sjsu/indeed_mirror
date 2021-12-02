@@ -705,17 +705,55 @@ class JobSeekerLandingPage extends Component {
     }
   }
 
-  // paginate = (pageNumber) => {
-  //   console.log(pageNumber)
-  //   this.setState(
-  //     {
-  //       currentPage: pageNumber,
-  //     },
-  //     () => {
-  //       this.getPaginatedData()
-  //     },
-  //   )
-  // }
+  async handleUnsaveJob(evt) {
+    console.log(evt.currentTarget.id)
+    const companyId = evt.currentTarget.id
+    const jobId = this.state.jobId
+    const userInfo = this.props.userInfo
+    const {
+      city,
+      state,
+      zip,
+      jobType,
+      salary,
+      location,
+      roleName,
+      companyName,
+    } = this.state
+
+    console.log(userInfo)
+    if (userInfo.email !== '' && userInfo.accountType === 'JobSeeker') {
+      console.log('User has signed in')
+      const userId = userInfo.id
+      const data = {
+        companyId,
+        city,
+        state,
+        zip,
+        jobType,
+        salary,
+        location,
+        roleName,
+        companyName,
+        jobId,
+        userId,
+      }
+      axios.defaults.headers.common['authorization'] = this.props.userInfo.token
+      await axios
+        .post(backendServer + '/jobSeeker/unsaveJob', data)
+        .then((response) => {
+          console.log(response.data, response.status)
+          if (response.status === 200) {
+            this.setState({
+              saved: false,
+            })
+          }
+        })
+    } else {
+      console.log("User didn't sign in")
+      this.props.history.push('/login')
+    }
+  }
 
   handlePageClick = (event) => {
     // const newOffset = (event.selected * 2) % this.state.totalCount
@@ -1006,12 +1044,12 @@ class JobSeekerLandingPage extends Component {
                     {this.state.saved ? (
                       <button
                         type="button"
-                        class="btn savebtn"
+                        class="btn undosavebtn"
                         id={this.state.companyId}
-                        disabled
+                        onClick={this.handleUnsaveJob.bind(this)}
                       >
                         <h5 style={{ marginTop: '4px', color: 'white' }}>
-                          Saved
+                          Undo Save
                         </h5>
                       </button>
                     ) : (

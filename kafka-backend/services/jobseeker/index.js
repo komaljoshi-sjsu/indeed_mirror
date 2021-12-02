@@ -59,6 +59,7 @@ const {
 const { jobsGetCompanyImage } = require('./jobsGetCompanyImage')
 const { jobsPaginatedData } = require('./jobsPaginatedData')
 const { getJobSeekerPhotos } = require('./getJobSeekerPhotos')
+const { jsUnsavejob } = require('./jsUnsavejob')
 
 function handle_request(msg, callback) {
   switch (msg.route) {
@@ -214,6 +215,10 @@ function handle_request(msg, callback) {
 
     case 'getJobSeekerPhotos':
       getJobSeekerPhotos(msg, callback)
+      break
+
+    case 'unsaveJob':
+      jsUnsavejob(msg, callback)
       break
   }
 }
