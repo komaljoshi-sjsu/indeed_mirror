@@ -47,8 +47,8 @@ function auth() {
           }
         });
       }
-      else if("Admin" === accountType && jwt_payload.id === admin.id) {
-             callback(null, admin);
+      else if ("Admin" === accountType && jwt_payload.id === admin.id) {
+        callback(null, admin);
       }
       else {
         callback(null, false);

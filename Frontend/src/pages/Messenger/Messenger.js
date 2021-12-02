@@ -8,6 +8,7 @@ import Select from "react-select";
 import { useSelector } from "react-redux";
 import JobSeekerLoggedInNavbar from '../JobSeeker/JobSeekerLoggedInNavbar'
 import EmployerNavbar from '../Employer/EmployerNavbar'
+import { withRouter } from 'react-router-dom';
 
 const Messenger = (props) => {
   const [currentChat, setCurrentChat] = useState();
@@ -183,4 +184,4 @@ const Messenger = (props) => {
     </div>
   );
 };
-export default Messenger;
+export default withRouter(Messenger);

@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 import '../../CSS/Conversation.css'
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { withRouter } from 'react-router-dom';
 
-export default function Conversation({conversation, currentUser, role}) {
+function Conversation({conversation, currentUser, role}) {
 
     const [jobSeeker, setJobSeeker ] = useState();
     const token = useSelector((state) => state.userInfo.token);
@@ -44,3 +45,4 @@ export default function Conversation({conversation, currentUser, role}) {
         </div>}</>
     );
 }
+export default withRouter(Conversation);
