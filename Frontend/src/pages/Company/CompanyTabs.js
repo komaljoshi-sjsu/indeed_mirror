@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import axios from 'axios'
+import backendServer from '../../webConfig'
 import { RatingView } from 'react-simple-star-rating'
 import CompanyImage from '../../images/companyImage.png'
 import companyLogo from '../../images/company-logo.jpeg'
@@ -52,7 +53,7 @@ class CompanyTabs extends Component {
   }
 
   async getAllData() {
-    await axios.get('http://localhost:5000/jobSeeker/getCompanyReviews').then(
+    await axios.get(backendServer + '/jobSeeker/getCompanyReviews').then(
       (response) => {
         console.log(response.data, response.status)
 
@@ -72,7 +73,7 @@ class CompanyTabs extends Component {
       },
     )
 
-    await axios.get('http://localhost:5000/jobSeeker/getCompanyRating').then(
+    await axios.get(backendServer + '/jobSeeker/getCompanyRating').then(
       (response) => {
         console.log(response.data, response.status)
 
@@ -93,7 +94,7 @@ class CompanyTabs extends Component {
 
     let data = { companyId: this.state.companyId }
     console.log('Image........ ' + data)
-    await axios.post('http://localhost:5000/jobs/getCompanyImage', data).then(
+    await axios.post(backendServer + '/jobs/getCompanyImage', data).then(
       (response) => {
         console.log('Image response ............')
         console.log(response.data, response.status)

@@ -5,6 +5,7 @@ import TextField from '@mui/material/TextField'
 import { makeStyles } from '@material-ui/styles'
 import Autocomplete from '@mui/material/Autocomplete'
 import axios from 'axios'
+import backendServer from '../../webConfig'
 import ReactPaginate from 'react-paginate'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -96,7 +97,7 @@ class CompanyJobs extends Component {
     let companyName = this.state.companyName
     const data = { companyName }
     console.log(this.props.companyInfo.compName)
-    await axios.post('http://localhost:5000/jobs/companyJobs', data).then(
+    await axios.post(backendServer + '/jobs/companyJobs', data).then(
       (response) => {
         console.log(response.data, response.status)
         if (response.status === 200 && response.data.length > 0) {
@@ -182,16 +183,14 @@ class CompanyJobs extends Component {
       currentPage: this.state.currentPage,
       companyName: this.state.companyName,
     }
-    axios
-      .post('http://localhost:5000/jobs/paginatedData', data)
-      .then((response) => {
-        console.log(response.data, response.status)
-        if (response.status === 200 && response.data.length > 0) {
-          this.setState({
-            jobs: response.data,
-          })
-        }
-      })
+    axios.post(backendServer + '/jobs/paginatedData', data).then((response) => {
+      console.log(response.data, response.status)
+      if (response.status === 200 && response.data.length > 0) {
+        this.setState({
+          jobs: response.data,
+        })
+      }
+    })
   }
 
   calculateDaysSincePosted() {
@@ -252,7 +251,7 @@ class CompanyJobs extends Component {
       )
       axios.defaults.headers.common['authorization'] = this.props.userInfo.token
       axios
-        .post('http://localhost:5000/jobSeeker/checkAppliedStatus', data)
+        .post(backendServer + '/jobSeeker/checkAppliedStatus', data)
         .then((response) => {
           console.log(response.data, response.status)
           if (response.status === 200) {
@@ -323,7 +322,7 @@ class CompanyJobs extends Component {
         companyName: this.state.companyName,
       }
       await axios
-        .post('http://localhost:5000/jobs/filterOnLocationAndTitle', data)
+        .post(backendServer + '/jobs/filterOnLocationAndTitle', data)
         .then((response) => {
           console.log(response.data, response.status)
           if (response.status === 200 && response.data) {
@@ -369,7 +368,7 @@ class CompanyJobs extends Component {
         companyName: this.state.companyName,
       }
       await axios
-        .post('http://localhost:5000/jobs/filterOnLocation', data)
+        .post(backendServer + '/jobs/filterOnLocation', data)
         .then((response) => {
           console.log(response.data, response.status)
           if (response.status === 200 && response.data) {
@@ -415,7 +414,7 @@ class CompanyJobs extends Component {
         companyName: this.state.companyName,
       }
       await axios
-        .post('http://localhost:5000/jobs/filterOnJobTitleOrCompanyName', data)
+        .post(backendServer + '/jobs/filterOnJobTitleOrCompanyName', data)
         .then((response) => {
           if (response.status === 200 && response.data) {
             console.log(
@@ -505,14 +504,12 @@ class CompanyJobs extends Component {
       const data = { appliedDate, jobId, id, companyId }
       console.log(data)
       axios.defaults.headers.common['authorization'] = this.props.userInfo.token
-      axios
-        .post('http://localhost:5000/jobs/applyJob', data)
-        .then((response) => {
-          console.log(response.data, response.status)
-          this.setState({
-            applied: true,
-          })
+      axios.post(backendServer + '/jobs/applyJob', data).then((response) => {
+        console.log(response.data, response.status)
+        this.setState({
+          applied: true,
         })
+      })
     } else {
       console.log("User didn't sign in")
       this.props.history.push('/login')

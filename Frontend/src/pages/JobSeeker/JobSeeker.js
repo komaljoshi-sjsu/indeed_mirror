@@ -8,6 +8,7 @@ import { RatingView } from 'react-simple-star-rating'
 import { makeStyles } from '@material-ui/styles'
 import Autocomplete from '@mui/material/Autocomplete'
 import axios from 'axios'
+import backendServer from '../../webConfig'
 import ReactPaginate from 'react-paginate'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -133,7 +134,7 @@ class JobSeekerLandingPage extends Component {
 
   async getAllData() {
     let job
-    await axios.get('http://localhost:5000/jobSeeker/home').then(
+    await axios.get(backendServer + '/jobSeeker/home').then(
       (response) => {
         if (response.status === 200 && response.data.length > 0) {
           console.log(response.data, response.status)
@@ -209,7 +210,7 @@ class JobSeekerLandingPage extends Component {
       },
     )
 
-    await axios.get('http://localhost:5000/jobSeeker/getCompanyReviews').then(
+    await axios.get(backendServer + '/jobSeeker/getCompanyReviews').then(
       (response) => {
         console.log(response.data, response.status)
         if (response.status === 200 && response.data.length > 0) {
@@ -235,7 +236,7 @@ class JobSeekerLandingPage extends Component {
       },
     )
 
-    await axios.get('http://localhost:5000/jobSeeker/getCompanyRating').then(
+    await axios.get(backendServer + '/jobSeeker/getCompanyRating').then(
       (response) => {
         console.log(response.data, response.status)
         if (response.status === 200 && response.data.length > 0) {
@@ -270,7 +271,7 @@ class JobSeekerLandingPage extends Component {
     console.log(this.state.currentPage)
     let data = { currentPage: this.state.currentPage }
     axios
-      .post('http://localhost:5000/jobSeeker/paginatedData', data)
+      .post(backendServer + '/jobSeeker/paginatedData', data)
       .then((response) => {
         console.log(response.data, response.status)
         if (response.status === 200 && response.data.length > 0) {
@@ -307,7 +308,7 @@ class JobSeekerLandingPage extends Component {
       )
       axios.defaults.headers.common['authorization'] = this.props.userInfo.token
       axios
-        .post('http://localhost:5000/jobSeeker/checkAppliedStatus', data)
+        .post(backendServer + '/jobSeeker/checkAppliedStatus', data)
         .then((response) => {
           console.log(response.data, response.status)
           if (response.status === 200) {
@@ -364,7 +365,7 @@ class JobSeekerLandingPage extends Component {
       }
       axios.defaults.headers.common['authorization'] = this.props.userInfo.token
       axios
-        .post('http://localhost:5000/jobSeeker/checkSavedStatus', data)
+        .post(backendServer + '/jobSeeker/checkSavedStatus', data)
         .then((response) => {
           console.log(response.data, response.status)
           if (response.status === 200) {
@@ -434,7 +435,7 @@ class JobSeekerLandingPage extends Component {
         whatkeyword: this.state.whatVal,
       }
       axios
-        .post('http://localhost:5000/jobSeeker/filterOnLocationAndTitle', data)
+        .post(backendServer + '/jobSeeker/filterOnLocationAndTitle', data)
         .then((response) => {
           console.log(response.data, response.status)
           if (response.status === 200 && response.data) {
@@ -471,7 +472,7 @@ class JobSeekerLandingPage extends Component {
       console.log('only where')
       let data = { currentPage: 1, keyword: this.state.whereVal }
       axios
-        .post('http://localhost:5000/jobSeeker/filterOnLocation', data)
+        .post(backendServer + '/jobSeeker/filterOnLocation', data)
         .then((response) => {
           console.log(response.data, response.status)
           if (response.status === 200 && response.data) {
@@ -508,10 +509,7 @@ class JobSeekerLandingPage extends Component {
       console.log('only what')
       let data = { currentPage: 1, keyword: this.state.whatVal }
       axios
-        .post(
-          'http://localhost:5000/jobSeeker/filterOnJobTitleOrCompanyName',
-          data,
-        )
+        .post(backendServer + '/jobSeeker/filterOnJobTitleOrCompanyName', data)
         .then((response) => {
           if (response.status === 200 && response.data) {
             console.log(
@@ -619,7 +617,7 @@ class JobSeekerLandingPage extends Component {
     let data = { id: this.state.companyId }
     console.log(data)
     await axios
-      .post('http://localhost:5000/jobSeeker/updateNoOfViews', data)
+      .post(backendServer + '/jobSeeker/updateNoOfViews', data)
       .then((response) => {
         console.log(response.data, response.status)
       })
@@ -642,7 +640,7 @@ class JobSeekerLandingPage extends Component {
       console.log(data)
       axios.defaults.headers.common['authorization'] = this.props.userInfo.token
       axios
-        .post('http://localhost:5000/jobSeeker/applyJob', data)
+        .post(backendServer + '/jobSeeker/applyJob', data)
         .then((response) => {
           console.log(response.data, response.status)
           if (response.status === 200) {
@@ -692,7 +690,7 @@ class JobSeekerLandingPage extends Component {
       }
       axios.defaults.headers.common['authorization'] = this.props.userInfo.token
       await axios
-        .post('http://localhost:5000/jobSeeker/saveJob', data)
+        .post(backendServer + '/jobSeeker/saveJob', data)
         .then((response) => {
           console.log(response.data, response.status)
           if (response.status === 200) {
