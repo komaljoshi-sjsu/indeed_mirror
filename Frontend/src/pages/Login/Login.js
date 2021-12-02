@@ -69,7 +69,7 @@ function Login(props) {
           setErrMsg(res.data.msg);
           showErrorModal(true);
       } else {
-            alert('Successfully logged in');
+            //alert('Successfully logged in');
             //const jwt_decode = require('jwt-decode');
             setToken(res.data);
             var decoded = jwt_decode(res.data.split(' ')[1]);
