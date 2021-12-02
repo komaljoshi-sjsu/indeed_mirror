@@ -266,13 +266,21 @@ class FindSalaries extends Component {
                       options={this.state.whatSearch.map((option) => option)}
                       getOptionLabel={(option) => option}
                       renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          sx={{ width: 180, borderBottom: 'none' }}
-                          //class="whatSearch2"
-                          onChange={this.handleWhatVal.bind(this)}
-                          value={this.state.whatVal}
-                        />
+                        // <TextField
+                        //   {...params}
+                        //   sx={{ width: 180, borderBottom: 'none' }}
+                        //   //class="whatSearch2"
+                        //   onChange={this.handleWhatVal.bind(this)}
+                        //   value={this.state.whatVal}
+                        // />
+                        <div ref={params.InputProps.ref}>
+                          <input
+                            type="text"
+                            {...params.inputProps}
+                            // style={{ height: '50px' }}
+                            class="whatSearch2"
+                          />
+                        </div>
                       )}
                     />
                     <button
@@ -307,13 +315,21 @@ class FindSalaries extends Component {
                       options={this.state.whereSearch.map((option) => option)}
                       getOptionLabel={(option) => option}
                       renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          sx={{ width: 180, borderBottom: 'none' }}
-                          //class="whatSearch2"
-                          value={this.state.whereVal}
-                          onChange={this.handleWhereVal}
-                        />
+                        // <TextField
+                        //   {...params}
+                        //   sx={{ width: 180, borderBottom: 'none' }}
+                        //   //class="whatSearch2"
+                        //   value={this.state.whereVal}
+                        //   onChange={this.handleWhereVal}
+                        // />
+                        <div ref={params.InputProps.ref}>
+                          <input
+                            type="text"
+                            {...params.inputProps}
+                            // style={{ height: '50px' }}
+                            class="whatSearch2"
+                          />
+                          </div>
                       )}
                     />
                     <button
