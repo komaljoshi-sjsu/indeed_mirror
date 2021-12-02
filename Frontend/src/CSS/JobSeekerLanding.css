@@ -94,6 +94,16 @@
     background-color: #003399;
 }
 
+.undosavebtn
+{
+    height: 70px;
+    width: 100px;
+    margin-left: 30px;
+    padding: auto;
+    border-radius: 10px;
+    background-color: #003399;
+}
+
 .hoverUnderline:hover
 {
     color: #003399;

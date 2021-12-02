@@ -144,6 +144,22 @@ router.post('/jobSeeker/saveJob', checkAuth, (req, res) => {
   })
 })
 
+router.post('/jobSeeker/unsaveJob', checkAuth, (req, res) => {
+  console.log('Job Seeker removing jobs array.....')
+  let msg = {}
+  msg.route = 'unsaveJob'
+  msg.body = req.body
+  kafka.make_request('jobseeker', msg, function (err, results) {
+    if (err) {
+      console.log(err)
+      return res.status(400).send(err)
+    } else {
+      console.log('Unsave success')
+      res.status(200).send(results)
+    }
+  })
+})
+
 router.post('/jobSeeker/checkSavedStatus', checkAuth, (req, res) => {
   console.log('Job Seeker checking saved status.....')
   let msg = {}
