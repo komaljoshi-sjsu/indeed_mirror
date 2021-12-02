@@ -131,17 +131,23 @@ handleModalCloseProfile(){
       if(response.status === 200){
         
         let resumeUrl = response.data;
-        let keyarr = resumeUrl.split('/');
-        let key = keyarr[keyarr.length-1];
-        axios.get(backendServer+'/api/downloadResume/'+key).then(res=>{
-            console.log(res);
-            if(res.status=='200') {
-                this.download(res.data,resumeUrl);
-            } else {
-                // showErrorModal(true);
-                // setErrMsg(res.data);
-            }
-        })
+        if(resumeUrl!=null && resumeUrl.trim().length>0) {
+          let keyarr = resumeUrl.split('/');
+          let key = keyarr[keyarr.length-1];
+          console.log('key is ',resumeUrl)
+          axios.get(backendServer+'/api/downloadResume/'+key).then(res=>{
+              console.log(res);
+              if(res.status=='200') {
+                  this.download(res.data,resumeUrl);
+              } else {
+                  // showErrorModal(true);
+                  // setErrMsg(res.data);
+              }
+          })
+        }  else {
+          alert('No resume to download')
+        }
+        
       }
       // if(response.status === 200){
       //   console.log(response.data)
