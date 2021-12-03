@@ -44,7 +44,7 @@ function Signup(props) {
                 console.log("signup data ", res.data);
                 if ("JobSeeker" === accountType) {
                     console.log("calling mongo signup")
-                    axios.post("/api/signupJobSeekerMongo", {
+                    axios.post(backendServer+"/api/signupJobSeekerMongo", {
                         jobSeekerId: res.data.row.id,
                         resumeUrl: "",
                         jobPreference: {},
