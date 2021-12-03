@@ -59,6 +59,7 @@ const {
 const { jobsGetCompanyImage } = require('./jobsGetCompanyImage')
 const { jobsPaginatedData } = require('./jobsPaginatedData')
 const { getJobSeekerPhotos } = require('./getJobSeekerPhotos')
+const { getJobSeekerProfile } = require('./getJobSeekerProfile')
 const { jsUnsavejob } = require('./jsUnsavejob')
 
 function handle_request(msg, callback) {
@@ -219,6 +220,9 @@ function handle_request(msg, callback) {
 
     case 'unsaveJob':
       jsUnsavejob(msg, callback)
+      break
+    case 'getJobSeekerProfile':
+      getJobSeekerProfile(msg, callback)
       break
   }
 }

@@ -1,6 +1,7 @@
 //sample employer component
 import { React, Component} from 'react';
 import axios from 'axios';
+import EmployerNavbar from './EmployerNavbar'
 import {
     Form, Button, Row, Col, Card, Container, FormControl,
   } from 'react-bootstrap';
@@ -165,7 +166,7 @@ class PostJob extends Component {
             // console.log(errors)
       return (
         <div>
-            
+              <EmployerNavbar/>
             <br></br>
             <Container style={{ display: 'flex', justifyContent: 'center' }}>
             
@@ -180,13 +181,14 @@ class PostJob extends Component {
               {(errorMsg !== undefined && errorMsg != null)
                 ? <h4 style={{ color: 'brown' }}>{errorMsg}</h4> : null}
             </div>
+            <span style={{color:'red'}}>* </span> <span style={{color:'gray'}}>Required Fields</span>
              <Row>
               <Col><b>Company Name</b></Col>
               </Row>
               <Row>
               <Col>
                 <Form.Group className="mb-3">
-                  <Form.Control name="companyName" type="text" placeholder="Enter your Company Name"
+                  <Form.Control name="companyName" type="text" placeholder="Enter your Company Name" 
                   className="mr-sm-2" disabled value={this.props.company.compName} isInvalid={!!errors.companyName} />
                   <Form.Control.Feedback type="invalid">
                    
@@ -195,12 +197,12 @@ class PostJob extends Component {
               </Col>
               </Row>
             <Row>
-              <Col><b>Job Title</b></Col>
+              <Col><b>Job Title</b><span style={{color:'red'}}>* </span></Col>
               </Row>
               <Row>
               <Col>
                 <Form.Group className="mb-3">
-                  <Form.Control name="jobTitle" type="text" className="mr-sm-2" onChange={this.handleChange} placeholder="Enter Job title" value={jobTitle} isInvalid={!!errors.companyName}/>
+                  <Form.Control name="jobTitle" type="text" maxLength="50" className="mr-sm-2" onChange={this.handleChange} placeholder="Enter Job title" value={jobTitle} isInvalid={!!errors.companyName}/>
                    <Form.Control.Feedback type="invalid">
                     { errors.jobTitle }
                   </Form.Control.Feedback>
@@ -208,7 +210,7 @@ class PostJob extends Component {
               </Col>
               </Row>
             <Row>
-              <Col><b>Industry</b></Col>
+              <Col><b>Industry</b><span style={{color:'red'}}>* </span></Col>
               </Row>
               <Row>
               <Col>
@@ -228,7 +230,7 @@ class PostJob extends Component {
               </Col>
             </Row>
             <Row>
-            <Col><b>Select Job Mode</b></Col>
+            <Col><b>Select Job Mode</b><span style={{color:'red'}}>* </span></Col>
               </Row>
               <Row>
               <Col>
@@ -242,7 +244,7 @@ class PostJob extends Component {
               </Col>
             </Row>
             <Row>
-            <Col><b>Select Job Type</b></Col>
+            <Col><b>Select Job Type</b><span style={{color:'red'}}>* </span></Col>
               </Row>
               <Row>
               <Col>
@@ -256,12 +258,14 @@ class PostJob extends Component {
               </Col>
             </Row>
             <Row>
-                <Col><b>Enter Job Description</b></Col>
+                <Col><b>Enter Job Description</b><span style={{color:'red'}}>* </span></Col>
                 </Row>
                 <Row>
                     <Col>
                     <Form.Group className="mb-3">
-                  <Form.Control name="shortJobDescription" as="textarea" rows={5} className="mr-sm-2" onChange={this.handleChange} value={shortJobDescription} isInvalid={!!errors.shortJobDescription}/>
+                  <Form.Control name="shortJobDescription" as="textarea" rows={5} className="mr-sm-2" 
+                   maxLength="1000"
+                  onChange={this.handleChange} value={shortJobDescription} isInvalid={!!errors.shortJobDescription}/>
                   <Form.Control.Feedback type="invalid">
                     { errors.shortJobDescription }
                   </Form.Control.Feedback>
@@ -274,7 +278,9 @@ class PostJob extends Component {
                 <Row>
                     <Col>
                     <Form.Group className="mb-3">
-                  <Form.Control name="responsibilities" as="textarea" rows={5} className="mr-sm-2" onChange={this.handleChange} value={responsibilities} isInvalid={!!errors.responsibilities}/>
+                  <Form.Control name="responsibilities" as="textarea"
+                  maxLength="1000" 
+                  rows={5} className="mr-sm-2" onChange={this.handleChange} value={responsibilities} isInvalid={!!errors.responsibilities}/>
                   <Form.Control.Feedback type="invalid">
                     { errors.responsibilities }
                   </Form.Control.Feedback>
@@ -287,7 +293,8 @@ class PostJob extends Component {
                 <Row>
                     <Col>
                     <Form.Group className="mb-3">
-                  <Form.Control name="qualifications" as="textarea" rows={5} className="mr-sm-2" onChange={this.handleChange} value={qualifications} isInvalid={!!errors.qualifications}/>
+                  <Form.Control name="qualifications" 
+                   maxLength="1000" as="textarea" rows={5} className="mr-sm-2" onChange={this.handleChange} value={qualifications} isInvalid={!!errors.qualifications}/>
                   <Form.Control.Feedback type="invalid">
                     { errors.qualifications }
                   </Form.Control.Feedback>
@@ -300,7 +307,8 @@ class PostJob extends Component {
                 <Row>
                     <Col>
                     <Form.Group className="mb-3">
-                  <Form.Control name="loveJobRole" as="textarea" rows={5} className="mr-sm-2" onChange={this.handleChange} value={loveJobRole} isInvalid={!!errors.loveJobRole}/>
+                  <Form.Control name="loveJobRole" as="textarea"
+                   maxLength="1000"  rows={5} className="mr-sm-2" onChange={this.handleChange} value={loveJobRole} isInvalid={!!errors.loveJobRole}/>
                   <Form.Control.Feedback type="invalid">
                     { errors.loveJobRole }
                   </Form.Control.Feedback>
@@ -308,7 +316,7 @@ class PostJob extends Component {
                     </Col>
                     </Row>
                     <Row>
-              <Col><b>Salary Details</b></Col>
+              <Col><b>Salary Details</b><span style={{color:'red'}}>* </span></Col>
               </Row>
               <Row>
               <Col>
@@ -321,12 +329,14 @@ class PostJob extends Component {
               </Col>
               </Row>
             <Row>
-              <Col><b>Street Address</b></Col>
+              <Col><b>Street Address</b><span style={{color:'red'}}>* </span></Col>
               </Row>
               <Row>
               <Col>
                 <Form.Group className="mb-3">
-                  <Form.Control name="streetAddress" placeholder="Enter Street Address" type="text" className="mr-sm-2" onChange={this.handleChange} value={streetAddress} isInvalid={!!errors.streetAddress} />
+                  <Form.Control name="streetAddress" placeholder="Enter Street Address" 
+                  maxLength="50"
+                  type="text" className="mr-sm-2" onChange={this.handleChange} value={streetAddress} isInvalid={!!errors.streetAddress} />
                   <Form.Control.Feedback type="invalid">
                     { errors.streetAddress }
                   </Form.Control.Feedback>
@@ -334,12 +344,13 @@ class PostJob extends Component {
               </Col>
             </Row>
             <Row>
-              <Col><b>City</b></Col>
+              <Col><b>City</b><span style={{color:'red'}}>* </span></Col>
               </Row>
               <Row>
               <Col>
                 <Form.Group className="mb-3">
-                  <Form.Control name="city" type="text" placeholder="Enter City" className="mr-sm-2" onChange={this.handleChange} value={city} isInvalid={!!errors.city} />
+                  <Form.Control name="city" 
+                  maxLength="50" type="text" placeholder="Enter City" className="mr-sm-2" onChange={this.handleChange} value={city} isInvalid={!!errors.city} />
                   <Form.Control.Feedback type="invalid">
                     { errors.city }
                   </Form.Control.Feedback>
@@ -347,12 +358,13 @@ class PostJob extends Component {
               </Col>
             </Row>
             <Row>
-              <Col><b>State</b></Col>
+              <Col><b>State</b><span style={{color:'red'}}>* </span></Col>
               </Row>
               <Row>
               <Col>
                 <Form.Group className="mb-3">
-                  <Form.Control name="state" type="text" placeholder="Enter State" className="mr-sm-2" onChange={this.handleChange} value={state} isInvalid={!!errors.state} />
+                  <Form.Control name="state"
+                  maxLength="50" type="text" placeholder="Enter State" className="mr-sm-2" onChange={this.handleChange} value={state} isInvalid={!!errors.state} />
                   <Form.Control.Feedback type="invalid">
                     { errors.state }
                   </Form.Control.Feedback>
@@ -360,12 +372,12 @@ class PostJob extends Component {
               </Col>
             </Row>
             <Row>
-              <Col><b>Zip</b></Col>
+              <Col><b>Zip</b><span style={{color:'red'}}>* </span></Col>
               </Row>
               <Row>
               <Col>
                 <Form.Group className="mb-3">
-                  <Form.Control name="zipcode" type="number" placeholder="Enter Zipcode" className="mr-sm-2" onChange={this.handleChange} value={zipcode} isInvalid={!!errors.zipcode} />
+                  <Form.Control name="zipcode" type="number" maxLength="5" placeholder="Enter Zipcode" className="mr-sm-2" onChange={this.handleChange} value={zipcode} isInvalid={!!errors.zipcode} />
                   <Form.Control.Feedback type="invalid">
                     { errors.zipcode }
                   </Form.Control.Feedback>
@@ -373,7 +385,7 @@ class PostJob extends Component {
               </Col>
             </Row>
             <Row>
-              <Col><b>Country </b></Col>
+              <Col><b>Country </b><span style={{color:'red'}}>* </span></Col>
               </Row>
               <Row>
               <Col>
@@ -398,11 +410,11 @@ class PostJob extends Component {
               </Row>
               <br/>
               <Row>
-              <Col colSpan="2">
+              {/* <Col colSpan="2">
                 <Button variant="primary" type="submit" onClick={this.handleDashBoard}>
                   DashBoard
                 </Button>
-              </Col>
+              </Col> */}
               </Row>
               </Card.Body>
               </Card>

@@ -64,7 +64,7 @@ class Main extends Component {
         {/* <Route path="/company" component={CompanyTabs} /> */}
         <Route path="/photos" component={UploadPhotos} />
         {/* <Route path="/companyPhotos" component={CompanyPhotos} /> */}
-        <Route path="/adminPhotos" component={AdminPhoto} />
+        {/* <Route path="/adminPhotos" component={AdminPhoto} /> */}
         <Route path="/jobs" component={CompanyJobs} />
         {/* <Route path="/reviews" component={Reviews} /> */}
         {/* <Route path="/featuredReviews" component={FeaturedReview} /> */}
@@ -93,7 +93,12 @@ class Main extends Component {
           email={this.props.userInfo.email}
           accountType={this.props.userInfo.accountType}
         />
-        {/* <AdminRoute path="/adminPhotos" component={AdminPhoto} email={this.props.userInfo.email} accountType={this.props.userInfo.accountType}/> */}
+        <AdminRoute
+          path="/adminPhotos"
+          component={AdminPhoto}
+          email={this.props.userInfo.email}
+          accountType={this.props.userInfo.accountType}
+        />
         <AdminRoute
           path="/adminReviews"
           component={AdminReview}

@@ -147,26 +147,40 @@ function Resume(props) {
 
   let handleResumeUpload = (e) => {
     const fileUploaded = e.target.files[0]
-    const filename = fileUploaded.name
-    console.log('Successfully uploaded ', filename)
-    var data = new FormData()
-    data.append('file', fileUploaded)
-    axios.defaults.headers.common['authorization'] = token
-    axios.post(backendServer + '/api/uploadResume/' + id, data).then((res) => {
-      console.log(res)
-      if (res.data.code == '200') {
-        setResumeUrl(res.data.location)
-        setNoResume(false)
-        hideResumeUpdate()
-      } else {
-        console.log('Error while uploading file', res.data)
-        showErrorModal(true)
-        setErrMsg(
-          'Failed to upload file. Please refer browser console for more details',
-        )
-        setNoResume(true)
-      }
-    })
+    if (fileUploaded != null) {
+      const filename = fileUploaded.name
+      //console.log('Successfully uploaded ',filename);
+      var data = new FormData()
+      data.append('file', fileUploaded)
+      axios.defaults.headers.common['authorization'] = token
+      axios
+        .post(backendServer + '/api/uploadResume/' + id, data)
+        .then((res) => {
+          console.log(res)
+          if (res.data.code == '200') {
+            setResumeUrl(res.data.location)
+            setNoResume(false)
+            hideResumeUpdate()
+            if (
+              res.data.location != null &&
+              res.data.location.trim().length > 0
+            ) {
+              let keyarr = res.data.location.split('/')
+              let key = keyarr[keyarr.length - 1]
+              setResumeFileName(key)
+            }
+          } else {
+            console.log('Error while uploading file', res.data)
+            showErrorModal(true)
+            let ermsg =
+              'Failed to Upload resume. Please refer console for more details'
+            if (res.data.msg.message != null) ermsg = res.data.msg.message
+            else if (res.data.msg != null) ermsg = res.data.msg
+            setErrMsg(ermsg)
+            //setNoResume(true);
+          }
+        })
+    }
   }
   let handleResumeReplace = (e) => {
     e.preventDefault()

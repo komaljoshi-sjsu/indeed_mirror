@@ -158,6 +158,11 @@ const uploadResume = multer({
     limits: { fileSize: 2000000 }, // 2 MB
     fileFilter: function (req, file, cb) {
       console.log(file.originalname);
+      const fileSize = parseInt(req.headers['content-length']);
+      console.log('file size is ',fileSize)
+      if(fileSize>2000000) {
+        return cb("File size must not exceed 2 MB");
+      }
       validateFileType(file, cb);
     },
   }).single("file");
@@ -168,7 +173,7 @@ const uploadResume = multer({
     const extname = allowedFileType.test(
       path.extname(file.originalname).toLowerCase()
     );
-  
+    
     if (mimeType && extname) {
       return cb(null, true);
     } else {

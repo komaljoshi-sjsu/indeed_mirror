@@ -1,7 +1,7 @@
 // Employer Landing Page
 import React, { Component } from 'react'
 import EmployerNavbar from './EmployerNavbar'
-import {Button,Card,ListGroup,ListGroupItem,Modal,Row,Col,Pagination} from 'react-bootstrap';
+import {Button,Card,ListGroup,ListGroupItem,Modal,Row,Col,Pagination,Container} from 'react-bootstrap';
 import axios from "axios";
 import backendServer from '../../webConfig';
 import '../../CSS/EmployerLanding.css'
@@ -29,7 +29,8 @@ class Employer extends Component {
       showprofile:false,
       curPage: 1,
       pageSize: 3,
-      status:''
+      status:'',
+    
     }
     //this.getCurrentDate()
   }
@@ -46,15 +47,21 @@ class Employer extends Component {
   }
   updateJobSeekerStatus = (statuschange)=>{
     console.log(statuschange)
+    
      axios.post(`${backendServer}/updateJobSeekerStatus`, statuschange)
              .then(response => {
-                 console.log(response)
+                 if(response.data === 'Job Seeker Status Updated!'){
+                  alert("Job Seeker Status Updated!") 
+                  //this.setState({updateshow:true})
+                  
+                 }
              })
              
   }
   componentDidMount() {
       //console.log("here")
       const companyId = this.props.company.compid;
+      //console.log(companyId)
       const compId = {
         companyId:companyId
       }
@@ -93,15 +100,22 @@ handleModalCloseProfile(){
       id : id
     }
     axios.post(`${backendServer}/getJobSeekerProfile`,jobSeekerId).then((response) => {
-      
+      console.log(response.data)
       if(response.status === 200){
-        console.log(response.data)
+        
         this.setState({
           applicantProfile: this.state.applicantProfile.concat(response.data[0]),
         });
-        this.setState({
-          jobPreference: this.state.jobPreference.concat(response.data[1]),
-        });
+        if(Object.keys(response.data[1]).length === 0){
+          this.setState({
+            jobPreference: this.state.jobPreference,
+          });
+        }else{
+          this.setState({
+            jobPreference: this.state.jobPreference.concat(response.data[1]),
+          });
+        }
+        
         this.setState({show:false})
         this.setState({showprofile:true})
         
@@ -118,35 +132,38 @@ handleModalCloseProfile(){
     document.body.appendChild(link);
     link.click();
 }
+
   viewJobSeekerResume = (id) => {
     const jobSeekerId = {
       id : id
     }
     axios.post(`${backendServer}/getJobSeekerResume`,jobSeekerId).then((response) => {
+ 
+      // if(response.data === " "){
+      //   alert("No Resume Added")
+      // }
       if(response.status === 200){
+        
         let resumeUrl = response.data;
-        let keyarr = resumeUrl.split('/');
-        let key = keyarr[keyarr.length-1];
-        axios.get(backendServer+'/api/downloadResume/'+key).then(res=>{
-            console.log(res);
-            if(res.status=='200') {
-                this.download(res.data,resumeUrl);
-            } else {
-                // showErrorModal(true);
-                // setErrMsg(res.data);
-            }
-        })
+        if(resumeUrl != null && resumeUrl.trim().length>0) {
+          let keyarr = resumeUrl.split('/');
+          let key = keyarr[keyarr.length-1];
+          console.log('key is ',resumeUrl)
+          axios.get(backendServer+'/api/downloadResume/'+key).then(res=>{
+              console.log(res);
+              if(res.status === '200') {
+                  this.download(res.data,resumeUrl);
+              } else {
+                  // showErrorModal(true);
+                  // setErrMsg(res.data);
+              }
+          })
+        }  else {
+          alert('No Resume to Download!')
+        }
+        
       }
-      // if(response.status === 200){
-      //   console.log(response.data)
-      //   this.setState({
-      //     applicantProfile: this.state.applicantProfile.concat(response.data[0]),
-      //   });
-      //   this.setState({
-      //     jobPreference: this.state.jobPreference.concat(response.data[1]),
-      //   });
-      //   this.setState({show:false})
-      //   this.setState({showprofile:true})
+     
         
       // }
     });
@@ -168,7 +185,7 @@ handleModalCloseProfile(){
     axios.post(`${backendServer}/getApplicantsName`,JobId).then((response) => {
       if(response.status === 200){
         console.log(response.data)
-        if(response.data.length >=1) {
+        if(response.data.length >=1 ) {
           this.setState({liststatus : "Applicants List"})
         }else{
           this.setState({liststatus : null})
@@ -289,16 +306,23 @@ handleModalCloseProfile(){
             <div>
                
                 <h5>Profile Details</h5>
-              <Row>
+                <Container style={{ display: 'flex', justifyContent: 'center' }}>
+                <Card style={{ width: '50rem', margin: '0.8em' }}>
+               <Row>
                 <Col>
-                <h6>Email :</h6>{applicant.email}
+                &nbsp;&nbsp; Email : {applicant.email} 
                 </Col>
                 </Row>
                 <Row>
                 <Col>
-                <h6>Phone :</h6> {applicant.jobSeekerContact}
+                &nbsp;&nbsp;&nbsp;Phone :
+                {(applicant.jobSeekerContact !== '' && applicant.jobSeekerContact !== null)
+          ? <h8>{applicant.jobSeekerContact}</h8> : <h8>No Contact Added</h8>}
+                {/* &nbsp;&nbsp; {applicant.jobSeekerContact} */}
                 </Col>
               </Row>
+              </Card>
+               </Container>
 
             </div>
           )}
@@ -306,6 +330,8 @@ handleModalCloseProfile(){
         {jobPreference.map(job=>
             <div>
                <h5>Job Preferences</h5>
+               <Container style={{ display: 'flex', justifyContent: 'center' }}>
+              <Card style={{ width: '50rem', margin: '0.8em' }}>
               <Row>
                 <Col>
                Job Title : {job.JobTitle}
@@ -316,6 +342,7 @@ handleModalCloseProfile(){
                 Job Types : {job.JobTypes}
                 </Col>
               </Row>
+              <br/>
               <h6>Work Schedules :</h6>
                
               <Row>
@@ -342,6 +369,7 @@ handleModalCloseProfile(){
                 )}
                 </Col>
               </Row> 
+              <br/>
               <h6>Pay:</h6>
               <Row>
                 <Col>
@@ -350,14 +378,16 @@ handleModalCloseProfile(){
                Amount : {job.pay.amount}
                 </Col>
                 </Row>
-               
+               <br/>
               <Row>
                 <Col>
-                <h6>Relocation:</h6>{job.relocation}
+                <h6>Relocation:</h6>{(job.relocation)?<h8>YES</h8>:<h8>NO</h8>}
                 </Col>
                 </Row>
-                <h6>Remote:</h6>
+                <br/>
+                
                 <Row>
+                <h6>Remote:</h6>
                 <Col>
                 {job.remote.map(other=>
                 <div>
@@ -366,6 +396,8 @@ handleModalCloseProfile(){
                 )}
                 </Col>
                 </Row>
+                </Card>
+                </Container>
             </div>
           )}
         </div>
@@ -476,6 +508,7 @@ handleModalCloseProfile(){
              
            </Modal>
           </div>
+         
           <div>
          <Modal size="md-down"
           aria-labelledby="contained-modal-title-vcenter"
@@ -483,8 +516,6 @@ handleModalCloseProfile(){
            show={this.state.showprofile} onHide={()=>this.handleModalCloseProfile()}>
              <Modal.Header closeButton><h4>Profile </h4>
              </Modal.Header>
-             
-             
              <Modal.Body>
              
              {profile}
@@ -505,18 +536,5 @@ const mapStateToProps = (state) => ({
 })
 
 export default connect(mapStateToProps)(withRouter(Employer));
-
-
-// Employer.propTypes = {
-//   setId: PropTypes.func.isRequired,
-//   id: PropTypes.object.isRequired,
-// };
-
-// const mapStateToProps = (state) => {
-//   return {
-//     id: state.id
-//   };
-// };
-// export default connect(mapStateToProps, {setId})(Employer);
 
 

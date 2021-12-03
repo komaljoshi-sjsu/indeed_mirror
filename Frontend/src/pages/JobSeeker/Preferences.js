@@ -165,22 +165,22 @@ function Preferences(props) {
                     <Form onSubmit={(e)=>submitPreference(e,'Work Schedules')}>
                         <Form.Group className="mb-3" >
                             <b>Day ranges</b>
-                            <Form.Check type="checkbox" label='Weekend availability' value='Weekend availability' name="dr1"/>
-                            <Form.Check type="checkbox" label='Monday to Friday' value='Monday to Friday' name="dr2"/>
+                            <Form.Check type="checkbox" label='Weekend availability' value='Weekend availability' name="dr1"  defaultChecked={schedule.range.includes('Weekend availability')}/>
+                            <Form.Check type="checkbox" label='Monday to Friday' value='Monday to Friday' name="dr2" defaultChecked={schedule.range.includes('Monday to Friday')}/>
                         </Form.Group>
                         <Form.Group className="mb-3" >
                             <b>Shifts</b>
-                            <Form.Check type="checkbox" label='8 hour shift' value='8 hour shift' name="shift1"/>
-                            <Form.Check type="checkbox" label='10 hour shift' value='10 hour shift' name="shift2"/>
-                            <Form.Check type="checkbox" label='12 hour shift' value='12 hour shift' name="shift3"/>
-                            <Form.Check type="checkbox" label='Day shift' value='Day shift' name="shift4"/>
-                            <Form.Check type="checkbox" label='Night shift' value='Night shift' name="shift5"/>
+                            <Form.Check type="checkbox" label='8 hour shift' value='8 hour shift' name="shift1" defaultChecked={schedule.shifts.includes('8 hour shift')}/>
+                            <Form.Check type="checkbox" label='10 hour shift' value='10 hour shift' name="shift2" defaultChecked={schedule.shifts.includes('10 hour shift')}/>
+                            <Form.Check type="checkbox" label='12 hour shift' value='12 hour shift' name="shift3" defaultChecked={schedule.shifts.includes('12 hour shift')}/>
+                            <Form.Check type="checkbox" label='Day shift' value='Day shift' name="shift4" defaultChecked={schedule.shifts.includes('Day shift')}/>
+                            <Form.Check type="checkbox" label='Night shift' value='Night shift' name="shift5" defaultChecked={schedule.shifts.includes('Night shift')}/>
                         </Form.Group>
                         <Form.Group className="mb-3" >
                             <b>Other</b>
-                            <Form.Check type="checkbox" label='On call' value='On call' name="other1"/>
-                            <Form.Check type="checkbox" label='Holidays' value='Holidays' name="other2"/>
-                            <Form.Check type="checkbox" label='Overtime' value='Overtime' name="other3"/>
+                            <Form.Check type="checkbox" label='On call' value='On call' name="other1" defaultChecked={schedule.other.includes('On call')}/>
+                            <Form.Check type="checkbox" label='Holidays' value='Holidays' name="other2" defaultChecked={schedule.other.includes('Holidays')}/>
+                            <Form.Check type="checkbox" label='Overtime' value='Overtime' name="other3" defaultChecked={schedule.other.includes('Overtime')}/>
                         </Form.Group>
                         <Button variant="primary"  type="submit">
                             Save

@@ -39,3 +39,9 @@ li:hover {
   margin-left: 50px;
   cursor: pointer;
 }
+
+
+/* nav .navbar-nav li a :active{
+  border-bottom: 3px solid #003399;
+  background-color: white;
+  } */

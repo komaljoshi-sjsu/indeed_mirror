@@ -33,9 +33,9 @@ class EmployerNavbar extends Component {
   logoutAction =  (e) => {
     e.preventDefault();
     this.props.logout(true);
-    // const {history} = this.props;
-    // history.push('/landingPage');
-    window.location.href='/landingPage';
+    const {history} = this.props;
+    history.push('/landingPage');
+   // window.location.href='/landingPage';
   }
 
   render() {
@@ -61,7 +61,7 @@ class EmployerNavbar extends Component {
 
                 <li class="nav-item">
 
-                  <a class="nav-link active" aria-current="page" href="/Employer">
+                  <a class="nav-link active" aria-current="page" href="#">
                     <Link to="/employer"
                       style={{
                         textDecoration: 'none',
