@@ -161,8 +161,13 @@ function Resume(props) {
                 } else {
                     console.log('Error while uploading file',res.data);
                     showErrorModal(true);
-                    setErrMsg(res.data.msg);
-                    setNoResume(true);
+                    let ermsg = 'Failed to Upload resume. Please refer console for more details';
+                    if(res.data.msg.message!=null) 
+                        ermsg = res.data.msg.message;
+                    else if(res.data.msg!=null)
+                        ermsg = res.data.msg;
+                    setErrMsg(ermsg);
+                    //setNoResume(true);
                 }
             })
         }
