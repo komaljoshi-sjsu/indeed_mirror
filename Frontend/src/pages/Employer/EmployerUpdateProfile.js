@@ -377,7 +377,7 @@ class EmployerProfile extends Component {
     sendImageAPI = (data) => {
         const {employerDetails} = this.state;
           axios
-          .post("/api/upload", data)
+          .post(backendServer+"/api/upload", data)
           .then((response) => {
             //console.log(response);
             if (response.status === 200) {
@@ -390,7 +390,7 @@ class EmployerProfile extends Component {
                 };
                 employerDetails.logo = response.data.imageLocation;
                 this.setState({employerDetails})
-                axios.post("/api/uploadCompanyProfilePic", data1)
+                axios.post(backendServer+"/api/uploadCompanyProfilePic", data1)
                   .then((response1) => {
                     //console.log("Response ",response1)
                     if (response1.status === 200) {
