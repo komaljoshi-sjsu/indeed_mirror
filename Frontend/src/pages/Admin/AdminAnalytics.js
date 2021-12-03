@@ -212,7 +212,7 @@ const AdminAnalytics = () => {
           labels: name,
           datasets: [
             {
-              label: "Top jobseekers",
+              label: "Top 10 CEO",
               data: ceoRating,
               backgroundColor: ["#f9ea9f"],
               borderWidth: 4,
@@ -245,7 +245,7 @@ const AdminAnalytics = () => {
           labels: name,
           datasets: [
             {
-              label: "Top jobseekers",
+              label: "Top 10 companies",
               data: revCnt,
               backgroundColor: ["#f88db2"],
               borderWidth: 4,
@@ -312,7 +312,7 @@ const AdminAnalytics = () => {
           {/* Chart 2 */}
           <Col style={{ width: "50%" }}>
             <h4>Top 5 companies based on average rating</h4>
-            <Line
+            <Bar
               data={chartTwoData}
               options={{
                 responsive: true,
@@ -379,7 +379,7 @@ const AdminAnalytics = () => {
           {/* Chart 4 */}
           <Col style={{ width: "50%" }}>
             <h4>Top 5 job seekers based on total accepted reviews</h4>
-            <Line
+            <Bar
               data={chartFourData}
               options={{
                 responsive: true,
@@ -446,7 +446,7 @@ const AdminAnalytics = () => {
           {/* Chart 6 */}
           <Col style={{ width: "50%" }}>
             <h4>Top 10 companies based on views per day</h4>
-            <Line
+            <Bar
               data={chartSixData}
               options={{
                 responsive: true,
