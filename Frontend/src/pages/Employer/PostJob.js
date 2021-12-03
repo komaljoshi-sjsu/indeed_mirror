@@ -321,7 +321,7 @@ class PostJob extends Component {
               <Row>
               <Col>
                 <Form.Group className="mb-3">
-                  <Form.Control name="salaryDetails" type="number" className="mr-sm-2" onChange={this.handleChange} placeholder="Enter Salary Details" value={salaryDetails} isInvalid={!!errors.salaryDetails}/>
+                  <Form.Control name="salaryDetails" type="number" className="mr-sm-2" min="0" onChange={this.handleChange} placeholder="Enter Salary Details" value={salaryDetails} isInvalid={!!errors.salaryDetails}/>
                   <Form.Control.Feedback type="invalid">
                     { errors.salaryDetails }
                   </Form.Control.Feedback>
