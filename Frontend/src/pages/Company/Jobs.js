@@ -46,6 +46,7 @@ class CompanyJobs extends Component {
       totalPosts: 0,
       pageCount: 0,
       filterOn: false,
+      noJobs: false,
     }
     this.getCurrentDate()
   }
@@ -166,16 +167,19 @@ class CompanyJobs extends Component {
             totalPosts: response.data.length,
             pageCount: pageCount,
           })
-        }
+
+          this.calculateDaysSincePosted()
+
+          this.getAppliedStatus(job.jobId)
+        } else
+          this.setState({
+            noJobs: true,
+          })
       },
       (error) => {
         console.log(error)
       },
     )
-
-    await this.calculateDaysSincePosted()
-
-    await this.getAppliedStatus(job.jobId)
   }
 
   getPaginatedData() {
@@ -694,81 +698,84 @@ class CompanyJobs extends Component {
                   </div>
                 ))}
               </div>
-
-              <div class="col-5">
-                <div class="card cardStyle">
-                  <div class="card-body">
-                    <h4 class="card-title">{this.state.roleName}</h4>
-                    <h6 class="card-title">{this.state.companyName}</h6>
-                    <h6 class="card-title">
-                      {this.state.city}, {this.state.state}
-                    </h6>
-                    <h6 class="card-title">{this.state.zip}</h6>
-                    <div
-                      class="btn-group"
-                      role="group"
-                      aria-label="Third group"
-                    >
-                      {this.state.applied ? (
-                        <button
-                          type="button"
-                          class="btn applybtn"
-                          id={this.state.jobId}
-                          disabled
-                        >
-                          <h5 style={{ marginTop: '4px', color: 'white' }}>
-                            Applied to Company
-                          </h5>
-                        </button>
-                      ) : (
-                        <button
-                          type="button"
-                          class="btn applybtn"
-                          onClick={this.handleApply.bind(this)}
-                          id={this.state.jobId}
-                        >
-                          <h5 style={{ marginTop: '4px', color: 'white' }}>
-                            Apply On Company Site
-                          </h5>
-                        </button>
-                      )}
+              {this.state.noJobs ? null : (
+                <div class="col-5">
+                  <div class="card cardStyle">
+                    <div class="card-body">
+                      <h4 class="card-title">{this.state.roleName}</h4>
+                      <h6 class="card-title">{this.state.companyName}</h6>
+                      <h6 class="card-title">
+                        {this.state.city}, {this.state.state}
+                      </h6>
+                      <h6 class="card-title">{this.state.zip}</h6>
+                      <div
+                        class="btn-group"
+                        role="group"
+                        aria-label="Third group"
+                      >
+                        {this.state.applied ? (
+                          <button
+                            type="button"
+                            class="btn applybtn"
+                            id={this.state.jobId}
+                            disabled
+                          >
+                            <h5 style={{ marginTop: '4px', color: 'white' }}>
+                              Applied to Company
+                            </h5>
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            class="btn applybtn"
+                            onClick={this.handleApply.bind(this)}
+                            id={this.state.jobId}
+                          >
+                            <h5 style={{ marginTop: '4px', color: 'white' }}>
+                              Apply On Company Site
+                            </h5>
+                          </button>
+                        )}
+                      </div>
+                      <br />
+                      <hr />
+                      <br />
+                      <h5 class="card-title">Job details</h5>
+                      <br />
+                      <h6 style={{ fontWeight: 'bold' }}>Job Type:</h6>
+                      <h6>{this.state.jobType}</h6> <br />
+                      <h6 style={{ fontWeight: 'bold' }}>Salary:</h6>
+                      <h6>${this.state.salary}</h6>
+                      <br />
+                      <hr />
+                      <h5 class="card-title">Full Job Description</h5>
+                      <br />
+                      <h6 style={{ fontWeight: 'bold' }}>Location:</h6>
+                      <h6>{this.state.location}</h6>
+                      <br />
+                      <h6 style={{ fontWeight: 'bold' }}>What you will do:</h6>
+                      <h6 style={{ whiteSpace: 'pre-wrap', color: '#262626' }}>
+                        {this.state.responsibilities}
+                      </h6>
+                      <br />
+                      <h6 style={{ fontWeight: 'bold' }}>
+                        What you will need:
+                      </h6>
+                      <h6 style={{ whiteSpace: 'pre-wrap', color: '#262626' }}>
+                        {this.state.qualifications}
+                      </h6>
+                      <br />
+                      <h6 style={{ fontWeight: 'bold' }}>
+                        Why You’ll love working:
+                      </h6>
+                      <h6 style={{ whiteSpace: 'pre-wrap', color: '#262626' }}>
+                        {this.state.loveJobRole}
+                      </h6>
+                      <br />
                     </div>
-                    <br />
-                    <hr />
-                    <br />
-                    <h5 class="card-title">Job details</h5>
-                    <br />
-                    <h6 style={{ fontWeight: 'bold' }}>Job Type:</h6>
-                    <h6>{this.state.jobType}</h6> <br />
-                    <h6 style={{ fontWeight: 'bold' }}>Salary:</h6>
-                    <h6>${this.state.salary}</h6>
-                    <br />
-                    <hr />
-                    <h5 class="card-title">Full Job Description</h5>
-                    <br />
-                    <h6 style={{ fontWeight: 'bold' }}>Location:</h6>
-                    <h6>{this.state.location}</h6>
-                    <br />
-                    <h6 style={{ fontWeight: 'bold' }}>What you will do:</h6>
-                    <h6 style={{ whiteSpace: 'pre-wrap', color: '#262626' }}>
-                      {this.state.responsibilities}
-                    </h6>
-                    <br />
-                    <h6 style={{ fontWeight: 'bold' }}>What you will need:</h6>
-                    <h6 style={{ whiteSpace: 'pre-wrap', color: '#262626' }}>
-                      {this.state.qualifications}
-                    </h6>
-                    <br />
-                    <h6 style={{ fontWeight: 'bold' }}>
-                      Why You’ll love working:
-                    </h6>
-                    <h6 style={{ whiteSpace: 'pre-wrap', color: '#262626' }}>
-                      {this.state.loveJobRole}
-                    </h6>
-                    <br />
                   </div>
                 </div>
-              </div>
+              )}
               <div class="col-1"></div>
             </div>
           </div>
