@@ -373,7 +373,7 @@ class EmployerProfile extends Component {
     sendImageAPI = (data) => {
        // const {employerDetails} = this.state;
           axios
-          .post("/api/upload", data)
+          .post(backendServer+"/api/upload", data)
           .then((response) => {
             //console.log(response);
             if (response.status === 200) {
