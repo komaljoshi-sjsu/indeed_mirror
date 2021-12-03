@@ -34,7 +34,7 @@ const Messenger = (props) => {
         axios.defaults.headers.common['authorization'] = token;
         const res = await axios.get(backendServer+"/api/getAllJobSeekers");
         const convResponse = await axios.get(
-          "/api/getConversationById/" + userId
+          backendServer+"/api/getConversationById/" + userId
         );
         let removeArr = [];      
         // eslint-disable-next-line array-callback-return
