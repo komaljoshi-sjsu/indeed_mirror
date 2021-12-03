@@ -169,6 +169,12 @@ handleModalCloseProfile(){
     });
   }
   onPage = (e) => {
+    console.log("****")
+    console.log(e.target.text);
+    if(e.target.text === undefined){
+      e.target.text = 1;
+    }
+    console.log("****")
     // console.log("In pagination");
     // console.log(e.target);
     // console.log(e.target.text);
