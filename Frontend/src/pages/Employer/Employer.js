@@ -61,9 +61,11 @@ class Employer extends Component {
   componentDidMount() {
       //console.log("here")
       const companyId = this.props.company.compid;
+      const userId = this.props.userInfo.id;
       //console.log(companyId)
       const compId = {
-        companyId:companyId
+        companyId:companyId,
+        userId:userId
       }
       axios.post(`${backendServer}/getPostedJobs`,compId).then((response) => {
         console.log(response.data)
@@ -100,7 +102,7 @@ handleModalCloseProfile(){
       id : id
     }
     axios.post(`${backendServer}/getJobSeekerProfile`,jobSeekerId).then((response) => {
-      console.log(response.data)
+      console.log(response.data[0])
       if(response.status === 200){
         
         this.setState({
@@ -123,10 +125,7 @@ handleModalCloseProfile(){
     });
   }
   download = (url,resumeUrl) => {
-    console.log("*********")
-    console.log(url)
-    console.log(resumeUrl)
-    console.log("*********")
+ 
     let keyarr = resumeUrl.split('/');
     console.log(keyarr)
     let key = keyarr[keyarr.length-1];
@@ -146,6 +145,7 @@ handleModalCloseProfile(){
       // if(response.data === " "){
       //   alert("No Resume Added")
       // }
+      console.log(response)
       if(response.status === 200){
         
         let resumeUrl = response.data;
@@ -158,6 +158,7 @@ handleModalCloseProfile(){
               if(res.status == '200') {
                   this.download(res.data,resumeUrl);
               } else {
+                alert("No Resume added")
                   // showErrorModal(true);
                   // setErrMsg(res.data);
               }
@@ -166,6 +167,8 @@ handleModalCloseProfile(){
           alert('No Resume to Download!')
         }
         
+      }else{
+        alert("No Resume added")
       }
      
         
