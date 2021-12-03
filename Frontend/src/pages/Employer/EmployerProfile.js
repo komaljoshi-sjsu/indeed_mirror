@@ -54,7 +54,9 @@ class EmployerProfile extends Component {
           companyDetails:[],
           companyadded:false,
           cmpname:'',
-          logo:''
+          logo:'',
+          successMsg: '',
+          empFlag:false
       };
       
     }
@@ -68,7 +70,9 @@ class EmployerProfile extends Component {
             });
         });
     }
- 
+    handleModalClose(){
+        this.setState({show:!this.state.show}) 
+    }
       handleEmpDetails = (e) => {
         e.preventDefault();
         console.log("here")
@@ -97,47 +101,49 @@ class EmployerProfile extends Component {
         }  
     }
     handleCompDetails = (e) => {
-       
+       console.log()
         e.preventDefault();
-        
-        const newErrors = this.findFormErrorsCompany();
-        if (Object.keys(newErrors).length > 0) {
-            console.log(newErrors)
-            this.setState({
-                errors: newErrors,
-            });
-        }else{
+        if(this.state.empFlag){
+            const newErrors = this.findFormErrorsCompany();
+            if (Object.keys(newErrors).length > 0) {
+                console.log(newErrors)
+                this.setState({
+                    errors: newErrors,
+                });
+            } else{
             
-            const companyData = {
-                employerId:this.props.userInfo.id,
-                companyName:this.state.companyName,
-                website:this.state.website,
-                companySize:this.state.companySize,
-                about:this.state.about,
-                companyType:this.state.companyType,
-                companyDescription:this.state.companyDescription,
-                headquarters:this.state.headquarters,
-                industry:this.state.industry,
-                mission:this.state.mission,
-                revenue:this.state.revenue,
-                founded:this.state.founded,
-                workCulture:this.state.workCulture,
-                companyValues:this.state.companyValues,
-                ceo:this.state.ceo,
-                logo:this.state.logo
-               
-            }
-            this.sendCompanyAPI(companyData);
-            this.setState({
-                companyupdated : true 
-            });
-            this.setState({
-                companyadded : false 
-            });
-            // this.setState({
-            //     show : true 
-            // });
-        }    
+                const companyData = {
+                    employerId:this.props.userInfo.id,
+                    companyName:this.state.companyName,
+                    website:this.state.website,
+                    companySize:this.state.companySize,
+                    about:this.state.about,
+                    companyType:this.state.companyType,
+                    companyDescription:this.state.companyDescription,
+                    headquarters:this.state.headquarters,
+                    industry:this.state.industry,
+                    mission:this.state.mission,
+                    revenue:this.state.revenue,
+                    founded:this.state.founded,
+                    workCulture:this.state.workCulture,
+                    companyValues:this.state.companyValues,
+                    ceo:this.state.ceo,
+                    logo:this.state.logo
+                   
+                }
+                this.sendCompanyAPI(companyData);
+                this.setState({
+                    companyupdated : true 
+                });
+                this.setState({
+                    companyadded : false 
+                });
+        }
+      
+            
+        }  else{
+            alert("Add Employer Details First")
+        }  
         
     }
     findFormErrorsEmp = () => {
@@ -175,7 +181,7 @@ class EmployerProfile extends Component {
         return errors;
       }
     sendEmployerAPI = (data) => {
-        console.log("add emp")
+        console.log("Add Employer Details First!")
         axios.defaults.headers.common['authorization'] = this.props.userInfo.token;
         axios.post(`${backendServer}/addEmployerDetails`, data)
             .then(response=> {
@@ -186,6 +192,12 @@ class EmployerProfile extends Component {
                     this.setState({
                         successMsg: response.data
                     })
+                    this.setState({
+                         show : true 
+                     });
+                     this.setState({
+                        empFlag : true 
+                    });
 
                 }
                 else {
@@ -237,7 +249,7 @@ class EmployerProfile extends Component {
         axios.post(`${backendServer}/addCompanyIdToEmployer`, id)
             .then(response=> {
                 if (response.status === 200) {
-                   
+                  
                 }
                 else {
                     //this.setState({ errorMsg: response.data });
@@ -256,8 +268,11 @@ class EmployerProfile extends Component {
             this.setState({
                 companyadded:false
             })
-
-           this.updateCompanyId(val)
+            if(this.state.empFlag){
+           this.updateCompanyId(val)}
+           else{
+               alert("Add Employer Details First!")
+           }
         }else {
 
             this.setState({
@@ -397,7 +412,7 @@ class EmployerProfile extends Component {
                  <span style={{color:'red'}}>{errors.employerName}</span>
                  <Row> 
                  &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="employerName" 
-                 value={this.state.employerName}
+                 value={this.state.employerName} maxLength="45"
                  onChange={this.handleChange}></input>
                  </Row>
                  <br/>
@@ -409,7 +424,7 @@ class EmployerProfile extends Component {
                         <span style={{color:'red'}}>{errors.roleInCompany}</span>    
                         <Row> 
                         &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="roleInCompany" 
-                        value={this.state.roleInCompany}
+                        value={this.state.roleInCompany}  maxLength="50"
                         onChange={this.handleChange}></input>
                         </Row>
                      </Col>
@@ -420,7 +435,7 @@ class EmployerProfile extends Component {
                         <span style={{color:'red'}}>{errors.address}</span>
                         <Row> 
                         &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="address"
-                        value={this.state.address}
+                        value={this.state.address}  maxLength="45"
                         onChange={this.handleChange}></input>
                         </Row>
                      </Col>
@@ -434,7 +449,7 @@ class EmployerProfile extends Component {
                         <span style={{color:'red'}}>{errors.city}</span>
                         <Row> 
                         &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="city"
-                        value={this.state.city}
+                        value={this.state.city}  maxLength="45"
                         onChange={this.handleChange}></input>
                         </Row>
                      </Col>      
@@ -446,7 +461,7 @@ class EmployerProfile extends Component {
                         
                         <Row> 
                         &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="state" 
-                        value={this.state.state}
+                        value={this.state.state}  maxLength="45"
                         onChange={this.handleChange}></input>
                         </Row>
                     </Col>
@@ -475,7 +490,7 @@ class EmployerProfile extends Component {
                         
                         <Row> 
                         &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="zipcode" 
-                        value={this.state.zipcode} type="number"
+                        value={this.state.zipcode} type="number"  maxLength="5"
                         onChange={this.handleChange}></input>
                         </Row>
                       </Col>  
@@ -595,7 +610,7 @@ class EmployerProfile extends Component {
                         <span style={{color:'red'}}>{errors.companyName}</span>
                         <Row> 
                         &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="companyName"
-                        value={this.state.companyName }
+                        value={this.state.companyName } maxLength="50"
                         onChange={this.handleChangeCompanyName}></input>
                         </Row>
                     </Col> 
@@ -606,7 +621,7 @@ class EmployerProfile extends Component {
                         <span style={{color:'red'}}>{errors.website}</span>
                         <Row> 
                         &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="website"
-                        value={this.state.website }
+                        value={this.state.website } maxLength="50"
                         onChange={this.handleChange}></input>
                         </Row>
                     </Col> 
@@ -639,7 +654,7 @@ class EmployerProfile extends Component {
                         <Row> 
                         &nbsp;&nbsp;&nbsp;<textarea style={{width:'80%'}}
                         name="about"
-                        value={this.state.about }
+                        value={this.state.about } maxLength="1000"
                         onChange={this.handleChange}></textarea>
                         </Row>
                     </Col>      
@@ -650,7 +665,7 @@ class EmployerProfile extends Component {
                         <span style={{color:'red'}}>{errors.companyDescription}</span>
                         <Row> 
                         &nbsp;&nbsp;&nbsp;<textarea style={{width:'80%'}}
-                        name="companyDescription"
+                        name="companyDescription" maxLength="1000"
                         value={this.state.companyDescription }
                         onChange={this.handleChange}></textarea>
                         </Row>
@@ -665,7 +680,7 @@ class EmployerProfile extends Component {
                         <span style={{color:'red'}}>{errors.companyType}</span>
                         <Row> 
                         &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}}
-                        name="companyType"
+                        name="companyType" maxLength="50"
                         value={this.state.companyType }
                         onChange={this.handleChange}></input>
                         </Row>
@@ -689,7 +704,7 @@ class EmployerProfile extends Component {
                         <span style={{color:'red'}}>{errors.headquarters}</span>
                         <Row> 
                         &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}}
-                        name="headquarters"
+                        name="headquarters" maxLength="50"
                         value={this.state.headquarters }
                         onChange={this.handleChange}></input>
                         </Row>
@@ -705,7 +720,7 @@ class EmployerProfile extends Component {
                         <Row> 
                         &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}}
                         name="industry"
-                        value={this.state.industry }
+                        value={this.state.industry } maxLength="50"
                         onChange={this.handleChange}></input>
                         {/* <select  name="industry"   >
                             <option>Choose the job industry</option>
@@ -725,7 +740,7 @@ class EmployerProfile extends Component {
                         <Row> 
                         &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}}
                         name="ceo"
-                        value={this.state.ceo }
+                        value={this.state.ceo } maxLength="50"
                         onChange={this.handleChange}></input>
                         </Row>
                       </Col>   
@@ -740,7 +755,7 @@ class EmployerProfile extends Component {
                         <Row>
                         &nbsp;&nbsp;&nbsp;<textarea style={{width:'80%'}}
                         name="founded"
-                        value={this.state.founded }
+                        value={this.state.founded } maxLength="50"
                         onChange={this.handleChange}></textarea>
                         </Row>
                     </Col>  
@@ -751,7 +766,7 @@ class EmployerProfile extends Component {
                         <span style={{color:'red'}}>{errors.mission}</span>
                         <Row> 
                         &nbsp;&nbsp;&nbsp;<textarea style={{width:'80%'}}
-                        name="mission"
+                        name="mission" maxLength="1000"
                         value={this.state.mission }
                         onChange={this.handleChange}></textarea>
                         </Row>
@@ -766,7 +781,7 @@ class EmployerProfile extends Component {
                         <span style={{color:'red'}}>{errors.workCulture}</span>
                         <Row> 
                         &nbsp;&nbsp;&nbsp;<textarea style={{width:'80%'}}
-                        name="workCulture"
+                        name="workCulture" maxLength="1000"
                         value={this.state.workCulture }
                         onChange={this.handleChange}></textarea>
                         </Row>
@@ -778,7 +793,7 @@ class EmployerProfile extends Component {
                         <span style={{color:'red'}}>{errors.companyValues}</span>
                         <Row> 
                         &nbsp;&nbsp;&nbsp;<textarea style={{width:'80%'}}
-                        name="companyValues"
+                        name="companyValues" maxLength="1000"
                         value={this.state.companyValues }
                         onChange={this.handleChange}></textarea>
                         </Row>
@@ -834,7 +849,14 @@ class EmployerProfile extends Component {
             <div>
            
       </div>
-       
+      <Modal size="md-down"
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+            show={this.state.show} onHide={()=>this.handleModalClose()}>
+                <Modal.Header closeButton>
+                <Modal.Title>{this.state.successMsg}</Modal.Title>
+                </Modal.Header>
+    </Modal>
            
         </div>
       );

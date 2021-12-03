@@ -1,7 +1,7 @@
 // Employer Landing Page
 import React, { Component } from 'react'
 import EmployerNavbar from './EmployerNavbar'
-import {Button,Card,ListGroup,ListGroupItem,Modal,Row,Col,Pagination} from 'react-bootstrap';
+import {Button,Card,ListGroup,ListGroupItem,Modal,Row,Col,Pagination,Container} from 'react-bootstrap';
 import axios from "axios";
 import backendServer from '../../webConfig';
 import '../../CSS/EmployerLanding.css'
@@ -100,9 +100,9 @@ handleModalCloseProfile(){
       id : id
     }
     axios.post(`${backendServer}/getJobSeekerProfile`,jobSeekerId).then((response) => {
-      console.log()
+      console.log(response.data)
       if(response.status === 200){
-        console.log(response.data[1])
+        
         this.setState({
           applicantProfile: this.state.applicantProfile.concat(response.data[0]),
         });
@@ -185,7 +185,7 @@ handleModalCloseProfile(){
     axios.post(`${backendServer}/getApplicantsName`,JobId).then((response) => {
       if(response.status === 200){
         console.log(response.data)
-        if(response.data.length >=1) {
+        if(response.data.length >=1 ) {
           this.setState({liststatus : "Applicants List"})
         }else{
           this.setState({liststatus : null})
@@ -306,16 +306,23 @@ handleModalCloseProfile(){
             <div>
                
                 <h5>Profile Details</h5>
-              <Row>
+                <Container style={{ display: 'flex', justifyContent: 'center' }}>
+                <Card style={{ width: '50rem', margin: '0.8em' }}>
+               <Row>
                 <Col>
-                <h6>Email :</h6>{applicant.email}
+                &nbsp;&nbsp; Email : {applicant.email} 
                 </Col>
                 </Row>
                 <Row>
                 <Col>
-                <h6>Phone :</h6> {applicant.jobSeekerContact}
+                &nbsp;&nbsp;&nbsp;Phone :
+                {(applicant.jobSeekerContact !== '' && applicant.jobSeekerContact !== null)
+          ? <h8>{applicant.jobSeekerContact}</h8> : <h8>No Contact Added</h8>}
+                {/* &nbsp;&nbsp; {applicant.jobSeekerContact} */}
                 </Col>
               </Row>
+              </Card>
+               </Container>
 
             </div>
           )}
@@ -323,6 +330,8 @@ handleModalCloseProfile(){
         {jobPreference.map(job=>
             <div>
                <h5>Job Preferences</h5>
+               <Container style={{ display: 'flex', justifyContent: 'center' }}>
+              <Card style={{ width: '50rem', margin: '0.8em' }}>
               <Row>
                 <Col>
                Job Title : {job.JobTitle}
@@ -333,6 +342,7 @@ handleModalCloseProfile(){
                 Job Types : {job.JobTypes}
                 </Col>
               </Row>
+              <br/>
               <h6>Work Schedules :</h6>
                
               <Row>
@@ -359,6 +369,7 @@ handleModalCloseProfile(){
                 )}
                 </Col>
               </Row> 
+              <br/>
               <h6>Pay:</h6>
               <Row>
                 <Col>
@@ -367,14 +378,16 @@ handleModalCloseProfile(){
                Amount : {job.pay.amount}
                 </Col>
                 </Row>
-               
+               <br/>
               <Row>
                 <Col>
-                <h6>Relocation:</h6>{job.relocation}
+                <h6>Relocation:</h6>{(job.relocation)?<h8>YES</h8>:<h8>NO</h8>}
                 </Col>
                 </Row>
-                <h6>Remote:</h6>
+                <br/>
+                
                 <Row>
+                <h6>Remote:</h6>
                 <Col>
                 {job.remote.map(other=>
                 <div>
@@ -383,6 +396,8 @@ handleModalCloseProfile(){
                 )}
                 </Col>
                 </Row>
+                </Card>
+                </Container>
             </div>
           )}
         </div>
@@ -521,18 +536,5 @@ const mapStateToProps = (state) => ({
 })
 
 export default connect(mapStateToProps)(withRouter(Employer));
-
-
-// Employer.propTypes = {
-//   setId: PropTypes.func.isRequired,
-//   id: PropTypes.object.isRequired,
-// };
-
-// const mapStateToProps = (state) => {
-//   return {
-//     id: state.id
-//   };
-// };
-// export default connect(mapStateToProps, {setId})(Employer);
 
 
