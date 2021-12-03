@@ -589,7 +589,7 @@ class JobSeekerLandingPage extends Component {
 
     this.props.companyId(payload2)
 
-    let data = { id: this.state.companyId }
+    let data = { id: this.state.companyId, viewDate: this.getCurrentDate() }
     console.log(data)
     await axios
       .post(backendServer + '/jobSeeker/updateNoOfViews', data)
