@@ -29,7 +29,8 @@ class Employer extends Component {
       showprofile:false,
       curPage: 1,
       pageSize: 3,
-      status:''
+      status:'',
+    
     }
     //this.getCurrentDate()
   }
@@ -46,9 +47,14 @@ class Employer extends Component {
   }
   updateJobSeekerStatus = (statuschange)=>{
     console.log(statuschange)
+    
      axios.post(`${backendServer}/updateJobSeekerStatus`, statuschange)
              .then(response => {
-                 console.log(response)
+                 if(response.data === 'Job Seeker Status Updated!'){
+                  alert("Job Seeker Status Updated!") 
+                  //this.setState({updateshow:true})
+                  
+                 }
              })
              
   }
@@ -157,16 +163,7 @@ handleModalCloseProfile(){
         }
         
       }
-      // if(response.status === 200){
-      //   console.log(response.data)
-      //   this.setState({
-      //     applicantProfile: this.state.applicantProfile.concat(response.data[0]),
-      //   });
-      //   this.setState({
-      //     jobPreference: this.state.jobPreference.concat(response.data[1]),
-      //   });
-      //   this.setState({show:false})
-      //   this.setState({showprofile:true})
+     
         
       // }
     });
@@ -496,6 +493,7 @@ handleModalCloseProfile(){
              
            </Modal>
           </div>
+         
           <div>
          <Modal size="md-down"
           aria-labelledby="contained-modal-title-vcenter"
@@ -503,8 +501,6 @@ handleModalCloseProfile(){
            show={this.state.showprofile} onHide={()=>this.handleModalCloseProfile()}>
              <Modal.Header closeButton><h4>Profile </h4>
              </Modal.Header>
-             
-             
              <Modal.Body>
              
              {profile}
