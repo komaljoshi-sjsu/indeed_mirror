@@ -123,6 +123,10 @@ handleModalCloseProfile(){
     });
   }
   download = (url,resumeUrl) => {
+    console.log("*********")
+    console.log(url)
+    console.log(resumeUrl)
+    console.log("*********")
     let keyarr = resumeUrl.split('/');
     console.log(keyarr)
     let key = keyarr[keyarr.length-1];
@@ -148,10 +152,10 @@ handleModalCloseProfile(){
         if(resumeUrl != null && resumeUrl.trim().length>0) {
           let keyarr = resumeUrl.split('/');
           let key = keyarr[keyarr.length-1];
-          console.log('key is ',resumeUrl)
+          console.log(key)
           axios.get(backendServer+'/api/downloadResume/'+key).then(res=>{
               console.log(res);
-              if(res.status === '200') {
+              if(res.status == '200') {
                   this.download(res.data,resumeUrl);
               } else {
                   // showErrorModal(true);

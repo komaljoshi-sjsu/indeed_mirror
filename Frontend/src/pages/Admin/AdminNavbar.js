@@ -17,13 +17,13 @@ class AdminNavbar extends Component {
 
   componentDidMount() {
     let collection = document.getElementsByClassName("nav-link");
-    for (let i = 0; i < collection.length; i++) {
-      if (collection[i].getAttribute("myValue") === window.location.pathname) {
-        collection[i].classList.add("active");
-      } else {
-        collection[i].classList.remove("active");
-      }
-    }
+//     for (let i = 0; i < collection.length; i++) {
+//       if (collection[i].href) === window.location.pathname) {
+//         collection[i].classList.add("active");
+//       } else {
+//         collection[i].classList.remove("active");
+//       }
+//     }
   }
   logoutAction = (e) => {
     e.preventDefault();
