@@ -25,8 +25,8 @@ let jsUpdateNoOfViews = async (req, callback) => {
             '\n\ncompany view data is already present for that day.....\n\n',
           )
           conn.query(
-            'update CompanyView set viewCount = viewCount + 1 where companyId = ?',
-            [id],
+            'update CompanyView set viewCount = viewCount + 1 where companyId = ? and viewDate = ?',
+            [id, viewDate],
             async function (err, results) {
               if (results && results.length <= 0) {
                 console.log('Not found')
