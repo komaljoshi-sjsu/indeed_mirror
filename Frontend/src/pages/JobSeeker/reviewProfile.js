@@ -127,6 +127,7 @@ class ReviewProfile extends Component {
                   </Link>
                   {review.adminReviewStatus === 'APPROVED' && <span style={{color:"green"}}>{' '}[Admin approved]</span>}
                   {review.adminReviewStatus === 'PENDING_APPROVAL' && <span style={{color:"orange"}}>{' '}[Admin approval pending]</span>}
+                  {review.adminReviewStatus === 'REJECTED' && <span style={{color:"red"}}>{' '}[Admin rejected]</span>}
                   </Card.Title>
                   <Card.Text>
                     <small>{review.reviewerRole}{' - '}{review.city}{', '}{review.state}{' - '}{new Date(review.postedDate).toDateString()}</small>
@@ -157,9 +158,9 @@ class ReviewProfile extends Component {
                 </Card.Title>
               </Card>
               </Container>}
+              <h4>My reviews</h4>
               <Container style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               <br/>
-              <h4>My reviews</h4>
               { noReviewsMsg === '' && userReviews}
               </Container>
               <Container style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
