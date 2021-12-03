@@ -139,6 +139,10 @@ function ApplyJobs(props) {
             setResponsibilities(job.responsibilities)
             setQualifications(job.qualifications)
             setLoveJobRole(job.loveJobRole)
+
+            let companyId = parseInt(job.companyId)
+
+            getReviewsAndRatings(companyId)
           }
         }
       },
@@ -146,45 +150,26 @@ function ApplyJobs(props) {
         console.log(error)
       },
     )
+  }
 
-    await axios.get(backendServer + '/jobSeeker/getCompanyReviews').then(
-      (response) => {
-        console.log(response.data, response.status)
-        if (response.status === 200 && response.data.length > 0) {
-          console.log(typeof companyId + ' CompanyId ' + companyId)
-          let reviews = response.data.filter(
-            (reviews) => reviews.companyId === companyId,
-          )
-
-          if (reviews.length > 0) {
-            reviews = reviews[0]
-            setReviewCount(reviews.NoOfReviews)
-          } else setReviewCount(0)
-        }
-      },
-      (error) => {
-        console.log(error)
-      },
-    )
-
-    await axios.get(backendServer + '/jobSeeker/getCompanyRating').then(
-      (response) => {
-        console.log(response.data, response.status)
-        if (response.status === 200 && response.data.length > 0) {
-          let avgrating = response.data.filter(
-            (rating) => rating.companyId === companyId,
-          )
-
-          if (avgrating.length > 0) {
-            avgrating = avgrating[0]
-            setRating(avgrating.avgRating)
-          } else setRating(0)
-        }
-      },
-      (error) => {
-        console.log(error)
-      },
-    )
+  let getReviewsAndRatings = (companyId) => {
+    console.log('getting reviews for....: ' + companyId)
+    const data = { companyId: companyId }
+    axios
+      .post(backendServer + '/jobSeeker/getCompanyRatingAndReviews', data)
+      .then(
+        (response) => {
+          console.log('Ratings and Reviews')
+          console.log(response.data, response.status)
+          if (response.status === 200 && response.data.length > 0) {
+            setRating(response.data[0].companyAvgRating)
+            setReviewCount(response.data[0].noOfReviews)
+          }
+        },
+        (error) => {
+          console.log(error)
+        },
+      )
   }
 
   let getCurrentDate = () => {

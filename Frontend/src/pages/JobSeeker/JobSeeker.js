@@ -81,7 +81,6 @@ class JobSeekerLandingPage extends Component {
       currentPage: 1,
       totalPosts: 0,
       pageCount: 0,
-      isLoggedIn: false,
       filterOn: false,
     }
     this.getCurrentDate()
@@ -116,19 +115,7 @@ class JobSeekerLandingPage extends Component {
   }
 
   componentDidMount() {
-    this.checkLoggedInStatus()
     this.getAllData()
-  }
-
-  checkLoggedInStatus() {
-    const userInfo = this.props.userInfo
-    console.log(userInfo)
-    if (userInfo.email !== '' && userInfo.accountType === 'JobSeeker') {
-      console.log('JobSeeker is signed in')
-      this.setState({
-        isLoggedIn: true,
-      })
-    }
   }
 
   async getAllData() {
@@ -209,60 +196,37 @@ class JobSeekerLandingPage extends Component {
       },
     )
 
-    await axios.get(backendServer + '/jobSeeker/getCompanyReviews').then(
-      (response) => {
-        console.log(response.data, response.status)
-        if (response.status === 200 && response.data.length > 0) {
-          this.setState({
-            noOfCompanyReviews: this.state.noOfCompanyReviews.concat(
-              response.data,
-            ),
-          })
-          let companyId = job.companyId
-          let reviews = response.data.filter(
-            (reviews) => reviews.companyId === companyId,
-          )
+    let companyId = parseInt(job.companyId)
 
-          if (reviews.length > 0) {
-            reviews = reviews[0]
-
-            this.setState({ reviewCount: reviews.NoOfReviews })
-          } else this.setState({ reviewCount: 0 })
-        }
-      },
-      (error) => {
-        console.log(error)
-      },
-    )
-
-    await axios.get(backendServer + '/jobSeeker/getCompanyRating').then(
-      (response) => {
-        console.log(response.data, response.status)
-        if (response.status === 200 && response.data.length > 0) {
-          this.setState({
-            avgCompanyRating: this.state.avgCompanyRating.concat(response.data),
-          })
-          let companyId = job.companyId
-          let avgrating = response.data.filter(
-            (rating) => rating.companyId === companyId,
-          )
-
-          if (avgrating.length > 0) {
-            avgrating = avgrating[0]
-            this.setState({ rating: avgrating.avgRating })
-          } else this.setState({ rating: 0 })
-        }
-      },
-      (error) => {
-        console.log(error)
-      },
-    )
+    await this.getReviewsAndRatings(companyId)
 
     await this.getAppliedStatus(job.jobId)
 
     await this.getSavedJobStatus(job.jobId)
 
     await this.getPaginatedData()
+  }
+
+  getReviewsAndRatings(companyId) {
+    console.log('getting reviews for....: ' + companyId)
+    const data = { companyId: companyId }
+    axios
+      .post(backendServer + '/jobSeeker/getCompanyRatingAndReviews', data)
+      .then(
+        (response) => {
+          console.log('Ratings and Reviews')
+          console.log(response.data, response.status)
+          if (response.status === 200 && response.data.length > 0) {
+            this.setState({
+              rating: response.data[0].companyAvgRating,
+              reviewCount: response.data[0].noOfReviews,
+            })
+          }
+        },
+        (error) => {
+          console.log(error)
+        },
+      )
   }
 
   getPaginatedData() {
@@ -464,6 +428,9 @@ class JobSeekerLandingPage extends Component {
                 qualifications: job[0].qualifications,
                 loveJobRole: job[0].loveJobRole,
               })
+              let companyId = parseInt(job[0].companyId)
+
+              this.getReviewsAndRatings(companyId)
             }
           }
         })
@@ -501,6 +468,9 @@ class JobSeekerLandingPage extends Component {
                 qualifications: job[0].qualifications,
                 loveJobRole: job[0].loveJobRole,
               })
+              let companyId = parseInt(job[0].companyId)
+
+              this.getReviewsAndRatings(companyId)
             }
           }
         })
@@ -542,6 +512,9 @@ class JobSeekerLandingPage extends Component {
                 qualifications: job[0].qualifications,
                 loveJobRole: job[0].loveJobRole,
               })
+              let companyId = parseInt(job[0].companyId)
+
+              this.getReviewsAndRatings(companyId)
             }
           }
         })
@@ -598,6 +571,9 @@ class JobSeekerLandingPage extends Component {
         loveJobRole: job.loveJobRole,
       },
       () => {
+        let companyId = parseInt(job.companyId)
+
+        this.getReviewsAndRatings(companyId)
         this.getAppliedStatus(job.jobId)
         this.getSavedJobStatus(job.jobId)
       },
@@ -764,10 +740,10 @@ class JobSeekerLandingPage extends Component {
   }
 
   render() {
-    console.log(this.state.isLoggedIn)
+    const userInfo = this.props.userInfo
     return (
       <div>
-        {this.state.isLoggedIn ? (
+        {userInfo.email !== '' && userInfo.accountType === 'JobSeeker' ? (
           <JobSeekerLoggedInNavbar />
         ) : (
           <JobSeekerNavbar />
@@ -901,7 +877,8 @@ class JobSeekerLandingPage extends Component {
             <div class="col-4">
               <h5>
                 <span class="hoverUnderline" style={{ color: '#003399' }}>
-                  {this.state.isLoggedIn ? (
+                  {userInfo.email !== '' &&
+                  userInfo.accountType === 'JobSeeker' ? (
                     <Link
                       to="/resume"
                       style={{ textDecoration: 'none', color: '#003399' }}

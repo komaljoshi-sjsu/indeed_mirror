@@ -492,24 +492,22 @@ class CompanyJobs extends Component {
 
   handleApply(evt) {
     console.log(evt.currentTarget.id)
-    const jobId = evt.currentTarget.id
+    const jobId = parseInt(evt.currentTarget.id)
     const userInfo = this.props.userInfo
-    const companyId = this.state.companyId
-    const appliedDate = this.getCurrentDate()
+    const companyId = parseInt(this.state.companyId)
+    //const appliedDate = this.getCurrentDate()
     console.log(userInfo)
     if (userInfo.email !== '' && userInfo.accountType === 'JobSeeker') {
       console.log('User has signed in')
-      const id = userInfo.id
-      console.log(id)
-      const data = { appliedDate, jobId, id, companyId }
-      console.log(data)
-      axios.defaults.headers.common['authorization'] = this.props.userInfo.token
-      axios.post(backendServer + '/jobs/applyJob', data).then((response) => {
-        console.log(response.data, response.status)
-        this.setState({
-          applied: true,
-        })
-      })
+      const payload1 = jobId
+
+      this.props.jobId(payload1)
+
+      const payload2 = companyId
+
+      this.props.companyId(payload2)
+
+      this.props.history.push('/applyJobs')
     } else {
       console.log("User didn't sign in")
       this.props.history.push('/login')
@@ -805,10 +803,27 @@ class CompanyJobs extends Component {
     )
   }
 }
+const mapDispatchToProps = (dispatch) => {
+  console.log('dispatching props')
+  return {
+    companyName: (payload) => {
+      dispatch({ type: 'setCompName', payload })
+    },
+    companyId: (payload) => {
+      dispatch({ type: 'setCompId', payload })
+    },
+    jobId: (payload) => {
+      dispatch({ type: 'setJobId', payload })
+    },
+  }
+}
 
 const mapStateToProps = (state) => ({
   companyInfo: state.company,
   userInfo: state.userInfo,
 })
 
-export default connect(mapStateToProps, null)(withRouter(CompanyJobs))
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withRouter(CompanyJobs))
