@@ -41,17 +41,17 @@ function Signup(props) {
                 showErrorModal(true);
             } else {
                 //adding job seeker model in mongoDB after successful signup
-                console.log("signup data" + res.data);
+                console.log("signup data ", res.data);
                 if ("JobSeeker" === accountType) {
                     console.log("calling mongo signup")
                     axios.post("/api/signupJobSeekerMongo", {
-                        jobSeekerId: res.data.id,
-                        resumeUrl: " ",
+                        jobSeekerId: res.data.row.id,
+                        resumeUrl: "",
                         jobPreference: {},
                         savedJobs: []
                     }).then((response1) => {
                         if (response1.data.code != '203') {
-                            alert('Successfully signed up');
+                            //alert('Successfully signed up');
                             redirectToLogin();
                         }
                     })
@@ -61,7 +61,7 @@ function Signup(props) {
                             console.log(err);
                         });
                 }
-                alert('Successfully signed up');
+                //alert('Successfully signed up');
                 redirectToLogin();
             }
         }, error => {

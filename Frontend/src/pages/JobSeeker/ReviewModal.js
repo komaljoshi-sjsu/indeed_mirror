@@ -184,7 +184,7 @@ class ReviewModal extends Component {
           </Modal.Header>
           <Modal.Body>
           <Row>
-              <Col><b>Overall rating</b></Col>
+              <Col><b>Overall rating</b><span style={{color:'red'}}>*</span></Col>
               <Col>
                 <Form.Group className="mb-3">
                 <ReactStars
@@ -201,7 +201,7 @@ class ReviewModal extends Component {
               </Col>
               </Row>
               <Row>
-              <Col><b>Work Happiness Score</b></Col>
+              <Col><b>Work Happiness Score</b><span style={{color:'red'}}>*</span></Col>
               <Col>
                 <Form.Group className="mb-3">
               <RangeSlider
@@ -215,7 +215,7 @@ class ReviewModal extends Component {
               </Col>
               </Row>
               <Row>
-              <Col><b>Learning Score</b></Col>
+              <Col><b>Learning Score</b><span style={{color:'red'}}>*</span></Col>
               <Col>
                 <Form.Group className="mb-3">
               <RangeSlider
@@ -229,7 +229,7 @@ class ReviewModal extends Component {
               </Col>
               </Row>
               <Row>
-              <Col><b>Appreciation Score</b></Col>
+              <Col><b>Appreciation Score</b><span style={{color:'red'}}>*</span></Col>
               <Col>
                 <Form.Group className="mb-3">
               <RangeSlider
@@ -243,7 +243,7 @@ class ReviewModal extends Component {
               </Col>
               </Row>
               <Row>
-                <Col><b>CEO Approval rating</b></Col>
+                <Col><b>CEO Approval rating</b><span style={{color:'red'}}>*</span></Col>
                     <Col>
                     <Form.Group className="mb-3">
                     <ReactStars
@@ -259,11 +259,11 @@ class ReviewModal extends Component {
                     </Col>
                     </Row>
               <Row>
-              <Col><b>Review Title</b></Col>
+              <Col><b>Review Title</b><span style={{color:'red'}}>*</span></Col>
               <Col>
                 <Form.Group className="mb-3">
                   <Form.Control name="reviewTitle" type="text" placeholder="Enter Review Summary"
-                  className="mr-sm-2" onChange={this.handleChange} value={reviewTitle} isInvalid={!!errors.reviewTitle} />
+                  className="mr-sm-2" onChange={this.handleChange} value={reviewTitle} isInvalid={!!errors.reviewTitle} maxLength="45"/>
                   <Form.Control.Feedback type="invalid">
                     { errors.reviewTitle }
                   </Form.Control.Feedback>
@@ -271,11 +271,11 @@ class ReviewModal extends Component {
               </Col>
               </Row>
               <Row>
-              <Col><b>Your job role</b></Col>
+              <Col><b>Your job role</b><span style={{color:'red'}}>*</span></Col>
               <Col>
                 <Form.Group className="mb-3">
                   <Form.Control name="reviewerRole" type="text" placeholder="Enter your role"
-                  className="mr-sm-2" onChange={this.handleChange} value={reviewerRole} isInvalid={!!errors.reviewerRole} />
+                  className="mr-sm-2" onChange={this.handleChange} value={reviewerRole} isInvalid={!!errors.reviewerRole} maxLength="45"/>
                   <Form.Control.Feedback type="invalid">
                     { errors.reviewerRole }
                   </Form.Control.Feedback>
@@ -283,11 +283,11 @@ class ReviewModal extends Component {
               </Col>
               </Row>
               <Row>
-              <Col><b>City</b></Col>
+              <Col><b>City</b><span style={{color:'red'}}>*</span></Col>
               <Col>
                 <Form.Group className="mb-3">
                   <Form.Control name="city" type="text" placeholder="Enter your city"
-                  className="mr-sm-2" onChange={this.handleChange} value={city} isInvalid={!!errors.city} />
+                  className="mr-sm-2" onChange={this.handleChange} value={city} isInvalid={!!errors.city} maxLength="45"/>
                   <Form.Control.Feedback type="invalid">
                     { errors.city }
                   </Form.Control.Feedback>
@@ -295,11 +295,11 @@ class ReviewModal extends Component {
               </Col>
               </Row>
               <Row>
-              <Col><b>State</b></Col>
+              <Col><b>State</b><span style={{color:'red'}}>*</span></Col>
               <Col>
                 <Form.Group className="mb-3">
                   <Form.Control name="state" type="text" placeholder="Enter your city"
-                  className="mr-sm-2" onChange={this.handleChange} value={state} isInvalid={!!errors.state} />
+                  className="mr-sm-2" onChange={this.handleChange} value={state} isInvalid={!!errors.state} maxLength="45"/>
                   <Form.Control.Feedback type="invalid">
                     { errors.state }
                   </Form.Control.Feedback>
@@ -307,12 +307,12 @@ class ReviewModal extends Component {
               </Col>
               </Row>
               <Row>
-                <Col><b>Your Review</b></Col>
+                <Col><b>Your Review</b><span style={{color:'red'}}>*</span></Col>
                 </Row>
                 <Row>
                     <Col>
                     <Form.Group className="mb-3">
-                  <Form.Control name="reviewComments" as="textarea" rows={3} className="mr-sm-2" onChange={this.handleChange} value={reviewComments} isInvalid={!!errors.reviewComments}/>
+                  <Form.Control name="reviewComments" as="textarea" rows={3} className="mr-sm-2" onChange={this.handleChange} value={reviewComments} isInvalid={!!errors.reviewComments} maxLength="255"/>
                   <Form.Control.Feedback type="invalid">
                     { errors.reviewComments }
                   </Form.Control.Feedback>
@@ -320,12 +320,12 @@ class ReviewModal extends Component {
                     </Col>
                     </Row>
                     <Row>
-                <Col><b>Pros</b></Col>
+                <Col><b>Pros</b><span style={{color:'red'}}>*</span></Col>
                 </Row>
                 <Row>
                     <Col>
                     <Form.Group className="mb-3">
-                  <Form.Control name="pros" as="textarea" rows={3} className="mr-sm-2" onChange={this.handleChange} value={pros} isInvalid={!!errors.pros}/>
+                  <Form.Control name="pros" as="textarea" rows={3} className="mr-sm-2" onChange={this.handleChange} value={pros} isInvalid={!!errors.pros} maxLength="255"/>
                   <Form.Control.Feedback type="invalid">
                     { errors.pros }
                   </Form.Control.Feedback>
@@ -333,12 +333,12 @@ class ReviewModal extends Component {
                     </Col>
                     </Row>
                     <Row>
-                <Col><b>Cons</b></Col>
+                <Col><b>Cons</b><span style={{color:'red'}}>*</span></Col>
                 </Row>
                 <Row>
                     <Col>
                     <Form.Group className="mb-3">
-                  <Form.Control name="cons" as="textarea" rows={3} className="mr-sm-2" onChange={this.handleChange} value={cons} isInvalid={!!errors.cons}/>
+                  <Form.Control name="cons" as="textarea" rows={3} className="mr-sm-2" onChange={this.handleChange} value={cons} isInvalid={!!errors.cons} maxLength="255"/>
                   <Form.Control.Feedback type="invalid">
                     { errors.cons }
                   </Form.Control.Feedback>
@@ -351,7 +351,7 @@ class ReviewModal extends Component {
                 <Row>
                     <Col>
                     <Form.Group className="mb-3">
-                  <Form.Control name="howToPrepare" as="textarea" rows={3} className="mr-sm-2" onChange={this.handleChange} value={howToPrepare} isInvalid={!!errors.howToPrepare}/>
+                  <Form.Control name="howToPrepare" as="textarea" rows={3} className="mr-sm-2" onChange={this.handleChange} value={howToPrepare} isInvalid={!!errors.howToPrepare} maxLength="255"/>
                   <Form.Control.Feedback type="invalid">
                     { errors.howToPrepare }
                   </Form.Control.Feedback>

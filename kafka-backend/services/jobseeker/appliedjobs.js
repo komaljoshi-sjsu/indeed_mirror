@@ -7,7 +7,7 @@ let appliedjobs = async (req, callback) => {
   }
   try {
     let userId = req.userId;
-    let sql = "SELECT ap.status, j.jobTitle, j.companyName, j.streetAddress, j.state, j.country, j.jobMode from AppliedJobs ap INNER JOIN Job j WHERE ap.id=?";
+    let sql = "SELECT ap.status, j.jobTitle, j.companyName, j.streetAddress, j.state, j.country, j.jobMode from AppliedJobs ap INNER JOIN Job j ON ap.jobId= j.jobId  WHERE ap.id=?";
     conn.query(sql,[userId],
       async function (err, results) {
         if (err) {
@@ -16,7 +16,7 @@ let appliedjobs = async (req, callback) => {
             respData.msg  = 'Cannot fetch applied jobs data';
             return callback('Cannot fetch applied jobs', respData)
         }
-        else if (results && results.length <= 0) {
+        else if (results==null || results.length <= 0) {
           respData.row = [];
         } else {
             respData.row = results;

@@ -8,15 +8,14 @@ const jsSchema = new Schema({
     },
     resumeUrl: {
         type: String,
-        required: true
     },
-    jobPreference: {
-        type: Object,
+    jobPreference: { 
+        type: Schema.Types.Mixed, default: {} 
     },
     savedJobs: [{
         type: Array,
     }]
-});
+}, { minimize: false });
 
 const JobSeeker = mongoose.model('JobSeeker',jsSchema);
 module.exports = JobSeeker;

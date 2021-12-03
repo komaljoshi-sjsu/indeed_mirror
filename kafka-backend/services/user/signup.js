@@ -88,12 +88,12 @@ const signup = (req, callback) => {
 const signupJobSeekerMongo =  async (req, callback) => {
   try {
     const { jobSeekerId, resumeUrl, jobPreference, savedJobs } = req;
-    resumeUrl="";
+    //resumeUrl="";
     console.log(req);
     const jobSeekerDtls = new JobSeeker({
       jobSeekerId,
       resumeUrl,
-      jobPreference,
+      //jobPreference,
       savedJobs
     });
     jobSeekerDtls
