@@ -1,6 +1,7 @@
 //sample employer component
 import { React, Component} from 'react';
 import axios from 'axios';
+import EmployerNavbar from './EmployerNavbar'
 import {
     Form, Button, Row, Col, Card, Container, FormControl,
   } from 'react-bootstrap';
@@ -165,7 +166,7 @@ class PostJob extends Component {
             // console.log(errors)
       return (
         <div>
-            
+              <EmployerNavbar/>
             <br></br>
             <Container style={{ display: 'flex', justifyContent: 'center' }}>
             
@@ -398,11 +399,11 @@ class PostJob extends Component {
               </Row>
               <br/>
               <Row>
-              <Col colSpan="2">
+              {/* <Col colSpan="2">
                 <Button variant="primary" type="submit" onClick={this.handleDashBoard}>
                   DashBoard
                 </Button>
-              </Col>
+              </Col> */}
               </Row>
               </Card.Body>
               </Card>

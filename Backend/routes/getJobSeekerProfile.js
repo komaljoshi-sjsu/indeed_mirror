@@ -39,6 +39,8 @@ router.post('/getJobSeekerProfile', function (req, res) {
             res.status = '500';
             callback(null, res)
         }
+       
+        // console.log(getjobpreference[0].jobPreference['Work Schedules'])
         if (getjobpreference) {
             //jobseekerData.concat(getjobpreference[0].jobPreference)
 
@@ -52,6 +54,7 @@ router.post('/getJobSeekerProfile', function (req, res) {
             };
             jobseekerData.push(profile1);
         }
+        
         res.status(200).send(jobseekerData)
     })
 

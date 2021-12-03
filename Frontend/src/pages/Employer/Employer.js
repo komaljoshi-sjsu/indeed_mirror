@@ -55,6 +55,7 @@ class Employer extends Component {
   componentDidMount() {
       //console.log("here")
       const companyId = this.props.company.compid;
+      //console.log(companyId)
       const compId = {
         companyId:companyId
       }
@@ -93,15 +94,22 @@ handleModalCloseProfile(){
       id : id
     }
     axios.post(`${backendServer}/getJobSeekerProfile`,jobSeekerId).then((response) => {
-      
+      console.log()
       if(response.status === 200){
-        console.log(response.data)
+        console.log(response.data[1])
         this.setState({
           applicantProfile: this.state.applicantProfile.concat(response.data[0]),
         });
-        this.setState({
-          jobPreference: this.state.jobPreference.concat(response.data[1]),
-        });
+        if(Object.keys(response.data[1]).length === 0){
+          this.setState({
+            jobPreference: this.state.jobPreference,
+          });
+        }else{
+          this.setState({
+            jobPreference: this.state.jobPreference.concat(response.data[1]),
+          });
+        }
+        
         this.setState({show:false})
         this.setState({showprofile:true})
         
@@ -125,19 +133,19 @@ handleModalCloseProfile(){
     }
     axios.post(`${backendServer}/getJobSeekerResume`,jobSeekerId).then((response) => {
  
-      if(response.data === " "){
-        alert("No Resume Added")
-      }
+      // if(response.data === " "){
+      //   alert("No Resume Added")
+      // }
       if(response.status === 200){
         
         let resumeUrl = response.data;
-        if(resumeUrl!=null && resumeUrl.trim().length>0) {
+        if(resumeUrl != null && resumeUrl.trim().length>0) {
           let keyarr = resumeUrl.split('/');
           let key = keyarr[keyarr.length-1];
           console.log('key is ',resumeUrl)
           axios.get(backendServer+'/api/downloadResume/'+key).then(res=>{
               console.log(res);
-              if(res.status=='200') {
+              if(res.status === '200') {
                   this.download(res.data,resumeUrl);
               } else {
                   // showErrorModal(true);
@@ -145,7 +153,7 @@ handleModalCloseProfile(){
               }
           })
         }  else {
-          alert('No resume to download')
+          alert('No Resume to Download!')
         }
         
       }
