@@ -16,7 +16,7 @@ router.post('/addCompanyIdToEmployer',checkAuth,function (req, res) {
             return res.send({...results,err:err});
         }
         else {
-            res.status(200).end("Company Id Added!");
+            res.status(200).end("Company Details Added!");
             
         }
     });

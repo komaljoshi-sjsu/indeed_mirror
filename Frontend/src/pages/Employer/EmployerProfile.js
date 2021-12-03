@@ -56,7 +56,8 @@ class EmployerProfile extends Component {
           cmpname:'',
           logo:'',
           successMsg: '',
-          empFlag:false
+          empFlag:false,
+          compFlag:false
       };
       
     }
@@ -72,6 +73,10 @@ class EmployerProfile extends Component {
     }
     handleModalClose(){
         this.setState({show:!this.state.show}) 
+        if(this.state.compFlag){
+            const {history} = this.props;
+            history.push('/employer');    
+        }
     }
       handleEmpDetails = (e) => {
         e.preventDefault();
@@ -248,23 +253,37 @@ class EmployerProfile extends Component {
         axios.defaults.headers.common['authorization'] = this.props.userInfo.token;
         axios.post(`${backendServer}/addCompanyIdToEmployer`, id)
             .then(response=> {
+                console.log("response**")
+                console.log(response)
+                console.log("response**")
                 if (response.status === 200) {
-                  
+                  this.setState({successMsg: response.data})
+                  this.setState({
+                    show : true 
+                });
+                this.setState({
+                   compFlag : true 
+               });
                 }
                 else {
+                    this.setState({successMsg: "Cannot add company details!"})
                     //this.setState({ errorMsg: response.data });
                   }
             }
             );
-            const {history} = this.props;
-            history.push('/employer'); 
+            // const {history} = this.props;
+            // history.push('/employer'); 
     }
     handleCompany = (e)=>{
         e.preventDefault();
         
         const val = e.target.value;
-        //console.log(val)
-        if(val !== 'Add'){
+        console.log("val")
+        console.log(val)
+        if(val === ''){
+            alert("Add a company")
+        }
+        if(val !== 'Add' && val !== ''){
             this.setState({
                 companyadded:false
             })
@@ -279,7 +298,7 @@ class EmployerProfile extends Component {
                 companyadded:true
             })
             
-        }
+         }
     }
     handleChangeCountry = (val) => {
         this.setState({ country: val });
