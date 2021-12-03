@@ -227,11 +227,19 @@ class EmployerProfile extends Component {
                  
                     axios.post(`${backendServer}/api/createCompanyMongo`,{compid,companyname,logo})
                     .then(response=> {
+                        console.log("res")
+                        console.log(response.status)
                         if(response.status === 200){
-                            
+                            this.setState({successMsg:"Company Details Added!"})
+                            this.setState({
+                                show : true 
+                            });
+                            console.log("here")
+                            this.setState({
+                               compFlag : true })
                         }
                         
-                        console.log(response.data)
+                        //console.log(response.data)
                       
                     }
                     );
@@ -242,8 +250,8 @@ class EmployerProfile extends Component {
             );
             // const dispatch = useDispatch();
             // const setId = bindActionCreators(userActionCreator.setId,dispatch);
-            const {history} = this.props;
-            history.push('/employer');    
+            // const {history} = this.props;
+            // history.push('/employer');    
     }
     updateCompanyId = (data) => {
         var id = {
@@ -280,7 +288,7 @@ class EmployerProfile extends Component {
         const val = e.target.value;
         console.log("val")
         console.log(val)
-        if(val === ''){
+        if(val === '' ){
             alert("Add a company")
         }
         if(val !== 'Add' && val !== ''){
@@ -651,7 +659,7 @@ class EmployerProfile extends Component {
                         <span style={{color:'red'}}>{errors.companySize}</span>
                         <Row> 
                         &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}}
-                        name="companySize" type="number"
+                        name="companySize" type="number" min="0"
                         value={this.state.companySize }
                         onChange={this.handleChange}></input>
                         </Row>
@@ -711,7 +719,7 @@ class EmployerProfile extends Component {
                         <span style={{color:'red'}}>{errors.revenue}</span>
                         <Row> 
                         &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}}
-                        name="revenue" type="number"
+                        name="revenue" type="number" min="0"
                         value={this.state.revenue }
                         onChange={this.handleChange}></input>
                         </Row>

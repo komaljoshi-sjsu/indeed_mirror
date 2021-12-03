@@ -62,7 +62,7 @@ class Reviews extends Component {
       handleFilter = (e) => {
         e.preventDefault();
         this.setState({
-          companyName: '', location: '', searchFlag: false,
+          companyName: '', location: '', searchFlag: false, errorMsg:''
         });
         //document.getElementById('search_form').reset();
       }
@@ -123,7 +123,7 @@ class Reviews extends Component {
                   <ListGroup style={{ width: '50rem', margin: '0.1em', border: 'none' }}>
                     <ListGroup.Item>
                     <Row>
-                      <Col><img src={review.logo} alt="helo" style={{ maxHeight: '80px', maxWidth: '80px' }} /></Col>
+                      <Col><img src={review.logo} alt="" style={{ maxHeight: '80px', maxWidth: '80px' }} /></Col>
                       <Col><Link style={{color:'#2457a7', textDecoration: 'none'}} to="/snapshot" onClick={(e) => { this.handleCompanyLink(e, review.companyId, review.companyName) }}><h5>{review.companyName}</h5></Link>
                       <Link style={{color:'black', textDecoration: 'none'}} to="/reviews">{review.companyAvgRating}</Link><AiFillStar /></Col>
                       <Col><Link style={{color:'#2457a7', textDecoration: 'none'}} to="/reviews" onClick={(e) => { this.handleCompanyLink(e, review.companyId, review.companyName) }}>Reviews</Link></Col>
@@ -148,7 +148,7 @@ class Reviews extends Component {
             <Card style={{ width: '20rem', margin: '0.1em', border: 'none' }}>
                 <Card.Body>
                     <Row>
-                <Col xs={2}><img src={review.logo} alt="helo" style={{ maxHeight: '60px', maxWidth: '80px' }} /></Col>
+                <Col xs={2}><img src={review.logo} alt="" style={{ maxHeight: '60px', maxWidth: '80px' }} /></Col>
                 <Col sx={4}/>
                 <Col xs={8}>
                 <Link style={{color:'black', textDecoration: 'none'}} to="/snapshot" onClick={(e) => { this.handleCompanyLink(e, review.companyId, review.companyName) }}><h5>{review.companyName}</h5></Link>

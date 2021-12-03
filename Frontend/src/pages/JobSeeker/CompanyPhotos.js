@@ -8,6 +8,7 @@ import { SRLWrapper } from "simple-react-lightbox";
 import SimpleReactLightbox from "simple-react-lightbox";
 import "./../../CSS/CompanyPhoto.css";
 import CompanyTabs from "../Company/CompanyTabs";
+import backendServer from "../../webConfig";
 import { useSelector } from "react-redux";
 
 const CompanyPhotos = (props) => {
@@ -34,7 +35,7 @@ const CompanyPhotos = (props) => {
       currentPage: currentPage,
     };
     axios.defaults.headers.common["authorization"] = token;
-    const allPhotos = await axios("/api/getAllPhotos", {
+    const allPhotos = await axios(backendServer+"/api/getAllPhotos", {
       params: { data: data1 },
     });
     setImages(allPhotos.data.photos);

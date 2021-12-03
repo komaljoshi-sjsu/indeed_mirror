@@ -115,6 +115,11 @@ function Signup(props) {
                     </Form>
                 </div>
             </div>
+            <div className="row"  style={{marginTop: '5%', textAlign:'center'}}>
+                <span style={{color:'blue',fontSize:'17px', cursor:'pointer'}}><small onClick={redirectToLogin}>Have an account? Sign In</small></span><br></br>
+                <span style={{color:'blue',fontSize:'17px'}}><small>Forgot Your Password?</small></span><br></br>
+                <span style={{color:'blue',fontSize:'17px'}}><small>Help Center</small></span>
+            </div>
         </div>
     )
 }
