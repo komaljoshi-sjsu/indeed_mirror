@@ -15,7 +15,6 @@ import { connect } from 'react-redux'
 import { useSelector } from 'react-redux'
 import JobSeekerNavbar from './JobSeekerNavbar'
 import JobSeekerLoggedInNavbar from './JobSeekerLoggedInNavbar'
-import Pagination from './../JobSeeker/Pagination'
 import { Link } from 'react-router-dom'
 
 // const useStyles = makeStyles((theme) => ({
@@ -627,28 +626,22 @@ class JobSeekerLandingPage extends Component {
 
   handleApply(evt) {
     console.log(evt.currentTarget.id)
-    const jobId = evt.currentTarget.id
+    const jobId = parseInt(evt.currentTarget.id)
     const userInfo = this.props.userInfo
-    const companyId = this.state.companyId
-    const appliedDate = this.getCurrentDate()
+    const companyId = parseInt(this.state.companyId)
+    //const appliedDate = this.getCurrentDate()
     console.log(userInfo)
     if (userInfo.email !== '' && userInfo.accountType === 'JobSeeker') {
       console.log('User has signed in')
-      const id = userInfo.id
-      console.log(id)
-      const data = { appliedDate, jobId, id, companyId }
-      console.log(data)
-      axios.defaults.headers.common['authorization'] = this.props.userInfo.token
-      axios
-        .post(backendServer + '/jobSeeker/applyJob', data)
-        .then((response) => {
-          console.log(response.data, response.status)
-          if (response.status === 200) {
-            this.setState({
-              applied: true,
-            })
-          }
-        })
+      const payload1 = jobId
+
+      this.props.jobId(payload1)
+
+      const payload2 = companyId
+
+      this.props.companyId(payload2)
+
+      this.props.history.push('/applyJobs')
     } else {
       console.log("User didn't sign in")
       this.props.history.push('/login')
@@ -1144,6 +1137,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     companyId: (payload) => {
       dispatch({ type: 'setCompId', payload })
+    },
+    jobId: (payload) => {
+      dispatch({ type: 'setJobId', payload })
     },
   }
 }

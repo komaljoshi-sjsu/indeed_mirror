@@ -1,21 +1,23 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { useSelector, useDispatch } from 'react-redux'
-import JobSeekerNavbar from './JobSeekerNavbar'
 import backendServer from '../../webConfig.js'
 import { Redirect } from 'react-router'
 import React, { useEffect } from 'react'
 import { Button, Form, Dropdown } from 'react-bootstrap'
 import { useState } from 'react'
-import { userActionCreator } from '../../reduxutils/actions.js'
+import {
+  userActionCreator,
+  companyActionCreator,
+} from '../../reduxutils/actions.js'
 import { bindActionCreators } from 'redux'
 import axios from 'axios'
+import { RatingView } from 'react-simple-star-rating'
 import ErrorMsg from '../Error/ErrorMsg'
 import SuccessMsg from '../Success/SuccessMsg'
-import JobSeekerLoggedInNavbar from './JobSeekerLoggedInNavbar'
+import JobSeekerLoggedInNavbar from '../JobSeeker/JobSeekerLoggedInNavbar'
 
-function Resume(props) {
+function ApplyJobs(props) {
   const dispatch = useDispatch()
-  const [hideSkip, setHideSkip] = useState(false)
   const [redirectTo, setRedirectTo] = useState(null)
   const [hideDiv, setHideDiv] = useState(true)
   const [errMsg, setErrMsg] = useState('')
@@ -24,8 +26,21 @@ function Resume(props) {
   const [resumeTextCreate, setResumeTextCreate] = useState(
     'Create a new resume',
   )
-  const [hideContactDiv, setHideContactDiv] = useState(true)
   const [resumeFileName, setResumeFileName] = useState('')
+  const [roleName, setRoleName] = useState('')
+  const [companyName, setCompanyName] = useState('')
+  const [rating, setRating] = useState('')
+  const [reviewCount, setReviewCount] = useState('')
+  const [city, setCity] = useState('')
+  const [state, setState] = useState('')
+  const [zip, setZip] = useState('')
+  const [jobType, setJobType] = useState('')
+  const [salary, setSalary] = useState('')
+  const [location, setLocation] = useState('')
+  const [responsibilities, setResponsibilities] = useState('')
+  const [qualifications, setQualifications] = useState('')
+  const [loveJobRole, setLoveJobRole] = useState('')
+  const [applied, setApplied] = useState('')
 
   const token = useSelector((state) => state.userInfo.token)
   let fullname = useSelector((state) => state.userInfo.name)
@@ -33,8 +48,15 @@ function Resume(props) {
   const phone = useSelector((state) => state.userInfo.phone)
   const email = useSelector((state) => state.userInfo.email)
   const resumeUrl = useSelector((state) => state.userInfo.resumeUrl)
+  const jobId = useSelector((state) => state.company.jobid)
+  const companyId = useSelector((state) => state.company.compid)
 
   const logout = bindActionCreators(userActionCreator.logout, dispatch)
+  const setCompId = bindActionCreators(companyActionCreator.setCompId, dispatch)
+  const setCompName = bindActionCreators(
+    companyActionCreator.setCompName,
+    dispatch,
+  )
   const showSuccessModal = bindActionCreators(
     userActionCreator.showSuccessModal,
     dispatch,
@@ -59,6 +81,7 @@ function Resume(props) {
       setResumeFileName(key)
       hideResumeUpdate()
     }
+    getAllData()
   }, [])
 
   let nameArr = fullname.split(/\s+/)
@@ -79,70 +102,141 @@ function Resume(props) {
       setResumeTextCreate('Build a resume')
       setResumeHeading('Get Started')
     }
-    setHideSkip(true)
     setHideDiv(false)
-  }
-  let collapseContactInfo = () => {
-    setHideContactDiv(true)
-  }
-  let expandContactInfo = () => {
-    setHideContactDiv(false)
-  }
-  let updateBasicInfo = (e) => {
-    e.preventDefault()
-    const formData = new FormData(e.target)
-    const fname = formData.get('fname')
-    const lname = formData.get('lname')
-    const name = fname + ' ' + lname
-    const emailId = formData.get('email')
-    const phoneno = formData.get('phone')
-    const data = {}
-    if (name != fullname) data.name = name
-    if (phoneno != phone) data.jobSeekerContact = phoneno
-    if (email != emailId) data.email = emailId
-    if (Object.keys(data).length > 0) {
-      axios.defaults.headers.common['authorization'] = token
-      axios
-        .post(backendServer + '/api/updateJobSeekerProfile', {
-          id: id,
-          data: data,
-        })
-        .then((res) => {
-          if (res.data.code == '200') {
-            setEmail(emailId)
-            setName(name)
-            setPhone(phoneno)
-            showSuccessModal(true)
-            if (email != emailId) {
-              showSuccessModal(true)
-              setErrMsg(
-                'Successfully updated user data. Since you changed email, you will be logged out. Please login again.',
-              )
-              setTimeout(function () {
-                logout(true)
-                setRedirectTo(<Redirect to="/landingPage" />)
-              }, 1500)
-            } else setErrMsg('Successfully updated user data')
-          } else {
-            setErrMsg(res.data.msg)
-            showErrorModal(true)
-            console.log(res.data.err)
-          }
-        })
-        .catch((err) => {
-          console.log(err)
-          setErrMsg(
-            'Failed to update Profile. Please refer console for more details',
-          )
-          showErrorModal(true)
-        })
-    }
   }
 
   const hiddenFileInput = React.useRef(null)
   const [noResume, setNoResume] = useState(true)
   let uploadResume = async (e) => {
     hiddenFileInput.current.click()
+  }
+
+  let getAllData = async () => {
+    await axios.get(backendServer + '/jobSeeker/home').then(
+      (response) => {
+        if (response.status === 200 && response.data.length > 0) {
+          console.log(response.data, response.status)
+          //let jobId = parseInt(jobId)
+          console.log('filtering jobs for job id: ' + jobId)
+
+          let job = response.data.filter((job) => job.jobId === jobId)
+          console.log(typeof jobId)
+
+          console.log('filtered job id: ')
+          console.log(job)
+          if (job.length > 0) {
+            job = job[0]
+            console.log('filtered job id: ')
+            console.log(job)
+            setRoleName(job.jobTitle)
+            setCompanyName(job.companyName)
+            setCity(job.city)
+            setState(job.state)
+            setZip(job.zip)
+            setJobType(job.jobMode)
+            setSalary(job.salaryDetails)
+            setLocation(job.city)
+            setResponsibilities(job.responsibilities)
+            setQualifications(job.qualifications)
+            setLoveJobRole(job.loveJobRole)
+          }
+        }
+      },
+      (error) => {
+        console.log(error)
+      },
+    )
+
+    await axios.get(backendServer + '/jobSeeker/getCompanyReviews').then(
+      (response) => {
+        console.log(response.data, response.status)
+        if (response.status === 200 && response.data.length > 0) {
+          console.log(typeof companyId + ' CompanyId ' + companyId)
+          let reviews = response.data.filter(
+            (reviews) => reviews.companyId === companyId,
+          )
+
+          if (reviews.length > 0) {
+            reviews = reviews[0]
+            setReviewCount(reviews.NoOfReviews)
+          } else setReviewCount(0)
+        }
+      },
+      (error) => {
+        console.log(error)
+      },
+    )
+
+    await axios.get(backendServer + '/jobSeeker/getCompanyRating').then(
+      (response) => {
+        console.log(response.data, response.status)
+        if (response.status === 200 && response.data.length > 0) {
+          let avgrating = response.data.filter(
+            (rating) => rating.companyId === companyId,
+          )
+
+          if (avgrating.length > 0) {
+            avgrating = avgrating[0]
+            setRating(avgrating.avgRating)
+          } else setRating(0)
+        }
+      },
+      (error) => {
+        console.log(error)
+      },
+    )
+  }
+
+  let getCurrentDate = () => {
+    const monthNames = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ]
+
+    var dateObj = new Date()
+    var month = monthNames[dateObj.getMonth()]
+    var day = dateObj.getUTCDate()
+    var year = dateObj.getUTCFullYear()
+    console.log(month + ' ' + day + ' ' + year)
+    return year + '-' + (dateObj.getMonth() + 1) + '-' + day
+  }
+
+  let handleCompanyLink = async (e) => {
+    setCompName(companyName)
+    setCompId(companyId)
+
+    let data = { id: companyId }
+    console.log(data)
+    await axios
+      .post(backendServer + '/jobSeeker/updateNoOfViews', data)
+      .then((response) => {
+        console.log(response.data, response.status)
+      })
+
+    setRedirectTo(<Redirect to="/snapshot" />)
+  }
+
+  let handleApply = (e) => {
+    const appliedDate = getCurrentDate()
+    const data = { appliedDate, jobId, id, companyId }
+    console.log(data)
+    axios.defaults.headers.common['authorization'] = token
+    axios.post(backendServer + '/jobSeeker/applyJob', data).then((response) => {
+      console.log(response.data, response.status)
+      if (response.status === 200) {
+        setApplied(true)
+      }
+    })
   }
 
   let handleResumeUpload = (e) => {
@@ -322,166 +416,84 @@ function Resume(props) {
           </p>
         </div>
         <br></br>
-        <div
-          className="row"
-          hidden={hideDiv}
-          style={{
-            border: '1px solid darkgray',
-            boxShadow: '1px 1px 1px 1px darkgray',
-            padding: '20px 20px 5px 20px',
-          }}
-        >
-          <b>
-            Contact Information{' '}
-            <img
-              src="/images/pencil.png"
-              height="15px"
-              width="15px"
-              style={{ float: 'right', cursor: 'pointer' }}
-              onClick={expandContactInfo}
-            />
-          </b>
-          <p></p>
-          <div hidden={hideContactDiv}>
-            <p>
-              <span style={{ color: 'red' }}>* </span>
-              <small style={{ color: 'darkgray' }}>Required Fields</small>
-            </p>
-            <Form onSubmit={updateBasicInfo}>
-              <Form.Group className="mb-3">
-                <Form.Label>
-                  <b>First Name </b>
-                  <span style={{ color: 'red' }}>* </span>
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  name="fname"
-                  defaultValue={fname}
-                  required
-                  maxLength="45"
-                ></Form.Control>
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>
-                  <b>Last Name </b>
-                  <span style={{ color: 'red' }}>* </span>
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  name="lname"
-                  defaultValue={lname}
-                  required
-                  maxLength="45"
-                ></Form.Control>
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>
-                  <b>Email Address </b>
-                  <img src="/images/padlock.png" height="15px" width="15px" />
-                  <span style={{ color: 'darkgray', fontSize: '12px' }}>
-                    only provided to employers you apply or respond to.
-                  </span>
-                </Form.Label>
-                <Form.Control
-                  type="email"
-                  name="email"
-                  defaultValue={email}
-                  required
-                  maxLength="45"
-                ></Form.Control>
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>
-                  <b>Phone Number (optional)</b>
-                  <img src="/images/padlock.png" height="15px" width="15px" />
-                  <span style={{ color: 'darkgray', fontSize: '12px' }}>
-                    only provided to employers you apply or respond to.
-                  </span>
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  name="phone"
-                  defaultValue={phone}
-                  pattern="[0-9]{10}"
-                  title="Please enter a 10 digit phone number"
-                  maxLength="10"
-                ></Form.Control>
-              </Form.Group>
-              <Button variant="primary" type="submit">
-                Save
-              </Button>
-              &nbsp;
-              <Button variant="primary" onClick={collapseContactInfo}>
-                Cancel
-              </Button>
-            </Form>
+
+        <div class="col-5">
+          <div class="card cardStyle" style={{ width: '700px' }}>
+            <div class="card-body">
+              <h4 class="card-title">{roleName}</h4>
+              <h6 class="card-title companyNameCss" onClick={handleCompanyLink}>
+                {companyName}
+              </h6>
+              <RatingView ratingValue={rating} />
+              <br />
+              <h6 class="card-title">{reviewCount} reviews</h6>
+              <h6 class="card-title">
+                {city}, {state}
+              </h6>
+              <h6 class="card-title">{zip}</h6>
+              <br />
+              <br />
+              <div class="btn-group" role="group" aria-label="Third group">
+                {applied ? (
+                  <button
+                    type="button"
+                    class="btn applybtn"
+                    id={jobId}
+                    disabled
+                  >
+                    <h5 style={{ marginTop: '4px', color: 'white' }}>
+                      Applied
+                    </h5>
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    class="btn applybtn"
+                    onClick={handleApply}
+                    id={jobId}
+                  >
+                    <h5 style={{ marginTop: '4px', color: 'white' }}>Apply</h5>
+                  </button>
+                )}
+              </div>
+              <br />
+              <br />
+              <hr />
+              <br />
+              <h5 class="card-title">Job details</h5>
+              <br />
+              <h6 style={{ fontWeight: 'bold' }}>Job Type:</h6>
+              <h6>{jobType}</h6> <br />
+              <h6 style={{ fontWeight: 'bold' }}>Salary:</h6>
+              <h6>${salary}</h6>
+              <br />
+              <hr />
+              <h5 class="card-title">Full Job Description</h5>
+              <br />
+              <h6 style={{ fontWeight: 'bold' }}>Location:</h6>
+              <h6>{location}</h6>
+              <br />
+              <h6 style={{ fontWeight: 'bold' }}>What you will do:</h6>
+              <h6 style={{ whiteSpace: 'pre-wrap', color: '#262626' }}>
+                {responsibilities}
+              </h6>
+              <br />
+              <h6 style={{ fontWeight: 'bold' }}>What you will need:</h6>
+              <h6 style={{ whiteSpace: 'pre-wrap', color: '#262626' }}>
+                {qualifications}
+              </h6>{' '}
+              <br />
+              <h6 style={{ fontWeight: 'bold' }}>Why You’ll love working:</h6>
+              <h6 style={{ whiteSpace: 'pre-wrap', color: '#262626' }}>
+                {loveJobRole}
+              </h6>{' '}
+              <br />
+            </div>
           </div>
-          <div hidden={!hideContactDiv}>
-            <p>
-              {email}{' '}
-              <img src="/images/padlock.png" height="15px" width="15px" />
-            </p>
-            {phone != null && phone.length > 0 && (
-              <p>
-                {phone}{' '}
-                <img src="/images/padlock.png" height="15px" width="15px" />
-              </p>
-            )}
-            {(phone == null || phone.length == 0) && (
-              <p>
-                <small>
-                  <b>Add phone number</b>
-                </small>
-              </p>
-            )}
-          </div>
-          <p></p>
         </div>
-        <br></br>
-        <div
-          className="row"
-          hidden={hideDiv}
-          style={{
-            border: '1px solid darkgray',
-            boxShadow: '1px 1px 1px 1px darkgray',
-            padding: '20px 20px 5px 20px',
-          }}
-        >
-          <b>
-            Job Preferences{' '}
-            <img
-              src="/images/pencil.png"
-              height="15px"
-              width="15px"
-              style={{ float: 'right', cursor: 'pointer' }}
-              onClick={() => setRedirectTo(<Redirect to="/preferences" />)}
-            />
-          </b>
-          <p></p>
-          <p></p>
-          <p>
-            <small style={{ color: 'darkgray' }}>
-              Save specific details like desired pay and schedule that help us
-              match you with better jobs
-            </small>
-          </p>
-        </div>
-        <br></br>
       </div>
-      <p></p>
-      <p style={{ textAlign: 'center' }}>
-        <b>
-          <u
-            style={{ color: 'blue', cursor: 'pointer' }}
-            onClick={hideResumeUpdate}
-            hidden={hideSkip}
-          >
-            Skip for now
-          </u>
-        </b>
-      </p>
     </div>
   )
 }
 
-export default Resume
+export default ApplyJobs

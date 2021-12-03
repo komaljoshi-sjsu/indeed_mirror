@@ -1,5 +1,6 @@
 const initState = {
   compid: '',
+  jobid: 0,
   compName: '',
   ceo: '',
   founded: '',
@@ -29,6 +30,12 @@ export const companyReducer = (state = initState, action) => {
         compid: action.payload,
       }
       return IdState
+    case 'setJobId':
+      let jobIdState = {
+        ...state,
+        jobid: action.payload,
+      }
+      return jobIdState
     case 'setCompName':
       let NameState = {
         ...state,
