@@ -24,7 +24,9 @@ const {
 } = require('./jsFilterOnJobTitleOrCompanyName')
 const { jsFilterOnLocation } = require('./jsFilterOnLocation')
 const { jsFilterOnLocationAndTitle } = require('./jsFilterOnLocationAndTitle')
-const { jsGetCompanyRating } = require('./jsGetCompanyRating')
+const {
+  jsGetCompanyRatingAndReviews,
+} = require('./jsGetCompanyRatingAndReviews')
 const { jsGetCompanyReviews } = require('./jsGetCompanyReviews')
 const { jsHome } = require('./jsHome')
 const { jsPaginatedData } = require('./jsPaginatedData')
@@ -130,8 +132,8 @@ function handle_request(msg, callback) {
     case 'filterOnLocationAndTitle':
       jsFilterOnLocationAndTitle(msg, callback)
       break
-    case 'getCompanyRating':
-      jsGetCompanyRating(msg, callback)
+    case 'getCompanyRatingAndReviews':
+      jsGetCompanyRatingAndReviews(msg, callback)
       break
     case 'getCompanyReviews':
       jsGetCompanyReviews(msg, callback)

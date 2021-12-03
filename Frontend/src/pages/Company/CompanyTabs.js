@@ -53,46 +53,25 @@ class CompanyTabs extends Component {
   }
 
   async getAllData() {
-    await axios.get(backendServer + '/jobSeeker/getCompanyReviews').then(
-      (response) => {
-        console.log(response.data, response.status)
-
-        let companyId = this.state.companyId
-        let reviews = response.data.filter(
-          (reviews) => reviews.companyId === companyId,
-        )
-
-        if (reviews.length > 0) {
-          reviews = reviews[0]
-
-          this.setState({ reviewCount: reviews.NoOfReviews })
-        } else this.setState({ reviewCount: 0 })
-      },
-      (error) => {
-        console.log(error)
-      },
-    )
-
-    await axios.get(backendServer + '/jobSeeker/getCompanyRating').then(
-      (response) => {
-        console.log(response.data, response.status)
-
-        let companyId = this.state.companyId
-        let avgrating = response.data.filter(
-          (rating) => rating.companyId === companyId,
-        )
-
-        if (avgrating.length > 0) {
-          avgrating = avgrating[0]
-          this.setState({ rating: avgrating.avgRating })
-        } else this.setState({ rating: 0 })
-      },
-      (error) => {
-        console.log(error)
-      },
-    )
-
     let data = { companyId: this.state.companyId }
+    axios
+      .post(backendServer + '/jobSeeker/getCompanyRatingAndReviews', data)
+      .then(
+        (response) => {
+          console.log('Ratings and Reviews')
+          console.log(response.data, response.status)
+          if (response.status === 200 && response.data.length > 0) {
+            this.setState({
+              rating: response.data[0].companyAvgRating,
+              reviewCount: response.data[0].noOfReviews,
+            })
+          }
+        },
+        (error) => {
+          console.log(error)
+        },
+      )
+
     console.log('Image........ ' + data)
     await axios.post(backendServer + '/jobs/getCompanyImage', data).then(
       (response) => {

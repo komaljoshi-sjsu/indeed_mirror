@@ -84,6 +84,21 @@ router.post('/jobSeeker/filterOnLocationAndTitle', (req, res) => {
   })
 })
 
+router.post('/jobSeeker/getCompanyRatingAndReviews', (req, res) => {
+  console.log('Job Seeker get company reviews.....')
+  let msg = {}
+  msg.route = 'getCompanyRatingAndReviews'
+  msg.body = req.body
+  kafka.make_request('jobseeker', msg, function (err, results) {
+    if (err) {
+      console.log(err)
+      return res.status(400).send(err)
+    } else {
+      res.status(200).send(results)
+    }
+  })
+})
+
 router.get('/jobSeeker/getCompanyReviews', (req, res) => {
   console.log('Job Seeker get company reviews.....')
   let msg = {}

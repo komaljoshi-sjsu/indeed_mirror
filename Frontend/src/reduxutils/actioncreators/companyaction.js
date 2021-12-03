@@ -11,6 +11,17 @@ export const setCompId = (compid) => {
   }
 }
 
+export const setJobId = (jobid) => {
+  // console.log("id")
+  // console.log(compid)
+  return (dispatch) => {
+    dispatch({
+      type: 'setJobId',
+      payload: jobid,
+    })
+  }
+}
+
 export const setCompName = (compName) => {
   // console.log("id")
   // console.log(compid)

@@ -16,10 +16,15 @@ let jsCheckSavedStatus = async (req, callback) => {
     )
       .then((result) => {
         console.log(result)
-        console.log(result.savedJobs.length)
-        if (result.savedJobs.length > 0) {
-          res = { result: result, status: 200 }
-          callback(null, res)
+        if (result) {
+          console.log(result.savedJobs.length)
+          if (result.savedJobs.length > 0) {
+            res = { result: result, status: 200 }
+            callback(null, res)
+          } else {
+            res = { result: 'Cannot find in saved table', status: 201 }
+            callback(null, res)
+          }
         } else {
           res = { result: 'Cannot find in saved table', status: 201 }
           callback(null, res)
