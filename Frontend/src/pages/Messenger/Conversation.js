@@ -3,6 +3,7 @@ import '../../CSS/Conversation.css'
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { withRouter } from 'react-router-dom';
+import backendServer from "../../webConfig";
 
 function Conversation({conversation, currentUser, role}) {
 
@@ -16,7 +17,7 @@ function Conversation({conversation, currentUser, role}) {
         const getJobSeeker = async () => {
             try {
                 axios.defaults.headers.common['authorization'] = token;
-                const response = await axios.get("/api/getJobSeekerById/" +receiverId);               
+                const response = await axios.get(backendServer+"/api/getJobSeekerById/" +receiverId);               
                 setJobSeeker(response.data);
             } catch (err) {
                 console.log(err);
@@ -25,7 +26,7 @@ function Conversation({conversation, currentUser, role}) {
         const getEmployer = async () => {
             try {
                 axios.defaults.headers.common['authorization'] = token;
-                const response = await axios.get("/api/getEmployerById/" +receiverId);               
+                const response = await axios.get(backendServer+"/api/getEmployerById/" +receiverId);               
                 setJobSeeker(response.data);
             } catch (err) {
                 console.log(err);
