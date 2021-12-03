@@ -62,7 +62,7 @@ class Reviews extends Component {
       handleFilter = (e) => {
         e.preventDefault();
         this.setState({
-          companyName: '', location: '', searchFlag: false,
+          companyName: '', location: '', searchFlag: false, errorMsg:''
         });
         //document.getElementById('search_form').reset();
       }

@@ -12,6 +12,7 @@ import '../../style/button-group.css';
 import ReviewModal from '../JobSeeker/ReviewModal';
 import Pagination from "./../JobSeeker/Pagination";
 import CompanyTabs from '../Company/CompanyTabs';
+import { RatingView } from 'react-simple-star-rating'
 
 class Reviews extends Component {
     constructor(props) {
@@ -491,15 +492,8 @@ class Reviews extends Component {
                 <Row>
                 <Col xs={2}>
                 <Card.Title>
-                  <b>{review.rating}</b>
-                  <ReactStars
-                    count={5}
-                    size={15}
-                    value={review.rating}
-                    isHalf={true}
-                    activeColor="#9d2b6b"
-                    edit={false}
-                  />
+                  <b>{review.rating}</b><br />
+                  <RatingView ratingValue={review.rating} size={18} activeColor="#9d2b6b"/>
                 </Card.Title>
                 </Col>
                 <Col xs={8}>
@@ -536,15 +530,8 @@ class Reviews extends Component {
                   <Row>
                   <Col xs={2}>
                   <Card.Title>
-                    <b>{review.rating}</b>
-                    <ReactStars
-                      count={5}
-                      size={15}
-                      value={review.rating}
-                      isHalf={true}
-                      activeColor="#9d2b6b"
-                      edit={false}
-                    />
+                    <b>{review.rating}</b><br />
+                    <RatingView ratingValue={review.rating} size={18} activeColor="#9d2b6b"/>
                   </Card.Title>
                   </Col>
                   <Col xs={8}>
@@ -581,15 +568,8 @@ class Reviews extends Component {
                   <Row>
                   <Col xs={2}>
                   <Card.Title>
-                    <b>{review.rating}</b>
-                    <ReactStars
-                      count={5}
-                      size={15}
-                      value={review.rating}
-                      isHalf={true}
-                      activeColor="#9d2b6b"
-                      edit={false}
-                    />
+                    <b>{review.rating}</b><br />
+                    <RatingView ratingValue={review.rating} size={18} activeColor="#9d2b6b"/>
                   </Card.Title>
                   </Col>
                   <Col xs={8}>
