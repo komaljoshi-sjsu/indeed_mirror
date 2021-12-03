@@ -199,6 +199,7 @@ function Resume(props) {
         e.preventDefault();
         let keyarr = resumeUrl.split('/');
         let key = keyarr[keyarr.length-1];
+        console.log(key)
         axios.get(backendServer+'/api/downloadResume/'+key).then(res=>{
             console.log(res);
             if(res.status=='200') {
@@ -210,6 +211,10 @@ function Resume(props) {
         })
     }
     function download(url){
+        console.log("*********")
+        console.log(url)
+        console.log(resumeUrl)
+        console.log("*********")
         let keyarr = resumeUrl.split('/');
         console.log(keyarr)
         let key = keyarr[keyarr.length-1];
