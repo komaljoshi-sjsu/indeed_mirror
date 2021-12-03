@@ -3,6 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import {useSelector} from 'react-redux';
+import backendServer from "../../webConfig";
 
 const UploadPhotos = (props) => {
   const [show, setShow] = useState(false);
@@ -43,7 +44,7 @@ const UploadPhotos = (props) => {
       var data = new FormData();
       data.append("file", photo[i]);
       axios
-        .post("/api/upload", data)
+        .post(backendServer+"/api/upload", data)
         .then((response) => {
           console.log(response);
           if (response.status === 200) {
@@ -58,7 +59,7 @@ const UploadPhotos = (props) => {
               photoAdminReviewedStatus: "PENDING_APPROVAL",
             };
             axios.defaults.headers.common["authorization"] = token;
-            axios.post("/api/uploadCompanyPhotos", data1)
+            axios.post(backendServer+"/api/uploadCompanyPhotos", data1)
               .then((response1) => {
                 if (response1.status === 200) {
                   toast.success("Successfully uploaded picture", {position: toast.POSITION.TOP_CENTER});
