@@ -61,9 +61,11 @@ class Employer extends Component {
   componentDidMount() {
       //console.log("here")
       const companyId = this.props.company.compid;
+      const userId = this.props.userInfo.id;
       //console.log(companyId)
       const compId = {
-        companyId:companyId
+        companyId:companyId,
+        userId:userId
       }
       axios.post(`${backendServer}/getPostedJobs`,compId).then((response) => {
         console.log(response.data)
