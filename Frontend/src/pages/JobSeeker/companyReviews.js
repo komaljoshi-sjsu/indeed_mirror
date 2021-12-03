@@ -20,6 +20,7 @@ class Reviews extends Component {
       this.state = {
         reviewDetails: [],
         successMsg: '',
+        errorMsg: '',
         companyName: '',
         location: '',
         searchFlag: false,
@@ -54,7 +55,16 @@ class Reviews extends Component {
       handleChange = (e) => {
         this.setState({
           [e.target.name]: e.target.value,
+          errorMsg: ''
         });
+      }
+
+      handleFilter = (e) => {
+        e.preventDefault();
+        this.setState({
+          companyName: '', location: '', searchFlag: false,
+        });
+        //document.getElementById('search_form').reset();
       }
 
       handleCompanyLink = (e, companyId, companyName)  => {
@@ -67,39 +77,47 @@ class Reviews extends Component {
       handleSubmit = () => {
         
         let { reviewSearchDetails, companyName, location } = this.state;
-        reviewSearchDetails = [];
-        const inputData = {
-          companyName,
-          location
-        }
-        console.log(inputData);
-        //axios.defaults.headers.common['authorization'] = this.props.userInfo.token;
-        axios
-          .post(`${backendServer}/searchReview`, inputData)
-          .then((response) => {
-            if (response.status === 200) {
-              this.setState({ 
-                reviewSearchDetails: reviewSearchDetails.concat(response.data),
-                searchFlag: true,
-              });
-            } else {
-              this.setState({ 
-                reviewSearchDetails: [],
-                errorMsg: response.data });
-            }
-          })
-          .catch((err) => {
-            console.error(err);
-          });
+        if(companyName === '' && location === ''){
+            this.setState({errorMsg: 'Please enter search criteria'});
+        }else{
+          reviewSearchDetails = [];
+          const inputData = {
+            companyName,
+            location
+          }
+          console.log(inputData);
+          //axios.defaults.headers.common['authorization'] = this.props.userInfo.token;
+          axios
+            .post(`${backendServer}/searchReview`, inputData)
+            .then((response) => {
+              if (response.status === 200) {
+                this.setState({ 
+                  reviewSearchDetails: reviewSearchDetails.concat(response.data),
+                  searchFlag: true,
+                });
+              } else {
+                console.log('inside else');
+                this.setState({ 
+                  reviewSearchDetails: [],
+                  errorMsg: 'No search results' });
+              }
+            })
+            .catch((err) => {
+              console.error(err);
+              this.setState({
+                searchFlag: false,
+                errorMsg: 'No search results' });
+            });
+          }
       }
 
     render() {
       // To-DO Fetch logged in userid from store
-        const { reviewDetails, companyName, location, searchFlag, reviewSearchDetails } = this.state;
+        const { reviewDetails, companyName, location, searchFlag, reviewSearchDetails, errorMsg } = this.state;
         console.log(reviewSearchDetails.length);
         let searchReviewsDisplay = '';
         if(searchFlag){
-          if(reviewSearchDetails[0].companyName !== '' && reviewSearchDetails[0].companyName !== undefined ){
+          if(reviewSearchDetails !== '' && reviewSearchDetails[0].companyName !== '' && reviewSearchDetails[0].companyName !== undefined ){
                 searchReviewsDisplay = reviewSearchDetails.map((review) => (
                 <div>
                   <ListGroup style={{ width: '50rem', margin: '0.1em', border: 'none' }}>
@@ -180,6 +198,8 @@ class Reviews extends Component {
                  <h1>Find great places to work</h1><br />
                 
                   <h4 style={{color:'#7d7d7d'}}>Get access to millions of company reviews</h4><br />
+                  <span style={{color:'red'}}>{errorMsg}</span>
+            
                   <Row>
                       <Col>Company Name
                       </Col>
@@ -202,9 +222,13 @@ class Reviews extends Component {
                       <Col>
                 <Button style={{backgroundColor:'#2457a7'}} type="submit" onClick={this.handleSubmit}>
                   <b>Find Companies</b>
+                </Button>{' '}
+                <Button style={{backgroundColor:'#2457a7'}} onClick={this.handleFilter}>
+                  <b>Clear</b>
                 </Button>
               </Col>
                   </Row>
+             
                   <br /> 
               <h3>Popular companies</h3>
             </Card.Title>

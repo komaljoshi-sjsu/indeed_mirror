@@ -184,7 +184,7 @@ class ReviewModal extends Component {
           </Modal.Header>
           <Modal.Body>
           <Row>
-              <Col><b>Overall rating</b></Col>
+              <Col><b>Overall rating</b><span style={{color:'red'}}>*</span></Col>
               <Col>
                 <Form.Group className="mb-3">
                 <ReactStars
@@ -201,7 +201,7 @@ class ReviewModal extends Component {
               </Col>
               </Row>
               <Row>
-              <Col><b>Work Happiness Score</b></Col>
+              <Col><b>Work Happiness Score</b><span style={{color:'red'}}>*</span></Col>
               <Col>
                 <Form.Group className="mb-3">
               <RangeSlider
@@ -215,7 +215,7 @@ class ReviewModal extends Component {
               </Col>
               </Row>
               <Row>
-              <Col><b>Learning Score</b></Col>
+              <Col><b>Learning Score</b><span style={{color:'red'}}>*</span></Col>
               <Col>
                 <Form.Group className="mb-3">
               <RangeSlider
@@ -229,7 +229,7 @@ class ReviewModal extends Component {
               </Col>
               </Row>
               <Row>
-              <Col><b>Appreciation Score</b></Col>
+              <Col><b>Appreciation Score</b><span style={{color:'red'}}>*</span></Col>
               <Col>
                 <Form.Group className="mb-3">
               <RangeSlider
@@ -243,7 +243,7 @@ class ReviewModal extends Component {
               </Col>
               </Row>
               <Row>
-                <Col><b>CEO Approval rating</b></Col>
+                <Col><b>CEO Approval rating</b><span style={{color:'red'}}>*</span></Col>
                     <Col>
                     <Form.Group className="mb-3">
                     <ReactStars
@@ -259,7 +259,7 @@ class ReviewModal extends Component {
                     </Col>
                     </Row>
               <Row>
-              <Col><b>Review Title</b></Col>
+              <Col><b>Review Title</b><span style={{color:'red'}}>*</span></Col>
               <Col>
                 <Form.Group className="mb-3">
                   <Form.Control name="reviewTitle" type="text" placeholder="Enter Review Summary"
@@ -271,7 +271,7 @@ class ReviewModal extends Component {
               </Col>
               </Row>
               <Row>
-              <Col><b>Your job role</b></Col>
+              <Col><b>Your job role</b><span style={{color:'red'}}>*</span></Col>
               <Col>
                 <Form.Group className="mb-3">
                   <Form.Control name="reviewerRole" type="text" placeholder="Enter your role"
@@ -283,7 +283,7 @@ class ReviewModal extends Component {
               </Col>
               </Row>
               <Row>
-              <Col><b>City</b></Col>
+              <Col><b>City</b><span style={{color:'red'}}>*</span></Col>
               <Col>
                 <Form.Group className="mb-3">
                   <Form.Control name="city" type="text" placeholder="Enter your city"
@@ -295,7 +295,7 @@ class ReviewModal extends Component {
               </Col>
               </Row>
               <Row>
-              <Col><b>State</b></Col>
+              <Col><b>State</b><span style={{color:'red'}}>*</span></Col>
               <Col>
                 <Form.Group className="mb-3">
                   <Form.Control name="state" type="text" placeholder="Enter your city"
@@ -307,7 +307,7 @@ class ReviewModal extends Component {
               </Col>
               </Row>
               <Row>
-                <Col><b>Your Review</b></Col>
+                <Col><b>Your Review</b><span style={{color:'red'}}>*</span></Col>
                 </Row>
                 <Row>
                     <Col>
@@ -320,7 +320,7 @@ class ReviewModal extends Component {
                     </Col>
                     </Row>
                     <Row>
-                <Col><b>Pros</b></Col>
+                <Col><b>Pros</b><span style={{color:'red'}}>*</span></Col>
                 </Row>
                 <Row>
                     <Col>
@@ -333,7 +333,7 @@ class ReviewModal extends Component {
                     </Col>
                     </Row>
                     <Row>
-                <Col><b>Cons</b></Col>
+                <Col><b>Cons</b><span style={{color:'red'}}>*</span></Col>
                 </Row>
                 <Row>
                     <Col>
