@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import JobSeekerLoggedInNavbar from '../JobSeeker/JobSeekerLoggedInNavbar'
 import EmployerNavbar from '../Employer/EmployerNavbar'
 import { withRouter } from 'react-router-dom';
+import backendServer from "../../webConfig";
 
 const Messenger = (props) => {
   const [currentChat, setCurrentChat] = useState();
@@ -31,7 +32,7 @@ const Messenger = (props) => {
     const getConversations = async () => {
       try {
         axios.defaults.headers.common['authorization'] = token;
-        const res = await axios.get("/api/getAllJobSeekers");
+        const res = await axios.get(backendServer+"/api/getAllJobSeekers");
         const convResponse = await axios.get(
           "/api/getConversationById/" + userId
         );
@@ -58,7 +59,7 @@ const Messenger = (props) => {
     const getMessages = async () => {
       try {
         axios.defaults.headers.common['authorization'] = token;
-        const res = await axios.get("/api/getMessages/" + currentChat._id);
+        const res = await axios.get(backendServer+"/api/getMessages/" + currentChat._id);
         setMessages(res.data);
       } catch (err) {
         console.log(err);
@@ -79,7 +80,7 @@ const Messenger = (props) => {
           messageText: newMessage,
         };
         axios.defaults.headers.common['authorization'] = token;
-        const res = await axios.post("/api/addNewMessage", message);
+        const res = await axios.post(backendServer+"/api/addNewMessage", message);
         setMessages([...messages, res.data]);
         setNewMessage("");
       } catch (err) {
@@ -92,14 +93,14 @@ const Messenger = (props) => {
           receiverId: newConversation.value,
         };
         axios.defaults.headers.common['authorization'] = token;
-        const res = await axios.post("/api/saveConversation", conversation);
+        const res = await axios.post(backendServer+"/api/saveConversation", conversation);
         const message = {
           conversationId: res.data._id,
           sender: userId,
           messageText: newMessage,
         };
         axios.defaults.headers.common['authorization'] = token;
-        const response = await axios.post("/api/addNewMessage", message);
+        const response = await axios.post(backendServer+"/api/addNewMessage", message);
         setMessages([...messages, response.data]);
         setNewMessage("");
         setNewConversation("")
