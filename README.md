@@ -1,6 +1,6 @@
 # Project Report
 
-[Click to download project report with screenshots of the webapp](./ProjectReport.docx)
+[Project report with screenshots of the webapp](./ProjectReport.pdf)
 
 # Getting Started with Create React App
 
